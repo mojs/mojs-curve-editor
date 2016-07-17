@@ -1,0 +1,17 @@
+.panel-sign {
+  padding-top:24px !important;
+}
+.toggle-container {
+  padding-bottom: 16px;
+  & > .element {
+    font-size: 32px;
+    font-family: 'Roboto', sans-serif;
+    color: #797979;
+    text-transform: uppercase;
+    cursor: pointer;
+    &.selected {
+      color: #0117BD;
+      cursor: default;
+    }
+  }
+}

@@ -1,0 +1,47 @@
+.search-container {
+  & > div {
+
+    & > div {
+      width: 100%;
+    }
+
+    & > .filter {
+
+      background: #fff;
+      min-height: 300px;
+
+      & > .title-block {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 300;
+      }
+
+      & > .content-block {
+        & > .form-group {
+
+          & > label {
+            margin-left: 10px;
+            color: #424242;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 12px;
+          }
+
+          & > input[type="text"] {
+            width: 95%;
+            margin-left: 7px;
+          }
+        }
+      }
+
+      & > .action-block {
+         & > button {
+           margin-right: 5px;
+           margin-top: 150px;
+           margin-bottom: 20px;
+         }
+        text-align: center;
+      }
+    }
+  }
+}

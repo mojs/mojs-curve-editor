@@ -1,0 +1,10 @@
+.input-group-error {
+  text-align:right;
+  color:#D22747;
+}
+
+.form-error {
+  margin-bottom: 20px;
+  color: #D22747;
+  font-weight: bold;
+}
