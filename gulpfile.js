@@ -1,5 +1,5 @@
 var gulp         = require('gulp'),
-    postcss = require('gulp-postcss'),
+    postcss      = require('gulp-postcss'),
     csswring     = require('csswring'),
     browserSync  = require('browser-sync'),
     concat       = require('gulp-concat'),
@@ -14,14 +14,14 @@ var gulp         = require('gulp'),
 
 gulp.task('style', function () {
     var processors = [
+        cssnano,
+        csswring,
         autoprefixer({browsers: ['last 1 version']}),
-        cssnano(),
-        csswring
     ];
-    return gulp.src('./src/blocks/*.css')
+    return gulp.src('app/css/blocks/*.css')
         .pipe(postcss(processors))
-        .pipe(rename('mainout.css'))
-        .pipe(gulp.dest('./blocks'));
+        .pipe(rename("main.css"))
+        .pipe(gulp.dest('app/maincss'));
 });
 
 
@@ -46,7 +46,7 @@ gulp.task('scripts', function() {
 
 
 gulp.task('watch', ['browser-sync', 'style', 'scripts'], function() {
-    gulp.watch('./src/blocks/*.css', ['style']);
+    gulp.watch('app/css/blocks/*.css', ['style']);
     gulp.watch('app/*.html', browserSync.reload);
     gulp.watch('app/js/**/*.js', browserSync.reload);
 });
@@ -67,6 +67,11 @@ gulp.task('img', function() {
 });
 
 gulp.task('build', ['clean', 'img', 'style', 'scripts'], function() {
+
+    var buildCss = gulp.src([
+        'app/maincss/main.css'
+    ])
+        .pipe(gulp.dest('dist/css'))
 
     var buildFonts = gulp.src('app/fonts/**/*')
         .pipe(gulp.dest('dist/fonts'))
