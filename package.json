@@ -1,17 +1,25 @@
 {
   "name": "mojs-curve-editor",
   "version": "0.1.0",
-  "description": "frontend template",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "mojs GUI for editing easing/property curves",
+  "keywords": [
+    "mojs",
+    "motion",
+    "effects",
+    "animation",
+    "motion",
+    "motion graphics",
+    "curve editor", 
+    "svg"
+  ],
+  "main": "app/build/mojs-curve-editor.js",
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/legomushroom/mojs-curve-editor.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/legomushroom/mojs-curve-editor/issues"
   },
@@ -34,7 +42,7 @@
     "css-loader": "^0.23.1",
     "csswring": "^5.1.0",
     "del": "^2.2.1",
-    
+
     "eslint": "^3.2.0",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-loader": "^1.5.0",
