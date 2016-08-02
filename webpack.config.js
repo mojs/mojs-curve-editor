@@ -7,7 +7,8 @@ module.exports = {
   watch:   true,
   context: __dirname + "/",
   entry: [
-    __dirname + '/app/js/app.babel.js'
+    __dirname + '/app/js/app.babel.js',
+    'webpack/hot/dev-server',
   ],
   module: {
     loaders: [
@@ -44,7 +45,7 @@ module.exports = {
   output: {
     path:           __dirname + '/app/build/',
     filename:       'mojs-curve-editor.min.js',
-    publicPath:     'app/build/',
+    publicPath:     'build/',
     library:        'mojs-curve-editor',
     libraryTarget:  'umd',
     umdNamedDefine: true
@@ -58,7 +59,8 @@ module.exports = {
           warnings: false
       }
     }),
-    new UnminifiedWebpackPlugin()
+    new UnminifiedWebpackPlugin(),
+    new webpack.HotModuleReplacementPlugin()
   ],
   resolve: {
     root: [ path.resolve('./') ],

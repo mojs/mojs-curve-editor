@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/legomushroom/mojs-curve-editor#readme",
   "dependencies": {
+    "hammerjs": "^2.0.8",
     "redux": "^3.5.2",
     "riot": "^2.5.0"
   },
@@ -58,6 +59,7 @@
     "gulp-uglifyjs": "^0.6.2",
     "imagemin-pngquant": "^5.0.0",
     "json-loader": "^0.5.4",
+    "mo-js": "^0.265.7",
     "postcss-cssnext": "^2.7.0",
     "postcss-loader": "^0.9.1",
     "postcss-modules": "^0.5.0",
