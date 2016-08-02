@@ -1,0 +1,1 @@
+webpackHotUpdatemojs_curve_editor(0,{85:function(e,d){e.exports={"resize-handle":"_resize-handle_uidvn_4"}}});

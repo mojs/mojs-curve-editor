@@ -4,7 +4,8 @@
 .curve-editor {
   position:       fixed;
   right:          0;
-  top:            calc( 30 * $PX );
+  top:            0;
+  /*top:            calc( 30 * $PX );*/
   width:          calc( 411 * $PX );
   height:         calc( 378 * $PX );
   border-radius:  calc( 12 * $PX );
@@ -24,7 +25,7 @@
 
   &__right {
     position:       absolute;
-    left:           calc( 42 * $PX );
+    left:           calc( 43 * $PX );
     right:          calc( $gap * $PX );
     top:            calc( $gap * $PX );
     bottom:         calc( $gap * $PX );
@@ -35,17 +36,43 @@
   }
 
   &__mojs-logo {
-    position:   absolute;
-    bottom:     calc( 1.7 * $gap * $PX );
-    left:       50%;
-    margin-left: calc( 1 * $PX );
-    transform:  translateX(-50%);
+    position:     absolute;
+    bottom:       calc( 1.7 * $gap * $PX );
+    left:         50%;
+    margin-left:  calc( 1 * $PX );
+    transform:    translateX(-50%);
     
     & icon {
       fill:       $c-orange;
       width:      calc( 12*$PX );
       height:     calc( 12*$PX );
     }
+  }
+  
+  $radius: 16;
+  & resize-handle {
+    position:       absolute;
+    
+    &[type="top"] {
+      top:          calc( -$radius*$PX );
+    }
+
+    &[type="bottom"] {
+      bottom:       0;
+    }
+
+    &[type="top"],
+    &[type="bottom"] {
+      left:         50%;
+      margin-left:  calc( -$radius*$PX );
+    }
+
+    &[type="right"] {
+      right:        calc( -$radius*$PX );
+      top:          50%;
+      margin-top:   calc( -$radius*$PX );
+    }
+
   }
 }
 

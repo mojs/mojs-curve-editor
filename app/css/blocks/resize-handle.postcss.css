@@ -1,0 +1,51 @@
+@import '../assets/globals.postcss.css';
+
+$radius: 16;
+.resize-handle {
+  background:     #3D1B3C;
+  width:          calc( 2*$radius*$PX );
+  height:         calc( $radius*$PX );
+  display:        block;
+  cursor:         n-resize;
+  overflow:       hidden;
+  position:       relative;
+  border-top-left-radius:  calc( 3*$PX );
+  border-top-right-radius: calc( 3*$PX );
+  transform-origin: 50% 100%;
+  
+  &:after {
+    content:      '';
+    position:     absolute;
+    left:         0;
+    top:          0;
+    right:        0;
+    bottom:       0;
+    z-index:      2;
+  }
+  
+  & icon {
+    position:     absolute;
+    left:         0;
+    top:          calc( -7*$PX )
+  }
+
+  &:hover {
+    opacity: .85;
+  }
+
+  &--right {
+    transform:  rotate(90deg);
+    cursor:     e-resize;
+  }
+
+  &--bottom {
+    transform:  rotate(180deg);
+    cursor:     s-resize;
+  }
+  
+  /*position: absolute;
+  top: calc(-16*$PX);
+  left: 50%;
+  margin-left: calc( -16*$PX );*/
+}
+

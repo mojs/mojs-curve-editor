@@ -26,6 +26,7 @@
   "homepage": "https://github.com/legomushroom/mojs-curve-editor#readme",
   "dependencies": {
     "hammerjs": "^2.0.8",
+    "propagating-hammerjs": "^1.4.6",
     "redux": "^3.5.2",
     "riot": "^2.5.0"
   },

@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "36dba8d9243aadee0139"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "3757530e88e261de49ae"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -603,61 +603,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* WEBPACK VAR INJECTION */(function(riot) {'use strict';
 	
-	var _extends2 = __webpack_require__(4);
-	
-	var _extends3 = _interopRequireDefault(_extends2);
-	
 	__webpack_require__(42);
 	
-	var _redux = __webpack_require__(57);
+	var _store = __webpack_require__(86);
 	
-	var _reduxUndo = __webpack_require__(72);
-	
-	var _reduxUndo2 = _interopRequireDefault(_reduxUndo);
+	var _store2 = _interopRequireDefault(_store);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// Redux utility functions
 	__webpack_require__(73);
-	// redux-undo higher-order reducer
-	
-	
-	var INITIAL_STATE = {
-	  msg: '♥ Curve Editor ♥',
-	  translate: { x: 0, y: 0 }
-	};
-	
-	console.clear();
-	var reducer = function reducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
-	  var action = arguments[1];
-	
-	  switch (action.type) {
-	    case 'ADD_MSG':
-	      {
-	        return (0, _extends3.default)({}, state, { msg: action.data });
-	      }
-	    case 'EDITOR_TRANSLATE':
-	      {
-	        return (0, _extends3.default)({}, state, { translate: action.data });
-	      }
-	  }
-	  return state;
-	};
-	
-	setTimeout(function () {
-	  store.dispatch({ type: 'ADD_MSG', data: '♥ mojs Curve Editor ♥' });
-	}, 2000);
-	
-	var store = (0, _redux.createStore)((0, _reduxUndo2.default)(reducer, {
-	  filter: function filterActions(action, currState, history) {
-	    return action.isRecord; // only add to history if isRecord set on action
-	  }
-	}));
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  // riot.mount('*',{ store: store })
-	  riot.mount('curve-editor', { store: store });
+	  riot.mount('curve-editor', { store: _store2.default });
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -3857,35 +3815,41 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(43);
+	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(82);
 	__webpack_require__(47);
 	__webpack_require__(48);
 	__webpack_require__(52);
+	__webpack_require__(78);
 	
-	var Hammer = __webpack_require__(77);
-	
-	riot.tag2('curve-editor', '<icons></icons> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code"></icon-button> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <div class="{this.CLASSES[\'curve-editor__right\']}"></div>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
+	riot.tag2('curve-editor', '<icons></icons> <resize-handle type="top"></resize-handle> <resize-handle type="right"></resize-handle> <resize-handle type="bottom"></resize-handle> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code"></icon-button> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <curve adc="{this.CLASSES[\'curve-editor__right\']}"></curve>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
 	
+	var _hammerjs = __webpack_require__(77);
+	
+	var _hammerjs2 = _interopRequireDefault(_hammerjs);
+	
+	var _propagatingHammerjs = __webpack_require__(87);
+	
+	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	__webpack_require__(43);
+	this.CLASSES = __webpack_require__(56);
+	
 	var _opts = opts;
 	var store = _opts.store;
 	
-	this.CLASSES = __webpack_require__(56);
-	
-	store.subscribe(function () {
-	  _this.update();
-	});
+	store.subscribe(this.update.bind(this));
 	
 	this.on('mount', function () {
-	  var hammertime = new Hammer(_this.root, {});
-	  hammertime.on('pan', function (ev) {
+	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('pan', function (ev) {
 	    _this.x = ev.deltaX;
 	    _this.y = ev.deltaY;
 	    _this.update();
-	  });
-	  hammertime.on('panend', function (ev) {
+	  }).on('panend', function (ev) {
 	    var x = ev.deltaX;
 	    var y = ev.deltaY;
 	    var translate = store.getState().present.translate;
@@ -3896,13 +3860,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	
 	this.getStyle = function () {
-	  var translate = store.getState().present.translate;
+	  var state = store.getState().present;
+	  var tempResize_top = state.tempResize_top;
 	
-	  var x = _this.x + translate.x,
-	      y = _this.y + translate.y,
-	      transform = 'transform: translate(' + (_this.x + translate.x) + 'px, ' + (_this.y + translate.y) + 'px)';
+	  if (358 - tempResize_top < 358) {
+	    tempResize_top = 0;
+	  }
 	
-	  return transform + ' ' + transform;
+	  var mod = Math.abs(tempResize_top % 358);
+	  var div = parseInt(tempResize_top / 358);
+	  if (mod < 15) {
+	    tempResize_top = div * 358;
+	  } else if (mod > 358 - 15) {
+	    tempResize_top = -(div + 1) * 358;
+	  }
+	
+	  var translate = state.translate;
+	  var height = 'height: ' + (358 - tempResize_top) + 'px';
+	  var x = (_this.x || 0) + translate.x;
+	  var y = (_this.y || 0) + translate.y;
+	  var transform = 'transform: translate(' + x + 'px, ' + (y + tempResize_top) + 'px)';
+	
+	  console.log(mojs.h.prefix.css);
+	  return transform + '; ' + height;
+	  // return `${mojs.h.prefix.css}${transform}; ${transform}; ${height}`;
 	};
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
@@ -3942,7 +3923,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve-editor_lij9r_4{position:fixed;right:0;top:30px;width:411px;height:378px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_lij9r_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__right_lij9r_1{position:absolute;left:42px;right:10px;top:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve-editor__mojs-logo_lij9r_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_lij9r_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
+	exports.push([module.id, "._curve-editor_1fq01_4{position:fixed;right:0;top:0;width:411px;height:378px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_1fq01_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__right_1fq01_1{position:absolute;left:43px;right:10px;top:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve-editor__mojs-logo_1fq01_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_1fq01_1 icon{fill:#ff512f;width:12px;height:12px}._curve-editor_1fq01_4 resize-handle{position:absolute}._curve-editor_1fq01_4 resize-handle[type=top]{top:-16px}._curve-editor_1fq01_4 resize-handle[type=bottom]{bottom:0}._curve-editor_1fq01_4 resize-handle[type=bottom],._curve-editor_1fq01_4 resize-handle[type=top]{left:50%;margin-left:-16px}._curve-editor_1fq01_4 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}", ""]);
 	
 	// exports
 
@@ -4259,7 +4240,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('icons', '<svg height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" style="position:absolute; margin-left: -100%; width:0; height:0;" xmlns:xlink="http://www.w3.org/1999/xlink"> <path id="code-shape" d="M8,16.0849648 C8,15.8210793 8.11149069,15.6129393 8.33483405,15.4609065 L12.3390874,12.8419612 C12.3897649,12.8014192 12.4657813,12.7811481 12.5674985,12.7811481 C12.7398023,12.7811481 12.9048664,12.8571645 13.0623289,13.0095592 C13.2194294,13.161954 13.2983417,13.3393255 13.2983417,13.5423979 C13.2983417,13.7353347 13.2219633,13.8826617 13.0692066,13.9840168 L9.85769553,16.0849648 L13.0692066,18.1862747 C13.2219633,18.2677208 13.2983417,18.4146858 13.2983417,18.6278937 C13.2983417,18.830966 13.2197914,19.0061657 13.0623289,19.1531307 C12.9048664,19.3004576 12.7398023,19.3739401 12.5674985,19.3739401 C12.4657813,19.3739401 12.3897649,19.3536691 12.3390874,19.313127 L8.33483405,16.6938198 C8.11149069,16.541425 8,16.3387147 8,16.0849648 L8,16.0849648 Z M14.1399516,20.6875756 C14.1265582,20.6075774 14.1287301,20.5301131 14.1468293,20.4548207 L16.9395263,11.356022 C16.9891179,11.1623612 17.1237755,11.0468887 17.344223,11.0096045 C17.5042194,10.9824558 17.658786,11.0128623 17.8075609,11.1008242 C17.9563358,11.1891479 18.0442976,11.313308 18.0710844,11.4733044 C18.0862876,11.5634381 18.079772,11.6470561 18.0518993,11.7237965 L15.2664419,20.7748134 C15.2085247,20.9800577 15.0593878,21.1031318 14.8193932,21.1440358 C14.6488993,21.1729945 14.4994005,21.1389681 14.3698106,21.0426807 C14.2402208,20.9460313 14.1638424,20.8276629 14.1399516,20.6875756 L14.1399516,20.6875756 Z M18.9528744,19.1527687 C18.7954119,19.0058037 18.7168616,18.830604 18.7168616,18.6275317 C18.7168616,18.4244594 18.7878102,18.2774944 18.9300695,18.1859127 L22.1426665,16.0846028 L18.9300695,13.9836549 C18.7878102,13.8718022 18.7168616,13.7248372 18.7168616,13.5420359 C18.7168616,13.3389636 18.7954119,13.161592 18.9528744,13.0091973 C19.1103369,12.8568025 19.275039,12.7807861 19.4477048,12.7807861 C19.5389245,12.7807861 19.6098731,12.8014192 19.6609126,12.8415992 L23.6651659,15.4605445 C23.8881473,15.6129393 24,15.8210793 24,16.0846028 C24,16.3488502 23.8881473,16.5515606 23.6651659,16.6938198 L19.6609126,19.3127651 C19.6098731,19.3533071 19.5389245,19.3735782 19.4477048,19.3735782 C19.275039,19.3735782 19.1103369,19.3000957 18.9528744,19.1527687 L18.9528744,19.1527687 Z"></path> <path id="mojs-logo-shape" d="M18.4678907,2.67700048 C19.488586,3.25758625 20.2789227,4.18421651 20.87823,5.1973579 C24.0807788,10.501451 27.2777091,15.8113116 30.480258,21.1154047 C31.1320047,22.1612281 31.7706417,23.2647256 31.9354512,24.5162532 C32.188284,26.0619186 31.6919826,27.7363895 30.5589171,28.80336 C29.4501984,29.8857103 27.8807622,30.3182659 26.3806209,30.3048086 C19.4511293,30.3086535 12.5235106,30.3086535 5.59401901,30.3048086 C3.71556494,30.343258 1.69852104,29.5723478 0.683444165,27.8709623 C-0.406546132,26.1099803 -0.0975282643,23.7914822 0.940022637,22.0843293 C4.34296485,16.4130445 7.76650826,10.7532945 11.1825603,5.08969961 C11.9747698,3.74781595 13.1846215,2.60202418 14.6847628,2.18292584 C15.9451812,1.81573418 17.3348251,2.01182606 18.4678907,2.67700048 Z M15.3334668,9.51526849 C15.6146238,9.03779476 16.0791597,9.02250655 16.3785679,9.4929547 L25.2763555,23.4736913 C25.5723919,23.9388414 25.3568433,24.3159201 24.8074398,24.3159202 L7.62314647,24.3159205 C7.06813505,24.3159206 6.84622798,23.9286889 7.12728913,23.4513779 L15.3334668,9.51526849 Z" fill-rule="evenodd"></path> </svg>', '', '', function(opts) {
+	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('icons', '<svg height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" style="position:absolute; margin-left: -100%; width:0; height:0;" xmlns:xlink="http://www.w3.org/1999/xlink"> <g id="ellipsis-shape"> <circle cx="11" cy="16" r="1"></circle> <circle cx="16" cy="16" r="1"></circle> <circle cx="21" cy="16" r="1"></circle> </g> <path id="code-shape" d="M8,16.0849648 C8,15.8210793 8.11149069,15.6129393 8.33483405,15.4609065 L12.3390874,12.8419612 C12.3897649,12.8014192 12.4657813,12.7811481 12.5674985,12.7811481 C12.7398023,12.7811481 12.9048664,12.8571645 13.0623289,13.0095592 C13.2194294,13.161954 13.2983417,13.3393255 13.2983417,13.5423979 C13.2983417,13.7353347 13.2219633,13.8826617 13.0692066,13.9840168 L9.85769553,16.0849648 L13.0692066,18.1862747 C13.2219633,18.2677208 13.2983417,18.4146858 13.2983417,18.6278937 C13.2983417,18.830966 13.2197914,19.0061657 13.0623289,19.1531307 C12.9048664,19.3004576 12.7398023,19.3739401 12.5674985,19.3739401 C12.4657813,19.3739401 12.3897649,19.3536691 12.3390874,19.313127 L8.33483405,16.6938198 C8.11149069,16.541425 8,16.3387147 8,16.0849648 L8,16.0849648 Z M14.1399516,20.6875756 C14.1265582,20.6075774 14.1287301,20.5301131 14.1468293,20.4548207 L16.9395263,11.356022 C16.9891179,11.1623612 17.1237755,11.0468887 17.344223,11.0096045 C17.5042194,10.9824558 17.658786,11.0128623 17.8075609,11.1008242 C17.9563358,11.1891479 18.0442976,11.313308 18.0710844,11.4733044 C18.0862876,11.5634381 18.079772,11.6470561 18.0518993,11.7237965 L15.2664419,20.7748134 C15.2085247,20.9800577 15.0593878,21.1031318 14.8193932,21.1440358 C14.6488993,21.1729945 14.4994005,21.1389681 14.3698106,21.0426807 C14.2402208,20.9460313 14.1638424,20.8276629 14.1399516,20.6875756 L14.1399516,20.6875756 Z M18.9528744,19.1527687 C18.7954119,19.0058037 18.7168616,18.830604 18.7168616,18.6275317 C18.7168616,18.4244594 18.7878102,18.2774944 18.9300695,18.1859127 L22.1426665,16.0846028 L18.9300695,13.9836549 C18.7878102,13.8718022 18.7168616,13.7248372 18.7168616,13.5420359 C18.7168616,13.3389636 18.7954119,13.161592 18.9528744,13.0091973 C19.1103369,12.8568025 19.275039,12.7807861 19.4477048,12.7807861 C19.5389245,12.7807861 19.6098731,12.8014192 19.6609126,12.8415992 L23.6651659,15.4605445 C23.8881473,15.6129393 24,15.8210793 24,16.0846028 C24,16.3488502 23.8881473,16.5515606 23.6651659,16.6938198 L19.6609126,19.3127651 C19.6098731,19.3533071 19.5389245,19.3735782 19.4477048,19.3735782 C19.275039,19.3735782 19.1103369,19.3000957 18.9528744,19.1527687 L18.9528744,19.1527687 Z"></path> <path id="mojs-logo-shape" d="M18.4678907,2.67700048 C19.488586,3.25758625 20.2789227,4.18421651 20.87823,5.1973579 C24.0807788,10.501451 27.2777091,15.8113116 30.480258,21.1154047 C31.1320047,22.1612281 31.7706417,23.2647256 31.9354512,24.5162532 C32.188284,26.0619186 31.6919826,27.7363895 30.5589171,28.80336 C29.4501984,29.8857103 27.8807622,30.3182659 26.3806209,30.3048086 C19.4511293,30.3086535 12.5235106,30.3086535 5.59401901,30.3048086 C3.71556494,30.343258 1.69852104,29.5723478 0.683444165,27.8709623 C-0.406546132,26.1099803 -0.0975282643,23.7914822 0.940022637,22.0843293 C4.34296485,16.4130445 7.76650826,10.7532945 11.1825603,5.08969961 C11.9747698,3.74781595 13.1846215,2.60202418 14.6847628,2.18292584 C15.9451812,1.81573418 17.3348251,2.01182606 18.4678907,2.67700048 Z M15.3334668,9.51526849 C15.6146238,9.03779476 16.0791597,9.02250655 16.3785679,9.4929547 L25.2763555,23.4736913 C25.5723919,23.9388414 25.3568433,24.3159201 24.8074398,24.3159202 L7.62314647,24.3159205 C7.06813505,24.3159206 6.84622798,23.9286889 7.12728913,23.4513779 L15.3334668,9.51526849 Z" fill-rule="evenodd"></path> </svg>', '', '', function(opts) {
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -4396,10 +4377,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve-editor": "_curve-editor_lij9r_4",
-		"curve-editor__left": "_curve-editor__left_lij9r_1",
-		"curve-editor__right": "_curve-editor__right_lij9r_1",
-		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_lij9r_1"
+		"curve-editor": "_curve-editor_1fq01_4",
+		"curve-editor__left": "_curve-editor__left_1fq01_1",
+		"curve-editor__right": "_curve-editor__right_1fq01_1",
+		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_1fq01_1"
 	};
 
 /***/ },
@@ -8540,6 +8521,572 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	})(window, document, 'Hammer');
 
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(riot) {
+	riot.tag2('curve', '<div riot-style="{this.getSvgStyle()}"> <svg width="358" height="358" viewbox="0 0 100 100" class="{this.CLASSES[\'curve__svg\']}"> </svg> </div>', '', 'class="{this.CLASSES[\'curve\'] + \' \' + (opts.adc || \'\')}" riot-style="{this.getStyle()}"', function(opts) {
+	'use strict';
+	
+	var _store = __webpack_require__(86);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	this.CLASSES = __webpack_require__(81);
+	__webpack_require__(79);
+	
+	_store2.default.subscribe(this.update.bind(this));
+	
+	this.getSvgStyle = function () {
+	  var state = _store2.default.getState().present;
+	  var tempResize_top = state.tempResize_top;
+	
+	  if (358 - tempResize_top < 358) {
+	    tempResize_top = 0;
+	  }
+	
+	  var mod = Math.abs(tempResize_top % 358);
+	  var div = parseInt(tempResize_top / 358);
+	  if (mod < 15) {
+	    tempResize_top = div * 358;
+	  } else if (mod > 358 - 15) {
+	    tempResize_top = -(div + 1) * 358;
+	  }
+	
+	  var transform = 'transform: translate(0px, ' + -tempResize_top + 'px)';
+	
+	  return transform + '; ' + transform + ';';
+	  // return `${mojs.h.prefix.css}${transform}; ${transform};`;
+	};
+	
+	this.getStyle = function () {
+	  var state = _store2.default.getState().present;
+	  var tempResize_top = state.tempResize_top;
+	
+	  if (358 - tempResize_top < 358) {
+	    tempResize_top = 0;
+	  }
+	
+	  var mod = Math.abs(tempResize_top % 358);
+	  var div = parseInt(tempResize_top / 358);
+	  if (mod < 15) {
+	    tempResize_top = div * 358;
+	  } else if (mod > 358 - 15) {
+	    tempResize_top = -(div + 1) * 358;
+	  }
+	
+	  var background = 'background-position: 0 ' + -tempResize_top + 'px';
+	
+	  return background + ';';
+	};
+	});
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(80);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(46)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(80, function() {
+				var newContent = __webpack_require__(80);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(45)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "._curve_qdx61_4{background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMzU4cHgiIGhlaWdodD0iMzU4cHgiIHZpZXdCb3g9IjAgMCAzNTggMzU4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICAgICAgPHRpdGxlPlNsaWNlIDE8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+ICAgICAgICA8cmVjdCBpZD0icGF0aC0xIiB4PSIwIiB5PSIwIiB3aWR0aD0iMzU4IiBoZWlnaHQ9IjM1OCI+PC9yZWN0PiAgICAgICAgPG1hc2sgaWQ9Im1hc2stMiIgbWFza0NvbnRlbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIG1hc2tVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giIHg9IjAiIHk9IjAiIHdpZHRoPSIzNTgiIGhlaWdodD0iMzU4IiBmaWxsPSJ3aGl0ZSI+ICAgICAgICAgICAgPHVzZSB4bGluazpocmVmPSIjcGF0aC0xIj48L3VzZT4gICAgICAgIDwvbWFzaz4gICAgPC9kZWZzPiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDx1c2UgaWQ9IlJlY3RhbmdsZSIgc3Ryb2tlPSIjOTc5Nzk3IiBtYXNrPSJ1cmwoI21hc2stMikiIHN0cm9rZS13aWR0aD0iMiIgeGxpbms6aHJlZj0iI3BhdGgtMSI+PC91c2U+ICAgICAgICA8Y2lyY2xlIGlkPSJPdmFsIiBmaWxsPSIjMDAwMDAwIiBjeD0iMTgwIiBjeT0iMTgwIiByPSI1Ij48L2NpcmNsZT4gICAgPC9nPjwvc3ZnPg==)}._curve__svg_qdx61_1{position:absolute;display:block;left:-1px;top:-1px;overflow:visible}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 81 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"curve": "_curve_qdx61_4",
+		"curve__svg": "_curve__svg_qdx61_1"
+	};
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('resize-handle', '<icon shape="ellipsis"></icon>', '', 'class="{this.applyClass}"', function(opts) {
+	'use strict';
+	
+	var _this = this;
+	
+	var _store = __webpack_require__(86);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _hammerjs = __webpack_require__(77);
+	
+	var _hammerjs2 = _interopRequireDefault(_hammerjs);
+	
+	var _propagatingHammerjs = __webpack_require__(87);
+	
+	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var type = this.opts.type;
+	var CLASSES = __webpack_require__(85);
+	
+	this.applyClass = CLASSES['resize-handle'] + ' ' + (opts.adc || '');
+	this.applyClass = this.applyClass + ' ' + CLASSES['resize-handle--' + this.opts.type];
+	__webpack_require__(83);
+	__webpack_require__(50);
+	
+	this.on('mount', function () {
+	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('pan', function (ev) {
+	    var x = ev.deltaX,
+	        y = ev.deltaY;
+	    _store2.default.dispatch({ type: 'EDITOR_RESIZE', data: { x: x, y: y, type: type } });
+	    ev.stopPropagation();
+	  }).on('panend', function (ev) {
+	    var x = ev.deltaX,
+	        y = ev.deltaY;
+	    _store2.default.dispatch({ type: 'EDITOR_RESIZE_END', data: { x: x, y: y, type: type } });
+	    ev.stopPropagation();
+	  });
+	});
+	});
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(84);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(46)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(84, function() {
+				var newContent = __webpack_require__(84);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(45)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "._resize-handle_5gtb1_4{background:#3d1b3c;width:32px;height:16px;display:block;cursor:n-resize;overflow:hidden;position:relative;border-top-left-radius:3px;border-top-right-radius:3px;-webkit-transform-origin:50% 100%;transform-origin:50% 100%}._resize-handle_5gtb1_4:after{content:'';position:absolute;left:0;top:0;right:0;bottom:0;z-index:2}._resize-handle_5gtb1_4 icon{position:absolute;left:0;top:-7px}._resize-handle_5gtb1_4:hover{opacity:.85}._resize-handle--right_5gtb1_1{-webkit-transform:rotate(90deg);transform:rotate(90deg);cursor:e-resize}._resize-handle--bottom_5gtb1_1{-webkit-transform:rotate(180deg);transform:rotate(180deg);cursor:s-resize}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 85 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"resize-handle": "_resize-handle_5gtb1_4",
+		"resize-handle--right": "_resize-handle--right_5gtb1_1",
+		"resize-handle--bottom": "_resize-handle--bottom_5gtb1_1"
+	};
+
+/***/ },
+/* 86 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _defineProperty2 = __webpack_require__(88);
+	
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+	
+	var _extends3 = __webpack_require__(4);
+	
+	var _extends4 = _interopRequireDefault(_extends3);
+	
+	var _redux = __webpack_require__(57);
+	
+	var _reduxUndo = __webpack_require__(72);
+	
+	var _reduxUndo2 = _interopRequireDefault(_reduxUndo);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// Redux utility functions
+	var INITIAL_STATE = {
+	  translate: { x: -50, y: 150 },
+	  tempResize_top: 0,
+	  tempResize_right: 0,
+	  tempResize_bottom: 0
+	};
+	// redux-undo higher-order reducer
+	
+	
+	var reducer = function reducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case 'EDITOR_RESIZE':
+	      var data = action.data;
+	      var _data = { data: data };
+	      var type = _data.type;
+	
+	      var delta = type === 'top' || type === 'bottom' ? data.x : data.y;
+	
+	      return (0, _extends4.default)({}, state, (0, _defineProperty3.default)({}, 'tempResize_' + action.data.type, delta));
+	
+	    case 'EDITOR_TRANSLATE':
+	      {
+	        return (0, _extends4.default)({}, state, { translate: action.data });
+	      }
+	  }
+	  return state;
+	};
+	
+	var store = (0, _redux.createStore)((0, _reduxUndo2.default)(reducer, {
+	  filter: function filterActions(action, currState, history) {
+	    return action.isRecord; // only add to history if isRecord set on action
+	  }
+	}));
+	
+	exports.default = store;
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	(function (factory) {
+	  if (true) {
+	    // AMD. Register as an anonymous module.
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    // Node. Does not work with strict CommonJS, but
+	    // only CommonJS-like environments that support module.exports,
+	    // like Node.
+	    module.exports = factory();
+	  } else {
+	    // Browser globals (root is window)
+	    window.propagating = factory();
+	  }
+	}(function () {
+	  var _firstTarget = null; // singleton, will contain the target element where the touch event started
+	
+	  /**
+	   * Extend an Hammer.js instance with event propagation.
+	   *
+	   * Features:
+	   * - Events emitted by hammer will propagate in order from child to parent
+	   *   elements.
+	   * - Events are extended with a function `event.stopPropagation()` to stop
+	   *   propagation to parent elements.
+	   * - An option `preventDefault` to stop all default browser behavior.
+	   *
+	   * Usage:
+	   *   var hammer = propagatingHammer(new Hammer(element));
+	   *   var hammer = propagatingHammer(new Hammer(element), {preventDefault: true});
+	   *
+	   * @param {Hammer.Manager} hammer   An hammer instance.
+	   * @param {Object} [options]        Available options:
+	   *                                  - `preventDefault: true | false | 'mouse' | 'touch' | 'pen'`.
+	   *                                    Enforce preventing the default browser behavior.
+	   *                                    Cannot be set to `false`.
+	   * @return {Hammer.Manager} Returns the same hammer instance with extended
+	   *                          functionality
+	   */
+	  return function propagating(hammer, options) {
+	    var _options = options || {
+	      preventDefault: false
+	    };
+	
+	    if (hammer.Manager) {
+	      // This looks like the Hammer constructor.
+	      // Overload the constructors with our own.
+	      var Hammer = hammer;
+	
+	      var PropagatingHammer = function(element, options) {
+	        var o = Object.create(_options);
+	        if (options) Hammer.assign(o, options);
+	        return propagating(new Hammer(element, o), o);
+	      };
+	      Hammer.assign(PropagatingHammer, Hammer);
+	
+	      PropagatingHammer.Manager = function (element, options) {
+	        var o = Object.create(_options);
+	        if (options) Hammer.assign(o, options);
+	        return propagating(new Hammer.Manager(element, o), o);
+	      };
+	
+	      return PropagatingHammer;
+	    }
+	
+	    // create a wrapper object which will override the functions
+	    // `on`, `off`, `destroy`, and `emit` of the hammer instance
+	    var wrapper = Object.create(hammer);
+	
+	    // attach to DOM element
+	    var element = hammer.element;
+	
+	    if(!element.hammer) element.hammer = [];
+	    element.hammer.push(wrapper);
+	
+	    // register an event to catch the start of a gesture and store the
+	    // target in a singleton
+	    hammer.on('hammer.input', function (event) {
+	      if (_options.preventDefault === true || (_options.preventDefault === event.pointerType)) {
+	        event.preventDefault();
+	      }
+	      if (event.isFirst) {
+	        _firstTarget = event.target;
+	      }
+	    });
+	
+	    /** @type {Object.<String, Array.<function>>} */
+	    wrapper._handlers = {};
+	
+	    /**
+	     * Register a handler for one or multiple events
+	     * @param {String} events    A space separated string with events
+	     * @param {function} handler A callback function, called as handler(event)
+	     * @returns {Hammer.Manager} Returns the hammer instance
+	     */
+	    wrapper.on = function (events, handler) {
+	      // register the handler
+	      split(events).forEach(function (event) {
+	        var _handlers = wrapper._handlers[event];
+	        if (!_handlers) {
+	          wrapper._handlers[event] = _handlers = [];
+	
+	          // register the static, propagated handler
+	          hammer.on(event, propagatedHandler);
+	        }
+	        _handlers.push(handler);
+	      });
+	
+	      return wrapper;
+	    };
+	
+	    /**
+	     * Unregister a handler for one or multiple events
+	     * @param {String} events      A space separated string with events
+	     * @param {function} [handler] Optional. The registered handler. If not
+	     *                             provided, all handlers for given events
+	     *                             are removed.
+	     * @returns {Hammer.Manager}   Returns the hammer instance
+	     */
+	    wrapper.off = function (events, handler) {
+	      // unregister the handler
+	      split(events).forEach(function (event) {
+	        var _handlers = wrapper._handlers[event];
+	        if (_handlers) {
+	          _handlers = handler ? _handlers.filter(function (h) {
+	            return h !== handler;
+	          }) : [];
+	
+	          if (_handlers.length > 0) {
+	            wrapper._handlers[event] = _handlers;
+	          }
+	          else {
+	            // remove static, propagated handler
+	            hammer.off(event, propagatedHandler);
+	            delete wrapper._handlers[event];
+	          }
+	        }
+	      });
+	
+	      return wrapper;
+	    };
+	
+	    /**
+	     * Emit to the event listeners
+	     * @param {string} eventType
+	     * @param {Event} event
+	     */
+	    wrapper.emit = function(eventType, event) {
+	      _firstTarget = event.target;
+	      hammer.emit(eventType, event);
+	    };
+	
+	    wrapper.destroy = function () {
+	      // Detach from DOM element
+	      var hammers = hammer.element.hammer;
+	      var idx = hammers.indexOf(wrapper);
+	      if(idx !== -1) hammers.splice(idx,1);
+	      if(!hammers.length) delete hammer.element.hammer;
+	
+	      // clear all handlers
+	      wrapper._handlers = {};
+	
+	      // call original hammer destroy
+	      hammer.destroy();
+	    };
+	
+	    // split a string with space separated words
+	    function split(events) {
+	      return events.match(/[^ ]+/g);
+	    }
+	
+	    /**
+	     * A static event handler, applying event propagation.
+	     * @param {Object} event
+	     */
+	    function propagatedHandler(event) {
+	      // let only a single hammer instance handle this event
+	      if (event.type !== 'hammer.input') {
+	        // it is possible that the same srcEvent is used with multiple hammer events,
+	        // we keep track on which events are handled in an object _handled
+	        if (!event.srcEvent._handled) {
+	          event.srcEvent._handled = {};
+	        }
+	
+	        if (event.srcEvent._handled[event.type]) {
+	          return;
+	        }
+	        else {
+	          event.srcEvent._handled[event.type] = true;
+	        }
+	      }
+	
+	      // attach a stopPropagation function to the event
+	      var stopped = false;
+	      event.stopPropagation = function () {
+	        stopped = true;
+	      };
+	
+	      //wrap the srcEvent's stopPropagation to also stop hammer propagation:
+	      var srcStop = event.srcEvent.stopPropagation.bind(event.srcEvent);
+	      if(typeof srcStop == "function") {
+	        event.srcEvent.stopPropagation = function(){
+	          srcStop();
+	          event.stopPropagation();
+	        }
+	      }
+	
+	      // attach firstTarget property to the event
+	      event.firstTarget = _firstTarget;
+	
+	      // propagate over all elements (until stopped)
+	      var elem = _firstTarget;
+	      while (elem && !stopped) {
+	        var elemHammer = elem.hammer;
+	        if(elemHammer){
+	          var _handlers;
+	          for(var k = 0; k < elemHammer.length; k++){
+	            _handlers = elemHammer[k]._handlers[event.type];
+	            if(_handlers) for (var i = 0; i < _handlers.length && !stopped; i++) {
+	              _handlers[i](event);
+	            }
+	          }
+	        }
+	        elem = elem.parentNode;
+	      }
+	    }
+	
+	    return wrapper;
+	  };
+	}));
+
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	exports.__esModule = true;
+	
+	var _defineProperty = __webpack_require__(89);
+	
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (obj, key, value) {
+	  if (key in obj) {
+	    (0, _defineProperty2.default)(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+	
+	  return obj;
+	};
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(90), __esModule: true };
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(91);
+	var $Object = __webpack_require__(10).Object;
+	module.exports = function defineProperty(it, key, desc){
+	  return $Object.defineProperty(it, key, desc);
+	};
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $export = __webpack_require__(8);
+	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+	$export($export.S + $export.F * !__webpack_require__(18), 'Object', {defineProperty: __webpack_require__(14).f});
 
 /***/ }
 /******/ ])

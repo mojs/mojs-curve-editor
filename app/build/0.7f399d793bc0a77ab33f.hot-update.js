@@ -1,0 +1,1 @@
+webpackHotUpdatemojs_curve_editor(0,{80:function(o,t,e){t=o.exports=e(45)(),t.push([o.id,"._curve__svg_cpgex_1{position:absolute;display:block;left:0;top:0;right:0;bottom:0}",""])}});

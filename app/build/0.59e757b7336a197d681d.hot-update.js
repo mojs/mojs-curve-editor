@@ -1,0 +1,1 @@
+webpackHotUpdatemojs_curve_editor(0,{84:function(e,o,t){o=e.exports=t(45)(),o.push([e.id,"._resize-handle_9e0b3_4{background:#3d1b3c;width:32px;height:16px;display:block;border-top-left-radius:3px;border-top-right-radius:3px;position:absolute;top:-16px;left:50%}",""])}});

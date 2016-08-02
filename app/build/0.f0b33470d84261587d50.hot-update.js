@@ -1,0 +1,1 @@
+webpackHotUpdatemojs_curve_editor(0,{85:function(e,a){e.exports={"resize-handle":"_resize-handle_m8azp_4"}}});
