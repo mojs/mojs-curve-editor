@@ -1,0 +1,13 @@
+@import 'assets/globals.postcss.css';
+
+body, html {
+  margin:  0;
+  padding: 0;
+  background: #FFF5E4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+

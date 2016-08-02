@@ -1,0 +1,42 @@
+
+@import '../assets/globals.postcss.css';
+
+.icon-button {
+  position:         relative;
+  width:            calc( 24*$PX );
+  height:           calc( 24*$PX );
+  display:          block;
+  background:       $c-purple;
+  border-radius:    calc( 3*$PX );
+  box-shadow:       calc( 1*$PX ) calc( 1*$PX ) 0 rgba(0,0,0,.15);
+  
+  & icon {
+    position:     absolute;
+    left:         50%;
+    top:          50%;
+    width:        100%;
+    height:       100%;
+    transform:    translate( -50%, -50% );
+  }
+
+  &:hover {
+    box-shadow:   none;
+  }
+
+  &:hover icon {
+    transform:    translate( -52%, -52% );
+  }
+
+  &:active,
+  &.is-checked {
+    border-radius:  calc( 3*$PX );
+    box-shadow:     inset calc( -1 * $PX ) calc( -1 * $PX ) 0 rgba( 255, 255, 255, .25 ),
+                    inset calc( 1 * $PX ) calc( 1 * $PX ) calc( 1 * $PX ) rgba( 0, 0, 0, .4 );
+  }
+
+  &:active icon,
+  &.is-checked icon {
+      transform:    translate( -54%, -54% ) scale(.95);
+  }
+}
+

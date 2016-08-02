@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var autoprefixer = require('autoprefixer');
 var UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
 
 module.exports = {
@@ -35,7 +36,10 @@ module.exports = {
     ]
   },
   postcss: function () {
-    return [ require('precss'), require('postcss-cssnext'), require('postcss-modules') ];
+      return {
+          defaults: [ require('precss'), require('postcss-cssnext'), require('postcss-modules') ],
+          cleaner:  [autoprefixer({ browsers: ['last 2 versions'] })]
+      };
   },
   output: {
     path:           __dirname + '/app/build/',

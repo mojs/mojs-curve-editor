@@ -9,7 +9,7 @@
     "animation",
     "motion",
     "motion graphics",
-    "curve editor", 
+    "curve editor",
     "svg"
   ],
   "main": "app/build/mojs-curve-editor.js",
@@ -42,14 +42,12 @@
     "css-loader": "^0.23.1",
     "csswring": "^5.1.0",
     "del": "^2.2.1",
-
     "eslint": "^3.2.0",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-loader": "^1.5.0",
     "eslint-plugin-import": "^1.12.0",
     "eslint-plugin-jsx-a11y": "^2.0.1",
     "eslint-plugin-react": "^5.2.2",
-
     "gulp": "^3.9.1",
     "gulp-cache": "^0.4.5",
     "gulp-concat": "^2.6.0",
@@ -63,6 +61,7 @@
     "postcss-cssnext": "^2.7.0",
     "postcss-loader": "^0.9.1",
     "postcss-modules": "^0.5.0",
+    "precss": "^1.4.0",
     "riot-loader": "^1.0.0",
     "riotjs-loader": "^3.0.0",
     "style-loader": "^0.13.1",

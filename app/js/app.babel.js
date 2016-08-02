@@ -4,7 +4,9 @@ import {createStore} from 'redux';
 import { combineReducers } from 'redux';
 // redux-undo higher-order reducer
 import undoable, { includeAction, excludeAction } from 'redux-undo';
+require('../css/main');
 
+console.clear();
 const reducer = (state = { msg: '♥ Curve Editor ♥' }, action) => {
   switch (action.type) {
     case 'ADD_MSG': { return { ...state, msg: action.data }; }
@@ -20,5 +22,6 @@ setTimeout(function () {
 const store = createStore( undoable(reducer) );
 
 document.addEventListener('DOMContentLoaded', () => {
+  // riot.mount('*',{ store: store })
   riot.mount('curve-editor',{ store: store })
 });
