@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "3757530e88e261de49ae"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2c3bc622f758854cd111"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -3821,7 +3821,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(52);
 	__webpack_require__(78);
 	
-	riot.tag2('curve-editor', '<icons></icons> <resize-handle type="top"></resize-handle> <resize-handle type="right"></resize-handle> <resize-handle type="bottom"></resize-handle> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code"></icon-button> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <curve adc="{this.CLASSES[\'curve-editor__right\']}"></curve>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
+	riot.tag2('curve-editor', '<icons></icons> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code"></icon-button> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <div class="{this.CLASSES[\'curve-editor__right\']}"> <curve></curve> <resize-handle type="top"></resize-handle> <resize-handle type="right"></resize-handle> <resize-handle type="bottom"></resize-handle> </div>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -3833,6 +3833,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _propagatingHammerjs = __webpack_require__(87);
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	
+	var _resizeMod = __webpack_require__(92);
+	
+	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -3862,28 +3866,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	this.getStyle = function () {
 	  var state = store.getState().present;
 	  var tempResize_top = state.tempResize_top;
+	  var tempResize_bottom = state.tempResize_bottom;
+	  var tempResize_right = state.tempResize_right;
 	
-	  if (358 - tempResize_top < 358) {
+	  tempResize_top += state.resize_top;
+	  tempResize_bottom += state.resize_bottom;
+	  tempResize_right += state.resize_right;
+	
+	  // constrain min height
+	  if (378 - tempResize_top < 378) {
 	    tempResize_top = 0;
 	  }
-	
-	  var mod = Math.abs(tempResize_top % 358);
-	  var div = parseInt(tempResize_top / 358);
-	  if (mod < 15) {
-	    tempResize_top = div * 358;
-	  } else if (mod > 358 - 15) {
-	    tempResize_top = -(div + 1) * 358;
+	  if (378 + tempResize_bottom < 378) {
+	    tempResize_bottom = 0;
+	  }
+	  if (411 + tempResize_right < 411) {
+	    tempResize_right = 0;
 	  }
 	
+	  console.log(tempResize_right);
+	
+	  tempResize_top = (0, _resizeMod2.default)(tempResize_top, -1);
+	  tempResize_bottom = (0, _resizeMod2.default)(tempResize_bottom);
+	  tempResize_right = (0, _resizeMod2.default)(tempResize_right);
+	
 	  var translate = state.translate;
-	  var height = 'height: ' + (358 - tempResize_top) + 'px';
+	  var height = 'height: ' + (378 - tempResize_top + tempResize_bottom) + 'px';
+	  var width = 'width: ' + (411 + tempResize_right) + 'px';
 	  var x = (_this.x || 0) + translate.x;
 	  var y = (_this.y || 0) + translate.y;
 	  var transform = 'transform: translate(' + x + 'px, ' + (y + tempResize_top) + 'px)';
 	
-	  console.log(mojs.h.prefix.css);
-	  return transform + '; ' + height;
-	  // return `${mojs.h.prefix.css}${transform}; ${transform}; ${height}`;
+	  return '' + mojs.h.prefix.css + transform + '; ' + transform + '; ' + width + '; ' + height + ';';
 	};
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
@@ -3923,7 +3937,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve-editor_1fq01_4{position:fixed;right:0;top:0;width:411px;height:378px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_1fq01_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__right_1fq01_1{position:absolute;left:43px;right:10px;top:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve-editor__mojs-logo_1fq01_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_1fq01_1 icon{fill:#ff512f;width:12px;height:12px}._curve-editor_1fq01_4 resize-handle{position:absolute}._curve-editor_1fq01_4 resize-handle[type=top]{top:-16px}._curve-editor_1fq01_4 resize-handle[type=bottom]{bottom:0}._curve-editor_1fq01_4 resize-handle[type=bottom],._curve-editor_1fq01_4 resize-handle[type=top]{left:50%;margin-left:-16px}._curve-editor_1fq01_4 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}", ""]);
+	exports.push([module.id, "._curve-editor_dzhjr_4{position:fixed;left:0;top:0;width:411px;height:398px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_dzhjr_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__right_dzhjr_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_dzhjr_1 resize-handle{position:absolute}._curve-editor__right_dzhjr_1 resize-handle[type=top]{top:-16px}._curve-editor__right_dzhjr_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_dzhjr_1 resize-handle[type=bottom],._curve-editor__right_dzhjr_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_dzhjr_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__mojs-logo_dzhjr_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_dzhjr_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
 	
 	// exports
 
@@ -4377,10 +4391,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve-editor": "_curve-editor_1fq01_4",
-		"curve-editor__left": "_curve-editor__left_1fq01_1",
-		"curve-editor__right": "_curve-editor__right_1fq01_1",
-		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_1fq01_1"
+		"curve-editor": "_curve-editor_dzhjr_4",
+		"curve-editor__left": "_curve-editor__left_dzhjr_1",
+		"curve-editor__right": "_curve-editor__right_dzhjr_1",
+		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_dzhjr_1"
 	};
 
 /***/ },
@@ -8527,12 +8541,16 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(riot) {
-	riot.tag2('curve', '<div riot-style="{this.getSvgStyle()}"> <svg width="358" height="358" viewbox="0 0 100 100" class="{this.CLASSES[\'curve__svg\']}"> </svg> </div>', '', 'class="{this.CLASSES[\'curve\'] + \' \' + (opts.adc || \'\')}" riot-style="{this.getStyle()}"', function(opts) {
+	riot.tag2('curve', '<div riot-style="{this.getSvgStyle()}"> <svg width="358" height="358" viewbox="0 0 100 100" class="{this.CLASSES[\'curve__svg\']}"> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
 	var _store = __webpack_require__(86);
 	
 	var _store2 = _interopRequireDefault(_store);
+	
+	var _resizeMod = __webpack_require__(92);
+	
+	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -8545,41 +8563,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var state = _store2.default.getState().present;
 	  var tempResize_top = state.tempResize_top;
 	
+	  tempResize_top += state.resize_top;
+	
 	  if (358 - tempResize_top < 358) {
 	    tempResize_top = 0;
 	  }
-	
-	  var mod = Math.abs(tempResize_top % 358);
-	  var div = parseInt(tempResize_top / 358);
-	  if (mod < 15) {
-	    tempResize_top = div * 358;
-	  } else if (mod > 358 - 15) {
-	    tempResize_top = -(div + 1) * 358;
-	  }
+	  tempResize_top = (0, _resizeMod2.default)(tempResize_top, -1);
 	
 	  var transform = 'transform: translate(0px, ' + -tempResize_top + 'px)';
 	
-	  return transform + '; ' + transform + ';';
-	  // return `${mojs.h.prefix.css}${transform}; ${transform};`;
+	  return '' + mojs.h.prefix.css + transform + '; ' + transform + ';';
 	};
 	
 	this.getStyle = function () {
 	  var state = _store2.default.getState().present;
 	  var tempResize_top = state.tempResize_top;
 	
+	  tempResize_top += state.resize_top;
+	
 	  if (358 - tempResize_top < 358) {
 	    tempResize_top = 0;
 	  }
+	  tempResize_top = (0, _resizeMod2.default)(tempResize_top, -1);
 	
-	  var mod = Math.abs(tempResize_top % 358);
-	  var div = parseInt(tempResize_top / 358);
-	  if (mod < 15) {
-	    tempResize_top = div * 358;
-	  } else if (mod > 358 - 15) {
-	    tempResize_top = -(div + 1) * 358;
-	  }
-	
-	  var background = 'background-position: 0 ' + -tempResize_top + 'px';
+	  var background = 'background-position: 0 ' + (-tempResize_top - 1) + 'px';
 	
 	  return background + ';';
 	};
@@ -8621,7 +8628,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve_qdx61_4{background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMzU4cHgiIGhlaWdodD0iMzU4cHgiIHZpZXdCb3g9IjAgMCAzNTggMzU4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICAgICAgPHRpdGxlPlNsaWNlIDE8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+ICAgICAgICA8cmVjdCBpZD0icGF0aC0xIiB4PSIwIiB5PSIwIiB3aWR0aD0iMzU4IiBoZWlnaHQ9IjM1OCI+PC9yZWN0PiAgICAgICAgPG1hc2sgaWQ9Im1hc2stMiIgbWFza0NvbnRlbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIG1hc2tVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giIHg9IjAiIHk9IjAiIHdpZHRoPSIzNTgiIGhlaWdodD0iMzU4IiBmaWxsPSJ3aGl0ZSI+ICAgICAgICAgICAgPHVzZSB4bGluazpocmVmPSIjcGF0aC0xIj48L3VzZT4gICAgICAgIDwvbWFzaz4gICAgPC9kZWZzPiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDx1c2UgaWQ9IlJlY3RhbmdsZSIgc3Ryb2tlPSIjOTc5Nzk3IiBtYXNrPSJ1cmwoI21hc2stMikiIHN0cm9rZS13aWR0aD0iMiIgeGxpbms6aHJlZj0iI3BhdGgtMSI+PC91c2U+ICAgICAgICA8Y2lyY2xlIGlkPSJPdmFsIiBmaWxsPSIjMDAwMDAwIiBjeD0iMTgwIiBjeT0iMTgwIiByPSI1Ij48L2NpcmNsZT4gICAgPC9nPjwvc3ZnPg==)}._curve__svg_qdx61_1{position:absolute;display:block;left:-1px;top:-1px;overflow:visible}", ""]);
+	exports.push([module.id, "._curve_m0uw7_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB2aWV3Qm94PSIwIDAgMzU4IDM1OCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4gICAgICAgIDx0aXRsZT5wYXR0ZXJuIGxpbmVzPC90aXRsZT4gICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+ICAgIDxkZWZzPjwvZGVmcz4gICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgb3BhY2l0eT0iMC40OTUwNDQzMSI+ICAgICAgICA8ZyBpZD0icGF0dGVybnMtJmFtcDstY29sb3JzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzIuMDAwMDAwLCAtMTQzLjAwMDAwMCkiIHN0cm9rZT0iI0ZGRkZGRiI+ICAgICAgICAgICAgPGcgaWQ9Ikdyb3VwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMy4wMDAwMDAsIDEzNC4wMDAwMDApIj4gICAgICAgICAgICAgICAgPHBhdGggZD0iTTE4OCwxOSBMMTg4LDAiIGlkPSJQYXRoLTE4Ij48L3BhdGg+ICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xODgsMzc2IEwxODgsMzU3IiBpZD0iUGF0aC0xOCI+PC9wYXRoPiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTg4LDE5NyBMMTg4LDE3OSIgaWQ9ImNyb3NzLXYiPjwvcGF0aD4gICAgICAgICAgICAgICAgPHBhdGggZD0iTTM3NiwxODggTDM1NywxODgiIGlkPSJQYXRoLTE4Ij48L3BhdGg+ICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xOSwxODggTDAsMTg4IiBpZD0iUGF0aC0xOCI+PC9wYXRoPiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTk3LDE4OCBMMTc5LDE4OCIgaWQ9ImNyb3NzLWgiPjwvcGF0aD4gICAgICAgICAgICAgICAgPHBvbHlsaW5lIGlkPSJSZWN0YW5nbGUtMTYiIHBvaW50cz0iOSAzNjcgOSA5IDkgOSAzNjcgOSAzNjcgMzY3Ij48L3BvbHlsaW5lPiAgICAgICAgICAgIDwvZz4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==),url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzU4IiBoZWlnaHQ9IjM1OCI+ICA8ZGVmcz4gIDxwYXR0ZXJuIGlkPSJwYXR0ZXJuMSIgICAgICAgICAgIHg9IjAiIHk9IjAiIHdpZHRoPSIyMi4zNzUiIGhlaWdodD0iMjIuMzc1IiAgICAgICAgICAgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgPiAgICAgIDxyZWN0IHdpZHRoPSIyMi4zNzUiIGhlaWdodD0iMjIuMzc1IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIj48L3JlY3Q+ICA8L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIzNTgiIGhlaWdodD0iMzU4IiAgICBzdHlsZT0iZmlsbDogdXJsKCNwYXR0ZXJuMSk7IiAvPiAgIDwvc3ZnPg==);background-size:100% 358px}._curve__svg_m0uw7_1{position:absolute;display:block;left:-1px;top:-1px;overflow:visible}", ""]);
 	
 	// exports
 
@@ -8631,8 +8638,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve": "_curve_qdx61_4",
-		"curve__svg": "_curve__svg_qdx61_1"
+		"curve": "_curve_m0uw7_5",
+		"curve__svg": "_curve__svg_m0uw7_1"
 	};
 
 /***/ },
@@ -8746,9 +8753,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 	
-	var _extends3 = __webpack_require__(4);
+	var _extends4 = __webpack_require__(4);
 	
-	var _extends4 = _interopRequireDefault(_extends3);
+	var _extends5 = _interopRequireDefault(_extends4);
 	
 	var _redux = __webpack_require__(57);
 	
@@ -8760,9 +8767,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	// Redux utility functions
 	var INITIAL_STATE = {
-	  translate: { x: -50, y: 150 },
+	  translate: { x: 150, y: 0 },
+	  resize_top: 0,
 	  tempResize_top: 0,
+	
+	  resize_right: 0,
 	  tempResize_right: 0,
+	
+	  resize_bottom: 0,
 	  tempResize_bottom: 0
 	};
 	// redux-undo higher-order reducer
@@ -8774,17 +8786,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  switch (action.type) {
 	    case 'EDITOR_RESIZE':
-	      var data = action.data;
-	      var _data = { data: data };
-	      var type = _data.type;
+	      {
+	        var data = action.data;
+	        var type = data.type;
 	
-	      var delta = type === 'top' || type === 'bottom' ? data.x : data.y;
+	        var delta = type === 'top' || type === 'bottom' ? data.y : data.x;
 	
-	      return (0, _extends4.default)({}, state, (0, _defineProperty3.default)({}, 'tempResize_' + action.data.type, delta));
+	        return (0, _extends5.default)({}, state, (0, _defineProperty3.default)({}, 'tempResize_' + action.data.type, delta));
+	      }
+	
+	    case 'EDITOR_RESIZE_END':
+	      {
+	        var _extends3;
+	
+	        var _data = action.data;
+	        var _type = _data.type;
+	
+	        var _delta = _type === 'top' || _type === 'bottom' ? _data.y : _data.x;
+	
+	        return (0, _extends5.default)({}, state, (_extends3 = {}, (0, _defineProperty3.default)(_extends3, 'resize_' + action.data.type, state['resize_' + action.data.type] + _delta), (0, _defineProperty3.default)(_extends3, 'tempResize_' + action.data.type, 0), _extends3));
+	      }
 	
 	    case 'EDITOR_TRANSLATE':
 	      {
-	        return (0, _extends4.default)({}, state, { translate: action.data });
+	        return (0, _extends5.default)({}, state, { translate: action.data });
 	      }
 	  }
 	  return state;
@@ -9087,6 +9112,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	var $export = __webpack_require__(8);
 	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 	$export($export.S + $export.F * !__webpack_require__(18), 'Object', {defineProperty: __webpack_require__(14).f});
+
+/***/ },
+/* 92 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	      value: true
+	});
+	
+	
+	var mod = function mod(tempResize_top) {
+	      var coef = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+	
+	      var MOD = Math.abs(tempResize_top % 358),
+	          DIV = parseInt(tempResize_top / 358),
+	          GAP = 15;
+	
+	      if (MOD < GAP) {
+	            tempResize_top = DIV * 358;
+	      } else if (MOD > 358 - GAP) {
+	            tempResize_top = coef * (DIV + 1) * 358;
+	      }
+	
+	      return tempResize_top;
+	};
+	
+	exports.default = mod;
 
 /***/ }
 /******/ ])
