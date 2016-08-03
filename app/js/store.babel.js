@@ -30,11 +30,16 @@ const reducer = (state = INITIAL_STATE, action) => {
       const {data} = action;
       const {type} = data;
       const delta = ( type === 'top' || type === 'bottom' ) ? data.y : data.x;
-
-      return { ...state,
-        [`resize_${action.data.type}`]: state[`resize_${action.data.type}`] + delta,
+      // get the total resize value ( temporary + actual )
+      const resize = state[`resize_${action.data.type}`] + delta;
+      // if the type if to - it has the `-` as base so we need to swap methods
+      const mathMethod = ( type === 'top' ) ? 'min' : 'max';
+      const newState = { ...state,
+        [`resize_${action.data.type}`]: Math[mathMethod](0, resize),
         [`tempResize_${action.data.type}`]: 0
       };
+
+      return newState;
     }
 
     case 'EDITOR_TRANSLATE': { return { ...state, translate: action.data }; }

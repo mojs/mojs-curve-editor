@@ -14,7 +14,6 @@
     this.applyClass = `${this.applyClass} ${CLASSES['resize-handle--' + this.opts.type]}`
     require('../../css/blocks/resize-handle');
     require('../../css/blocks/icon');
-
     
     this.on('mount', () => {
       var hammertime = propagating(new Hammer(this.root))

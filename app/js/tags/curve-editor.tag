@@ -59,20 +59,21 @@ require('./curve');
       tempResize_bottom += state.resize_bottom;
       tempResize_right += state.resize_right;
 
-      // constrain min height
-      if (378 - tempResize_top < 378) { tempResize_top = 0; }
-      if (378 + tempResize_bottom < 378) { tempResize_bottom = 0; }
-      if (411 + tempResize_right < 411) { tempResize_right = 0; }
+      const X_SIZE = 411;
+      const Y_SIZE = 378;
 
-      console.log(tempResize_right);
+      // constrain min height
+      if (Y_SIZE - tempResize_top < Y_SIZE) { tempResize_top = 0; }
+      if (Y_SIZE + tempResize_bottom < Y_SIZE) { tempResize_bottom = 0; }
+      if (X_SIZE + tempResize_right < X_SIZE) { tempResize_right = 0; }
       
       tempResize_top    = mod( tempResize_top, -1 );
       tempResize_bottom = mod( tempResize_bottom );
-      tempResize_right  = mod( tempResize_right );
+      // tempResize_right  = mod( tempResize_right );
 
       const {translate} = state,
-            height = `height: ${378 - tempResize_top + tempResize_bottom}px`,
-            width  = `width: ${411 + tempResize_right}px`,
+            height = `height: ${Y_SIZE - tempResize_top + tempResize_bottom}px`,
+            width  = `width: ${X_SIZE + tempResize_right}px`,
             x = (this.x || 0) + translate.x,
             y = (this.y || 0) + translate.y,
             transform = `transform: translate(${x}px, ${y + tempResize_top}px)`;
