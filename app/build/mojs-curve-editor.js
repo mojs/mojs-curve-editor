@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "96581fd528e71a0539dc"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "4f4fd7c6dca0edbe407a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -610,7 +610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(120);
+	__webpack_require__(124);
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  // riot.mount('*',{ store: store })
@@ -3285,8 +3285,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(101);
 	__webpack_require__(102);
 	__webpack_require__(104);
-	__webpack_require__(122);
 	__webpack_require__(108);
+	__webpack_require__(112);
 	
 	riot.tag2('curve-editor', '<icons></icons> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code"></icon-button> <icon-divider></icon-divider> <div class="{this.CLASSES[\'curve-editor__anchor-buttons\']}"> <icon-button shape="point-straight"></icon-button> <icon-button shape="point-mirrored"></icon-button> <icon-button shape="point-disconnected"></icon-button> <icon-button shape="point-asymmetric"></icon-button> </div> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <div class="{this.CLASSES[\'curve-editor__right\']}"> <curve></curve> <resize-handle type="top"></resize-handle> <resize-handle type="right"></resize-handle> <resize-handle type="bottom"></resize-handle> </div>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
@@ -3301,16 +3301,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
-	var _resizeMod = __webpack_require__(110);
+	var _resizeMod = __webpack_require__(114);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
-	var _reduxUndo = __webpack_require__(22);
+	var _reduxUndo = __webpack_require__(23);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(117);
-	this.CLASSES = __webpack_require__(119);
+	__webpack_require__(121);
+	this.CLASSES = __webpack_require__(123);
 	
 	var _opts = opts;
 	var store = _opts.store;
@@ -3449,7 +3449,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _redux = __webpack_require__(7);
 	
-	var _indexReducer = __webpack_require__(23);
+	var _indexReducer = __webpack_require__(22);
 	
 	var _indexReducer2 = _interopRequireDefault(_indexReducer);
 	
@@ -3516,7 +3516,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	// shim for using process in browser
-	
 	var process = module.exports = {};
 	
 	// cached from whatever global is present so that test runners that stub it
@@ -3528,21 +3527,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cachedClearTimeout;
 	
 	(function () {
-	  try {
-	    cachedSetTimeout = setTimeout;
-	  } catch (e) {
-	    cachedSetTimeout = function () {
-	      throw new Error('setTimeout is not defined');
+	    try {
+	        cachedSetTimeout = setTimeout;
+	    } catch (e) {
+	        cachedSetTimeout = function () {
+	            throw new Error('setTimeout is not defined');
+	        }
 	    }
-	  }
-	  try {
-	    cachedClearTimeout = clearTimeout;
-	  } catch (e) {
-	    cachedClearTimeout = function () {
-	      throw new Error('clearTimeout is not defined');
+	    try {
+	        cachedClearTimeout = clearTimeout;
+	    } catch (e) {
+	        cachedClearTimeout = function () {
+	            throw new Error('clearTimeout is not defined');
+	        }
 	    }
-	  }
 	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        return setTimeout(fun, 0);
+	    } else {
+	        return cachedSetTimeout.call(null, fun, 0);
+	    }
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        clearTimeout(marker);
+	    } else {
+	        cachedClearTimeout.call(null, marker);
+	    }
+	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -3567,7 +3580,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = cachedSetTimeout.call(null, cleanUpNextTick);
+	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -3584,7 +3597,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    cachedClearTimeout.call(null, timeout);
+	    runClearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -3596,7 +3609,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        cachedSetTimeout.call(null, drainQueue, 0);
+	        runTimeout(drainQueue);
 	    }
 	};
 	
@@ -4447,6 +4460,46 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _redux = __webpack_require__(7);
+	
+	var _reduxUndo = __webpack_require__(23);
+	
+	var _reduxUndo2 = _interopRequireDefault(_reduxUndo);
+	
+	var _resizeReducer = __webpack_require__(24);
+	
+	var _resizeReducer2 = _interopRequireDefault(_resizeReducer);
+	
+	var _pointsReducer = __webpack_require__(67);
+	
+	var _pointsReducer2 = _interopRequireDefault(_pointsReducer);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// Redux utility functions
+	var reducer = (0, _redux.combineReducers)({
+	  resize: _resizeReducer2.default,
+	  points: (0, _reduxUndo2.default)(_pointsReducer2.default, {
+	    limit: 10,
+	    filter: function filterActions(action, currState, history) {
+	      return action.isRecord; // only add to history if isRecord set on action
+	    },
+	    debug: false
+	  })
+	});
+	// redux-undo higher-order reducer
+	exports.default = reducer;
+
+/***/ },
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4794,46 +4847,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	// /excludeAction
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _redux = __webpack_require__(7);
-	
-	var _reduxUndo = __webpack_require__(22);
-	
-	var _reduxUndo2 = _interopRequireDefault(_reduxUndo);
-	
-	var _resizeReducer = __webpack_require__(24);
-	
-	var _resizeReducer2 = _interopRequireDefault(_resizeReducer);
-	
-	var _pointsReducer = __webpack_require__(67);
-	
-	var _pointsReducer2 = _interopRequireDefault(_pointsReducer);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// Redux utility functions
-	var reducer = (0, _redux.combineReducers)({
-	  resize: _resizeReducer2.default,
-	  points: (0, _reduxUndo2.default)(_pointsReducer2.default, {
-	    limit: 10,
-	    filter: function filterActions(action, currState, history) {
-	      return action.isRecord; // only add to history if isRecord set on action
-	    },
-	    debug: false
-	  })
-	});
-	// redux-undo higher-order reducer
-	exports.default = reducer;
 
 /***/ },
 /* 24 */
@@ -9373,7 +9386,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('icons', '<svg height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" style="position:absolute; margin-left: -100%; width:0; height:0;" xmlns:xlink="http://www.w3.org/1999/xlink"> <g id="ellipsis-shape"> <circle cx="11" cy="16" r="1"></circle> <circle cx="16" cy="16" r="1"></circle> <circle cx="21" cy="16" r="1"></circle> </g> <path id="code-shape" d="M8,16.0849648 C8,15.8210793 8.11149069,15.6129393 8.33483405,15.4609065 L12.3390874,12.8419612 C12.3897649,12.8014192 12.4657813,12.7811481 12.5674985,12.7811481 C12.7398023,12.7811481 12.9048664,12.8571645 13.0623289,13.0095592 C13.2194294,13.161954 13.2983417,13.3393255 13.2983417,13.5423979 C13.2983417,13.7353347 13.2219633,13.8826617 13.0692066,13.9840168 L9.85769553,16.0849648 L13.0692066,18.1862747 C13.2219633,18.2677208 13.2983417,18.4146858 13.2983417,18.6278937 C13.2983417,18.830966 13.2197914,19.0061657 13.0623289,19.1531307 C12.9048664,19.3004576 12.7398023,19.3739401 12.5674985,19.3739401 C12.4657813,19.3739401 12.3897649,19.3536691 12.3390874,19.313127 L8.33483405,16.6938198 C8.11149069,16.541425 8,16.3387147 8,16.0849648 L8,16.0849648 Z M14.1399516,20.6875756 C14.1265582,20.6075774 14.1287301,20.5301131 14.1468293,20.4548207 L16.9395263,11.356022 C16.9891179,11.1623612 17.1237755,11.0468887 17.344223,11.0096045 C17.5042194,10.9824558 17.658786,11.0128623 17.8075609,11.1008242 C17.9563358,11.1891479 18.0442976,11.313308 18.0710844,11.4733044 C18.0862876,11.5634381 18.079772,11.6470561 18.0518993,11.7237965 L15.2664419,20.7748134 C15.2085247,20.9800577 15.0593878,21.1031318 14.8193932,21.1440358 C14.6488993,21.1729945 14.4994005,21.1389681 14.3698106,21.0426807 C14.2402208,20.9460313 14.1638424,20.8276629 14.1399516,20.6875756 L14.1399516,20.6875756 Z M18.9528744,19.1527687 C18.7954119,19.0058037 18.7168616,18.830604 18.7168616,18.6275317 C18.7168616,18.4244594 18.7878102,18.2774944 18.9300695,18.1859127 L22.1426665,16.0846028 L18.9300695,13.9836549 C18.7878102,13.8718022 18.7168616,13.7248372 18.7168616,13.5420359 C18.7168616,13.3389636 18.7954119,13.161592 18.9528744,13.0091973 C19.1103369,12.8568025 19.275039,12.7807861 19.4477048,12.7807861 C19.5389245,12.7807861 19.6098731,12.8014192 19.6609126,12.8415992 L23.6651659,15.4605445 C23.8881473,15.6129393 24,15.8210793 24,16.0846028 C24,16.3488502 23.8881473,16.5515606 23.6651659,16.6938198 L19.6609126,19.3127651 C19.6098731,19.3533071 19.5389245,19.3735782 19.4477048,19.3735782 C19.275039,19.3735782 19.1103369,19.3000957 18.9528744,19.1527687 L18.9528744,19.1527687 Z"></path> <path id="divider-shape" d="M0,1 L15.625,1"></path> <g id="point-straight-shape" fill="none" fill-rule="evenodd"> <polyline fill="#8B6E8A" stroke="#FFFFFF" points="7.881 19.568 15.451 11.241 23.892 19.568"></polyline> <ellipse stroke="none" cx="16" cy="12" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5"></ellipse> <circle cx="15.333" cy="11" r="2.667" fill="#FFFFFF"></circle> </g> <g id="point-mirrored-shape" fill="none" fill-rule="evenodd"> <path fill="#8B6E8A" stroke="#FFFFFF" d="M7.88144841,21.9012632 C7.88144841,21.9012632 7.59287172,13.5740537 15.4514423,13.5740537 C23.3100129,13.5740537 23.8921228,21.9012632 23.8921228,21.9012632"></path> <path stroke="#FF512F" d="M7.13883527,13.3333333 L25.8055013,13.3333333"></path> <ellipse stroke="none" cx="15.7" cy="14.2" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5"></ellipse> <ellipse cx="15.333" cy="13.333" fill="#FFFFFF" rx="2.667" ry="2.667"></ellipse> <rect width="2.667" height="2.667" x="24" y="12" fill="#FF512F"></rect> <rect width="2.667" height="2.667" x="5.333" y="12" fill="#FF512F"></rect> </g> <g id="point-disconnected-shape" fill="none" fill-rule="evenodd"> <path fill="#8B6E8A" stroke="#FFFFFF" d="M7.88144841,20.5679298 C7.88144841,20.5679298 7.59287172,12.2407204 15.4514423,12.2407204 C21.2005207,17.88737 23.8921228,20.5679298 23.8921228,20.5679298"></path> <polyline stroke="#FF512F" points="6.133 12 15.228 12 23.933 20.602"></polyline> <ellipse stroke="none" cx="16" cy="12.7" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5"></ellipse> <circle cx="15.333" cy="12" r="2.667" fill="#FFFFFF"></circle> <rect width="2.667" height="2.667" x="21.886" y="18.552" fill="#FF512F" transform="rotate(45 23.219 19.886)"></rect> <rect width="2.667" height="2.667" x="5.333" y="10.667" fill="#FF512F"></rect> </g> <g id="point-asymmetric-shape" fill="none" fill-rule="evenodd" transform="translate(7.667 9.333)"> <path fill="#8B6E8A" stroke="#FFFFFF" d="M0.214781742,11.2345965 C0.214781742,11.2345965 -0.373511869,2.90709613 7.78477564,2.90738704 C10.7500003,2.90749277 16.2254562,11.2345965 16.2254562,11.2345965"></path> <ellipse stroke="none" cx="8" cy="3.5" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5"></ellipse> <path stroke="#FF512F" d="M2.52788503,2.66666667 L18.1388346,2.66666667"></path> <ellipse cx="7.667" cy="2.667" fill="#FFFFFF" rx="2.667" ry="2.667"></ellipse> <rect width="2.667" height="2.667" x="16.333" y="1.333" fill="#FF512F"></rect> <rect width="2.667" height="2.667" x=".333" y="1.333" fill="#FF512F"></rect> </g> <path id="mojs-logo-shape" d="M18.4678907,2.67700048 C19.488586,3.25758625 20.2789227,4.18421651 20.87823,5.1973579 C24.0807788,10.501451 27.2777091,15.8113116 30.480258,21.1154047 C31.1320047,22.1612281 31.7706417,23.2647256 31.9354512,24.5162532 C32.188284,26.0619186 31.6919826,27.7363895 30.5589171,28.80336 C29.4501984,29.8857103 27.8807622,30.3182659 26.3806209,30.3048086 C19.4511293,30.3086535 12.5235106,30.3086535 5.59401901,30.3048086 C3.71556494,30.343258 1.69852104,29.5723478 0.683444165,27.8709623 C-0.406546132,26.1099803 -0.0975282643,23.7914822 0.940022637,22.0843293 C4.34296485,16.4130445 7.76650826,10.7532945 11.1825603,5.08969961 C11.9747698,3.74781595 13.1846215,2.60202418 14.6847628,2.18292584 C15.9451812,1.81573418 17.3348251,2.01182606 18.4678907,2.67700048 Z M15.3334668,9.51526849 C15.6146238,9.03779476 16.0791597,9.02250655 16.3785679,9.4929547 L25.2763555,23.4736913 C25.5723919,23.9388414 25.3568433,24.3159201 24.8074398,24.3159202 L7.62314647,24.3159205 C7.06813505,24.3159206 6.84622798,23.9286889 7.12728913,23.4513779 L15.3334668,9.51526849 Z" fill-rule="evenodd"></path> </svg>', '', '', function(opts) {
+	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('icons', '<svg height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" style="position:absolute; margin-left: -100%; width:0; height:0;" xmlns:xlink="http://www.w3.org/1999/xlink"> <g id="ellipsis-shape"> <circle cx="11" cy="16" r="1"></circle> <circle cx="16" cy="16" r="1"></circle> <circle cx="21" cy="16" r="1"></circle> </g> <path id="code-shape" d="M8,16.0849648 C8,15.8210793 8.11149069,15.6129393 8.33483405,15.4609065 L12.3390874,12.8419612 C12.3897649,12.8014192 12.4657813,12.7811481 12.5674985,12.7811481 C12.7398023,12.7811481 12.9048664,12.8571645 13.0623289,13.0095592 C13.2194294,13.161954 13.2983417,13.3393255 13.2983417,13.5423979 C13.2983417,13.7353347 13.2219633,13.8826617 13.0692066,13.9840168 L9.85769553,16.0849648 L13.0692066,18.1862747 C13.2219633,18.2677208 13.2983417,18.4146858 13.2983417,18.6278937 C13.2983417,18.830966 13.2197914,19.0061657 13.0623289,19.1531307 C12.9048664,19.3004576 12.7398023,19.3739401 12.5674985,19.3739401 C12.4657813,19.3739401 12.3897649,19.3536691 12.3390874,19.313127 L8.33483405,16.6938198 C8.11149069,16.541425 8,16.3387147 8,16.0849648 L8,16.0849648 Z M14.1399516,20.6875756 C14.1265582,20.6075774 14.1287301,20.5301131 14.1468293,20.4548207 L16.9395263,11.356022 C16.9891179,11.1623612 17.1237755,11.0468887 17.344223,11.0096045 C17.5042194,10.9824558 17.658786,11.0128623 17.8075609,11.1008242 C17.9563358,11.1891479 18.0442976,11.313308 18.0710844,11.4733044 C18.0862876,11.5634381 18.079772,11.6470561 18.0518993,11.7237965 L15.2664419,20.7748134 C15.2085247,20.9800577 15.0593878,21.1031318 14.8193932,21.1440358 C14.6488993,21.1729945 14.4994005,21.1389681 14.3698106,21.0426807 C14.2402208,20.9460313 14.1638424,20.8276629 14.1399516,20.6875756 L14.1399516,20.6875756 Z M18.9528744,19.1527687 C18.7954119,19.0058037 18.7168616,18.830604 18.7168616,18.6275317 C18.7168616,18.4244594 18.7878102,18.2774944 18.9300695,18.1859127 L22.1426665,16.0846028 L18.9300695,13.9836549 C18.7878102,13.8718022 18.7168616,13.7248372 18.7168616,13.5420359 C18.7168616,13.3389636 18.7954119,13.161592 18.9528744,13.0091973 C19.1103369,12.8568025 19.275039,12.7807861 19.4477048,12.7807861 C19.5389245,12.7807861 19.6098731,12.8014192 19.6609126,12.8415992 L23.6651659,15.4605445 C23.8881473,15.6129393 24,15.8210793 24,16.0846028 C24,16.3488502 23.8881473,16.5515606 23.6651659,16.6938198 L19.6609126,19.3127651 C19.6098731,19.3533071 19.5389245,19.3735782 19.4477048,19.3735782 C19.275039,19.3735782 19.1103369,19.3000957 18.9528744,19.1527687 L18.9528744,19.1527687 Z"></path> <path id="divider" d="M0,1 L15.625,1"></path> <g id="point-straight-shape" fill="none" fill-rule="evenodd"> <polyline fill="#8B6E8A" stroke="#FFFFFF" points="7.881 19.568 15.451 11.241 23.892 19.568"></polyline> <ellipse stroke="none" cx="16" cy="12" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5"></ellipse> <circle cx="15.333" cy="11" r="2.667" fill="#FFFFFF"></circle> </g> <g id="point-mirrored-shape" fill="none" fill-rule="evenodd"> <path fill="#8B6E8A" stroke="#FFFFFF" d="M7.88144841,21.9012632 C7.88144841,21.9012632 7.59287172,13.5740537 15.4514423,13.5740537 C23.3100129,13.5740537 23.8921228,21.9012632 23.8921228,21.9012632"></path> <path stroke="#FF512F" d="M7.13883527,13.3333333 L25.8055013,13.3333333"></path> <ellipse stroke="none" cx="15.7" cy="14.2" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5"></ellipse> <ellipse cx="15.333" cy="13.333" fill="#FFFFFF" rx="2.667" ry="2.667"></ellipse> <rect width="2.667" height="2.667" x="24" y="12" fill="#FF512F"></rect> <rect width="2.667" height="2.667" x="5.333" y="12" fill="#FF512F"></rect> </g> <g id="point-disconnected-shape" fill="none" fill-rule="evenodd"> <path fill="#8B6E8A" stroke="#FFFFFF" d="M7.88144841,20.5679298 C7.88144841,20.5679298 7.59287172,12.2407204 15.4514423,12.2407204 C21.2005207,17.88737 23.8921228,20.5679298 23.8921228,20.5679298"></path> <polyline stroke="#FF512F" points="6.133 12 15.228 12 23.933 20.602"></polyline> <ellipse stroke="none" cx="16" cy="12.7" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5"></ellipse> <circle cx="15.333" cy="12" r="2.667" fill="#FFFFFF"></circle> <rect width="2.667" height="2.667" x="21.886" y="18.552" fill="#FF512F" transform="rotate(45 23.219 19.886)"></rect> <rect width="2.667" height="2.667" x="5.333" y="10.667" fill="#FF512F"></rect> </g> <g id="point-asymmetric-shape" fill="none" fill-rule="evenodd" transform="translate(7.667 9.333)"> <path fill="#8B6E8A" stroke="#FFFFFF" d="M0.214781742,11.2345965 C0.214781742,11.2345965 -0.373511869,2.90709613 7.78477564,2.90738704 C10.7500003,2.90749277 16.2254562,11.2345965 16.2254562,11.2345965"></path> <ellipse stroke="none" cx="8" cy="3.5" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5"></ellipse> <path stroke="#FF512F" d="M2.52788503,2.66666667 L18.1388346,2.66666667"></path> <ellipse cx="7.667" cy="2.667" fill="#FFFFFF" rx="2.667" ry="2.667"></ellipse> <rect width="2.667" height="2.667" x="16.333" y="1.333" fill="#FF512F"></rect> <rect width="2.667" height="2.667" x=".333" y="1.333" fill="#FF512F"></rect> </g> <path id="mojs-logo-shape" d="M18.4678907,2.67700048 C19.488586,3.25758625 20.2789227,4.18421651 20.87823,5.1973579 C24.0807788,10.501451 27.2777091,15.8113116 30.480258,21.1154047 C31.1320047,22.1612281 31.7706417,23.2647256 31.9354512,24.5162532 C32.188284,26.0619186 31.6919826,27.7363895 30.5589171,28.80336 C29.4501984,29.8857103 27.8807622,30.3182659 26.3806209,30.3048086 C19.4511293,30.3086535 12.5235106,30.3086535 5.59401901,30.3048086 C3.71556494,30.343258 1.69852104,29.5723478 0.683444165,27.8709623 C-0.406546132,26.1099803 -0.0975282643,23.7914822 0.940022637,22.0843293 C4.34296485,16.4130445 7.76650826,10.7532945 11.1825603,5.08969961 C11.9747698,3.74781595 13.1846215,2.60202418 14.6847628,2.18292584 C15.9451812,1.81573418 17.3348251,2.01182606 18.4678907,2.67700048 Z M15.3334668,9.51526849 C15.6146238,9.03779476 16.0791597,9.02250655 16.3785679,9.4929547 L25.2763555,23.4736913 C25.5723919,23.9388414 25.3568433,24.3159201 24.8074398,24.3159202 L7.62314647,24.3159205 C7.06813505,24.3159206 6.84622798,23.9286889 7.12728913,23.4513779 L15.3334668,9.51526849 Z" fill-rule="evenodd"></path> </svg>', '', '', function(opts) {
 	});
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
@@ -9471,8 +9484,69 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(102);
+	
+	riot.tag2('icon-divider', '', '', 'class="{this.CLASSES[\'icon-divider\']}"', function(opts) {
+	    this.CLASSES = __webpack_require__(109);
+	    __webpack_require__(110);
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
+/* 109 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"icon-divider": "_icon-divider_15ou5_3"
+	};
+
+/***/ },
+/* 110 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(111);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(98)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(111, function() {
+				var newContent = __webpack_require__(111);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(97)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "._icon-divider_15ou5_3{position:relative;margin:0 auto;width:16px;height:2px;display:block;background:hsla(0,0%,100%,.3);border-radius:3px;box-shadow:0 2px 0 rgba(0,0,0,.3)}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 112 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(riot) {
-	__webpack_require__(109);
+	__webpack_require__(113);
 	
 	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#ffffff" stroke-width="2" vector-effect="non-scaling-stroke" fill="none"> </path> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
 	'use strict';
@@ -9483,14 +9557,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _resizeMod = __webpack_require__(110);
+	var _resizeMod = __webpack_require__(114);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	this.CLASSES = __webpack_require__(114);
-	__webpack_require__(115);
+	this.CLASSES = __webpack_require__(118);
+	__webpack_require__(119);
 	
 	var getPath = function getPath() {
 	  var str = '';
@@ -9553,7 +9627,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 109 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('point', '', '', 'class="{this.CLASSES[\'point\']}" riot-style="{this.getStyle()}"', function(opts) {
@@ -9573,14 +9647,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
-	var _resizeMod = __webpack_require__(110);
+	var _resizeMod = __webpack_require__(114);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	this.CLASSES = __webpack_require__(111);
-	__webpack_require__(112);
+	this.CLASSES = __webpack_require__(115);
+	__webpack_require__(116);
 	
 	_store2.default.subscribe(this.update.bind(this));
 	var clamp = mojs.h.clamp;
@@ -9673,7 +9747,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 110 */
+/* 114 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9703,7 +9777,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = mod;
 
 /***/ },
-/* 111 */
+/* 115 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9711,13 +9785,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 112 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(113);
+	var content = __webpack_require__(117);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(98)(content, {});
@@ -9726,8 +9800,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(113, function() {
-				var newContent = __webpack_require__(113);
+			module.hot.accept(117, function() {
+				var newContent = __webpack_require__(117);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9737,7 +9811,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 113 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(97)();
@@ -9751,7 +9825,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 114 */
+/* 118 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9761,13 +9835,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 115 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(116);
+	var content = __webpack_require__(120);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(98)(content, {});
@@ -9776,8 +9850,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(116, function() {
-				var newContent = __webpack_require__(116);
+			module.hot.accept(120, function() {
+				var newContent = __webpack_require__(120);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9787,7 +9861,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 116 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(97)();
@@ -9801,116 +9875,55 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 117 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(118);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(98)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(true) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept(118, function() {
-				var newContent = __webpack_require__(118);
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 118 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(97)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "._curve-editor_x2z8q_4{position:fixed;left:0;top:0;width:411px;height:398px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_x2z8q_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__right_x2z8q_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_x2z8q_1 resize-handle{position:absolute}._curve-editor__right_x2z8q_1 resize-handle[type=top]{top:-16px}._curve-editor__right_x2z8q_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_x2z8q_1 resize-handle[type=bottom],._curve-editor__right_x2z8q_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_x2z8q_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_x2z8q_1{margin-top:20px}._curve-editor__anchor-buttons_x2z8q_1 icon-button{margin-bottom:5px}._curve-editor__mojs-logo_x2z8q_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_x2z8q_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 119 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"curve-editor": "_curve-editor_x2z8q_4",
-		"curve-editor__left": "_curve-editor__left_x2z8q_1",
-		"curve-editor__right": "_curve-editor__right_x2z8q_1",
-		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_x2z8q_1",
-		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_x2z8q_1"
-	};
-
-/***/ },
-/* 120 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(121);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(98)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(true) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept(121, function() {
-				var newContent = __webpack_require__(121);
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
 /* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(97)();
-	// imports
+	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
-	
-	// module
-	exports.push([module.id, "body,html{margin:0;padding:0;background:#fff5e4}*{box-sizing:border-box}", ""]);
-	
-	// exports
-
+	// load the styles
+	var content = __webpack_require__(122);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(98)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(122, function() {
+				var newContent = __webpack_require__(122);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
 
 /***/ },
 /* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(102);
+	exports = module.exports = __webpack_require__(97)();
+	// imports
 	
-	riot.tag2('icon-divider', '', '', 'class="{this.CLASSES[\'icon-divider\']}"', function(opts) {
-	    this.CLASSES = __webpack_require__(123);
-	    __webpack_require__(124);
-	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+	// module
+	exports.push([module.id, "._curve-editor_seic3_4{position:fixed;left:0;top:0;width:411px;height:398px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_seic3_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__right_seic3_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_seic3_1 resize-handle{position:absolute}._curve-editor__right_seic3_1 resize-handle[type=top]{top:-16px}._curve-editor__right_seic3_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_seic3_1 resize-handle[type=bottom],._curve-editor__right_seic3_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_seic3_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_seic3_1{margin-top:10px}._curve-editor__anchor-buttons_seic3_1 icon-button{margin-bottom:5px}._curve-editor_seic3_4 icon-divider{margin:10px 4px}._curve-editor__mojs-logo_seic3_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_seic3_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
+	
+	// exports
+
 
 /***/ },
 /* 123 */
 /***/ function(module, exports) {
 
 	module.exports = {
-		"icon-divider": "_icon-divider_197j2_3"
+		"curve-editor": "_curve-editor_seic3_4",
+		"curve-editor__left": "_curve-editor__left_seic3_1",
+		"curve-editor__right": "_curve-editor__right_seic3_1",
+		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_seic3_1",
+		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_seic3_1"
 	};
 
 /***/ },
@@ -9948,7 +9961,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._icon-divider_197j2_3{position:relative;top:10px;left:4px;width:16px;height:2px;display:block;background:#fff;border-radius:3px;box-shadow:0 2px 0 rgba(0,0,0,.6)}", ""]);
+	exports.push([module.id, "body,html{margin:0;padding:0;background:#fff5e4}*{box-sizing:border-box}", ""]);
 	
 	// exports
 

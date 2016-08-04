@@ -58,11 +58,15 @@
   }
 
   &__anchor-buttons {
-    margin-top: 20px;
+    margin-top:   calc(  10*$PX );
 
     & icon-button {
-      margin-bottom: 5px;
+      margin-bottom: calc(  5*$PX );
     }
+  }
+
+  & icon-divider {
+    margin: calc( 10*$PX ) calc( 4*$PX );
   }
 
   &__mojs-logo {

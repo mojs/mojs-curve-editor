@@ -2,12 +2,11 @@
 
 .icon-divider {
   position:         relative;
-  top:              10px;
-  left:             4px;
+  margin:           0 auto;
   width:            calc( 16*$PX );
   height:           calc( 2*$PX );
   display:          block;
-  background:       $c-white;
+  background:       rgba(255,255,255,.3);
   border-radius:    calc( 3*$PX );
-  box-shadow:       0px calc( 2*$PX ) 0 rgba(0,0,0,.6);
+  box-shadow:       0px calc( 2*$PX ) 0 rgba(0,0,0,.3);
 }
