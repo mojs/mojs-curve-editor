@@ -28,6 +28,7 @@
     "hammerjs": "^2.0.8",
     "propagating-hammerjs": "^1.4.6",
     "redux": "^3.5.2",
+    "redux-undo": "^0.6.1",
     "riot": "^2.5.0"
   },
   "devDependencies": {
