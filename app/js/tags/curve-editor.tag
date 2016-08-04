@@ -2,6 +2,7 @@ require('./resize-handle');
 require('./icons');
 require('./icon');
 require('./icon-button');
+require('./icon-divider');
 require('./curve');
 
 <curve-editor class={this.CLASSES['curve-editor']} style={this.getStyle()}>
@@ -13,13 +14,14 @@ require('./curve');
 
   <div class={this.CLASSES['curve-editor__left']}>
     <icon-button shape="code"></icon-button>
+    <icon-divider shape="divider"></icon-divider>
     <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class={this.CLASSES['curve-editor__mojs-logo']}>
       <icon shape="mojs-logo" />
     </a>
   </div>
 
   <curve adc={this.CLASSES['curve-editor__right']} />
-  
+
   <script type="babel">
     require('../../css/blocks/curve-editor');
     this.CLASSES = require('../../css/blocks/curve-editor.postcss.css.json');
