@@ -12,7 +12,7 @@ $size: 10;
   background:     #FFF;
   border-radius:  50%;
   z-index:        3;
-  box-shadow:     calc(2*$PX) calc(2*$PX) 0 rgba(0,0,0,.5);
+  box-shadow:     calc(3*$PX) calc(3*$PX) 0 rgba(0,0,0,.5);
   
   &:after {
     content:      '';

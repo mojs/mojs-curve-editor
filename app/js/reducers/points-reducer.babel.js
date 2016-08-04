@@ -31,8 +31,11 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
 
       return newState;
     }
-    // just to save the store before any update
-    // case 'POINT_TRANSLATE_START': { return [ ...state ]; }
+    case 'POINT_DELETE': {
+      const newState = [ state[0], state[2] ];
+
+      return newState;
+    }
   }
   return state;
 }

@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "4f4fd7c6dca0edbe407a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "3df800dd36022f6cb46c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -610,7 +610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(124);
+	__webpack_require__(120);
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  // riot.mount('*',{ store: store })
@@ -3285,8 +3285,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(101);
 	__webpack_require__(102);
 	__webpack_require__(104);
+	__webpack_require__(122);
 	__webpack_require__(108);
-	__webpack_require__(112);
 	
 	riot.tag2('curve-editor', '<icons></icons> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code"></icon-button> <icon-divider></icon-divider> <div class="{this.CLASSES[\'curve-editor__anchor-buttons\']}"> <icon-button shape="point-straight"></icon-button> <icon-button shape="point-mirrored"></icon-button> <icon-button shape="point-disconnected"></icon-button> <icon-button shape="point-asymmetric"></icon-button> </div> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <div class="{this.CLASSES[\'curve-editor__right\']}"> <curve></curve> <resize-handle type="top"></resize-handle> <resize-handle type="right"></resize-handle> <resize-handle type="bottom"></resize-handle> </div>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
@@ -3301,16 +3301,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
-	var _resizeMod = __webpack_require__(114);
+	var _resizeMod = __webpack_require__(110);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
-	var _reduxUndo = __webpack_require__(23);
+	var _reduxUndo = __webpack_require__(22);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(121);
-	this.CLASSES = __webpack_require__(123);
+	__webpack_require__(117);
+	this.CLASSES = __webpack_require__(119);
 	
 	var _opts = opts;
 	var store = _opts.store;
@@ -3346,6 +3346,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    case 88:
 	      {
 	        return store.dispatch(_reduxUndo.ActionCreators.redo());
+	      }
+	    case 68:
+	      {
+	        return store.dispatch({ type: 'POINT_DELETE' });
 	      }
 	  }
 	};
@@ -3449,7 +3453,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _redux = __webpack_require__(7);
 	
-	var _indexReducer = __webpack_require__(22);
+	var _indexReducer = __webpack_require__(23);
 	
 	var _indexReducer2 = _interopRequireDefault(_indexReducer);
 	
@@ -3516,6 +3520,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	// shim for using process in browser
+	
 	var process = module.exports = {};
 	
 	// cached from whatever global is present so that test runners that stub it
@@ -3527,35 +3532,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cachedClearTimeout;
 	
 	(function () {
-	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
-	        }
+	  try {
+	    cachedSetTimeout = setTimeout;
+	  } catch (e) {
+	    cachedSetTimeout = function () {
+	      throw new Error('setTimeout is not defined');
 	    }
-	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
-	        }
+	  }
+	  try {
+	    cachedClearTimeout = clearTimeout;
+	  } catch (e) {
+	    cachedClearTimeout = function () {
+	      throw new Error('clearTimeout is not defined');
 	    }
+	  }
 	} ())
-	function runTimeout(fun) {
-	    if (cachedSetTimeout === setTimeout) {
-	        return setTimeout(fun, 0);
-	    } else {
-	        return cachedSetTimeout.call(null, fun, 0);
-	    }
-	}
-	function runClearTimeout(marker) {
-	    if (cachedClearTimeout === clearTimeout) {
-	        clearTimeout(marker);
-	    } else {
-	        cachedClearTimeout.call(null, marker);
-	    }
-	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -3580,7 +3571,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = runTimeout(cleanUpNextTick);
+	    var timeout = cachedSetTimeout.call(null, cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -3597,7 +3588,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    runClearTimeout(timeout);
+	    cachedClearTimeout.call(null, timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -3609,7 +3600,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        runTimeout(drainQueue);
+	        cachedSetTimeout.call(null, drainQueue, 0);
 	    }
 	};
 	
@@ -4460,46 +4451,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _redux = __webpack_require__(7);
-	
-	var _reduxUndo = __webpack_require__(23);
-	
-	var _reduxUndo2 = _interopRequireDefault(_reduxUndo);
-	
-	var _resizeReducer = __webpack_require__(24);
-	
-	var _resizeReducer2 = _interopRequireDefault(_resizeReducer);
-	
-	var _pointsReducer = __webpack_require__(67);
-	
-	var _pointsReducer2 = _interopRequireDefault(_pointsReducer);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// Redux utility functions
-	var reducer = (0, _redux.combineReducers)({
-	  resize: _resizeReducer2.default,
-	  points: (0, _reduxUndo2.default)(_pointsReducer2.default, {
-	    limit: 10,
-	    filter: function filterActions(action, currState, history) {
-	      return action.isRecord; // only add to history if isRecord set on action
-	    },
-	    debug: false
-	  })
-	});
-	// redux-undo higher-order reducer
-	exports.default = reducer;
-
-/***/ },
-/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4847,6 +4798,46 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	// /excludeAction
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _redux = __webpack_require__(7);
+	
+	var _reduxUndo = __webpack_require__(22);
+	
+	var _reduxUndo2 = _interopRequireDefault(_reduxUndo);
+	
+	var _resizeReducer = __webpack_require__(24);
+	
+	var _resizeReducer2 = _interopRequireDefault(_resizeReducer);
+	
+	var _pointsReducer = __webpack_require__(67);
+	
+	var _pointsReducer2 = _interopRequireDefault(_pointsReducer);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// Redux utility functions
+	var reducer = (0, _redux.combineReducers)({
+	  resize: _resizeReducer2.default,
+	  points: (0, _reduxUndo2.default)(_pointsReducer2.default, {
+	    limit: 10,
+	    filter: function filterActions(action, currState, history) {
+	      return action.isRecord; // only add to history if isRecord set on action
+	    },
+	    debug: false
+	  })
+	});
+	// redux-undo higher-order reducer
+	exports.default = reducer;
 
 /***/ },
 /* 24 */
@@ -5568,8 +5559,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        return _newState;
 	      }
-	    // just to save the store before any update
-	    // case 'POINT_TRANSLATE_START': { return [ ...state ]; }
+	    case 'POINT_DELETE':
+	      {
+	        var _newState2 = [state[0], state[2]];
+	
+	        return _newState2;
+	      }
 	  }
 	  return state;
 	};
@@ -9484,71 +9479,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(102);
-	
-	riot.tag2('icon-divider', '', '', 'class="{this.CLASSES[\'icon-divider\']}"', function(opts) {
-	    this.CLASSES = __webpack_require__(109);
-	    __webpack_require__(110);
-	});
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ },
-/* 109 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"icon-divider": "_icon-divider_15ou5_3"
-	};
-
-/***/ },
-/* 110 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(111);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(98)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(true) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept(111, function() {
-				var newContent = __webpack_require__(111);
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 111 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(97)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "._icon-divider_15ou5_3{position:relative;margin:0 auto;width:16px;height:2px;display:block;background:hsla(0,0%,100%,.3);border-radius:3px;box-shadow:0 2px 0 rgba(0,0,0,.3)}", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 112 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(riot) {
-	__webpack_require__(113);
+	__webpack_require__(109);
 	
-	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#ffffff" stroke-width="2" vector-effect="non-scaling-stroke" fill="none"> </path> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
+	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="0.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <path id="js-main-path" class="{this.CLASSES[\'curve__svg-path\']}" riot-d="{this.path}" stroke="#ffffff" stroke-width="3" vector-effect="non-scaling-stroke" fill="none"></path> <path riot-d="{this.path + \' L100,100 z\'}" stroke="none" vector-effect="non-scaling-stroke" transform="translate(.5,.5)" fill="none"></path> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -9557,14 +9491,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _resizeMod = __webpack_require__(114);
+	var _resizeMod = __webpack_require__(110);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	this.CLASSES = __webpack_require__(118);
-	__webpack_require__(119);
+	this.CLASSES = __webpack_require__(114);
+	__webpack_require__(115);
 	
 	var getPath = function getPath() {
 	  var str = '';
@@ -9580,6 +9514,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  _this.path = str;
 	};
+	
+	this.on('mount', function () {
+	  _this.root.querySelector('#js-main-path').addEventListener('click', function (e) {
+	    console.log(e);
+	  });
+	});
 	
 	this.getStyle = function () {
 	  var resize = _this.state.resize;
@@ -9627,7 +9567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 113 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('point', '', '', 'class="{this.CLASSES[\'point\']}" riot-style="{this.getStyle()}"', function(opts) {
@@ -9647,14 +9587,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
-	var _resizeMod = __webpack_require__(114);
+	var _resizeMod = __webpack_require__(110);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	this.CLASSES = __webpack_require__(115);
-	__webpack_require__(116);
+	this.CLASSES = __webpack_require__(111);
+	__webpack_require__(112);
 	
 	_store2.default.subscribe(this.update.bind(this));
 	var clamp = mojs.h.clamp;
@@ -9747,7 +9687,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 114 */
+/* 110 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9777,71 +9717,112 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = mod;
 
 /***/ },
-/* 115 */
+/* 111 */
 /***/ function(module, exports) {
 
 	module.exports = {
-		"point": "_point_waxms_5"
+		"point": "_point_ubp0t_5"
 	};
+
+/***/ },
+/* 112 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(113);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(98)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(113, function() {
+				var newContent = __webpack_require__(113);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 113 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(97)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "._point_ubp0t_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5)}._point_ubp0t_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_ubp0t_5:hover{opacity:.85}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 114 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"curve": "_curve_adube_5",
+		"curve__svg-wrapper": "_curve__svg-wrapper_adube_1",
+		"curve__svg": "_curve__svg_adube_1",
+		"curve__svg-path": "_curve__svg-path_adube_1"
+	};
+
+/***/ },
+/* 115 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(116);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(98)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(116, function() {
+				var newContent = __webpack_require__(116);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
 
 /***/ },
 /* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// style-loader: Adds some css to the DOM by adding a <style> tag
+	exports = module.exports = __webpack_require__(97)();
+	// imports
 	
-	// load the styles
-	var content = __webpack_require__(117);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(98)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(true) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept(117, function() {
-				var newContent = __webpack_require__(117);
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
+	
+	// module
+	exports.push([module.id, "._curve_adube_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve__svg-wrapper_adube_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_adube_1{display:block;overflow:visible;width:100%}._curve__svg-path_adube_1:hover{cursor:crosshair}", ""]);
+	
+	// exports
+
 
 /***/ },
 /* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(97)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "._point_waxms_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:2px 2px 0 rgba(0,0,0,.5)}._point_waxms_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_waxms_5:hover{opacity:.85}", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 118 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"curve": "_curve_n7tci_5",
-		"curve__svg-wrapper": "_curve__svg-wrapper_n7tci_1",
-		"curve__svg": "_curve__svg_n7tci_1"
-	};
-
-/***/ },
-/* 119 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(120);
+	var content = __webpack_require__(118);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(98)(content, {});
@@ -9850,8 +9831,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(120, function() {
-				var newContent = __webpack_require__(120);
+			module.hot.accept(118, function() {
+				var newContent = __webpack_require__(118);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9859,29 +9840,41 @@ return /******/ (function(modules) { // webpackBootstrap
 		// When the module is disposed, remove the <style> tags
 		module.hot.dispose(function() { update(); });
 	}
+
+/***/ },
+/* 118 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(97)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "._curve-editor_hshpo_4{position:fixed;left:0;top:0;width:411px;height:398px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_hshpo_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__left_hshpo_1 icon-divider{margin:10px auto}._curve-editor__right_hshpo_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_hshpo_1 resize-handle{position:absolute}._curve-editor__right_hshpo_1 resize-handle[type=top]{top:-16px}._curve-editor__right_hshpo_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_hshpo_1 resize-handle[type=bottom],._curve-editor__right_hshpo_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_hshpo_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_hshpo_1{margin-top:10px}._curve-editor__anchor-buttons_hshpo_1 icon-button{margin-bottom:5px}._curve-editor__mojs-logo_hshpo_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_hshpo_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 119 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"curve-editor": "_curve-editor_hshpo_4",
+		"curve-editor__left": "_curve-editor__left_hshpo_1",
+		"curve-editor__right": "_curve-editor__right_hshpo_1",
+		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_hshpo_1",
+		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_hshpo_1"
+	};
 
 /***/ },
 /* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(97)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "._curve_n7tci_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve__svg-wrapper_n7tci_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_n7tci_1{display:block;overflow:visible;width:100%}", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 121 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(122);
+	var content = __webpack_require__(121);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(98)(content, {});
@@ -9890,8 +9883,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(122, function() {
-				var newContent = __webpack_require__(122);
+			module.hot.accept(121, function() {
+				var newContent = __webpack_require__(121);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9901,7 +9894,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 122 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(97)();
@@ -9909,21 +9902,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve-editor_seic3_4{position:fixed;left:0;top:0;width:411px;height:398px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_seic3_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__right_seic3_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_seic3_1 resize-handle{position:absolute}._curve-editor__right_seic3_1 resize-handle[type=top]{top:-16px}._curve-editor__right_seic3_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_seic3_1 resize-handle[type=bottom],._curve-editor__right_seic3_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_seic3_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_seic3_1{margin-top:10px}._curve-editor__anchor-buttons_seic3_1 icon-button{margin-bottom:5px}._curve-editor_seic3_4 icon-divider{margin:10px 4px}._curve-editor__mojs-logo_seic3_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_seic3_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
+	exports.push([module.id, "body,html{margin:0;padding:0;background:#fff5e4}*{box-sizing:border-box}", ""]);
 	
 	// exports
 
+
+/***/ },
+/* 122 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(102);
+	
+	riot.tag2('icon-divider', '', '', 'class="{this.CLASSES[\'icon-divider\']}"', function(opts) {
+	    this.CLASSES = __webpack_require__(123);
+	    __webpack_require__(124);
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 123 */
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve-editor": "_curve-editor_seic3_4",
-		"curve-editor__left": "_curve-editor__left_seic3_1",
-		"curve-editor__right": "_curve-editor__right_seic3_1",
-		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_seic3_1",
-		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_seic3_1"
+		"icon-divider": "_icon-divider_15ou5_3"
 	};
 
 /***/ },
@@ -9961,7 +9963,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "body,html{margin:0;padding:0;background:#fff5e4}*{box-sizing:border-box}", ""]);
+	exports.push([module.id, "._icon-divider_15ou5_3{position:relative;margin:0 auto;width:16px;height:2px;display:block;background:hsla(0,0%,100%,.3);border-radius:3px;box-shadow:0 2px 0 rgba(0,0,0,.3)}", ""]);
 	
 	// exports
 

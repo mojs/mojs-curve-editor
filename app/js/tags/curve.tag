@@ -10,12 +10,29 @@ require('./point');
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
           class={ this.CLASSES['curve__svg'] }>
+
       <path d={this.path}
-            stroke="#ffffff"
-            stroke-width="2"
+            stroke="#000000"
+            stroke-opacity="0.35"
+            stroke-width="4"
             vector-effect="non-scaling-stroke"
-            fill="none">
-      </path>
+            transform="translate(.75,.75)"
+            fill="none" />
+
+      <path id="js-main-path"
+            class={ this.CLASSES['curve__svg-path'] }
+            d={this.path}
+            stroke="#ffffff"
+            stroke-width="3"
+            vector-effect="non-scaling-stroke"
+            fill="none" />
+
+      <path d={this.path + ' L100,100 z'}
+            stroke="none"
+            vector-effect="non-scaling-stroke"
+            transform="translate(.5,.5)"
+            fill="none" />
+
     </svg>
   </div>
 
@@ -37,6 +54,13 @@ require('./point');
       }
       this.path = str;
     }
+
+    this.on('mount', () => {
+      this.root.querySelector('#js-main-path')
+        .addEventListener('click', (e) => {
+          console.log(e);
+        });
+    });
 
     this.getStyle = () => {
       const {resize} = this.state;

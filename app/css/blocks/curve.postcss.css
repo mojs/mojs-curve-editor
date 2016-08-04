@@ -35,4 +35,9 @@ $gap : 10;
     /*right:      calc( -1*$PX );*/
     /*bottom:     calc( -1*$PX );*/
   }
+  &__svg-path {
+    &:hover {
+      cursor: crosshair;
+    }
+  }
 }

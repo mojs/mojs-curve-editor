@@ -20,6 +20,10 @@
     top:          0;
     bottom:       0;
     padding:      calc( $gap * $PX );
+    
+    & icon-divider {
+      margin: calc( 10*$PX ) auto;
+    }
   }
 
   &__right {
@@ -63,10 +67,6 @@
     & icon-button {
       margin-bottom: calc(  5*$PX );
     }
-  }
-
-  & icon-divider {
-    margin: calc( 10*$PX ) calc( 4*$PX );
   }
 
   &__mojs-logo {

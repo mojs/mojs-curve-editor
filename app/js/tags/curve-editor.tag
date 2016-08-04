@@ -66,6 +66,7 @@ require('./curve');
       switch (e.which) {
         case 90: { return store.dispatch(ActionCreators.undo()); }
         case 88: { return store.dispatch(ActionCreators.redo()); }
+        case 68: { return store.dispatch({ type: 'POINT_DELETE' }); }
       }
     }
 
