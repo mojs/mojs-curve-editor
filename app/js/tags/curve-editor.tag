@@ -26,7 +26,7 @@ require('./curve');
     <resize-handle type="right"></resize-handle>
     <resize-handle type="bottom"></resize-handle>
   </div>
-  
+
 >>>>>>> 160ef2ef7c5f203d6f474a73062d6f86e7069387
   <script type="babel">
     require('../../css/blocks/curve-editor');
@@ -73,7 +73,7 @@ require('./curve');
       if (Y_SIZE - tempResize_top < Y_SIZE) { tempResize_top = 0; }
       if (Y_SIZE + tempResize_bottom < Y_SIZE) { tempResize_bottom = 0; }
       if (X_SIZE + tempResize_right < X_SIZE) { tempResize_right = 0; }
-      
+
       tempResize_top    = mod( tempResize_top, -1 );
       tempResize_bottom = mod( tempResize_bottom );
       // tempResize_right  = mod( tempResize_right );
