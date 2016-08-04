@@ -31,7 +31,7 @@ const makePoint = (o = {}) => {
     ...makePositionPoint(o),
     // add curve handles
     handle1: makePositionPoint(o.handle1),
-    handle2: (!o.isOneHandle) ? makePositionPoint(o.handle2) : undefined
+    handle2: makePositionPoint(o.handle2)
   };
 }
 

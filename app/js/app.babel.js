@@ -5,5 +5,5 @@ import store from './store';
 
 document.addEventListener('DOMContentLoaded', () => {
   // riot.mount('*',{ store: store })
-  riot.mount('curve-editor',{ store })
+  riot.mount('curve-editor', { store });
 });

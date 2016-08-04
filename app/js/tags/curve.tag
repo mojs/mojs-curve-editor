@@ -1,14 +1,21 @@
 
 require('./point');
 
-<curve class={ this.CLASSES['curve']} style={this.getStyle()}>
-  <div class={ this.CLASSES['curve__svg-wrapper']} style={this.getSvgStyle()}>
+<curve class={ this.CLASSES['curve']} style={this.styles.background}>
+  <div class={ this.CLASSES['curve__svg-wrapper']} style={this.styles.transform}>
 
     <point each={ point, _index in points }></point>
 
-    <svg  width="358" height="358" viewBox="0 0 100 100"
+    <svg  height="358"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
           class={ this.CLASSES['curve__svg'] }>
-      <!-- <path d="M0.467543436,99.4306528 L8.61335666,54.5691059 L15.6069015,117.29232 L29.1234315,-10.9721887 L40.3444739,114.711028 L48.6833374,-11.7964225 L62.6312138,99.9449505 L85.0069377,112.263212 C85.0069377,112.263212 73.419402,-20.3456806 83.4927003,-22.3523468 L99.5792109,100.263182" stroke="#ffffff" stroke-width="1" fill="none"></path> -->
+      <path d={this.path}
+            stroke="#ffffff"
+            stroke-width="2"
+            vector-effect="non-scaling-stroke"
+            fill="none">
+      </path>
     </svg>
   </div>
 
@@ -19,14 +26,20 @@ require('./point');
     import store from '../store';
     import mod from '../helpers/resize-mod';
 
-    const state = store.getState().present;
-    const {points} = state;
-    this.points = points;
+    const getPath = () => {
+      let str = '';
+      for (let i = 0 ; i < this.points.length; i++) {
+        const point = this.points[i],
+              x = point.x + point.tempX,
+              y = point.y + point.tempY;
+        if ( i ===  0) { str += `M${x}, ${y/3.58} `; }
+        else { str += `L${x}, ${y/3.58} ` ; }
+      }
+      this.path = str;
+    }
 
-    store.subscribe(this.update.bind(this));
-
-    this.getSvgStyle = () => {
-      const {resize} = state;
+    this.getStyle = () => {
+      const {resize} = this.state;
       let {temp_top} = resize;
 
       temp_top += resize.top;
@@ -34,23 +47,29 @@ require('./point');
       if (358 - temp_top < 358) { temp_top = 0; }
       temp_top = mod( temp_top, -1 );
 
-      const transform = `transform: translate(0px, ${-temp_top}px)`;
-
-      return `${mojs.h.prefix.css}${transform}; ${transform};`;
-    }
-
-    this.getStyle = () => {
-      const state = store.getState().present;
-      let {temp_top} = state;
-
-      temp_top += state.top;
-
-      if (358 - temp_top < 358) { temp_top = 0; }
-      temp_top = mod( temp_top, -1 );
-
       const background = `background-position: 0 ${-temp_top - 1}px`;
-      return `${background};`;
+      const transform  = `transform: translate(0px, ${-temp_top}px)`;
+        
+      return {
+        background,
+        transform: `${mojs.h.prefix.css}${transform}; ${transform};`
+      };
     }
+
+    const getState = () => { this.state = store.getState(); }
+
+    const getPoints = () => { this.points = this.state.points.present; }
+
+    const getStyles = () => { this.styles = this.getStyle(); }
+    const get = () => {
+      getState();
+      getPoints();
+      getPath();
+      getStyles();
+    }
+
+    get();
+    store.subscribe( () => { get(); this.update(); });
 
   </script>
 </curve>

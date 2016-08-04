@@ -44,15 +44,27 @@ require('./curve');
         .on('panend', (ev) => {
           const x = ev.deltaX,
                 y = ev.deltaY,
-                {translate} = store.getState().present.resize;
+                {translate} = store.getState().resize;
 
           this.x = this.y = 0;
           store.dispatch({ type: 'EDITOR_TRANSLATE', data: { x: translate.x + x, y: translate.y + y } })
         });
+
+      document.addEventListener('keyup', this.onKeyUp);
     });
 
+    import { ActionCreators } from 'redux-undo';
+
+    this.onKeyUp = (e) => {
+      if ( !e.altKey ) { return; }
+      switch (e.which) {
+        case 90: { return store.dispatch(ActionCreators.undo()); }
+        case 88: { return store.dispatch(ActionCreators.redo()); }
+      }
+    }
+
     this.getStyle = () => {
-      const state = store.getState().present.resize;
+      const state = store.getState().resize;
       let {temp_top} = state;
       let {temp_bottom} = state;
       let {temp_right} = state;

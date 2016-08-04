@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "2afae19088204d749848"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "39e444aa888e695705a3"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -3305,6 +3305,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
+	var _reduxUndo = __webpack_require__(22);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	__webpack_require__(117);
@@ -3323,15 +3325,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }).on('panend', function (ev) {
 	    var x = ev.deltaX;
 	    var y = ev.deltaY;
-	    var translate = store.getState().present.resize.translate;
+	    var translate = store.getState().resize.translate;
 	
 	    _this.x = _this.y = 0;
 	    store.dispatch({ type: 'EDITOR_TRANSLATE', data: { x: translate.x + x, y: translate.y + y } });
 	  });
+	
+	  document.addEventListener('keyup', _this.onKeyUp);
 	});
 	
+	this.onKeyUp = function (e) {
+	  if (!e.altKey) {
+	    return;
+	  }
+	  switch (e.which) {
+	    case 90:
+	      {
+	        return store.dispatch(_reduxUndo.ActionCreators.undo());
+	      }
+	    case 88:
+	      {
+	        return store.dispatch(_reduxUndo.ActionCreators.redo());
+	      }
+	  }
+	};
+	
 	this.getStyle = function () {
-	  var state = store.getState().present.resize;
+	  var state = store.getState().resize;
 	  var temp_top = state.temp_top;
 	  var temp_bottom = state.temp_bottom;
 	  var temp_right = state.temp_right;
@@ -3429,22 +3449,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _redux = __webpack_require__(7);
 	
-	var _reduxUndo = __webpack_require__(22);
-	
-	var _reduxUndo2 = _interopRequireDefault(_reduxUndo);
-	
 	var _indexReducer = __webpack_require__(23);
 	
 	var _indexReducer2 = _interopRequireDefault(_indexReducer);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// redux-undo higher-order reducer
-	var store = (0, _redux.createStore)((0, _reduxUndo2.default)(_indexReducer2.default, {
-	  filter: function filterActions(action, currState, history) {
-	    return action.isRecord; // only add to history if isRecord set on action
-	  }
-	}));
+	var store = (0, _redux.createStore)(_indexReducer2.default);
 	// import reducer
 	exports.default = store;
 
@@ -4796,6 +4807,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _redux = __webpack_require__(7);
 	
+	var _reduxUndo = __webpack_require__(22);
+	
+	var _reduxUndo2 = _interopRequireDefault(_reduxUndo);
+	
 	var _resizeReducer = __webpack_require__(24);
 	
 	var _resizeReducer2 = _interopRequireDefault(_resizeReducer);
@@ -4806,10 +4821,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// Redux utility functions
 	var reducer = (0, _redux.combineReducers)({
 	  resize: _resizeReducer2.default,
-	  points: _pointsReducer2.default
-	}); // Redux utility functions
+	  points: (0, _reduxUndo2.default)(_pointsReducer2.default, {
+	    limit: 10,
+	    filter: function filterActions(action, currState, history) {
+	      return action.isRecord; // only add to history if isRecord set on action
+	    },
+	    debug: false
+	  })
+	});
+	// redux-undo higher-order reducer
 	exports.default = reducer;
 
 /***/ },
@@ -4833,7 +4856,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var INITIAL_STATE = {
-	  translate: { x: 150, y: 0 },
+	  translate: { x: 150, y: 150 },
 	  top: 0,
 	  temp_top: 0,
 	
@@ -5501,7 +5524,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var INITIAL_STATE = [(0, _makePoint2.default)({ x: 0, y: 358 }), (0, _makePoint2.default)({ x: 100, y: 0 })];
+	var INITIAL_STATE = [(0, _makePoint2.default)({ x: 0, y: 358, isLockedX: true }), (0, _makePoint2.default)({ x: 50, y: 179 }), (0, _makePoint2.default)({ x: 100, y: 0, isLockedX: true })];
 	
 	var pointsReducer = function pointsReducer() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
@@ -5518,6 +5541,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	        newState[data.index] = (0, _extends3.default)({}, oldPoint, { tempX: data.x, tempY: data.y });
 	        return newState;
 	      }
+	    case 'POINT_TRANSLATE_END':
+	      {
+	        var _data = action.data;
+	        var _index = _data.index;
+	        var _oldPoint = state[_index];
+	        var _newState = [].concat((0, _toConsumableArray3.default)(state));
+	
+	        _newState[_data.index] = (0, _extends3.default)({}, _oldPoint, {
+	          tempX: 0, tempY: 0,
+	          x: _data.x, y: _data.y
+	        });
+	
+	        return _newState;
+	      }
+	    // just to save the store before any update
+	    // case 'POINT_TRANSLATE_START': { return [ ...state ]; }
 	  }
 	  return state;
 	};
@@ -6040,7 +6079,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, makePositionPoint(o), {
 	    // add curve handles
 	    handle1: makePositionPoint(o.handle1),
-	    handle2: !o.isOneHandle ? makePositionPoint(o.handle2) : undefined
+	    handle2: makePositionPoint(o.handle2)
 	  });
 	};
 	
@@ -9434,8 +9473,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */(function(riot) {
 	__webpack_require__(109);
 	
-	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.getSvgStyle()}"> <point each="{point, _index in points}"></point> <svg width="358" height="358" viewbox="0 0 100 100" class="{this.CLASSES[\'curve__svg\']}"> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.getStyle()}"', function(opts) {
+	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#ffffff" stroke-width="2" vector-effect="non-scaling-stroke" fill="none"> </path> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
 	'use strict';
+	
+	var _this = this;
 	
 	var _store = __webpack_require__(6);
 	
@@ -9450,15 +9491,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	this.CLASSES = __webpack_require__(114);
 	__webpack_require__(115);
 	
-	var state = _store2.default.getState().present;
-	var points = state.points;
+	var getPath = function getPath() {
+	  var str = '';
+	  for (var i = 0; i < _this.points.length; i++) {
+	    var point = _this.points[i],
+	        x = point.x + point.tempX,
+	        y = point.y + point.tempY;
+	    if (i === 0) {
+	      str += 'M' + x + ', ' + y / 3.58 + ' ';
+	    } else {
+	      str += 'L' + x + ', ' + y / 3.58 + ' ';
+	    }
+	  }
+	  _this.path = str;
+	};
 	
-	this.points = points;
-	
-	_store2.default.subscribe(this.update.bind(this));
-	
-	this.getSvgStyle = function () {
-	  var resize = state.resize;
+	this.getStyle = function () {
+	  var resize = _this.state.resize;
 	  var temp_top = resize.temp_top;
 	
 	  temp_top += resize.top;
@@ -9468,25 +9517,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  temp_top = (0, _resizeMod2.default)(temp_top, -1);
 	
+	  var background = 'background-position: 0 ' + (-temp_top - 1) + 'px';
 	  var transform = 'transform: translate(0px, ' + -temp_top + 'px)';
 	
-	  return '' + mojs.h.prefix.css + transform + '; ' + transform + ';';
+	  return {
+	    background: background,
+	    transform: '' + mojs.h.prefix.css + transform + '; ' + transform + ';'
+	  };
 	};
 	
-	this.getStyle = function () {
-	  var state = _store2.default.getState().present;
-	  var temp_top = state.temp_top;
-	
-	  temp_top += state.top;
-	
-	  if (358 - temp_top < 358) {
-	    temp_top = 0;
-	  }
-	  temp_top = (0, _resizeMod2.default)(temp_top, -1);
-	
-	  var background = 'background-position: 0 ' + (-temp_top - 1) + 'px';
-	  return background + ';';
+	var getState = function getState() {
+	  _this.state = _store2.default.getState();
 	};
+	
+	var getPoints = function getPoints() {
+	  _this.points = _this.state.points.present;
+	};
+	
+	var getStyles = function getStyles() {
+	  _this.styles = _this.getStyle();
+	};
+	var get = function get() {
+	  getState();
+	  getPoints();
+	  getPath();
+	  getStyles();
+	};
+	
+	get();
+	_store2.default.subscribe(function () {
+	  get();_this.update();
+	});
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -9520,37 +9581,92 @@ return /******/ (function(modules) { // webpackBootstrap
 	this.CLASSES = __webpack_require__(111);
 	__webpack_require__(112);
 	
-	// store.subscribe(this.update.bind(this));
+	_store2.default.subscribe(this.update.bind(this));
+	var clamp = mojs.h.clamp;
 	
 	this.getStyle = function () {
-	  var resize = _store2.default.getState().present.resize;
-	  var x = (_this.point.x + _this.point.tempX) * resize.scalerX;
-	  var translate = 'transform: translate(' + x + 'px, ' + _this.point.y + 'px)';
+	  var _store$getState = _store2.default.getState();
 	
-	  // console.log(this.point.x + this.point.tempX, this.point.tempX);
+	  var resize = _store$getState.resize;
+	  var x = clamp(_this.point.x + _this.point.tempX, 0, 100);
+	  var cleanX = x * resize.scalerX;
+	
+	  var y = _this.point.y + _this.point.tempY;
+	
+	  var translate = 'transform: translate(' + cleanX + 'px, ' + y + 'px)';
 	  return '' + mojs.h.prefix.css + translate + '; ' + translate;
+	};
+	
+	var getTempX = function getTempX(e) {
+	  var _store$getState2 = _store2.default.getState();
+	
+	  var resize = _store$getState2.resize;
+	
+	  // if point is not locked to x axes ->
+	  // calculate delta regarding scaler
+	
+	  if (_this.point.isLockedX) {
+	    return 0;
+	  };
+	
+	  var x = e.deltaX / resize.scalerX;
+	  if (_this.point.x + x < 0) {
+	    return 0 - _this.point.x;
+	  } else if (_this.point.x + x > 100) {
+	    return 100 - _this.point.x;
+	  }
+	  return x;
+	};
+	
+	var getY = function getY(e) {
+	  var _store$getState3 = _store2.default.getState();
+	
+	  var resize = _store$getState3.resize;
+	
+	  var y = _this.point.y + e.deltaY;
+	  // clamp y to the size of curve
+	  return clamp(y, resize.top, 358 + resize.bottom);
+	};
+	
+	// get y delta reagarding curve bounds
+	var getTempY = function getTempY(e) {
+	  var _store$getState4 = _store2.default.getState();
+	
+	  var resize = _store$getState4.resize;
+	  var y = _this.point.y + e.deltaY;
+	
+	  if (y < resize.top) {
+	    return resize.top - _this.point.y;
+	  }
+	  if (y > 358 + resize.bottom) {
+	    return 358 + resize.bottom - _this.point.y;
+	  }
+	  return e.deltaY;
 	};
 	
 	this.on('mount', function () {
 	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('pan', function (e) {
 	    _store2.default.dispatch({
 	      type: 'POINT_TRANSLATE',
-	      data: {
-	        x: _this.point.x + e.deltaX,
-	        y: _this.point.y + e.deltaY,
-	        index: _this._index
-	      }
+	      data: { x: getTempX(e), y: getTempY(e), index: _this._index }
 	    });
 	    e.stopPropagation();
-	  });
-	  // .on('panend', (ev) => {
-	  //   const x = ev.deltaX,
-	  //         y = ev.deltaY,
-	  //         {translate} = store.getState().present.resize;
+	  }).on('panend', function (e) {
+	    // reset temporary deltas
+	    _store2.default.dispatch({ type: 'POINT_TRANSLATE', data: { x: 0, y: 0, index: _this._index } });
+	    // fire translate end and save it to the store
+	    _store2.default.dispatch({
+	      type: 'POINT_TRANSLATE_END',
+	      data: {
+	        x: _this.point.x + getTempX(e),
+	        y: getY(e),
+	        index: _this._index
+	      },
+	      isRecord: true
+	    });
 	
-	  //   this.x = this.y = 0;
-	  //   store.dispatch({ type: 'EDITOR_TRANSLATE', data: { x: translate.x + x, y: translate.y + y } })
-	  // });
+	    e.stopPropagation();
+	  });
 	});
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
@@ -9638,9 +9754,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve": "_curve_1rlvw_5",
-		"curve__svg-wrapper": "_curve__svg-wrapper_1rlvw_1",
-		"curve__svg": "_curve__svg_1rlvw_1"
+		"curve": "_curve_n7tci_5",
+		"curve__svg-wrapper": "_curve__svg-wrapper_n7tci_1",
+		"curve__svg": "_curve__svg_n7tci_1"
 	};
 
 /***/ },
@@ -9678,7 +9794,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve_1rlvw_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve__svg-wrapper_1rlvw_1{position:absolute;left:-1px;top:-1px}._curve__svg_1rlvw_1{display:block;overflow:visible}", ""]);
+	exports.push([module.id, "._curve_n7tci_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve__svg-wrapper_n7tci_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_n7tci_1{display:block;overflow:visible;width:100%}", ""]);
 	
 	// exports
 

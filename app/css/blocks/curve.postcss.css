@@ -24,11 +24,13 @@ $gap : 10;
     position:   absolute;
     left:       calc( -1*$PX );
     top:        calc( -1*$PX );
+    width:      100%;
   }
   &__svg {
     /*position:   absolute;*/
     display:    block;
     overflow:   visible;
+    width:      100%;
     /*border: 1px solid rgba(222, 0, 0, .5);*/
     /*right:      calc( -1*$PX );*/
     /*bottom:     calc( -1*$PX );*/

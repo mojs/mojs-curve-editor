@@ -18,7 +18,12 @@
     "type": "git",
     "url": "git+https://github.com/legomushroom/mojs-curve-editor.git"
   },
-  "author": "",
+  "author": {
+    "name": "Oleg Solomka",
+    "email": "legomushroom@gmail.com",
+    "twitter": "@legomushroom",
+    "url": "https://github.com/legomushroom/"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/legomushroom/mojs-curve-editor/issues"
