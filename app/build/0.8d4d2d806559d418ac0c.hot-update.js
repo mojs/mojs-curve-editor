@@ -1,1 +1,0 @@
-webpackHotUpdatemojs_curve_editor(0,{81:function(_,c){_.exports={curve:"_curve_ch38u_5",curve__svg:"_curve__svg_ch38u_1"}}});

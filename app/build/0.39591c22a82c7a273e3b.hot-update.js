@@ -1,1 +1,0 @@
-webpackHotUpdatemojs_curve_editor(0,{80:function(o,e,p){e=o.exports=p(45)(),e.push([o.id,"._curve__svg_1pkd9_1{position:absolute;display:block;left:-1px;top:-1px;overflow:visible}",""])}});

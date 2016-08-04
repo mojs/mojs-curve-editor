@@ -42,7 +42,7 @@ require('./curve');
         .on('panend', (ev) => {
           const x = ev.deltaX,
                 y = ev.deltaY,
-                {translate} = store.getState().present;
+                {translate} = store.getState().present.resize;
 
           this.x = this.y = 0;
           store.dispatch({ type: 'EDITOR_TRANSLATE', data: { x: translate.x + x, y: translate.y + y } })
@@ -50,33 +50,32 @@ require('./curve');
     });
 
     this.getStyle = () => {
-      const state = store.getState().present;
-      let {tempResize_top} = state;
-      let {tempResize_bottom} = state;
-      let {tempResize_right} = state;
+      const state = store.getState().present.resize;
+      let {temp_top} = state;
+      let {temp_bottom} = state;
+      let {temp_right} = state;
 
-      tempResize_top += state.resize_top;
-      tempResize_bottom += state.resize_bottom;
-      tempResize_right += state.resize_right;
+      temp_top += state.top;
+      temp_bottom += state.bottom;
+      temp_right += state.right;
 
       const X_SIZE = 411;
       const Y_SIZE = 378;
 
       // constrain min height
-      if (Y_SIZE - tempResize_top < Y_SIZE) { tempResize_top = 0; }
-      if (Y_SIZE + tempResize_bottom < Y_SIZE) { tempResize_bottom = 0; }
-      if (X_SIZE + tempResize_right < X_SIZE) { tempResize_right = 0; }
+      if (Y_SIZE - temp_top < Y_SIZE) { temp_top = 0; }
+      if (Y_SIZE + temp_bottom < Y_SIZE) { temp_bottom = 0; }
+      if (X_SIZE + temp_right < X_SIZE) { temp_right = 0; }
       
-      tempResize_top    = mod( tempResize_top, -1 );
-      tempResize_bottom = mod( tempResize_bottom );
-      // tempResize_right  = mod( tempResize_right );
+      temp_top    = mod( temp_top, -1 );
+      temp_bottom = mod( temp_bottom );
 
       const {translate} = state,
-            height = `height: ${Y_SIZE - tempResize_top + tempResize_bottom}px`,
-            width  = `width: ${X_SIZE + tempResize_right}px`,
+            height = `height: ${Y_SIZE - temp_top + temp_bottom}px`,
+            width  = `width: ${X_SIZE + temp_right}px`,
             x = (this.x || 0) + translate.x,
             y = (this.y || 0) + translate.y,
-            transform = `transform: translate(${x}px, ${y + tempResize_top}px)`;
+            transform = `transform: translate(${x}px, ${y + temp_top}px)`;
 
       return `${mojs.h.prefix.css}${transform}; ${transform}; ${width}; ${height};`;
     }

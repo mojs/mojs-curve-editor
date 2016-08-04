@@ -1,1 +1,0 @@
-webpackHotUpdatemojs_curve_editor(0,{82:function(s,i,t){(function(s){s.tag2("resize-handle",'<icon shape="ellipsis"></icon>',"",'class="{}"',function(s){"use strict";this.CLASSES=t(85),this.applyClass=this.CLASSES["resize-handle"]+" "+(s.adc||""),this.applyClass=this.applyClass+" "+CLASSES[this.opts.type],t(83),t(50)})}).call(i,t(2))}});
