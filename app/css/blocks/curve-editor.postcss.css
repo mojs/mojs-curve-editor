@@ -19,7 +19,7 @@
     left:         0;
     top:          0;
     bottom:       0;
-    padding:      calc( $gap * $PX );
+    padding:      calc( 11 * $PX ) calc( 10 * $PX );
   }
 
   &__right {
