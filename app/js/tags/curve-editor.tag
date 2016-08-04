@@ -16,10 +16,6 @@ require('./curve');
     </a>
   </div>
 
-<<<<<<< HEAD
-  <curve adc={this.CLASSES['curve-editor__right']} />
-
-=======
   <div class={this.CLASSES['curve-editor__right']}>
     <curve />
     <resize-handle type="top"></resize-handle>
@@ -27,7 +23,6 @@ require('./curve');
     <resize-handle type="bottom"></resize-handle>
   </div>
   
->>>>>>> 160ef2ef7c5f203d6f474a73062d6f86e7069387
   <script type="babel">
     require('../../css/blocks/curve-editor');
     this.CLASSES = require('../../css/blocks/curve-editor.postcss.css.json');
