@@ -10,7 +10,13 @@ require('./curve');
 
   <div class={this.CLASSES['curve-editor__left']}>
     <icon-button shape="code"></icon-button>
-    <icon-divider shape="divider"></icon-divider>
+    <icon-divider />
+    <div class={this.CLASSES['curve-editor__anchor-buttons']}>
+      <icon-button shape="point-straight"></icon-button>
+      <icon-button shape="point-mirrored"></icon-button>
+      <icon-button shape="point-disconnected"></icon-button>
+      <icon-button shape="point-asymmetric"></icon-button>
+    </div>
     <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class={this.CLASSES['curve-editor__mojs-logo']}>
       <icon shape="mojs-logo" />
     </a>
@@ -22,7 +28,7 @@ require('./curve');
     <resize-handle type="right"></resize-handle>
     <resize-handle type="bottom"></resize-handle>
   </div>
-  
+
   <script type="babel">
     require('../../css/blocks/curve-editor');
     this.CLASSES = require('../../css/blocks/curve-editor.postcss.css.json');
@@ -80,7 +86,7 @@ require('./curve');
       if (Y_SIZE - temp_top < Y_SIZE) { temp_top = 0; }
       if (Y_SIZE + temp_bottom < Y_SIZE) { temp_bottom = 0; }
       if (X_SIZE + temp_right < X_SIZE) { temp_right = 0; }
-      
+
       temp_top    = mod( temp_top, -1 );
       temp_bottom = mod( temp_bottom );
 

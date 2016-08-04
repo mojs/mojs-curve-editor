@@ -9,7 +9,7 @@
   background:       $c-purple;
   border-radius:    calc( 3*$PX );
   box-shadow:       calc( 1*$PX ) calc( 1*$PX ) 0 rgba(0,0,0,.15);
-  
+
   & icon {
     position:     absolute;
     left:         50%;
