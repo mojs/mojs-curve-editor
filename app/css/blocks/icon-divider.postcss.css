@@ -4,9 +4,8 @@
   position:         relative;
   margin:           0 auto;
   width:            calc( 16*$PX );
-  height:           calc( 2*$PX );
+  height:           calc( 1*$PX );
   display:          block;
   background:       rgba(255,255,255,.3);
-  border-radius:    calc( 3*$PX );
-  box-shadow:       0px calc( 2*$PX ) 0 rgba(0,0,0,.3);
+  box-shadow:       0px calc( 1*$PX ) 0 rgba(0,0,0,.3);
 }
