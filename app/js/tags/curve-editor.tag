@@ -11,6 +11,12 @@ require('./curve');
   <div class={this.CLASSES['curve-editor__left']}>
     <icon-button shape="code"></icon-button>
     <icon-divider shape="divider"></icon-divider>
+    <div class={this.CLASSES['curve-editor__anchor-button']}>
+      <icon-button shape="point-straight"></icon-button>
+      <icon-button shape="point-mirrored"></icon-button>
+      <icon-button shape="point-disconnected"></icon-button>
+      <icon-button shape="point-asymmetric"></icon-button>
+    </div>
     <a href="https://github.com/legomushroom/mojs-curve-editor&quot; target="_blank" class={this.CLASSES['curve-editor__mojs-logo']}>
       <icon shape="mojs-logo" />
     </a>

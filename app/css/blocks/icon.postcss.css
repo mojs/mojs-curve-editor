@@ -9,7 +9,7 @@ $size: 32;
   cursor:       pointer;
   fill:         white;
   display:      block;
-  
+
   & > svg {
     position:   absolute;
     left:       0;
@@ -31,6 +31,5 @@ $size: 32;
     bottom:     0;
     z-index:    1;
   }
-  
-}
 
+}

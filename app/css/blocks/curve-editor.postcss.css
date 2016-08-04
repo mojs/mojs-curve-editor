@@ -13,7 +13,7 @@
   background:     rgba( 58, 8, 58, .85 );
   z-index:        100;
   box-shadow:     2px 2px 2px rgba(0,0,0,.38);
-  
+
   $gap : 10;
   &__left {
     position:     absolute;
@@ -30,12 +30,12 @@
     top:            0;
     right:          0;
     bottom:         0;
-    
+
     $radius: 16;
     $leftPanel: 42;
     & resize-handle {
       position:       absolute;
-      
+
       &[type="top"] {
         top:          calc( -$radius*$PX );
       }
@@ -59,13 +59,21 @@
     }
   }
 
+  &__anchor-button {
+    margin-top: 20px;
+
+    & icon-button {
+      margin-bottom: 5px;
+    }
+  }
+
   &__mojs-logo {
     position:     absolute;
     bottom:       calc( 1.7 * $gap * $PX );
     left:         50%;
     margin-left:  calc( 1 * $PX );
     transform:    translateX(-50%);
-    
+
     & icon {
       fill:       $c-orange;
       width:      calc( 12*$PX );
@@ -73,4 +81,3 @@
     }
   }
 }
-
