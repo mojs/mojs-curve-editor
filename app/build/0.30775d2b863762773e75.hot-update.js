@@ -1,1 +1,0 @@
-webpackHotUpdatemojs_curve_editor(0,{78:function(c,t,o){(function(c){c.tag2("curve",'<svg viewbox="0 0 100 100"> </svg>',"","class=\"{this.CLASSES['curve'] + ' ' + (opts.adc || '')}\"",function(c){this.CLASSES=o(81),o(79)})}).call(t,o(2))}});

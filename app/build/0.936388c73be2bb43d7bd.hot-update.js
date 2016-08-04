@@ -1,1 +1,0 @@
-webpackHotUpdatemojs_curve_editor(0,{81:function(_,e){_.exports={curve:"_curve_1ifpm_5",curve__svg:"_curve__svg_1ifpm_1"}}});

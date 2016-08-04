@@ -1,1 +1,0 @@
-webpackHotUpdatemojs_curve_editor(0,{84:function(e,t,i){t=e.exports=i(45)(),t.push([e.id,"._resize-handle_tiwgr_4{background:cyan;width:20px;height:20px}",""])}});

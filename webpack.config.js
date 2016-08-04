@@ -7,8 +7,8 @@ module.exports = {
   watch:   true,
   context: __dirname + "/",
   entry: [
-    __dirname + '/app/js/app.babel.js',
-    'webpack/hot/dev-server',
+    __dirname + '/app/js/app.babel.js'
+    // 'webpack/hot/dev-server',
   ],
   module: {
     loaders: [

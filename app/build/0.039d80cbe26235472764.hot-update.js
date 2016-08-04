@@ -1,1 +1,0 @@
-webpackHotUpdatemojs_curve_editor(0,{84:function(e,i,d){i=e.exports=d(45)(),i.push([e.id,"._resize-handle_kus97_4{background:cyan;width:20px;height:20px;display:block}",""])},85:function(e,i){e.exports={"resize-handle":"_resize-handle_1r28c_4"}}});

@@ -1,1 +1,0 @@
-webpackHotUpdatemojs_curve_editor(0,{82:function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=358,a=function(e){var t=arguments.length<=1||void 0===arguments[1]?1:arguments[1],a=Math.abs(e%r),n=parseInt(e/r),o=15;return a<o?e=n*r:a>r-o&&(e=t*(n+1)*r),e};t["default"]=a}});
