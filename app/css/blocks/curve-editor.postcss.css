@@ -3,11 +3,12 @@
 
 .curve-editor {
   position:       fixed;
-  right:          0;
+  left:          0;
+  /*right:          0;*/
   top:            0;
   /*top:            calc( 30 * $PX );*/
   width:          calc( 411 * $PX );
-  height:         calc( 378 * $PX );
+  height:         calc( 398 * $PX );
   border-radius:  calc( 12 * $PX );
   background:     rgba( 58, 8, 58, .85 );
   z-index:        100;
@@ -26,13 +27,36 @@
   &__right {
     position:       absolute;
     left:           calc( 43 * $PX );
-    right:          calc( $gap * $PX );
-    top:            calc( $gap * $PX );
-    bottom:         calc( $gap * $PX );
-    border-radius:  calc( 2 * $PX );
-    background:     rgba( 58, 8, 58, .75 );
-    border:         1px solid #B3A0B2;
-    box-shadow:     inset 4px 4px 0 rgba(0,0,0,0.5);
+    top:            0;
+    right:          0;
+    bottom:         0;
+    
+    $radius: 16;
+    $leftPanel: 42;
+    & resize-handle {
+      position:       absolute;
+      
+      &[type="top"] {
+        top:          calc( -$radius*$PX );
+      }
+
+      &[type="bottom"] {
+        bottom:       0;
+      }
+
+      &[type="top"],
+      &[type="bottom"] {
+        left:         50%;
+        margin-left:  calc( (-$radius - $gap/2)*$PX );
+      }
+
+      &[type="right"] {
+        right:        calc( -$radius*$PX );
+        top:          50%;
+        margin-top:   calc( -$radius*$PX );
+      }
+
+    }
   }
 
   &__mojs-logo {
@@ -47,32 +71,6 @@
       width:      calc( 12*$PX );
       height:     calc( 12*$PX );
     }
-  }
-  
-  $radius: 16;
-  & resize-handle {
-    position:       absolute;
-    
-    &[type="top"] {
-      top:          calc( -$radius*$PX );
-    }
-
-    &[type="bottom"] {
-      bottom:       0;
-    }
-
-    &[type="top"],
-    &[type="bottom"] {
-      left:         50%;
-      margin-left:  calc( -$radius*$PX );
-    }
-
-    &[type="right"] {
-      right:        calc( -$radius*$PX );
-      top:          50%;
-      margin-top:   calc( -$radius*$PX );
-    }
-
   }
 }
 

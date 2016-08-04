@@ -1,6 +1,5 @@
 
-<curve class={ this.CLASSES['curve'] + ' ' + (opts.adc || '')  } style={this.getStyle()}>
-
+<curve class={ this.CLASSES['curve']} style={this.getStyle()}>
   <div style={this.getSvgStyle()}>
     <svg  width="358" height="358" viewBox="0 0 100 100"
           class={ this.CLASSES['curve__svg'] }>
@@ -13,6 +12,7 @@
     require('../../css/blocks/curve');
 
     import store from '../store';
+    import mod from '../helpers/resize-mod';
 
     store.subscribe(this.update.bind(this));
 
@@ -20,31 +20,26 @@
       const state = store.getState().present;
       let {tempResize_top} = state;
 
-      if (358 - tempResize_top < 358) { tempResize_top = 0; }
+      tempResize_top += state.resize_top;
 
-      const mod = Math.abs(tempResize_top % 358);
-      const div = parseInt(tempResize_top / 358);
-      if (mod < 15 ) { tempResize_top = div*358; }
-      else if ( mod > 358 - 15 ) { tempResize_top = -(div+1)*358; }
+      if (358 - tempResize_top < 358) { tempResize_top = 0; }
+      tempResize_top = mod( tempResize_top, -1 );
 
       const transform = `transform: translate(0px, ${-tempResize_top}px)`;
 
-      return `${transform}; ${transform};`;
-      // return `${mojs.h.prefix.css}${transform}; ${transform};`;
+      return `${mojs.h.prefix.css}${transform}; ${transform};`;
     }
 
     this.getStyle = () => {
       const state = store.getState().present;
       let {tempResize_top} = state;
 
+      tempResize_top += state.resize_top;
+
       if (358 - tempResize_top < 358) { tempResize_top = 0; }
+      tempResize_top = mod( tempResize_top, -1 );
 
-      const mod = Math.abs(tempResize_top % 358);
-      const div = parseInt(tempResize_top / 358);
-      if (mod < 15 ) { tempResize_top = div*358; }
-      else if ( mod > 358 - 15 ) { tempResize_top = -(div+1)*358; }
-
-      const background = `background-position: 0 ${-tempResize_top}px`;
+      const background = `background-position: 0 ${-tempResize_top - 1}px`;
 
       return `${background};`;
     }
