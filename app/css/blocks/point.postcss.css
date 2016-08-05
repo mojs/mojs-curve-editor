@@ -9,10 +9,11 @@ $size: 10;
   margin-left:    calc( -$size/2 * $PX );
   margin-top:     calc( -$size/2 * $PX );
   cursor:         move;
-  background:     #FFF;
+  background:     $c-white;
   border-radius:  50%;
   z-index:        3;
   box-shadow:     calc(3*$PX) calc(3*$PX) 0 rgba(0,0,0,.5);
+  border:         calc( 2*$PX ) solid $c-white;
   
   &:after {
     content:      '';
@@ -25,9 +26,31 @@ $size: 10;
     margin-top:   calc( -$size*$PX );
   }
 
+  $size: 6;
+  little-handle {
+    position:     absolute;
+    left:         50%;
+    top:          50%;
+    margin-left:  calc( -($size/2)*$PX );
+    margin-top:   calc( -($size/2)*$PX );
+    /*display:      none;*/
+  }
+
   &:hover,
   &.is-selected {
-    border:       calc( 2*$PX ) solid #8C6D8B;
+    border-color: #8C6D8B;
+  }
+
+  &.is-selected {
+    & little-handle {
+      display:    block;
+    }
+  }
+
+  &.is-hide-handles {
+    & little-handle {
+      display:    none;
+    } 
   }
 }
 

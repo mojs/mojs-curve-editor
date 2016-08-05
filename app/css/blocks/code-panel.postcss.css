@@ -9,7 +9,7 @@
   margin:         0 auto;
   border-radius:  calc( 6 * $PX ) calc( 6 * $PX ) 0 0;
   background:     rgba( 61, 27, 60, 1 );
-  z-index:        3;
+  z-index:        1;
 
   &__input-wrapp {
     width:          381px;

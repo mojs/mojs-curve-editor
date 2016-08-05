@@ -1,19 +1,30 @@
+require('./little-handle');
+
 <point class={this.getClass()} style={this.getStyle()}>
+
+  <little-handle each={this.handles} />
 
   <script type="babel">
     this.CLASSES = require('../../css/blocks/point.postcss.css.json');
     require('../../css/blocks/point');
 
     import store from '../store';
-    store.subscribe(this.update.bind(this));
     const {clamp} = mojs.h;
 
+    this.getHandles = () => {
+      this.handles = [this.point.handle1, this.point.handle2];
+    }
+    
+    this.getHandles();
+    store.subscribe(() => { this.getHandles(); this.update(); });
 
     this.getClass = () => {
       const isSelected = (this.point.isSelected)
                               ? this.CLASSES['is-selected'] : '';
+      const isHideHandles = (this.point.type === 'straight')
+                              ? this.CLASSES['is-hide-handles'] : '';
 
-      return `${this.CLASSES['point']} ${isSelected}`;
+      return `${this.CLASSES['point']} ${isSelected} ${isHideHandles}`;
     }
 
     this.getStyle = () => {

@@ -9,11 +9,6 @@ require('./icon-button');
     on-tap={ parent.onButtonTap.bind(this) }
   />
 
-  <!-- <icon-button shape="point-straight"></icon-button>
-  <icon-button shape="point-mirrored"></icon-button>
-  <icon-button shape="point-disconnected"></icon-button>
-  <icon-button shape="point-asymmetric"></icon-button> -->
-
   <script type="babel">
     require('../../css/blocks/point-controls');
     const CLASSES = require('../../css/blocks/point-controls.postcss.css.json');
@@ -28,7 +23,7 @@ require('./icon-button');
         'disconnected': false,
         'asymmetric':   false,
       }
-      this.buttons[state.type] = true;
+      this.buttons[state.type || 'straight'] = true;
     }
 
     this.getClass = () => {

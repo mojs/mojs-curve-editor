@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ae2a7386cedcd40b60d0"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "beedde8670b73117e350"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -3909,6 +3909,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      data: { x: x, y: y, index: index },
 	      isRecord: true
 	    });
+	
+	    _store2.default.dispatch({
+	      type: 'POINT_SELECT',
+	      data: { index: index }
+	    });
+	
+	    e.stopPropagation();
 	  });
 	});
 	});
@@ -3919,7 +3926,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('point', '', '', 'class="{this.getClass()}" riot-style="{this.getStyle()}"', function(opts) {
+	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(135);
+	
+	riot.tag2('point', '<little-handle each="{this.handles}"></little-handle>', '', 'class="{this.getClass()}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -3945,13 +3954,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	this.CLASSES = __webpack_require__(104);
 	__webpack_require__(105);
 	
-	_store2.default.subscribe(this.update.bind(this));
 	var clamp = mojs.h.clamp;
+	
+	this.getHandles = function () {
+	  _this.handles = [_this.point.handle1, _this.point.handle2];
+	};
+	
+	this.getHandles();
+	_store2.default.subscribe(function () {
+	  _this.getHandles();_this.update();
+	});
 	
 	this.getClass = function () {
 	  var isSelected = _this.point.isSelected ? _this.CLASSES['is-selected'] : '';
+	  var isHideHandles = _this.point.type === 'straight' ? _this.CLASSES['is-hide-handles'] : '';
 	
-	  return _this.CLASSES['point'] + ' ' + isSelected;
+	  return _this.CLASSES['point'] + ' ' + isSelected + ' ' + isHideHandles;
 	};
 	
 	this.getStyle = function () {
@@ -6778,8 +6796,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    type: fallback(o.type, 'straight')
 	  }, makePositionPoint(o), {
 	    // add curve handles
-	    handle1: makePositionPoint(o.handle1),
-	    handle2: makePositionPoint(o.handle2)
+	    handle1: makePositionPoint(o.handle1 || { x: -25, y: -25 }),
+	    handle2: makePositionPoint(o.handle2 || { x: 25, y: -25 })
 	  });
 	};
 	
@@ -6811,6 +6829,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var action = arguments[1];
 	
 	  switch (action.type) {
+	    // probably redundant
+	    // case 'POINT_ADD': {
+	    //   return { ...state, isShow: true, type: 'straight' };
+	    // }
 	    case 'POINT_SELECT':
 	      {
 	        return (0, _extends3.default)({}, state, { isShow: !action.isDeselect, type: action.data.type });
@@ -9750,8 +9772,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"point": "_point_1bj5r_5",
-		"is-selected": "_is-selected_1bj5r_29"
+		"point": "_point_eogtk_5",
+		"is-selected": "_is-selected_eogtk_40",
+		"is-hide-handles": "_is-hide-handles_eogtk_50"
 	};
 
 /***/ },
@@ -9789,7 +9812,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._point_1bj5r_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5)}._point_1bj5r_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_1bj5r_5._is-selected_1bj5r_29,._point_1bj5r_5:hover{border:2px solid #8c6d8b}", ""]);
+	exports.push([module.id, "._point_eogtk_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5);border:2px solid #fff}._point_eogtk_5 little-handle{position:absolute;left:50%;top:50%;margin-left:-3px;margin-top:-3px}._point_eogtk_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_eogtk_5._is-selected_eogtk_40,._point_eogtk_5:hover{border-color:#8c6d8b}._point_eogtk_5._is-selected_eogtk_40 little-handle{display:block}._point_eogtk_5._is-hide-handles_eogtk_50 little-handle{display:none}", ""]);
 	
 	// exports
 
@@ -9799,10 +9822,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve": "_curve_15852_5",
-		"curve__svg-wrapper": "_curve__svg-wrapper_15852_1",
-		"curve__svg": "_curve__svg_15852_1",
-		"curve__svg-segment": "_curve__svg-segment_15852_1"
+		"curve": "_curve_1jj2s_5",
+		"curve__svg-wrapper": "_curve__svg-wrapper_1jj2s_1",
+		"curve__svg": "_curve__svg_1jj2s_1",
+		"curve__svg-segment": "_curve__svg-segment_1jj2s_1"
 	};
 
 /***/ },
@@ -9840,7 +9863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve_15852_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve__svg-wrapper_15852_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_15852_1{display:block;overflow:visible;width:100%}._curve__svg-segment_15852_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_15852_1:hover{stroke:#ff512f}", ""]);
+	exports.push([module.id, "._curve_1jj2s_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2}._curve__svg-wrapper_1jj2s_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_1jj2s_1{display:block;overflow:visible;width:100%}._curve__svg-segment_1jj2s_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_1jj2s_1:hover{stroke:#ff512f}", ""]);
 	
 	// exports
 
@@ -9863,9 +9886,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"code-panel": "_code-panel_1viyz_3",
-		"code-panel__input-wrapp": "_code-panel__input-wrapp_1viyz_1",
-		"code-panel__input-field": "_code-panel__input-field_1viyz_1"
+		"code-panel": "_code-panel_1pe78_3",
+		"code-panel__input-wrapp": "_code-panel__input-wrapp_1pe78_1",
+		"code-panel__input-field": "_code-panel__input-field_1pe78_1"
 	};
 
 /***/ },
@@ -9903,7 +9926,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._code-panel_1viyz_3{position:absolute;left:10px;top:-32px;width:391px;height:32px;margin:0 auto;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:3}._code-panel__input-wrapp_1viyz_1{width:381px;height:23px;margin:5px;border-radius:2px;background:#3a083a;border:1px solid #b3a0b2;box-shadow:inset 3px 3px 0 rgba(0,0,0,.5)}._code-panel__input-field_1viyz_1{display:block;background:transparent;color:#fff;padding:.4em;border:none;width:100%}", ""]);
+	exports.push([module.id, "._code-panel_1pe78_3{position:absolute;left:10px;top:-32px;width:391px;height:32px;margin:0 auto;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:1}._code-panel__input-wrapp_1pe78_1{width:381px;height:23px;margin:5px;border-radius:2px;background:#3a083a;border:1px solid #b3a0b2;box-shadow:inset 3px 3px 0 rgba(0,0,0,.5)}._code-panel__input-field_1pe78_1{display:block;background:transparent;color:#fff;padding:.4em;border:none;width:100%}", ""]);
 	
 	// exports
 
@@ -10183,7 +10206,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'disconnected': false,
 	    'asymmetric': false
 	  };
-	  _this.buttons[state.type] = true;
+	  _this.buttons[state.type || 'straight'] = true;
 	};
 	
 	this.getClass = function () {
@@ -10344,6 +10367,82 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	// exports
 
+
+/***/ },
+/* 135 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(riot) {
+	riot.tag2('little-handle', '', '', 'class="{this.CLASSES[\'little-handle\']}" riot-style="{this.getStyle()}"', function(opts) {
+	'use strict';
+	
+	var _this = this;
+	
+	this.CLASSES = __webpack_require__(138);
+	__webpack_require__(136);
+	
+	this.getStyle = function () {
+	  // const {resize}  = store.getState(),
+	  //       x         = clamp(this.point.x + this.point.tempX, 0, 100),
+	  //       cleanX    = x * resize.scalerX;
+	
+	  // let y = this.point.y + this.point.tempY;
+	  var x = _this.x + _this.tempX,
+	      y = _this.y + _this.tempY;
+	
+	  var translate = 'transform: translate(' + x + 'px, ' + y + 'px)';
+	  return '' + mojs.h.prefix.css + translate + '; ' + translate;
+	};
+	});
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
+/* 136 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(137);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(11)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(137, function() {
+				var newContent = __webpack_require__(137);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 137 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(10)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "._little-handle_xdcpx_3{width:6px;height:6px;background:#ff512f;position:absolute}._little-handle_xdcpx_3:after{content:'';position:absolute;width:200%;height:200%;left:50%;top:50%;margin-left:-100%;margin-top:-100%}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 138 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"little-handle": "_little-handle_xdcpx_3"
+	};
 
 /***/ }
 /******/ ])

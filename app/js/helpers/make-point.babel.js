@@ -30,8 +30,8 @@ const makePoint = (o = {}) => {
     // add position attributes to self
     ...makePositionPoint(o),
     // add curve handles
-    handle1: makePositionPoint(o.handle1),
-    handle2: makePositionPoint(o.handle2)
+    handle1: makePositionPoint(o.handle1 || { x: -25, y: -25 }),
+    handle2: makePositionPoint(o.handle2 || { x:  25, y: -25 })
   };
 }
 

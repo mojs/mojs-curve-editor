@@ -6,6 +6,10 @@ const INITIAL_STATE = {
 
 const pointControls = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    // probably redundant
+    // case 'POINT_ADD': {
+    //   return { ...state, isShow: true, type: 'straight' };
+    // }
     case 'POINT_SELECT': {
       return { ...state, isShow: !action.isDeselect, type: action.data.type };
     }

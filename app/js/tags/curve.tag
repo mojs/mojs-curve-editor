@@ -134,6 +134,13 @@ require('./point');
             isRecord: true
           });
 
+          store.dispatch({
+            type: 'POINT_SELECT',
+            data: { index }
+          });
+
+          e.stopPropagation();
+
         });
     });
 
