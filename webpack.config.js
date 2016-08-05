@@ -48,7 +48,8 @@ module.exports = {
     publicPath:     'build/',
     library:        'mojs-curve-editor',
     libraryTarget:  'umd',
-    umdNamedDefine: true
+    umdNamedDefine: true,
+    hotUpdateChunkFilename: "[id].hot-update.js"
   },
   plugins: [
     new webpack.ProvidePlugin({
