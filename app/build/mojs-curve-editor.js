@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "301c05a8874473dc6e0d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "27a528a1644cce316c38"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -610,7 +610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(120);
+	__webpack_require__(128);
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  // riot.mount('*',{ store: store })
@@ -3285,10 +3285,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(101);
 	__webpack_require__(102);
 	__webpack_require__(104);
-	__webpack_require__(122);
 	__webpack_require__(108);
+	__webpack_require__(112);
+	__webpack_require__(116);
 	
-	riot.tag2('curve-editor', '<icons></icons> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code"></icon-button> <icon-divider></icon-divider> <div class="{this.CLASSES[\'curve-editor__anchor-buttons\']}"> <icon-button shape="point-straight"></icon-button> <icon-button shape="point-mirrored"></icon-button> <icon-button shape="point-disconnected"></icon-button> <icon-button shape="point-asymmetric"></icon-button> </div> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <div class="{this.CLASSES[\'curve-editor__right\']}"> <curve></curve> <resize-handle type="top"></resize-handle> <resize-handle type="right"></resize-handle> <resize-handle type="bottom"></resize-handle> </div>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
+	riot.tag2('curve-editor', '<icons></icons> <code-panel></code-panel> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code"></icon-button> <icon-divider></icon-divider> <div class="{this.CLASSES[\'curve-editor__anchor-buttons\']}"> <icon-button shape="point-straight"></icon-button> <icon-button shape="point-mirrored"></icon-button> <icon-button shape="point-disconnected"></icon-button> <icon-button shape="point-asymmetric"></icon-button> </div> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <div class="{this.CLASSES[\'curve-editor__right\']}"> <curve></curve> <resize-handle type="top"></resize-handle> <resize-handle type="right"></resize-handle> <resize-handle type="bottom"></resize-handle> </div>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -3301,16 +3302,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
-	var _resizeMod = __webpack_require__(110);
+	var _resizeMod = __webpack_require__(118);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
-	var _reduxUndo = __webpack_require__(22);
+	var _reduxUndo = __webpack_require__(23);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(117);
-	this.CLASSES = __webpack_require__(119);
+	__webpack_require__(125);
+	this.CLASSES = __webpack_require__(127);
 	
 	var _opts = opts;
 	var store = _opts.store;
@@ -3453,7 +3454,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _redux = __webpack_require__(7);
 	
-	var _indexReducer = __webpack_require__(23);
+	var _indexReducer = __webpack_require__(22);
 	
 	var _indexReducer2 = _interopRequireDefault(_indexReducer);
 	
@@ -3520,7 +3521,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	// shim for using process in browser
-	
 	var process = module.exports = {};
 	
 	// cached from whatever global is present so that test runners that stub it
@@ -3532,21 +3532,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cachedClearTimeout;
 	
 	(function () {
-	  try {
-	    cachedSetTimeout = setTimeout;
-	  } catch (e) {
-	    cachedSetTimeout = function () {
-	      throw new Error('setTimeout is not defined');
+	    try {
+	        cachedSetTimeout = setTimeout;
+	    } catch (e) {
+	        cachedSetTimeout = function () {
+	            throw new Error('setTimeout is not defined');
+	        }
 	    }
-	  }
-	  try {
-	    cachedClearTimeout = clearTimeout;
-	  } catch (e) {
-	    cachedClearTimeout = function () {
-	      throw new Error('clearTimeout is not defined');
+	    try {
+	        cachedClearTimeout = clearTimeout;
+	    } catch (e) {
+	        cachedClearTimeout = function () {
+	            throw new Error('clearTimeout is not defined');
+	        }
 	    }
-	  }
 	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        return setTimeout(fun, 0);
+	    } else {
+	        return cachedSetTimeout.call(null, fun, 0);
+	    }
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        clearTimeout(marker);
+	    } else {
+	        cachedClearTimeout.call(null, marker);
+	    }
+	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -3571,7 +3585,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = cachedSetTimeout.call(null, cleanUpNextTick);
+	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -3588,7 +3602,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    cachedClearTimeout.call(null, timeout);
+	    runClearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -3600,7 +3614,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        cachedSetTimeout.call(null, drainQueue, 0);
+	        runTimeout(drainQueue);
 	    }
 	};
 	
@@ -4451,6 +4465,46 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _redux = __webpack_require__(7);
+	
+	var _reduxUndo = __webpack_require__(23);
+	
+	var _reduxUndo2 = _interopRequireDefault(_reduxUndo);
+	
+	var _resizeReducer = __webpack_require__(24);
+	
+	var _resizeReducer2 = _interopRequireDefault(_resizeReducer);
+	
+	var _pointsReducer = __webpack_require__(67);
+	
+	var _pointsReducer2 = _interopRequireDefault(_pointsReducer);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// Redux utility functions
+	var reducer = (0, _redux.combineReducers)({
+	  resize: _resizeReducer2.default,
+	  points: (0, _reduxUndo2.default)(_pointsReducer2.default, {
+	    limit: 10,
+	    filter: function filterActions(action, currState, history) {
+	      return action.isRecord; // only add to history if isRecord set on action
+	    },
+	    debug: false
+	  })
+	});
+	// redux-undo higher-order reducer
+	exports.default = reducer;
+
+/***/ },
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4798,46 +4852,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	// /excludeAction
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _redux = __webpack_require__(7);
-	
-	var _reduxUndo = __webpack_require__(22);
-	
-	var _reduxUndo2 = _interopRequireDefault(_reduxUndo);
-	
-	var _resizeReducer = __webpack_require__(24);
-	
-	var _resizeReducer2 = _interopRequireDefault(_resizeReducer);
-	
-	var _pointsReducer = __webpack_require__(67);
-	
-	var _pointsReducer2 = _interopRequireDefault(_pointsReducer);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// Redux utility functions
-	var reducer = (0, _redux.combineReducers)({
-	  resize: _resizeReducer2.default,
-	  points: (0, _reduxUndo2.default)(_pointsReducer2.default, {
-	    limit: 10,
-	    filter: function filterActions(action, currState, history) {
-	      return action.isRecord; // only add to history if isRecord set on action
-	    },
-	    debug: false
-	  })
-	});
-	// redux-undo higher-order reducer
-	exports.default = reducer;
 
 /***/ },
 /* 24 */
@@ -9417,9 +9431,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(102);
+	/* WEBPACK VAR INJECTION */(function(riot) {
 	
-	riot.tag2('icon-button', '<icon shape="{opts.shape}"></icon>', '', 'class="{this.CLASSES[\'icon-button\']}"', function(opts) {
+	riot.tag2('code-panel', '<div class="{this.CLASSES[\'code-panel__input-wrapp\']}"> <input class="{this.CLASSES[\'code-panel__input-field\']}" type="text" readonly="readonly"> </div>', '', 'class="{this.CLASSES[\'code-panel\']}"', function(opts) {
 	    this.CLASSES = __webpack_require__(105);
 	    __webpack_require__(106);
 	});
@@ -9431,8 +9445,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"icon-button": "_icon-button_2gmay_4",
-		"is-checked": "_is-checked_2gmay_31"
+		"code-panel": "_code-panel_1jdzk_3",
+		"code-panel__input-wrapp": "_code-panel__input-wrapp_1jdzk_1",
+		"code-panel__input-field": "_code-panel__input-field_1jdzk_1"
 	};
 
 /***/ },
@@ -9470,7 +9485,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._icon-button_2gmay_4{position:relative;width:24px;height:24px;display:block;background:#3a0839;border-radius:3px;box-shadow:1px 1px 0 rgba(0,0,0,.15)}._icon-button_2gmay_4 icon{position:absolute;left:50%;top:50%;width:100%;height:100%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}._icon-button_2gmay_4:hover{box-shadow:none}._icon-button_2gmay_4:hover icon{-webkit-transform:translate(-52%,-52%);transform:translate(-52%,-52%)}._icon-button_2gmay_4._is-checked_2gmay_31,._icon-button_2gmay_4:active{border-radius:3px;box-shadow:inset -1px -1px 0 hsla(0,0%,100%,.25),inset 1px 1px 1px rgba(0,0,0,.4)}._icon-button_2gmay_4._is-checked_2gmay_31 icon,._icon-button_2gmay_4:active icon{-webkit-transform:translate(-54%,-54%) scale(.95);transform:translate(-54%,-54%) scale(.95)}", ""]);
+	exports.push([module.id, "._code-panel_1jdzk_3{position:absolute;left:10px;top:-32px;width:391px;height:32px;margin:0 auto;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:3}._code-panel__input-wrapp_1jdzk_1{width:381px;height:23px;margin:5px;border-radius:2px;background:#3a083a;border:1px solid #b3a0b2;box-shadow:inset 3px 3px 0 rgba(0,0,0,.5)}._code-panel__input-field_1jdzk_1{display:block;background:transparent;color:#fff;padding:.4em;border:none;width:100%}", ""]);
 	
 	// exports
 
@@ -9479,8 +9494,131 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(102);
+	
+	riot.tag2('icon-button', '<icon shape="{opts.shape}"></icon>', '', 'class="{this.CLASSES[\'icon-button\']}"', function(opts) {
+	    this.CLASSES = __webpack_require__(109);
+	    __webpack_require__(110);
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
+/* 109 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"icon-button": "_icon-button_2gmay_4",
+		"is-checked": "_is-checked_2gmay_31"
+	};
+
+/***/ },
+/* 110 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(111);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(98)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(111, function() {
+				var newContent = __webpack_require__(111);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(97)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "._icon-button_2gmay_4{position:relative;width:24px;height:24px;display:block;background:#3a0839;border-radius:3px;box-shadow:1px 1px 0 rgba(0,0,0,.15)}._icon-button_2gmay_4 icon{position:absolute;left:50%;top:50%;width:100%;height:100%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}._icon-button_2gmay_4:hover{box-shadow:none}._icon-button_2gmay_4:hover icon{-webkit-transform:translate(-52%,-52%);transform:translate(-52%,-52%)}._icon-button_2gmay_4._is-checked_2gmay_31,._icon-button_2gmay_4:active{border-radius:3px;box-shadow:inset -1px -1px 0 hsla(0,0%,100%,.25),inset 1px 1px 1px rgba(0,0,0,.4)}._icon-button_2gmay_4._is-checked_2gmay_31 icon,._icon-button_2gmay_4:active icon{-webkit-transform:translate(-54%,-54%) scale(.95);transform:translate(-54%,-54%) scale(.95)}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 112 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(102);
+	
+	riot.tag2('icon-divider', '', '', 'class="{this.CLASSES[\'icon-divider\']}"', function(opts) {
+	    this.CLASSES = __webpack_require__(113);
+	    __webpack_require__(114);
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
+/* 113 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"icon-divider": "_icon-divider_ftask_3"
+	};
+
+/***/ },
+/* 114 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(115);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(98)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(115, function() {
+				var newContent = __webpack_require__(115);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 115 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(97)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "._icon-divider_ftask_3{position:relative;margin:0 auto;width:16px;height:1px;display:block;background:hsla(0,0%,100%,.3);box-shadow:0 1px 0 rgba(0,0,0,.3)}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 116 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(riot) {
-	__webpack_require__(109);
+	__webpack_require__(117);
 	
 	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="0.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <path id="js-main-path" class="{this.CLASSES[\'curve__svg-path\']}" riot-d="{this.path}" stroke="#ffffff" stroke-width="3" vector-effect="non-scaling-stroke" fill="none"></path> <path riot-d="{this.path + \' L100,100 z\'}" stroke="none" vector-effect="non-scaling-stroke" transform="translate(.5,.5)" fill="none"></path> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
 	'use strict';
@@ -9491,14 +9629,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _resizeMod = __webpack_require__(110);
+	var _resizeMod = __webpack_require__(118);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	this.CLASSES = __webpack_require__(114);
-	__webpack_require__(115);
+	this.CLASSES = __webpack_require__(122);
+	__webpack_require__(123);
 	
 	var getPath = function getPath() {
 	  var str = '';
@@ -9564,10 +9702,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  get();_this.update();
 	});
 	});
+	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 109 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('point', '', '', 'class="{this.CLASSES[\'point\']}" riot-style="{this.getStyle()}"', function(opts) {
@@ -9587,14 +9726,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
-	var _resizeMod = __webpack_require__(110);
+	var _resizeMod = __webpack_require__(118);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	this.CLASSES = __webpack_require__(111);
-	__webpack_require__(112);
+	this.CLASSES = __webpack_require__(119);
+	__webpack_require__(120);
 	
 	_store2.default.subscribe(this.update.bind(this));
 	var clamp = mojs.h.clamp;
@@ -9687,7 +9826,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 110 */
+/* 118 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9717,154 +9856,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = mod;
 
 /***/ },
-/* 111 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"point": "_point_ubp0t_5"
-	};
-
-/***/ },
-/* 112 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(113);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(98)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(true) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept(113, function() {
-				var newContent = __webpack_require__(113);
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 113 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(97)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "._point_ubp0t_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5)}._point_ubp0t_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_ubp0t_5:hover{opacity:.85}", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 114 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"curve": "_curve_adube_5",
-		"curve__svg-wrapper": "_curve__svg-wrapper_adube_1",
-		"curve__svg": "_curve__svg_adube_1",
-		"curve__svg-path": "_curve__svg-path_adube_1"
-	};
-
-/***/ },
-/* 115 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(116);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(98)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(true) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept(116, function() {
-				var newContent = __webpack_require__(116);
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 116 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(97)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "._curve_adube_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve__svg-wrapper_adube_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_adube_1{display:block;overflow:visible;width:100%}._curve__svg-path_adube_1:hover{cursor:crosshair}", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 117 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(118);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(98)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(true) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept(118, function() {
-				var newContent = __webpack_require__(118);
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 118 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(97)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "._curve-editor_hshpo_4{position:fixed;left:0;top:0;width:411px;height:398px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_hshpo_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__left_hshpo_1 icon-divider{margin:10px auto}._curve-editor__right_hshpo_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_hshpo_1 resize-handle{position:absolute}._curve-editor__right_hshpo_1 resize-handle[type=top]{top:-16px}._curve-editor__right_hshpo_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_hshpo_1 resize-handle[type=bottom],._curve-editor__right_hshpo_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_hshpo_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_hshpo_1{margin-top:10px}._curve-editor__anchor-buttons_hshpo_1 icon-button{margin-bottom:5px}._curve-editor__mojs-logo_hshpo_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_hshpo_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
-	
-	// exports
-
-
-/***/ },
 /* 119 */
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve-editor": "_curve-editor_hshpo_4",
-		"curve-editor__left": "_curve-editor__left_hshpo_1",
-		"curve-editor__right": "_curve-editor__right_hshpo_1",
-		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_hshpo_1",
-		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_hshpo_1"
+		"point": "_point_ubp0t_5"
 	};
 
 /***/ },
@@ -9902,40 +9898,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "body,html{margin:0;padding:0;background:#fff5e4}*{box-sizing:border-box}", ""]);
+	exports.push([module.id, "._point_ubp0t_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5)}._point_ubp0t_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_ubp0t_5:hover{opacity:.85}", ""]);
 	
 	// exports
 
 
 /***/ },
 /* 122 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(102);
-	
-	riot.tag2('icon-divider', '', '', 'class="{this.CLASSES[\'icon-divider\']}"', function(opts) {
-	    this.CLASSES = __webpack_require__(123);
-	    __webpack_require__(124);
-	});
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ },
-/* 123 */
 /***/ function(module, exports) {
 
 	module.exports = {
-		"icon-divider": "_icon-divider_ftask_3"
+		"curve": "_curve_14zwe_5",
+		"curve__svg-wrapper": "_curve__svg-wrapper_14zwe_1",
+		"curve__svg": "_curve__svg_14zwe_1",
+		"curve__svg-path": "_curve__svg-path_14zwe_1"
 	};
 
 /***/ },
-/* 124 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(125);
+	var content = __webpack_require__(124);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(98)(content, {});
@@ -9944,8 +9930,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(125, function() {
-				var newContent = __webpack_require__(125);
+			module.hot.accept(124, function() {
+				var newContent = __webpack_require__(124);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9955,7 +9941,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 125 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(97)();
@@ -9963,7 +9949,99 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._icon-divider_ftask_3{position:relative;margin:0 auto;width:16px;height:1px;display:block;background:hsla(0,0%,100%,.3);box-shadow:0 1px 0 rgba(0,0,0,.3)}", ""]);
+	exports.push([module.id, "._curve_14zwe_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve__svg-wrapper_14zwe_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_14zwe_1{display:block;overflow:visible;width:100%}._curve__svg-path_14zwe_1:hover{cursor:crosshair}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 125 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(126);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(98)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(126, function() {
+				var newContent = __webpack_require__(126);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 126 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(97)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "._curve-editor_dzxd1_4{position:fixed;left:0;top:0;width:411px;height:398px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_dzxd1_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__left_dzxd1_1 icon-divider{margin:10px auto}._curve-editor__right_dzxd1_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_dzxd1_1 resize-handle{position:absolute}._curve-editor__right_dzxd1_1 resize-handle[type=top]{top:-16px}._curve-editor__right_dzxd1_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_dzxd1_1 resize-handle[type=bottom],._curve-editor__right_dzxd1_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_dzxd1_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_dzxd1_1{margin-top:10px}._curve-editor__anchor-buttons_dzxd1_1 icon-button{margin-bottom:5px}._curve-editor__mojs-logo_dzxd1_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_dzxd1_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 127 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"curve-editor": "_curve-editor_dzxd1_4",
+		"curve-editor__left": "_curve-editor__left_dzxd1_1",
+		"curve-editor__right": "_curve-editor__right_dzxd1_1",
+		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_dzxd1_1",
+		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_dzxd1_1"
+	};
+
+/***/ },
+/* 128 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(129);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(98)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(129, function() {
+				var newContent = __webpack_require__(129);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 129 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(97)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "body,html{margin:0;padding:0;background:#fff5e4}*{box-sizing:border-box}", ""]);
 	
 	// exports
 

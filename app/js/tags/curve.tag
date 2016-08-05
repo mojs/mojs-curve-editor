@@ -73,7 +73,7 @@ require('./point');
 
       const background = `background-position: 0 ${-temp_top - 1}px`;
       const transform  = `transform: translate(0px, ${-temp_top}px)`;
-        
+
       return {
         background,
         transform: `${mojs.h.prefix.css}${transform}; ${transform};`

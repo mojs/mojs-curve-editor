@@ -1,13 +1,14 @@
 require('./resize-handle');
 require('./icons');
 require('./icon');
+require('./code-panel');
 require('./icon-button');
 require('./icon-divider');
 require('./curve');
 
 <curve-editor class={this.CLASSES['curve-editor']} style={this.getStyle()}>
   <icons />
-
+  <code-panel />
   <div class={this.CLASSES['curve-editor__left']}>
     <icon-button shape="code"></icon-button>
     <icon-divider />
