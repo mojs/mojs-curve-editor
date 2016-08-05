@@ -1,0 +1,10 @@
+
+@import '../assets/globals.postcss.css';
+
+.point-controls {
+  display:      none;
+  
+  &.is-show {
+    display:    block;
+  }
+}

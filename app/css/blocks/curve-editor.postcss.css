@@ -63,10 +63,15 @@
 
   &__anchor-buttons {
     margin-top:   calc(  10*$PX );
+    /*display:      none;*/
 
     & icon-button {
       margin-bottom: calc(  5*$PX );
     }
+
+    /*&.is-show {
+      display:    block;
+    }*/
   }
 
   &__mojs-logo {

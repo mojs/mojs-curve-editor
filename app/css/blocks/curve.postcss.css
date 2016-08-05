@@ -35,9 +35,12 @@ $gap : 10;
     /*right:      calc( -1*$PX );*/
     /*bottom:     calc( -1*$PX );*/
   }
-  &__svg-path {
+  &__svg-segment {
+    stroke:       white;
+    stroke-width: 2px;
+    cursor:       crosshair;
     &:hover {
-      cursor: crosshair;
+      stroke:     $c-orange;
     }
   }
 }

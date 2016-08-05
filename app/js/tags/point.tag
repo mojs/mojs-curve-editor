@@ -1,4 +1,4 @@
-<point class={this.CLASSES['point']} style={this.getStyle()}>
+<point class={this.getClass()} style={this.getStyle()}>
 
   <script type="babel">
     this.CLASSES = require('../../css/blocks/point.postcss.css.json');
@@ -8,6 +8,14 @@
     store.subscribe(this.update.bind(this));
     const {clamp} = mojs.h;
 
+
+    this.getClass = () => {
+      const isSelected = (this.point.isSelected)
+                              ? this.CLASSES['is-selected'] : '';
+
+      return `${this.CLASSES['point']} ${isSelected}`;
+    }
+
     this.getStyle = () => {
       const {resize}  = store.getState(),
             x         = clamp(this.point.x + this.point.tempX, 0, 100),
@@ -15,7 +23,7 @@
       
       let y = this.point.y + this.point.tempY;
 
-      const translate = `transform: translate(${cleanX}px, ${y}px)`;
+      const translate = `transform: translate(${cleanX}px, ${y-1}px)`;
       return `${mojs.h.prefix.css}${translate}; ${translate}`;
     }
 
@@ -78,6 +86,18 @@
 
           e.stopPropagation();
         })
+        .on('tap', (e) => {
+          store.dispatch({
+            type: 'POINT_SELECT',
+            data: {
+              index:      this._index,
+              type:       this.point.type,
+              isDeselect: !e.srcEvent.shiftKey
+            }
+
+          });
+          e.stopPropagation();
+        });
     });
 
 

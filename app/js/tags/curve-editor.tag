@@ -1,9 +1,15 @@
-require('./resize-handle');
 require('./icons');
 require('./icon');
+require('./curve');
 require('./icon-button');
 require('./icon-divider');
-require('./curve');
+require('./resize-handle');
+require('./point-controls');
+
+<!--
+  TODO:
+    - move bunch of points at once
+  -->
 
 <curve-editor class={this.CLASSES['curve-editor']} style={this.getStyle()}>
   <icons />
@@ -11,12 +17,7 @@ require('./curve');
   <div class={this.CLASSES['curve-editor__left']}>
     <icon-button shape="code"></icon-button>
     <icon-divider />
-    <div class={this.CLASSES['curve-editor__anchor-buttons']}>
-      <icon-button shape="point-straight"></icon-button>
-      <icon-button shape="point-mirrored"></icon-button>
-      <icon-button shape="point-disconnected"></icon-button>
-      <icon-button shape="point-asymmetric"></icon-button>
-    </div>
+    <point-controls className={this.CLASSES['curve-editor__anchor-buttons']} />
     <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class={this.CLASSES['curve-editor__mojs-logo']}>
       <icon shape="mojs-logo" />
     </a>
@@ -33,13 +34,11 @@ require('./curve');
     require('../../css/blocks/curve-editor');
     this.CLASSES = require('../../css/blocks/curve-editor.postcss.css.json');
 
-    import Hammer from 'hammerjs';
-    import propagating from 'propagating-hammerjs';
-    import mod from '../helpers/resize-mod';
-
     const {store} = opts;
     store.subscribe(this.update.bind(this));
 
+    import Hammer from 'hammerjs';
+    import propagating from 'propagating-hammerjs';
     this.on('mount', () => {
       var hammertime = propagating(new Hammer(this.root))
         .on('pan', (ev) => {
@@ -54,7 +53,13 @@ require('./curve');
 
           this.x = this.y = 0;
           store.dispatch({ type: 'EDITOR_TRANSLATE', data: { x: translate.x + x, y: translate.y + y } })
-        });
+        })
+        .on('tap', (ev) => {
+          store.dispatch({ type: 'POINT_DESELECT_ALL' });
+        })
+        // .on('doubletap', (ev) => {
+        //   console.log('dp')
+        // });
 
       document.addEventListener('keyup', this.onKeyUp);
     });
@@ -70,6 +75,7 @@ require('./curve');
       }
     }
 
+    import mod from '../helpers/resize-mod';
     this.getStyle = () => {
       const state = store.getState().resize;
       let {temp_top} = state;

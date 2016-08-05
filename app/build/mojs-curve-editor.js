@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "301c05a8874473dc6e0d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9e4d1aea03311f314769"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -3281,14 +3281,17 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(5);
-	__webpack_require__(101);
+	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(101);
 	__webpack_require__(102);
+	__webpack_require__(108);
 	__webpack_require__(104);
 	__webpack_require__(122);
-	__webpack_require__(108);
+	__webpack_require__(5);
+	__webpack_require__(128);
 	
-	riot.tag2('curve-editor', '<icons></icons> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code"></icon-button> <icon-divider></icon-divider> <div class="{this.CLASSES[\'curve-editor__anchor-buttons\']}"> <icon-button shape="point-straight"></icon-button> <icon-button shape="point-mirrored"></icon-button> <icon-button shape="point-disconnected"></icon-button> <icon-button shape="point-asymmetric"></icon-button> </div> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <div class="{this.CLASSES[\'curve-editor__right\']}"> <curve></curve> <resize-handle type="top"></resize-handle> <resize-handle type="right"></resize-handle> <resize-handle type="bottom"></resize-handle> </div>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
+	
+	
+	riot.tag2('curve-editor', '<icons></icons> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code"></icon-button> <icon-divider></icon-divider> <point-controls classname="{this.CLASSES[\'curve-editor__anchor-buttons\']}"></point-controls> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <div class="{this.CLASSES[\'curve-editor__right\']}"> <curve></curve> <resize-handle type="top"></resize-handle> <resize-handle type="right"></resize-handle> <resize-handle type="bottom"></resize-handle> </div>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -3301,11 +3304,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
+	var _reduxUndo = __webpack_require__(22);
+	
 	var _resizeMod = __webpack_require__(110);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
-	
-	var _reduxUndo = __webpack_require__(22);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -3329,7 +3332,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    _this.x = _this.y = 0;
 	    store.dispatch({ type: 'EDITOR_TRANSLATE', data: { x: translate.x + x, y: translate.y + y } });
+	  }).on('tap', function (ev) {
+	    store.dispatch({ type: 'POINT_DESELECT_ALL' });
 	  });
+	  // .on('doubletap', (ev) => {
+	  //   console.log('dp')
+	  // });
 	
 	  document.addEventListener('keyup', _this.onKeyUp);
 	});
@@ -4809,6 +4817,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
+	var _extends2 = __webpack_require__(44);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
 	var _redux = __webpack_require__(7);
 	
 	var _reduxUndo = __webpack_require__(22);
@@ -4823,20 +4835,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _pointsReducer2 = _interopRequireDefault(_pointsReducer);
 	
+	var _pointControlsReducer = __webpack_require__(127);
+	
+	var _pointControlsReducer2 = _interopRequireDefault(_pointControlsReducer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// Redux utility functions
-	var reducer = (0, _redux.combineReducers)({
-	  resize: _resizeReducer2.default,
-	  points: (0, _reduxUndo2.default)(_pointsReducer2.default, {
-	    limit: 10,
-	    filter: function filterActions(action, currState, history) {
-	      return action.isRecord; // only add to history if isRecord set on action
-	    },
-	    debug: false
-	  })
-	});
 	// redux-undo higher-order reducer
+	var UNDOABLE_OPTS = {
+	  limit: 10,
+	  filter: function filterActions(action, currState, history) {
+	    return action.isRecord; // only add to history if isRecord set on action
+	  },
+	  debug: false
+	}; // Redux utility functions
+	
+	
+	var reducer = (0, _redux.combineReducers)({
+	  pointControls: (0, _reduxUndo2.default)(_pointControlsReducer2.default, (0, _extends3.default)({}, UNDOABLE_OPTS)),
+	  resize: _resizeReducer2.default,
+	  points: (0, _reduxUndo2.default)(_pointsReducer2.default, (0, _extends3.default)({}, UNDOABLE_OPTS))
+	});
+	
 	exports.default = reducer;
 
 /***/ },
@@ -5528,7 +5548,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var INITIAL_STATE = [(0, _makePoint2.default)({ x: 0, y: 358, isLockedX: true }), (0, _makePoint2.default)({ x: 50, y: 179 }), (0, _makePoint2.default)({ x: 100, y: 0, isLockedX: true })];
+	var INITIAL_STATE = [(0, _makePoint2.default)({ x: 0, y: 358, isLockedX: true }), (0, _makePoint2.default)({ x: 50, y: 179, type: 'mirrored' }), (0, _makePoint2.default)({ x: 100, y: 0, isLockedX: true })];
+	
+	var deslectAll = function deslectAll(state) {
+	  var newState = [];
+	  for (var i = 0; i < state.length; i++) {
+	    newState.push((0, _extends3.default)({}, state[i], { isSelected: false }));
+	  }
+	  return newState;
+	};
+	
+	var findSelectedIndecies = function findSelectedIndecies(state) {
+	  var indecies = [];
+	  for (var i = 0; i < state.length; i++) {
+	    state[i].isSelected && indecies.push(i);
+	  }
+	  return indecies;
+	};
 	
 	var pointsReducer = function pointsReducer() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
@@ -5545,6 +5581,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        newState[data.index] = (0, _extends3.default)({}, oldPoint, { tempX: data.x, tempY: data.y });
 	        return newState;
 	      }
+	
 	    case 'POINT_TRANSLATE_END':
 	      {
 	        var _data = action.data;
@@ -5559,11 +5596,63 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        return _newState;
 	      }
+	
+	    case 'POINT_SELECT':
+	      {
+	        var _data2 = action.data;
+	        var _index2 = _data2.index;
+	        var isDeselect = _data2.isDeselect;
+	        // if should de select all other points
+	        var _newState2 = isDeselect ? deslectAll(state) : [].concat((0, _toConsumableArray3.default)(state));
+	
+	        _newState2[_index2].isSelected = true;
+	        return _newState2;
+	      }
+	
+	    case 'POINT_ADD':
+	      {
+	        var _data3 = action.data;
+	        var x = _data3.x;
+	        var y = _data3.y;
+	        var _index3 = _data3.index;
+	
+	
+	        var deselected = deslectAll(state);
+	
+	        return [].concat((0, _toConsumableArray3.default)(deselected.slice(0, _index3)), [(0, _makePoint2.default)({ x: x, y: y, isSelected: true })], (0, _toConsumableArray3.default)(deselected.slice(_index3)));
+	      }
 	    case 'POINT_DELETE':
 	      {
-	        var _newState2 = [state[0], state[2]];
+	        var selected = findSelectedIndecies(state);
 	
-	        return _newState2;
+	        var _newState3 = [];
+	        for (var i = 0; i < state.length; i++) {
+	          var item = state[i];
+	          (selected.indexOf(i) === -1 || item.isLockedX) && _newState3.push(item);
+	        }
+	
+	        return _newState3;
+	      }
+	
+	    case 'POINT_CHANGE_TYPE':
+	      {
+	        var _selected = findSelectedIndecies(state);
+	
+	        var _newState4 = [];
+	        for (var i = 0; i < state.length; i++) {
+	          var _item = state[i];
+	          // copy all items from previous state
+	          _newState4.push((0, _extends3.default)({}, _item));
+	          // if item was selected - set the new `type`
+	          _selected.indexOf(i) !== -1 && (_newState4[i].type = action.data);
+	        }
+	
+	        return _newState4;
+	      }
+	
+	    case 'POINT_DESELECT_ALL':
+	      {
+	        return deslectAll(state);
 	      }
 	  }
 	  return state;
@@ -9419,9 +9508,36 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(102);
 	
-	riot.tag2('icon-button', '<icon shape="{opts.shape}"></icon>', '', 'class="{this.CLASSES[\'icon-button\']}"', function(opts) {
-	    this.CLASSES = __webpack_require__(105);
-	    __webpack_require__(106);
+	riot.tag2('icon-button', '<icon shape="{opts.shape}"></icon>', '', 'class="{this.getClass()}"', function(opts) {
+	'use strict';
+	
+	var _this = this;
+	
+	var _hammerjs = __webpack_require__(92);
+	
+	var _hammerjs2 = _interopRequireDefault(_hammerjs);
+	
+	var _propagatingHammerjs = __webpack_require__(93);
+	
+	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var CLASSES = __webpack_require__(105);
+	__webpack_require__(106);
+	
+	this.getClass = function () {
+	  var isCheck = opts.isCheck ? CLASSES['is-checked'] : '';
+	  return CLASSES['icon-button'] + ' ' + isCheck;
+	};
+	
+	if (typeof opts.onTap === 'function') {
+	  this.on('mount', function () {
+	    var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('tap', function (ev) {
+	      opts.onTap(ev, opts);
+	    });
+	  });
+	}
 	});
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
@@ -9482,7 +9598,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */(function(riot) {
 	__webpack_require__(109);
 	
-	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="0.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <path id="js-main-path" class="{this.CLASSES[\'curve__svg-path\']}" riot-d="{this.path}" stroke="#ffffff" stroke-width="3" vector-effect="non-scaling-stroke" fill="none"></path> <path riot-d="{this.path + \' L100,100 z\'}" stroke="none" vector-effect="non-scaling-stroke" transform="translate(.5,.5)" fill="none"></path> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
+	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="0.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <g id="js-segments"> <path each="{this.segments}" riot-d="{string}" data-index="{index}" stroke="white" stroke-width="" vector-effect="non-scaling-stroke" class="{this.CLASSES[\'curve__svg-segment\']}"></path> </g> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -9494,6 +9610,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _resizeMod = __webpack_require__(110);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
+	
+	var _hammerjs = __webpack_require__(92);
+	
+	var _hammerjs2 = _interopRequireDefault(_hammerjs);
+	
+	var _propagatingHammerjs = __webpack_require__(93);
+	
+	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -9515,12 +9639,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _this.path = str;
 	};
 	
-	this.on('mount', function () {
-	  _this.root.querySelector('#js-main-path').addEventListener('click', function (e) {
-	    console.log(e);
-	  });
-	});
-	
 	this.getStyle = function () {
 	  var resize = _this.state.resize;
 	  var temp_top = resize.temp_top;
@@ -9541,27 +9659,61 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	};
 	
+	var getSegments = function getSegments() {
+	  _this.segments = [];
+	  for (var i = 1; i < _this.points.length; i++) {
+	    var pPoint = _this.points[i - 1],
+	        point = _this.points[i],
+	        px = pPoint.x + pPoint.tempX,
+	        py = pPoint.y + pPoint.tempY,
+	        x = point.x + point.tempX,
+	        y = point.y + point.tempY;
+	
+	    // const startChar = (i === 1) ? 'M' : 'L'
+	    _this.segments.push({
+	      index: i,
+	      string: 'M' + px + ', ' + py / 3.58 + ' L' + x + ', ' + y / 3.58
+	    });
+	  }
+	};
+	
 	var getState = function getState() {
 	  _this.state = _store2.default.getState();
 	};
-	
 	var getPoints = function getPoints() {
 	  _this.points = _this.state.points.present;
 	};
-	
 	var getStyles = function getStyles() {
 	  _this.styles = _this.getStyle();
 	};
 	var get = function get() {
-	  getState();
-	  getPoints();
-	  getPath();
-	  getStyles();
+	  getState();getPoints();getSegments();getPath();getStyles();
 	};
 	
 	get();
 	_store2.default.subscribe(function () {
 	  get();_this.update();
+	});
+	
+	this.on('mount', function () {
+	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root.querySelector('#js-segments'))).on('tap', function (e) {
+	    var ev = e.srcEvent,
+	        target = ev.target;
+	    // handle paths only
+	    if (target.tagName.toLowerCase() !== 'path') {
+	      return;
+	    }
+	    // coordinates
+	    var x = ev.offsetX,
+	        y = ev.offsetY * 3.58,
+	        index = parseInt(target.getAttribute('data-index'));
+	
+	    _store2.default.dispatch({
+	      type: 'POINT_ADD',
+	      data: { x: x, y: y, index: index },
+	      isRecord: true
+	    });
+	  });
 	});
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
@@ -9570,7 +9722,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('point', '', '', 'class="{this.CLASSES[\'point\']}" riot-style="{this.getStyle()}"', function(opts) {
+	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('point', '', '', 'class="{this.getClass()}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -9599,6 +9751,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	_store2.default.subscribe(this.update.bind(this));
 	var clamp = mojs.h.clamp;
 	
+	this.getClass = function () {
+	  var isSelected = _this.point.isSelected ? _this.CLASSES['is-selected'] : '';
+	
+	  return _this.CLASSES['point'] + ' ' + isSelected;
+	};
+	
 	this.getStyle = function () {
 	  var _store$getState = _store2.default.getState();
 	
@@ -9608,7 +9766,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  var y = _this.point.y + _this.point.tempY;
 	
-	  var translate = 'transform: translate(' + cleanX + 'px, ' + y + 'px)';
+	  var translate = 'transform: translate(' + cleanX + 'px, ' + (y - 1) + 'px)';
 	  return '' + mojs.h.prefix.css + translate + '; ' + translate;
 	};
 	
@@ -9681,6 +9839,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	
 	    e.stopPropagation();
+	  }).on('tap', function (e) {
+	    _store2.default.dispatch({
+	      type: 'POINT_SELECT',
+	      data: {
+	        index: _this._index,
+	        type: _this.point.type,
+	        isDeselect: !e.srcEvent.shiftKey
+	      }
+	
+	    });
+	    e.stopPropagation();
 	  });
 	});
 	});
@@ -9721,7 +9890,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"point": "_point_ubp0t_5"
+		"point": "_point_1bj5r_5",
+		"is-selected": "_is-selected_1bj5r_29"
 	};
 
 /***/ },
@@ -9759,7 +9929,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._point_ubp0t_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5)}._point_ubp0t_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_ubp0t_5:hover{opacity:.85}", ""]);
+	exports.push([module.id, "._point_1bj5r_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5)}._point_1bj5r_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_1bj5r_5._is-selected_1bj5r_29,._point_1bj5r_5:hover{border:2px solid #8c6d8b}", ""]);
 	
 	// exports
 
@@ -9769,10 +9939,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve": "_curve_adube_5",
-		"curve__svg-wrapper": "_curve__svg-wrapper_adube_1",
-		"curve__svg": "_curve__svg_adube_1",
-		"curve__svg-path": "_curve__svg-path_adube_1"
+		"curve": "_curve_1471c_5",
+		"curve__svg-wrapper": "_curve__svg-wrapper_1471c_1",
+		"curve__svg": "_curve__svg_1471c_1",
+		"curve__svg-segment": "_curve__svg-segment_1471c_1"
 	};
 
 /***/ },
@@ -9810,7 +9980,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve_adube_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve__svg-wrapper_adube_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_adube_1{display:block;overflow:visible;width:100%}._curve__svg-path_adube_1:hover{cursor:crosshair}", ""]);
+	exports.push([module.id, "._curve_1471c_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5)}._curve__svg-wrapper_1471c_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_1471c_1{display:block;overflow:visible;width:100%}._curve__svg-segment_1471c_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_1471c_1:hover{stroke:#ff512f}", ""]);
 	
 	// exports
 
@@ -9850,7 +10020,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve-editor_hshpo_4{position:fixed;left:0;top:0;width:411px;height:398px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_hshpo_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__left_hshpo_1 icon-divider{margin:10px auto}._curve-editor__right_hshpo_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_hshpo_1 resize-handle{position:absolute}._curve-editor__right_hshpo_1 resize-handle[type=top]{top:-16px}._curve-editor__right_hshpo_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_hshpo_1 resize-handle[type=bottom],._curve-editor__right_hshpo_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_hshpo_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_hshpo_1{margin-top:10px}._curve-editor__anchor-buttons_hshpo_1 icon-button{margin-bottom:5px}._curve-editor__mojs-logo_hshpo_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_hshpo_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
+	exports.push([module.id, "._curve-editor_8alet_4{position:fixed;left:0;top:0;width:411px;height:398px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_8alet_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__left_8alet_1 icon-divider{margin:10px auto}._curve-editor__right_8alet_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_8alet_1 resize-handle{position:absolute}._curve-editor__right_8alet_1 resize-handle[type=top]{top:-16px}._curve-editor__right_8alet_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_8alet_1 resize-handle[type=bottom],._curve-editor__right_8alet_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_8alet_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_8alet_1{margin-top:10px}._curve-editor__anchor-buttons_8alet_1 icon-button{margin-bottom:5px}._curve-editor__mojs-logo_8alet_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_8alet_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
 	
 	// exports
 
@@ -9860,11 +10030,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve-editor": "_curve-editor_hshpo_4",
-		"curve-editor__left": "_curve-editor__left_hshpo_1",
-		"curve-editor__right": "_curve-editor__right_hshpo_1",
-		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_hshpo_1",
-		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_hshpo_1"
+		"curve-editor": "_curve-editor_8alet_4",
+		"curve-editor__left": "_curve-editor__left_8alet_1",
+		"curve-editor__right": "_curve-editor__right_8alet_1",
+		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_8alet_1",
+		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_8alet_1"
 	};
 
 /***/ },
@@ -9967,6 +10137,149 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	// exports
 
+
+/***/ },
+/* 126 */,
+/* 127 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends2 = __webpack_require__(44);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var INITIAL_STATE = {
+	  isShow: false,
+	  type: 'straight'
+	};
+	
+	var pointControls = function pointControls() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case 'POINT_SELECT':
+	      {
+	        return (0, _extends3.default)({}, state, { isShow: !action.isDeselect, type: action.data.type });
+	      }
+	    case 'POINT_CHANGE_TYPE':
+	      {
+	        return (0, _extends3.default)({}, state, { type: action.data });
+	      }
+	    case 'POINT_DESELECT_ALL':
+	      {
+	        return (0, _extends3.default)({}, state, { isShow: false });
+	      }
+	  }
+	  return state;
+	};
+	
+	exports.default = pointControls;
+
+/***/ },
+/* 128 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(104);
+	
+	riot.tag2('point-controls', '<icon-button each="{name, value in buttons}" name="{name}" is-check="{value}" shape="{\'point-\' + name}" on-tap="{parent.onButtonTap.bind(this)}"></icon-button>', '', 'class="{this.getClass()}"', function(opts) {
+	'use strict';
+	
+	var _this = this;
+	
+	var _store = __webpack_require__(6);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	__webpack_require__(129);
+	var CLASSES = __webpack_require__(131);
+	
+	this.getButtons = function () {
+	  var state = _store2.default.getState().pointControls.present;
+	  _this.buttons = {
+	    'straight': false,
+	    'mirrored': false,
+	    'disconnected': false,
+	    'asymmetric': false
+	  };
+	  _this.buttons[state.type] = true;
+	};
+	
+	this.getClass = function () {
+	  var state = _store2.default.getState().pointControls.present;
+	  var isShow = state.isShow ? CLASSES['is-show'] : '';
+	  return opts.classname + ' ' + CLASSES['point-controls'] + ' ' + isShow;
+	};
+	
+	this.onButtonTap = function (ev, opts) {
+	  _store2.default.dispatch({ type: 'POINT_CHANGE_TYPE', data: opts.name, isRecord: true });
+	  ev.stopPropagation();
+	};
+	
+	_store2.default.subscribe(function () {
+	  _this.getButtons();
+	  _this.update();
+	});
+	});
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
+/* 129 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(130);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(98)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(130, function() {
+				var newContent = __webpack_require__(130);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 130 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(97)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "._point-controls_1j5f4_4{display:none}._point-controls_1j5f4_4._is-show_1j5f4_7{display:block}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 131 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"point-controls": "_point-controls_1j5f4_4",
+		"is-show": "_is-show_1j5f4_7"
+	};
 
 /***/ }
 /******/ ])

@@ -19,19 +19,31 @@ require('./point');
             transform="translate(.75,.75)"
             fill="none" />
 
-      <path id="js-main-path"
+      <g id="js-segments">
+          <path
+            each={ this.segments }
+            d={string}
+            data-index={index}
+            stroke="white"
+            stroke-width=""
+            vector-effect="non-scaling-stroke"
+            class={this.CLASSES['curve__svg-segment']}
+            />
+      </g>
+
+      <!-- <path id="js-main-path"
             class={ this.CLASSES['curve__svg-path'] }
             d={this.path}
             stroke="#ffffff"
             stroke-width="3"
             vector-effect="non-scaling-stroke"
-            fill="none" />
+            fill="none" /> -->
 
-      <path d={this.path + ' L100,100 z'}
+      <!-- <path d={this.path + ' L100,100 z'}
             stroke="none"
             vector-effect="non-scaling-stroke"
             transform="translate(.5,.5)"
-            fill="none" />
+            fill="none" /> -->
 
     </svg>
   </div>
@@ -55,13 +67,6 @@ require('./point');
       this.path = str;
     }
 
-    this.on('mount', () => {
-      this.root.querySelector('#js-main-path')
-        .addEventListener('click', (e) => {
-          console.log(e);
-        });
-    });
-
     this.getStyle = () => {
       const {resize} = this.state;
       let {temp_top} = resize;
@@ -80,20 +85,57 @@ require('./point');
       };
     }
 
-    const getState = () => { this.state = store.getState(); }
+    const getSegments = () => {
+      this.segments = [];
+      for (var i = 1; i < this.points.length; i++) {
+        const pPoint = this.points[i-1],
+              point  = this.points[i],
+              px = pPoint.x + pPoint.tempX,
+              py = pPoint.y + pPoint.tempY,
+              x  = point.x + point.tempX,
+              y  = point.y + point.tempY;
 
+        // const startChar = (i === 1) ? 'M' : 'L'
+        this.segments.push({
+          index:  i,
+          string: `M${px}, ${py/3.58} L${x}, ${y/3.58}`
+        });
+      }
+    }
+
+    const getState  = () => { this.state  = store.getState(); }
     const getPoints = () => { this.points = this.state.points.present; }
-
     const getStyles = () => { this.styles = this.getStyle(); }
     const get = () => {
-      getState();
-      getPoints();
-      getPath();
-      getStyles();
+      getState(); getPoints(); getSegments(); getPath(); getStyles();
     }
 
     get();
     store.subscribe( () => { get(); this.update(); });
+
+    import Hammer from 'hammerjs';
+    import propagating from 'propagating-hammerjs';
+
+    this.on('mount', () => {
+      var hammertime = propagating(new Hammer(this.root.querySelector('#js-segments')))
+        .on('tap', (e) => {
+          const ev     = e.srcEvent,
+                target = ev.target;
+          // handle paths only
+          if ( target.tagName.toLowerCase() !== 'path' ) { return; }
+          // coordinates
+          const x  = ev.offsetX,
+                y  = ev.offsetY*3.58,
+                index = parseInt(target.getAttribute('data-index'));
+
+          store.dispatch({
+            type:     'POINT_ADD',
+            data:     { x, y, index },
+            isRecord: true
+          });
+
+        });
+    });
 
   </script>
 </curve>
