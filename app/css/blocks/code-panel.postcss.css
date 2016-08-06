@@ -3,30 +3,32 @@
 .code-panel {
   position:       absolute;
   left:           calc( 10 * $PX );
-  top:            calc( -32 * $PX );
-  width:          calc( 391 * $PX );
-  height:         calc( 32 * $PX );
-  margin:         0 auto;
+  right:          calc( 10 * $PX );
+  margin-top:     calc( -32 * $PX );
   border-radius:  calc( 6 * $PX ) calc( 6 * $PX ) 0 0;
   background:     rgba( 61, 27, 60, 1 );
   z-index:        1;
 
-  &__input-wrapp {
-    width:          381px;
-    height:         23px;
-    margin:         5px 5px;
+  &__input-wrap {
+    margin:         calc( 5 * $PX );
     border-radius:  calc( 2 * $PX );
     background:     rgba( 58, 8, 58, 1 );
-    border:         1px solid #B3A0B2;
-    box-shadow:     inset 3px 3px 0 rgba(0,0,0,0.5);
+    border:         1px solid $c-pastel-purple;
+    box-shadow:     inset calc( 3 * $PX ) calc( 3 * $PX ) 0 rgba(0,0,0,0.5);
   }
 
   &__input-field {
     display:    block;
     background: transparent;
     color:      $c-white;
-    padding:    0.4em;
+    font-size:  9px;
+    letter-spacing: 0.45px;
+    font-weight: 100;
+    padding:    0.4em 0.3em 0.6em 0.8em;
     border:     none;
     width:      100%;
   }
+   & ::selection {
+     background: $c-orange;
+   }
 }
