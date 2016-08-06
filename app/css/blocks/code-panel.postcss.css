@@ -10,7 +10,7 @@
   z-index:        1;
 
   &__input-wrap {
-    margin:         calc( 5 * $PX ) calc( 5 * $PX ) calc( 4 * $PX );
+    margin:         calc( 5 * $PX ) calc( 5 * $PX ) calc( 4 * $PX ) calc( 5 * $PX );
     border-radius:  calc( 2 * $PX );
     background:     rgba( 58, 8, 58, 1 );
     border:         1px solid $c-pastel-purple;
@@ -22,7 +22,6 @@
     background:     transparent;
     color:          $c-white;
     font-size:      9px;
-    font-family:    Arial, Helvetica, sans-serif;
     letter-spacing: 0.45px;
     line-height:    21px;
     font-weight:    100;
