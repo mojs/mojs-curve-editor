@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "bbb2b6ded8b95eda4161"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "3074fd175cc069076662"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -9962,9 +9962,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"code-panel": "_code-panel_t4jil_3",
-		"code-panel__input-wrap": "_code-panel__input-wrap_t4jil_1",
-		"code-panel__input-field": "_code-panel__input-field_t4jil_1"
+		"code-panel": "_code-panel_jgqhb_3",
+		"code-panel__input-wrap": "_code-panel__input-wrap_jgqhb_1",
+		"code-panel__input-field": "_code-panel__input-field_jgqhb_1"
 	};
 
 /***/ },
@@ -10002,7 +10002,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._code-panel_t4jil_3{position:absolute;left:10px;right:10px;margin-top:-32px;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:1}._code-panel__input-wrap_t4jil_1{margin:5px;border-radius:2px;background:#3a083a;border:1px solid #b3a0b2;box-shadow:inset 3px 3px 0 rgba(0,0,0,.5)}._code-panel__input-field_t4jil_1{display:block;background:transparent;color:#fff;font-size:9px;letter-spacing:.45px;font-weight:100;padding:.4em .3em .6em .8em;border:none;width:100%}._code-panel_t4jil_3 ::-moz-selection,.code-panel ::-moz-selection{background:#ff512f}._code-panel_t4jil_3 ::selection{background:#ff512f}", ""]);
+	exports.push([module.id, "._code-panel_jgqhb_3{position:absolute;left:10px;right:10px;margin-top:-32px;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:1}._code-panel__input-wrap_jgqhb_1{margin:5px 5px 4px;border-radius:2px;background:#3a083a;border:1px solid #b3a0b2;box-shadow:inset 3px 3px 0 rgba(0,0,0,.5)}._code-panel__input-field_jgqhb_1{display:block;background:transparent;color:#fff;font-size:9px;letter-spacing:.45px;line-height:21px;font-weight:100;padding:0 .3em 0 .8em;border:none;width:100%}._code-panel_jgqhb_3 ::-moz-selection,.code-panel ::-moz-selection{background:#ff512f}._code-panel_jgqhb_3 ::selection{background:#ff512f}", ""]);
 	
 	// exports
 
