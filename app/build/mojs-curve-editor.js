@@ -75,7 +75,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
+<<<<<<< HEAD
 /******/ 	var hotCurrentHash = "86cbade4ccbde34b0320"; // eslint-disable-line no-unused-vars
+=======
+/******/ 	var hotCurrentHash = "ea5949bcab813286b280"; // eslint-disable-line no-unused-vars
+>>>>>>> c3a82b3d215ceb8b28d8b983cebac62f406ef58c
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -4225,7 +4229,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	// shim for using process in browser
-	
 	var process = module.exports = {};
 	
 	// cached from whatever global is present so that test runners that stub it
@@ -4237,21 +4240,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cachedClearTimeout;
 	
 	(function () {
-	  try {
-	    cachedSetTimeout = setTimeout;
-	  } catch (e) {
-	    cachedSetTimeout = function () {
-	      throw new Error('setTimeout is not defined');
+	    try {
+	        cachedSetTimeout = setTimeout;
+	    } catch (e) {
+	        cachedSetTimeout = function () {
+	            throw new Error('setTimeout is not defined');
+	        }
 	    }
-	  }
-	  try {
-	    cachedClearTimeout = clearTimeout;
-	  } catch (e) {
-	    cachedClearTimeout = function () {
-	      throw new Error('clearTimeout is not defined');
+	    try {
+	        cachedClearTimeout = clearTimeout;
+	    } catch (e) {
+	        cachedClearTimeout = function () {
+	            throw new Error('clearTimeout is not defined');
+	        }
 	    }
-	  }
 	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        return setTimeout(fun, 0);
+	    } else {
+	        return cachedSetTimeout.call(null, fun, 0);
+	    }
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        clearTimeout(marker);
+	    } else {
+	        cachedClearTimeout.call(null, marker);
+	    }
+	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -4276,7 +4293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = cachedSetTimeout.call(null, cleanUpNextTick);
+	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -4293,7 +4310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    cachedClearTimeout.call(null, timeout);
+	    runClearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -4305,7 +4322,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        cachedSetTimeout.call(null, drainQueue, 0);
+	        runTimeout(drainQueue);
 	    }
 	};
 	
@@ -9984,9 +10001,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
+<<<<<<< HEAD
 		"code-panel": "_code-panel_r7h38_3",
 		"code-panel__input-wrap": "_code-panel__input-wrap_r7h38_1",
 		"code-panel__input-field": "_code-panel__input-field_r7h38_1"
+=======
+		"code-panel": "_code-panel_q9mrm_3",
+		"code-panel__input-wrap": "_code-panel__input-wrap_q9mrm_1",
+		"code-panel__input-field": "_code-panel__input-field_q9mrm_1"
+>>>>>>> c3a82b3d215ceb8b28d8b983cebac62f406ef58c
 	};
 
 /***/ },
@@ -10024,7 +10047,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
+<<<<<<< HEAD
 	exports.push([module.id, "._code-panel_r7h38_3{position:absolute;left:10px;right:10px;margin-top:-32px;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:1}._code-panel__input-wrap_r7h38_1{margin:4px 5px 5px;border-radius:2px;background:#42103f;border:1px solid #9c829a;box-shadow:inset 2px 2px 0 rgba(0,0,0,.5)}._code-panel__input-field_r7h38_1{display:block;background:transparent;color:#fff;font-size:9px;letter-spacing:.45px;line-height:21px;font-weight:100;padding:0 .3em 0 .8em;border:none;width:100%;height:21px}._code-panel_r7h38_3 ::-moz-selection,.code-panel ::-moz-selection{background:#ff512f}._code-panel_r7h38_3 ::selection{background:#ff512f}", ""]);
+=======
+	exports.push([module.id, "._code-panel_q9mrm_3{position:absolute;left:10px;right:10px;margin-top:-32px;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:1}._code-panel__input-wrap_q9mrm_1{margin:5px 5px 4px;border-radius:2px;background:#3a083a;border:1px solid #b3a0b2;box-shadow:inset 3px 3px 0 rgba(0,0,0,.5)}._code-panel__input-field_q9mrm_1{display:block;background:transparent;color:#fff;font-size:9px;font-family:Arial,Helvetica,sans-serif;letter-spacing:.45px;line-height:21px;font-weight:100;padding:0 .3em 0 .8em;border:none;width:100%}._code-panel_q9mrm_3 ::-moz-selection,.code-panel ::-moz-selection{background:#ff512f}._code-panel_q9mrm_3 ::selection{background:#ff512f}", ""]);
+>>>>>>> c3a82b3d215ceb8b28d8b983cebac62f406ef58c
 	
 	// exports
 
