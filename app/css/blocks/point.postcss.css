@@ -33,7 +33,7 @@ $size: 10;
     top:          50%;
     margin-left:  calc( -($size/2)*$PX );
     margin-top:   calc( -($size/2)*$PX );
-    /*display:      none;*/
+    display:      none;
   }
 
   &:hover,
