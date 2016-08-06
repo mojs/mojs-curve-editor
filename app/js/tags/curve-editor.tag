@@ -13,8 +13,8 @@ require('./point-controls');
   -->
 
 <curve-editor class={this.CLASSES['curve-editor']} style={this.getStyle()}>
-  <icons />
   <code-panel />
+  <icons />
   <div class={this.CLASSES['curve-editor__left']}>
     <icon-button shape="code"></icon-button>
     <icon-divider />
