@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "3074fd175cc069076662"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "86cbade4ccbde34b0320"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -9951,8 +9951,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */(function(riot) {
 	
 	riot.tag2('code-panel', '<div class="{this.CLASSES[\'code-panel__input-wrap\']}"> <input class="{this.CLASSES[\'code-panel__input-field\']}" type="text" readonly="readonly" value="M0,100 C0,100 12.0486221,-124.260309 24,99.7583642 C28.9933624,142.723104"> </div>', '', 'class="{this.CLASSES[\'code-panel\']}"', function(opts) {
-	    this.CLASSES = __webpack_require__(115);
-	    __webpack_require__(116);
+	'use strict';
+	
+	var _this = this;
+	
+	var _hammerjs = __webpack_require__(105);
+	
+	var _hammerjs2 = _interopRequireDefault(_hammerjs);
+	
+	var _propagatingHammerjs = __webpack_require__(106);
+	
+	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	this.CLASSES = __webpack_require__(115);
+	__webpack_require__(116);
+	
+	this.on('mount', function () {
+	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('pan', function (e) {
+	    e.stopPropagation();
+	  }).on('panend', function (e) {
+	    e.stopPropagation();
+	  });
+	});
 	});
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
@@ -9962,9 +9984,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"code-panel": "_code-panel_jgqhb_3",
-		"code-panel__input-wrap": "_code-panel__input-wrap_jgqhb_1",
-		"code-panel__input-field": "_code-panel__input-field_jgqhb_1"
+		"code-panel": "_code-panel_r7h38_3",
+		"code-panel__input-wrap": "_code-panel__input-wrap_r7h38_1",
+		"code-panel__input-field": "_code-panel__input-field_r7h38_1"
 	};
 
 /***/ },
@@ -10002,7 +10024,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._code-panel_jgqhb_3{position:absolute;left:10px;right:10px;margin-top:-32px;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:1}._code-panel__input-wrap_jgqhb_1{margin:5px 5px 4px;border-radius:2px;background:#3a083a;border:1px solid #b3a0b2;box-shadow:inset 3px 3px 0 rgba(0,0,0,.5)}._code-panel__input-field_jgqhb_1{display:block;background:transparent;color:#fff;font-size:9px;letter-spacing:.45px;line-height:21px;font-weight:100;padding:0 .3em 0 .8em;border:none;width:100%}._code-panel_jgqhb_3 ::-moz-selection,.code-panel ::-moz-selection{background:#ff512f}._code-panel_jgqhb_3 ::selection{background:#ff512f}", ""]);
+	exports.push([module.id, "._code-panel_r7h38_3{position:absolute;left:10px;right:10px;margin-top:-32px;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:1}._code-panel__input-wrap_r7h38_1{margin:4px 5px 5px;border-radius:2px;background:#42103f;border:1px solid #9c829a;box-shadow:inset 2px 2px 0 rgba(0,0,0,.5)}._code-panel__input-field_r7h38_1{display:block;background:transparent;color:#fff;font-size:9px;letter-spacing:.45px;line-height:21px;font-weight:100;padding:0 .3em 0 .8em;border:none;width:100%;height:21px}._code-panel_r7h38_3 ::-moz-selection,.code-panel ::-moz-selection{background:#ff512f}._code-panel_r7h38_3 ::selection{background:#ff512f}", ""]);
 	
 	// exports
 

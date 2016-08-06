@@ -10,11 +10,11 @@
   z-index:        1;
 
   &__input-wrap {
-    margin:         calc( 5 * $PX ) calc( 5 * $PX ) calc( 4 * $PX ) calc( 5 * $PX );
+    margin:         calc( 4 * $PX ) calc( 5 * $PX ) calc( 5 * $PX );
     border-radius:  calc( 2 * $PX );
-    background:     rgba( 58, 8, 58, 1 );
+    background:     #42103F;
     border:         1px solid $c-pastel-purple;
-    box-shadow:     inset calc( 3 * $PX ) calc( 3 * $PX ) 0 rgba(0,0,0,0.5);
+    box-shadow:     inset calc( 2 * $PX ) calc( 2 * $PX ) 0 rgba(0,0,0,0.5);
   }
 
   &__input-field {
@@ -28,6 +28,7 @@
     padding:        0 0.3em 0 0.8em;
     border:         none;
     width:          100%;
+    height:         calc( 21*$PX );
   }
    & ::selection {
      background: $c-orange;
