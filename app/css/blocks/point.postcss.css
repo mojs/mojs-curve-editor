@@ -26,15 +26,7 @@ $size: 10;
     margin-top:   calc( -$size*$PX );
   }
 
-  $size: 6;
-  little-handle {
-    position:     absolute;
-    left:         50%;
-    top:          50%;
-    margin-left:  calc( -($size/2)*$PX );
-    margin-top:   calc( -($size/2)*$PX );
-    display:      none;
-  }
+  little-handle { display: none; }
 
   &:hover,
   &.is-selected {

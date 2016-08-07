@@ -1,7 +1,15 @@
 
 
 
-<little-handle class={ this.CLASSES['little-handle'] } style={this.getStyle()}>
+<little-handle class={ this.CLASSES['little-handle'] }>
+
+  <div
+    class={ this.CLASSES['little-handle__point'] }
+    style={this.getPointStyle()}></div>
+
+  <div
+    class={ this.CLASSES['little-handle__line'] }
+    style={this.getLineStyle()}></div>
 
   <script type="babel">
     this.CLASSES = require('../../css/blocks/little-handle.postcss.css.json');
@@ -23,10 +31,17 @@
       return { radius, angle };
     }
 
-    this.getStyle = () => {
+    this.getPointStyle = () => {
       const point = angleToPoint( this.angle, this.radius );
 
       const translate = `transform: translate(${point.x}px, ${point.y}px) rotate(${this.angle}deg)`;
+      return `${mojs.h.prefix.css}${translate}; ${translate}`;
+    }
+
+    this.getLineStyle = () => {
+      const point = angleToPoint( this.angle, this.radius );
+
+      const translate = `transform: rotate(${this.angle}deg) scaleY(${this.radius})`;
       return `${mojs.h.prefix.css}${translate}; ${translate}`;
     }
 

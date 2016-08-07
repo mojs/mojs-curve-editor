@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f48d32093e3626691a18"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "a0b3bb5aa532c2b4f460"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -4078,7 +4078,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */(function(riot) {
 	
 	
-	riot.tag2('little-handle', '', '', 'class="{this.CLASSES[\'little-handle\']}" riot-style="{this.getStyle()}"', function(opts) {
+	riot.tag2('little-handle', '<div class="{this.CLASSES[\'little-handle__point\']}" riot-style="{this.getPointStyle()}"></div> <div class="{this.CLASSES[\'little-handle__line\']}" riot-style="{this.getLineStyle()}"></div>', '', 'class="{this.CLASSES[\'little-handle\']}"', function(opts) {
 	'use strict';
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -4120,10 +4120,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return { radius: radius, angle: angle };
 	};
 	
-	this.getStyle = function () {
+	this.getPointStyle = function () {
 	  var point = angleToPoint(_this.angle, _this.radius);
 	
 	  var translate = 'transform: translate(' + point.x + 'px, ' + point.y + 'px) rotate(' + _this.angle + 'deg)';
+	  return '' + mojs.h.prefix.css + translate + '; ' + translate;
+	};
+	
+	this.getLineStyle = function () {
+	  var point = angleToPoint(_this.angle, _this.radius);
+	
+	  var translate = 'transform: rotate(' + _this.angle + 'deg) scaleY(' + _this.radius + ')';
 	  return '' + mojs.h.prefix.css + translate + '; ' + translate;
 	};
 	
@@ -4179,7 +4186,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"little-handle": "_little-handle_xdcpx_3"
+		"little-handle": "_little-handle_1rkhn_3",
+		"little-handle__point": "_little-handle__point_1rkhn_1",
+		"little-handle__line": "_little-handle__line_1rkhn_1"
 	};
 
 /***/ },
@@ -4217,7 +4226,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._little-handle_xdcpx_3{width:6px;height:6px;background:#ff512f;position:absolute}._little-handle_xdcpx_3:after{content:'';position:absolute;width:200%;height:200%;left:50%;top:50%;margin-left:-100%;margin-top:-100%}", ""]);
+	exports.push([module.id, "._little-handle_1rkhn_3{position:absolute;left:50%;top:50%;width:0;height:0}._little-handle__point_1rkhn_1{position:absolute;z-index:1;width:6px;height:6px;left:50%;top:50%;margin-left:-3px;margin-top:-3px;background:#ff512f;box-shadow:1px 1px 0 rgba(0,0,0,.5)}._little-handle__point_1rkhn_1:after{content:'';position:absolute;width:200%;height:200%;left:50%;top:50%;margin-left:-100%;margin-top:-100%}._little-handle__line_1rkhn_1{position:absolute;width:1px;height:1px;margin-left:-1px;margin-top:-1px;left:50%;top:50%;background:#ff512f;-webkit-transform-origin:50% 100%;transform-origin:50% 100%;box-shadow:1px 0 0 rgba(0,0,0,.5)}", ""]);
 	
 	// exports
 
@@ -9962,9 +9971,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"point": "_point_3a5h7_5",
-		"is-selected": "_is-selected_3a5h7_40",
-		"is-hide-handles": "_is-hide-handles_3a5h7_51"
+		"point": "_point_vx4ul_5",
+		"is-selected": "_is-selected_vx4ul_32",
+		"is-hide-handles": "_is-hide-handles_vx4ul_43"
 	};
 
 /***/ },
@@ -10002,7 +10011,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._point_3a5h7_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5);border:2px solid #fff}._point_3a5h7_5 little-handle{position:absolute;left:50%;top:50%;margin-left:-3px;margin-top:-3px;display:none}._point_3a5h7_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_3a5h7_5._is-selected_3a5h7_40,._point_3a5h7_5:hover{border-color:#ff512f}._point_3a5h7_5._is-selected_3a5h7_40 little-handle{display:block}._point_3a5h7_5._is-hide-handles_3a5h7_51 little-handle{display:none}", ""]);
+	exports.push([module.id, "._point_vx4ul_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5);border:2px solid #fff}._point_vx4ul_5 little-handle{display:none}._point_vx4ul_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_vx4ul_5._is-selected_vx4ul_32,._point_vx4ul_5:hover{border-color:#ff512f}._point_vx4ul_5._is-selected_vx4ul_32 little-handle{display:block}._point_vx4ul_5._is-hide-handles_vx4ul_43 little-handle{display:none}", ""]);
 	
 	// exports
 
