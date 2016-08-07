@@ -98,9 +98,28 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
 
       return newState;
     }
-
+    
     case 'POINT_DESELECT_ALL': {
       return deslectAll( state );
+    }
+
+
+    // HANDLES
+    case 'HANDLE_TRANSLATE': {
+      const {data} = action;
+      // create new state and copy the new point into it
+      const newState = [...state];
+      const newPoint = { ...newState[data.parentIndex] };
+      newState[data.parentIndex] = newPoint;
+      // create handle and copy it into the new point
+      const handleName = `handle${data.index}`;
+      const newHandle = { ...newPoint[handleName] };
+      newPoint[ handleName ] = newHandle;
+      // finally add angle and radius
+      newHandle.angle  = data.angle;
+      newHandle.radius = data.radius;
+      
+      return newState;
     }
   }
   return state;

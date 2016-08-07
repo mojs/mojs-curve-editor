@@ -75,11 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-<<<<<<< HEAD
-/******/ 	var hotCurrentHash = "86cbade4ccbde34b0320"; // eslint-disable-line no-unused-vars
-=======
-/******/ 	var hotCurrentHash = "ea5949bcab813286b280"; // eslint-disable-line no-unused-vars
->>>>>>> c3a82b3d215ceb8b28d8b983cebac62f406ef58c
+/******/ 	var hotCurrentHash = "f48d32093e3626691a18"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -3932,7 +3928,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(14);
 	
-	riot.tag2('point', '<little-handle each="{this.handles}"></little-handle>', '', 'class="{this.getClass()}" riot-style="{this.getStyle()}"', function(opts) {
+	riot.tag2('point', '<little-handle each="{this.handles}" parent-index="{parent._index}"></little-handle>', '', 'class="{this.getClass()}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -3977,6 +3973,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	this.getStyle = function () {
+	  // console.log(this.point.tempX, this.point.handle1, this.point.handle2);
 	  var _store$getState = _store2.default.getState();
 	
 	  var resize = _store$getState.resize;
@@ -4079,26 +4076,101 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(riot) {
+	
+	
 	riot.tag2('little-handle', '', '', 'class="{this.CLASSES[\'little-handle\']}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _this = this;
+	
+	var _store = __webpack_require__(18);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _hammerjs = __webpack_require__(105);
+	
+	var _hammerjs2 = _interopRequireDefault(_hammerjs);
+	
+	var _propagatingHammerjs = __webpack_require__(106);
+	
+	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	this.CLASSES = __webpack_require__(15);
 	__webpack_require__(16);
 	
+	_store2.default.subscribe(function () {
+	  _this.update();
+	});
+	
+	var angleToPoint = function angleToPoint(angle, radius) {
+	  return mojs.h.getRadialPoint({ angle: angle, radius: radius, center: { x: 0, y: 0 } });
+	};
+	
+	var anglePointToAngle = function anglePointToAngle(x, y) {
+	  var radius = Math.sqrt(x * x + y * y),
+	      angle = Math.atan(y / x) * (180 / Math.PI) - 90;
+	  if (x > 0) {
+	    angle = angle - 180;
+	  };
+	
+	  return { radius: radius, angle: angle };
+	};
+	
 	this.getStyle = function () {
-	  // const {resize}  = store.getState(),
-	  //       x         = clamp(this.point.x + this.point.tempX, 0, 100),
-	  //       cleanX    = x * resize.scalerX;
+	  var point = angleToPoint(_this.angle, _this.radius);
 	
-	  // let y = this.point.y + this.point.tempY;
-	  var x = _this.x + _this.tempX,
-	      y = _this.y + _this.tempY;
-	
-	  var translate = 'transform: translate(' + x + 'px, ' + y + 'px)';
+	  var translate = 'transform: translate(' + point.x + 'px, ' + point.y + 'px) rotate(' + _this.angle + 'deg)';
 	  return '' + mojs.h.prefix.css + translate + '; ' + translate;
 	};
+	
+	this.on('mount', function () {
+	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('pan', function (e) {
+	    var point = angleToPoint(_this.angle, _this.radius),
+	        newX = point.x + e.deltaX,
+	        newY = point.y + e.deltaY;
+	
+	    _store2.default.dispatch({
+	      type: 'HANDLE_TRANSLATE',
+	      data: _extends({
+	        index: _this.index,
+	        parentIndex: _this.opts.parentIndex
+	      }, anglePointToAngle(newX, newY))
+	    });
+	
+	    e.stopPropagation();
+	  }).on('panend', function (e) {
+	    //   // reset temporary deltas
+	    //   store.dispatch({ type: 'POINT_TRANSLATE', data: { x: 0, y: 0, index: this._index } });
+	    //   // fire translate end and save it to the store
+	    //   store.dispatch({
+	    //     type: 'POINT_TRANSLATE_END',
+	    //     data: {
+	    //       x: this.point.x + getTempX(e),
+	    //       y: getY(e),
+	    //       index: this._index
+	    //     },
+	    //     isRecord: true
+	    //   });
+	
+	    e.stopPropagation();
+	  });
+	  // .on('tap', (e) => {
+	  //   store.dispatch({
+	  //     type: 'POINT_SELECT',
+	  //     data: {
+	  //       index:      this._index,
+	  //       type:       this.point.type,
+	  //       isDeselect: !e.srcEvent.shiftKey
+	  //     }
+	
+	  //   });
+	  //   e.stopPropagation();
+	  // });
+	});
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -4229,6 +4301,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	// shim for using process in browser
+	
 	var process = module.exports = {};
 	
 	// cached from whatever global is present so that test runners that stub it
@@ -4240,35 +4313,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cachedClearTimeout;
 	
 	(function () {
-	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
-	        }
+	  try {
+	    cachedSetTimeout = setTimeout;
+	  } catch (e) {
+	    cachedSetTimeout = function () {
+	      throw new Error('setTimeout is not defined');
 	    }
-	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
-	        }
+	  }
+	  try {
+	    cachedClearTimeout = clearTimeout;
+	  } catch (e) {
+	    cachedClearTimeout = function () {
+	      throw new Error('clearTimeout is not defined');
 	    }
+	  }
 	} ())
-	function runTimeout(fun) {
-	    if (cachedSetTimeout === setTimeout) {
-	        return setTimeout(fun, 0);
-	    } else {
-	        return cachedSetTimeout.call(null, fun, 0);
-	    }
-	}
-	function runClearTimeout(marker) {
-	    if (cachedClearTimeout === clearTimeout) {
-	        clearTimeout(marker);
-	    } else {
-	        cachedClearTimeout.call(null, marker);
-	    }
-	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -4293,7 +4352,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = runTimeout(cleanUpNextTick);
+	    var timeout = cachedSetTimeout.call(null, cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -4310,7 +4369,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    runClearTimeout(timeout);
+	    cachedClearTimeout.call(null, timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -4322,7 +4381,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        runTimeout(drainQueue);
+	        cachedSetTimeout.call(null, drainQueue, 0);
 	    }
 	};
 	
@@ -6127,7 +6186,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var INITIAL_STATE = {
-	  translate: { x: 150, y: 150 },
+	  translate: { x: 150, y: 100 },
 	  top: 0,
 	  temp_top: 0,
 	
@@ -6367,6 +6426,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	    case 'POINT_DESELECT_ALL':
 	      {
 	        return deslectAll(state);
+	      }
+	
+	    // HANDLES
+	    case 'HANDLE_TRANSLATE':
+	      {
+	        var _data4 = action.data;
+	        // create new state and copy the new point into it
+	
+	        var _newState5 = [].concat((0, _toConsumableArray3.default)(state));
+	        var newPoint = (0, _extends3.default)({}, _newState5[_data4.parentIndex]);
+	        _newState5[_data4.parentIndex] = newPoint;
+	        // create handle and copy it into the new point
+	        var handleName = 'handle' + _data4.index;
+	        var newHandle = (0, _extends3.default)({}, newPoint[handleName]);
+	        newPoint[handleName] = newHandle;
+	        // finally add angle and radius
+	        newHandle.angle = _data4.angle;
+	        newHandle.radius = _data4.radius;
+	
+	        return _newState5;
 	      }
 	  }
 	  return state;
@@ -6859,6 +6938,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return value != null ? value : _fallback;
 	};
 	
+	var makeHandlePoint = function makeHandlePoint() {
+	  var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	  return {
+	    index: fallback(o.index, 0),
+	    // coordinates
+	    angle: fallback(o.angle, -45),
+	    radius: fallback(o.radius, 25),
+	    // temporary coordinates (when user moves the point) -
+	    // should not be in history
+	    tempAngle: fallback(o.tempAngle, 0),
+	    tempRadius: fallback(o.tempRadius, 0),
+	    // state
+	    isTouched: fallback(o.isTouched, false),
+	    isSelected: fallback(o.isSelected, false)
+	  };
+	};
+	
 	var makePositionPoint = function makePositionPoint() {
 	  var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
@@ -6889,8 +6986,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    type: fallback(o.type, 'straight')
 	  }, makePositionPoint(o), {
 	    // add curve handles
-	    handle1: makePositionPoint(o.handle1 || { x: -25, y: -25 }),
-	    handle2: makePositionPoint(o.handle2 || { x: 25, y: -25 })
+	    handle1: makeHandlePoint(o.handle1 || { index: 1 }),
+	    handle2: makeHandlePoint(o.handle2 || { index: 2 })
 	  });
 	};
 	
@@ -9865,9 +9962,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"point": "_point_at09i_5",
-		"is-selected": "_is-selected_at09i_40",
-		"is-hide-handles": "_is-hide-handles_at09i_50"
+		"point": "_point_3a5h7_5",
+		"is-selected": "_is-selected_3a5h7_40",
+		"is-hide-handles": "_is-hide-handles_3a5h7_51"
 	};
 
 /***/ },
@@ -9905,7 +10002,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._point_at09i_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5);border:2px solid #fff}._point_at09i_5 little-handle{position:absolute;left:50%;top:50%;margin-left:-3px;margin-top:-3px;display:none}._point_at09i_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_at09i_5._is-selected_at09i_40,._point_at09i_5:hover{border-color:#8c6d8b}._point_at09i_5._is-selected_at09i_40 little-handle{display:block}._point_at09i_5._is-hide-handles_at09i_50 little-handle{display:none}", ""]);
+	exports.push([module.id, "._point_3a5h7_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5);border:2px solid #fff}._point_3a5h7_5 little-handle{position:absolute;left:50%;top:50%;margin-left:-3px;margin-top:-3px;display:none}._point_3a5h7_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_3a5h7_5._is-selected_3a5h7_40,._point_3a5h7_5:hover{border-color:#ff512f}._point_3a5h7_5._is-selected_3a5h7_40 little-handle{display:block}._point_3a5h7_5._is-hide-handles_3a5h7_51 little-handle{display:none}", ""]);
 	
 	// exports
 
@@ -9956,7 +10053,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve_1gafb_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #b3a0b2;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2}._curve__svg-wrapper_1gafb_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_1gafb_1{display:block;overflow:visible;width:100%}._curve__svg-segment_1gafb_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_1gafb_1:hover{stroke:#ff512f}", ""]);
+	exports.push([module.id, "._curve_1gafb_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #9c829a;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2}._curve__svg-wrapper_1gafb_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_1gafb_1{display:block;overflow:visible;width:100%}._curve__svg-segment_1gafb_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_1gafb_1:hover{stroke:#ff512f}", ""]);
 	
 	// exports
 
@@ -10001,15 +10098,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-<<<<<<< HEAD
-		"code-panel": "_code-panel_r7h38_3",
-		"code-panel__input-wrap": "_code-panel__input-wrap_r7h38_1",
-		"code-panel__input-field": "_code-panel__input-field_r7h38_1"
-=======
-		"code-panel": "_code-panel_q9mrm_3",
-		"code-panel__input-wrap": "_code-panel__input-wrap_q9mrm_1",
-		"code-panel__input-field": "_code-panel__input-field_q9mrm_1"
->>>>>>> c3a82b3d215ceb8b28d8b983cebac62f406ef58c
+		"code-panel": "_code-panel_1furt_3",
+		"code-panel__input-wrap": "_code-panel__input-wrap_1furt_1",
+		"code-panel__input-field": "_code-panel__input-field_1furt_1"
 	};
 
 /***/ },
@@ -10047,11 +10138,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-<<<<<<< HEAD
-	exports.push([module.id, "._code-panel_r7h38_3{position:absolute;left:10px;right:10px;margin-top:-32px;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:1}._code-panel__input-wrap_r7h38_1{margin:4px 5px 5px;border-radius:2px;background:#42103f;border:1px solid #9c829a;box-shadow:inset 2px 2px 0 rgba(0,0,0,.5)}._code-panel__input-field_r7h38_1{display:block;background:transparent;color:#fff;font-size:9px;letter-spacing:.45px;line-height:21px;font-weight:100;padding:0 .3em 0 .8em;border:none;width:100%;height:21px}._code-panel_r7h38_3 ::-moz-selection,.code-panel ::-moz-selection{background:#ff512f}._code-panel_r7h38_3 ::selection{background:#ff512f}", ""]);
-=======
-	exports.push([module.id, "._code-panel_q9mrm_3{position:absolute;left:10px;right:10px;margin-top:-32px;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:1}._code-panel__input-wrap_q9mrm_1{margin:5px 5px 4px;border-radius:2px;background:#3a083a;border:1px solid #b3a0b2;box-shadow:inset 3px 3px 0 rgba(0,0,0,.5)}._code-panel__input-field_q9mrm_1{display:block;background:transparent;color:#fff;font-size:9px;font-family:Arial,Helvetica,sans-serif;letter-spacing:.45px;line-height:21px;font-weight:100;padding:0 .3em 0 .8em;border:none;width:100%}._code-panel_q9mrm_3 ::-moz-selection,.code-panel ::-moz-selection{background:#ff512f}._code-panel_q9mrm_3 ::selection{background:#ff512f}", ""]);
->>>>>>> c3a82b3d215ceb8b28d8b983cebac62f406ef58c
+	exports.push([module.id, "._code-panel_1furt_3{position:absolute;left:10px;right:10px;margin-top:-32px;border-radius:6px 6px 0 0;background:#3d1b3c;z-index:1;display:none}._code-panel__input-wrap_1furt_1{margin:4px 5px 5px;border-radius:2px;background:#42103f;border:1px solid #9c829a;box-shadow:inset 2px 2px 0 rgba(0,0,0,.5)}._code-panel__input-field_1furt_1{display:block;background:transparent;color:#fff;font-size:9px;font-family:Arial,Helvetica,sans-serif;letter-spacing:.45px;font-weight:100;padding:0 .3em 0 .8em;border:none;width:100%;height:21px}._code-panel_1furt_3 ::-moz-selection,.code-panel ::-moz-selection{background:#ff512f}._code-panel_1furt_3 ::selection{background:#ff512f}", ""]);
 	
 	// exports
 

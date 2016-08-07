@@ -2,7 +2,7 @@ require('./little-handle');
 
 <point class={this.getClass()} style={this.getStyle()}>
 
-  <little-handle each={this.handles} />
+  <little-handle each={this.handles} parent-index={ parent._index }  />
 
   <script type="babel">
     this.CLASSES = require('../../css/blocks/point.postcss.css.json');
@@ -16,18 +16,21 @@ require('./little-handle');
     }
     
     this.getHandles();
-    store.subscribe(() => { this.getHandles(); this.update(); });
+    store.subscribe(() => {
+      this.getHandles(); this.update();
+    });
 
     this.getClass = () => {
       const isSelected = (this.point.isSelected)
                               ? this.CLASSES['is-selected'] : '';
       const isHideHandles = (this.point.type === 'straight')
                               ? this.CLASSES['is-hide-handles'] : '';
-
+                              
       return `${this.CLASSES['point']} ${isSelected} ${isHideHandles}`;
     }
 
     this.getStyle = () => {
+      // console.log(this.point.tempX, this.point.handle1, this.point.handle2);
       const {resize}  = store.getState(),
             x         = clamp(this.point.x + this.point.tempX, 0, 100),
             cleanX    = x * resize.scalerX;

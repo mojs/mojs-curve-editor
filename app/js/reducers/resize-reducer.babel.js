@@ -1,6 +1,6 @@
 
 const INITIAL_STATE = {
-  translate:    { x: 150, y: 150 },
+  translate:    { x: 150, y: 100 },
   top:          0,
   temp_top:     0,
 

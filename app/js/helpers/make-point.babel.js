@@ -3,6 +3,23 @@ const fallback = ( value, fallback ) => {
   return ( value != null ) ? value : fallback;
 }
 
+
+const makeHandlePoint = (o={}) => {
+  return {
+    index:    fallback( o.index, 0 ),
+    // coordinates
+    angle:    fallback( o.angle, -45 ),
+    radius:   fallback( o.radius, 25 ),
+    // temporary coordinates (when user moves the point) -
+    // should not be in history
+    tempAngle:  fallback( o.tempAngle, 0 ),
+    tempRadius: fallback( o.tempRadius, 0 ),
+    // state
+    isTouched:  fallback( o.isTouched, false ),
+    isSelected: fallback( o.isSelected, false ),
+  };
+}
+
 const makePositionPoint = (o={}) => {
   return {
     // coordinates
@@ -30,8 +47,8 @@ const makePoint = (o = {}) => {
     // add position attributes to self
     ...makePositionPoint(o),
     // add curve handles
-    handle1: makePositionPoint(o.handle1 || { x: -25, y: -25 }),
-    handle2: makePositionPoint(o.handle2 || { x:  25, y: -25 })
+    handle1: makeHandlePoint(o.handle1 || { index: 1 }),
+    handle2: makeHandlePoint(o.handle2 || { index: 2 })
   };
 }
 
