@@ -35,6 +35,8 @@ require('./point-controls');
     require('../../css/blocks/curve-editor');
     this.CLASSES = require('../../css/blocks/curve-editor.postcss.css.json');
 
+    import C from '../constants';
+
     const {store} = opts;
     store.subscribe(this.update.bind(this));
 
@@ -87,8 +89,8 @@ require('./point-controls');
       temp_bottom += state.bottom;
       temp_right += state.right;
 
-      const X_SIZE = 411;
-      const Y_SIZE = 378;
+      const X_SIZE = C.CURVE_SIZE + 53;
+      const Y_SIZE = C.CURVE_SIZE + 2*C.CURVE_PADDING;
 
       // constrain min height
       if (Y_SIZE - temp_top < Y_SIZE) { temp_top = 0; }

@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ee7ece084b1210d2bf1a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "0c12eca309296d90b0aa"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -3297,6 +3297,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _this = this;
 	
+	var _constants = __webpack_require__(139);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
 	var _hammerjs = __webpack_require__(102);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
@@ -3373,8 +3377,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  temp_bottom += state.bottom;
 	  temp_right += state.right;
 	
-	  var X_SIZE = 411;
-	  var Y_SIZE = 378;
+	  var X_SIZE = _constants2.default.CURVE_SIZE + 53;
+	  var Y_SIZE = _constants2.default.CURVE_SIZE + 2 * _constants2.default.CURVE_PADDING;
 	
 	  // constrain min height
 	  if (Y_SIZE - temp_top < Y_SIZE) {
@@ -3807,6 +3811,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
+	var _constants = __webpack_require__(139);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
 	var _hammerjs = __webpack_require__(102);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
@@ -3827,9 +3835,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        x = point.x + point.tempX,
 	        y = point.y + point.tempY;
 	    if (i === 0) {
-	      str += 'M' + x + ', ' + y / 3.58 + ' ';
+	      str += 'M' + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
 	    } else {
-	      str += 'L' + x + ', ' + y / 3.58 + ' ';
+	      str += 'L' + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
 	    }
 	  }
 	  _this.path = str;
@@ -3841,7 +3849,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  temp_top += resize.top;
 	
-	  if (358 - temp_top < 358) {
+	  if (_constants2.default.CURVE_SIZE - temp_top < _constants2.default.CURVE_SIZE) {
 	    temp_top = 0;
 	  }
 	  temp_top = (0, _resizeMod2.default)(temp_top, -1);
@@ -3868,7 +3876,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // const startChar = (i === 1) ? 'M' : 'L'
 	    _this.segments.push({
 	      index: i,
-	      string: 'M' + px + ', ' + py / 3.58 + ' L' + x + ', ' + y / 3.58
+	      string: 'M' + px + ', ' + py / _constants2.default.CURVE_PERCENT + ' L' + x + ', ' + y / _constants2.default.CURVE_PERCENT
 	    });
 	  }
 	};
@@ -3901,7 +3909,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    // coordinates
 	    var x = ev.offsetX,
-	        y = ev.offsetY * 3.58,
+	        y = ev.offsetY * _constants2.default.CURVE_PERCENT,
 	        index = parseInt(target.getAttribute('data-index'));
 	
 	    _store2.default.dispatch({
@@ -3936,6 +3944,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _store = __webpack_require__(15);
 	
 	var _store2 = _interopRequireDefault(_store);
+	
+	var _constants = __webpack_require__(139);
+	
+	var _constants2 = _interopRequireDefault(_constants);
 	
 	var _hammerjs = __webpack_require__(102);
 	
@@ -4019,7 +4031,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  var y = _this.point.y + e.deltaY;
 	  // clamp y to the size of curve
-	  return clamp(y, resize.top, 358 + resize.bottom);
+	  return clamp(y, resize.top, _constants2.default.CURVE_SIZE + resize.bottom);
 	};
 	
 	// get y delta reagarding curve bounds
@@ -4032,8 +4044,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (y < resize.top) {
 	    return resize.top - _this.point.y;
 	  }
-	  if (y > 358 + resize.bottom) {
-	    return 358 + resize.bottom - _this.point.y;
+	  if (y > _constants2.default.CURVE_SIZE + resize.bottom) {
+	    return _constants2.default.CURVE_SIZE + resize.bottom - _this.point.y;
 	  }
 	  return e.deltaY;
 	};
@@ -6149,6 +6161,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _extends5 = _interopRequireDefault(_extends4);
 	
+	var _constants = __webpack_require__(139);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var INITIAL_STATE = {
@@ -6161,7 +6177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  bottom: 0,
 	  temp_bottom: 0,
-	  scalerX: 3.58
+	  scalerX: _constants2.default.CURVE_PERCENT
 	};
 	
 	var resizeReducer = function resizeReducer() {
@@ -6178,7 +6194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var newState = (0, _extends5.default)({}, state, (0, _defineProperty3.default)({}, 'temp_' + type, delta));
 	        // if `right`size changed - calculate the scaler for x axis
 	        if (type === 'right') {
-	          newState['scalerX'] = (358 + Math.max(state.right + delta, 0)) / 100;
+	          newState['scalerX'] = (_constants2.default.CURVE_SIZE + Math.max(state.right + delta, 0)) / 100;
 	        }
 	        return newState;
 	      }
@@ -6285,9 +6301,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _makePoint2 = _interopRequireDefault(_makePoint);
 	
+	var _constants = __webpack_require__(139);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var INITIAL_STATE = [(0, _makePoint2.default)({ x: 0, y: 358, isLockedX: true }), (0, _makePoint2.default)({ x: 50, y: 179, type: 'mirrored' }), (0, _makePoint2.default)({ x: 100, y: 0, isLockedX: true })];
+	var INITIAL_STATE = [(0, _makePoint2.default)({ x: 0, y: _constants2.default.CURVE_SIZE, isLockedX: true }), (0, _makePoint2.default)({ x: 50, y: _constants2.default.CURVE_SIZE / 2, type: 'mirrored' }), (0, _makePoint2.default)({ x: 100, y: 0, isLockedX: true })];
 	
 	var deslectAll = function deslectAll(state) {
 	  var newState = [];
@@ -6356,12 +6376,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var sibHandle = (0, _extends3.default)({}, point[sibHandleName]);
 	        point[handleName] = handle;
 	        point[sibHandleName] = sibHandle;
-	        var wasntSet = handle.angle == null;
+	
+	        var wasntSet = handle.angle == null || handle.radius == null;
 	        var type = point.type;
-	        if (type !== 'straight' && wasntSet) {
+	        if (wasntSet) {
 	          handle.radius = 50;
 	
-	          var dy = (sibPoint.y - point.y) / 3.58;
+	          var dy = (sibPoint.y - point.y) / _constants2.default.CURVE_PERCENT;
 	          var dx = sibPoint.x - point.x;
 	          var angle = Math.atan(dy / dx) * (180 / Math.PI) - 90;
 	          if (dx > 0) {
@@ -9991,16 +10012,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 107 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	      value: true
 	});
 	
+	var _constants = __webpack_require__(139);
 	
-	var Y_SIZE = 358;
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Y_SIZE = _constants2.default.CURVE_SIZE;
 	var mod = function mod(tempResize_top) {
 	      var coef = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
 	
@@ -10641,6 +10667,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	// exports
 
+
+/***/ },
+/* 139 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var CURVE_SIZE = 358;
+	exports.default = {
+	  CURVE_SIZE: CURVE_SIZE,
+	  CURVE_PERCENT: CURVE_SIZE / 100,
+	  CURVE_PADDING: 10
+	};
 
 /***/ }
 /******/ ])

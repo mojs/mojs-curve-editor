@@ -1,8 +1,9 @@
 import makePoint from '../helpers/make-point';
+import C from '../constants';
 
 const INITIAL_STATE = [
-    makePoint({ x: 0,   y: 358, isLockedX: true }),
-    makePoint({ x: 50,  y: 179, type: 'mirrored' }),
+    makePoint({ x: 0,   y: C.CURVE_SIZE, isLockedX: true }),
+    makePoint({ x: 50,  y: C.CURVE_SIZE/2, type: 'mirrored' }),
     makePoint({ x: 100, y: 0, isLockedX: true })
   ];
 
@@ -69,12 +70,13 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
       const sibHandle = { ...point[sibHandleName] };
       point[handleName] = handle;
       point[sibHandleName] = sibHandle;
-      const wasntSet = handle.angle == null;
+
+      const wasntSet = handle.angle == null || handle.radius == null;
       const type = point.type;
-      if ( type !== 'straight' && wasntSet ) {
+      if ( wasntSet ) {
         handle.radius = 50;
 
-        const dy = (sibPoint.y - point.y) / 3.58;
+        const dy = (sibPoint.y - point.y) / C.CURVE_PERCENT;
         const dx = sibPoint.x - point.x;
         let angle = Math.atan( dy/dx ) * (180/Math.PI) - 90;
         if ( dx > 0 ) { angle = angle - 180 };

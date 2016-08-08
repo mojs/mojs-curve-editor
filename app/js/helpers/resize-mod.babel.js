@@ -1,6 +1,8 @@
 
 
-const Y_SIZE = 358;
+import C from '../constants';
+
+const Y_SIZE = C.CURVE_SIZE;
 const mod = ( tempResize_top, coef = 1 ) => {
   const MOD = Math.abs(tempResize_top % Y_SIZE),
         DIV = parseInt(tempResize_top / Y_SIZE),

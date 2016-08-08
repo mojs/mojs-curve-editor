@@ -56,6 +56,7 @@ require('./point');
 
     import store from '../store';
     import mod from '../helpers/resize-mod';
+    import C from '../constants';
 
     const getPath = () => {
       let str = '';
@@ -63,8 +64,8 @@ require('./point');
         const point = this.points[i],
               x = point.x + point.tempX,
               y = point.y + point.tempY;
-        if ( i ===  0) { str += `M${x}, ${y/3.58} `; }
-        else { str += `L${x}, ${y/3.58} ` ; }
+        if ( i ===  0) { str += `M${x}, ${y/C.CURVE_PERCENT} `; }
+        else { str += `L${x}, ${y/C.CURVE_PERCENT} ` ; }
       }
       this.path = str;
     }
@@ -75,7 +76,7 @@ require('./point');
 
       temp_top += resize.top;
 
-      if (358 - temp_top < 358) { temp_top = 0; }
+      if (C.CURVE_SIZE - temp_top < C.CURVE_SIZE) { temp_top = 0; }
       temp_top = mod( temp_top, -1 );
 
       const background = `background-position: 0 ${-temp_top - 1}px`;
@@ -100,7 +101,7 @@ require('./point');
         // const startChar = (i === 1) ? 'M' : 'L'
         this.segments.push({
           index:  i,
-          string: `M${px}, ${py/3.58} L${x}, ${y/3.58}`
+          string: `M${px}, ${py/C.CURVE_PERCENT} L${x}, ${y/C.CURVE_PERCENT}`
         });
       }
     }
@@ -127,7 +128,7 @@ require('./point');
           if ( target.tagName.toLowerCase() !== 'path' ) { return; }
           // coordinates
           const x  = ev.offsetX,
-                y  = ev.offsetY*3.58,
+                y  = ev.offsetY*C.CURVE_PERCENT,
                 index = parseInt(target.getAttribute('data-index'));
 
           store.dispatch({

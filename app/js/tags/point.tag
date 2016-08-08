@@ -13,6 +13,7 @@ require('./little-handle');
     require('../../css/blocks/point');
 
     import store from '../store';
+    import C     from '../constants';
     const {clamp} = mojs.h;
 
     this.getHandles = () => {
@@ -71,7 +72,7 @@ require('./little-handle');
       const {resize} = store.getState();
       const y = this.point.y + e.deltaY
       // clamp y to the size of curve
-      return clamp( y, resize.top, 358 + resize.bottom ); 
+      return clamp( y, resize.top, C.CURVE_SIZE + resize.bottom ); 
     }
 
     // get y delta reagarding curve bounds
@@ -80,7 +81,7 @@ require('./little-handle');
             y = this.point.y + e.deltaY;
 
       if ( y < resize.top ) { return (resize.top - this.point.y); }
-      if ( y > 358 + resize.bottom ) { return 358 + resize.bottom - this.point.y }
+      if ( y > C.CURVE_SIZE + resize.bottom ) { return C.CURVE_SIZE + resize.bottom - this.point.y }
       return e.deltaY;
     }
 

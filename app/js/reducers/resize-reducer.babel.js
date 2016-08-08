@@ -1,3 +1,4 @@
+import C from '../constants';
 
 const INITIAL_STATE = {
   translate:    { x: 150, y: 100 },
@@ -9,7 +10,7 @@ const INITIAL_STATE = {
 
   bottom:       0,
   temp_bottom:  0,
-  scalerX:      3.58
+  scalerX:      C.CURVE_PERCENT
 }
 
 const resizeReducer = (state = INITIAL_STATE, action) => {
@@ -22,7 +23,7 @@ const resizeReducer = (state = INITIAL_STATE, action) => {
       const newState = { ...state, [`temp_${type}`]: delta };
       // if `right`size changed - calculate the scaler for x axis
       if ( type === 'right' ) {
-        newState[ 'scalerX' ] = (358 + Math.max( state.right + delta, 0 ))/100;
+        newState[ 'scalerX' ] = (C.CURVE_SIZE + Math.max( state.right + delta, 0 ))/100;
       }
       return newState;
     }
