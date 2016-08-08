@@ -16,7 +16,7 @@ require('./point-controls');
   <code-panel />
   <icons />
   <div class={this.CLASSES['curve-editor__left']}>
-    <icon-button shape="code"></icon-button>
+    <icon-button shape="code" title="show code"></icon-button>
     <icon-divider />
     <point-controls className={this.CLASSES['curve-editor__anchor-buttons']} />
     <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class={this.CLASSES['curve-editor__mojs-logo']}>

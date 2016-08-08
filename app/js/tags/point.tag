@@ -2,7 +2,11 @@ require('./little-handle');
 
 <point class={this.getClass()} style={this.getStyle()}>
 
-  <little-handle each={this.handles} parent-index={ parent._index }  />
+  <little-handle
+    each={this.handles}
+    parent-index={ parent._index }
+    type={ parent.point.type }
+    />
 
   <script type="babel">
     this.CLASSES = require('../../css/blocks/point.postcss.css.json');
@@ -12,7 +16,12 @@ require('./little-handle');
     const {clamp} = mojs.h;
 
     this.getHandles = () => {
-      this.handles = [this.point.handle1, this.point.handle2];
+      this.handles = [];
+      // dont set the handle1 for start point
+      (this._index !== 0) && this.handles.push(this.point.handle1);
+
+      // dont set the handle2 for end point
+      (this._index !== this.opts.pointsCount-1) && this.handles.push(this.point.handle2);
     }
     
     this.getHandles();
@@ -25,7 +34,7 @@ require('./little-handle');
                               ? this.CLASSES['is-selected'] : '';
       const isHideHandles = (this.point.type === 'straight')
                               ? this.CLASSES['is-hide-handles'] : '';
-                              
+      
       return `${this.CLASSES['point']} ${isSelected} ${isHideHandles}`;
     }
 

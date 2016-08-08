@@ -7,6 +7,7 @@ require('./icon-button');
     is-check={value}
     shape={ 'point-' + name }
     on-tap={ parent.onButtonTap.bind(this) }
+    title={name}
   />
 
   <script type="babel">

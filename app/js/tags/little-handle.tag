@@ -15,9 +15,7 @@
     this.CLASSES = require('../../css/blocks/little-handle.postcss.css.json');
     require('../../css/blocks/little-handle');
     import store from '../store';
-    store.subscribe(() => {
-      this.update();
-    });
+    store.subscribe(() => { this.update(); });
 
     const angleToPoint = (angle, radius) => {
       return mojs.h.getRadialPoint({ angle, radius, center: { x: 0, y: 0 } })
@@ -54,45 +52,45 @@
                 newX  = point.x + e.deltaX,
                 newY  = point.y + e.deltaY;
 
+          const angle = anglePointToAngle( newX, newY );
           store.dispatch({
             type: 'HANDLE_TRANSLATE',
             data: {
               index: this.index,
               parentIndex: this.opts.parentIndex,
-              ...anglePointToAngle( newX, newY )
+              ...angle
             }
           });
 
-          e.stopPropagation();
-        })
-        .on('panend', (e) => {
-        //   // reset temporary deltas
-        //   store.dispatch({ type: 'POINT_TRANSLATE', data: { x: 0, y: 0, index: this._index } });
-        //   // fire translate end and save it to the store
-        //   store.dispatch({
-        //     type: 'POINT_TRANSLATE_END',
-        //     data: {
-        //       x: this.point.x + getTempX(e),
-        //       y: getY(e),
-        //       index: this._index
-        //     },
-        //     isRecord: true
-        //   });
+          if ( this.opts.type === 'mirrored' ) {
+            const index = (this.index === 1) ? 2 : 1;
+            store.dispatch({
+              type: 'HANDLE_TRANSLATE',
+              data: {
+                index,
+                parentIndex: this.opts.parentIndex,
+                radius: angle.radius,
+                angle:  angle.angle - 180
+              }
+            });
+          }
+
+          if ( this.opts.type === 'asymmetric' ) {
+            const index = (this.index === 1) ? 2 : 1;
+            store.dispatch({
+              type: 'HANDLE_TRANSLATE',
+              data: {
+                index,
+                parentIndex: this.opts.parentIndex,
+                angle:       angle.angle - 180,
+                radius:      this.radius
+              }
+            });
+          }
 
           e.stopPropagation();
         })
-        // .on('tap', (e) => {
-        //   store.dispatch({
-        //     type: 'POINT_SELECT',
-        //     data: {
-        //       index:      this._index,
-        //       type:       this.point.type,
-        //       isDeselect: !e.srcEvent.shiftKey
-        //     }
-
-        //   });
-        //   e.stopPropagation();
-        // });
+        .on('panend', (e) => { e.stopPropagation(); });
     });
 
   </script>

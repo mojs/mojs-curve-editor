@@ -41,7 +41,7 @@
     top:          50%;
     background:   $c-orange;
     transform-origin: 50% 100%;
-    box-shadow:   calc( 1*$PX ) 0 0 rgba(0,0,0,.5);
+    /*box-shadow:   calc( 1*$PX ) 0 0 rgba(0,0,0,.5);*/
   }
 
 }

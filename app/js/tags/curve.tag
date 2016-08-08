@@ -4,7 +4,9 @@ require('./point');
 <curve class={ this.CLASSES['curve']} style={this.styles.background}>
   <div class={ this.CLASSES['curve__svg-wrapper']} style={this.styles.transform}>
 
-    <point each={ point, _index in points }></point>
+    <point
+          each={ point, _index in points }
+          points-count={parent.points.length} />
 
     <svg  height="358"
           viewBox="0 0 100 100"

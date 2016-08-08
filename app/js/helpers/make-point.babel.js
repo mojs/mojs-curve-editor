@@ -8,12 +8,8 @@ const makeHandlePoint = (o={}) => {
   return {
     index:    fallback( o.index, 0 ),
     // coordinates
-    angle:    fallback( o.angle, -45 ),
-    radius:   fallback( o.radius, 25 ),
-    // temporary coordinates (when user moves the point) -
-    // should not be in history
-    tempAngle:  fallback( o.tempAngle, 0 ),
-    tempRadius: fallback( o.tempRadius, 0 ),
+    angle:    fallback( o.angle,  null ),
+    radius:   fallback( o.radius, null ),
     // state
     isTouched:  fallback( o.isTouched, false ),
     isSelected: fallback( o.isSelected, false ),
