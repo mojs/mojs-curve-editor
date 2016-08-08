@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0c12eca309296d90b0aa"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "3082a6b3aa4ce9ad3025"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -3828,17 +3828,43 @@ return /******/ (function(modules) { // webpackBootstrap
 	this.CLASSES = __webpack_require__(111);
 	__webpack_require__(112);
 	
+	var angleToPoint = function angleToPoint(angle, radius) {
+	  return mojs.h.getRadialPoint({ angle: angle, radius: radius, center: { x: 0, y: 0 } });
+	};
+	
 	var getPath = function getPath() {
 	  var str = '';
 	  for (var i = 0; i < _this.points.length; i++) {
 	    var point = _this.points[i],
 	        x = point.x + point.tempX,
 	        y = point.y + point.tempY;
+	
 	    if (i === 0) {
+	      var nextPoint = _this.points[i + 1];
+	      var xNext = nextPoint.x + nextPoint.tempX,
+	          yNext = nextPoint.y + nextPoint.tempY;
+	
 	      str += 'M' + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
-	    } else {
-	      str += 'L' + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
-	    }
+	      if (point.type !== 'straight') {
+	        var handle2 = angleToPoint(point.handle2.angle, point.handle2.radius);
+	        str += 'C' + (point.x + handle2.x) + ', ' + (point.y / 3.58 + handle2.y / 3.58) + ' ';
+	      } else {
+	        str += 'C' + point.x + ', ' + point.y / 3.58 + ' ';
+	      }
+	
+	      if (nextPoint.type !== 'straight') {
+	        var handle1 = angleToPoint(nextPoint.handle1.angle, nextPoint.handle1.radius);
+	        str += nextPoint.x + handle1.x + ', ' + (nextPoint.y / 3.58 + handle1.y / 3.58) + ' ';
+	      } else {
+	        str += nextPoint.x + ', ' + nextPoint.y / 3.58 + ' ';
+	      }
+	
+	      str += nextPoint.x + ', ' + nextPoint.y / 3.58 + ' ';
+	    } else {}
+	    // str += `L${x}, ${y/C.CURVE_PERCENT} ` ;
+	
+	    // if ( i ===  0) { str += `M${x}, ${y/C.CURVE_PERCENT} `; }
+	    // else { str += `L${x}, ${y/C.CURVE_PERCENT} ` ; }
 	  }
 	  _this.path = str;
 	};

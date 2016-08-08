@@ -58,14 +58,45 @@ require('./point');
     import mod from '../helpers/resize-mod';
     import C from '../constants';
 
+    const angleToPoint = (angle, radius) => {
+      return mojs.h.getRadialPoint({ angle, radius, center: { x: 0, y: 0 } })
+    }
+
     const getPath = () => {
       let str = '';
       for (let i = 0 ; i < this.points.length; i++) {
         const point = this.points[i],
               x = point.x + point.tempX,
               y = point.y + point.tempY;
-        if ( i ===  0) { str += `M${x}, ${y/C.CURVE_PERCENT} `; }
-        else { str += `L${x}, ${y/C.CURVE_PERCENT} ` ; }
+
+        if ( i === 0 ) {
+          const nextPoint = this.points[i+1];
+          const xNext = nextPoint.x + nextPoint.tempX,
+                yNext = nextPoint.y + nextPoint.tempY;
+
+          str += `M${x}, ${y/C.CURVE_PERCENT} `;
+          if ( point.type !== 'straight' ) {
+            const handle2 = angleToPoint( point.handle2.angle, point.handle2.radius );
+            str += `C${point.x + handle2.x}, ${point.y/3.58 + handle2.y/3.58} `;
+          } else {
+            str += `C${point.x}, ${point.y/3.58} `;
+          }
+
+          if ( nextPoint.type !== 'straight' ) {
+            const handle1 = angleToPoint( nextPoint.handle1.angle, nextPoint.handle1.radius );
+            str += `${nextPoint.x + handle1.x}, ${nextPoint.y/3.58 + handle1.y/3.58} `;
+          } else {
+            str += `${nextPoint.x}, ${nextPoint.y/3.58} `;
+          }
+
+          str += `${nextPoint.x}, ${nextPoint.y/3.58} `;
+
+        } else {
+          // str += `L${x}, ${y/C.CURVE_PERCENT} ` ;          
+        }
+
+        // if ( i ===  0) { str += `M${x}, ${y/C.CURVE_PERCENT} `; }
+        // else { str += `L${x}, ${y/C.CURVE_PERCENT} ` ; }
       }
       this.path = str;
     }
@@ -132,9 +163,9 @@ require('./point');
                 index = parseInt(target.getAttribute('data-index'));
 
           store.dispatch({
-            type:     'POINT_ADD',
-            data:     { x, y, index },
-            isRecord: true
+            type:      'POINT_ADD',
+            data:      { x, y, index },
+            isRecord:  true
           });
 
           store.dispatch({
