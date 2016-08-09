@@ -15,7 +15,7 @@ require('./point');
 
       <path d={this.path}
             stroke="#000000"
-            stroke-opacity="1.35"
+            stroke-opacity="0.35"
             stroke-width="4"
             vector-effect="non-scaling-stroke"
             transform="translate(.75,.75)"
@@ -24,9 +24,10 @@ require('./point');
       <g id="js-segments">
           <path
             each={ this.segments }
-            d={string}
+            d={str}
             data-index={index}
             stroke="white"
+            fill="none"
             stroke-width=""
             vector-effect="non-scaling-stroke"
             class={this.CLASSES['curve__svg-segment']}
@@ -59,7 +60,6 @@ require('./point');
     import C from '../constants';
     import angleToPoint from '../helpers/angle-to-point';
 
-
     const getPoint = (point, handleIndex = 1) => {
       const x      = point.x + point.tempX,
             y      = point.y + point.tempY,
@@ -78,27 +78,43 @@ require('./point');
       if ( !nextPoint ) { return 1; }
 
       let str = '';
+      let segmentStr = '';
 
       const x = point.x + point.tempX,
             y = point.y + point.tempY,
             xNext = nextPoint.x + nextPoint.tempX,
             yNext = nextPoint.y + nextPoint.tempY;
 
-      if ( i === 0 ) { str += `M${x}, ${y/C.CURVE_PERCENT} ` }
-      str += getPoint( point, 2 );
-      str += getPoint( nextPoint, 1 );
-      str += `${xNext}, ${yNext/C.CURVE_PERCENT} `;
+      const part1 = `M${x}, ${y/C.CURVE_PERCENT} `;
+      if ( i === 0 ) { str += part1 }
+      segmentStr += part1;
 
-      return str;
+      const part2 = getPoint( point, 2 );
+      str += part2;
+      segmentStr += part2;
+
+      const part3 = getPoint( nextPoint, 1 );
+      str += part3;
+      segmentStr += part3;
+
+      const part4 = `${xNext}, ${yNext/C.CURVE_PERCENT} `;
+      str += part4;
+      segmentStr += part4;
+
+      return { str, segmentStr };
     }
 
     const getPath = () => {
       let str = '';
+      this.segments = [];
       for (let i = 0 ; i < this.points.length-1; i++) {
         const point     = this.points[i],
               nextPoint = this.points[i+1];
 
-        str += getSegment( point, nextPoint, i );
+        const segment = getSegment( point, nextPoint, i );
+        str += segment.str;
+        console.log(i);
+        this.segments.push({ index: i, str: segment.segmentStr });
       }
 
       this.path = str;
@@ -122,29 +138,11 @@ require('./point');
       };
     }
 
-    const getSegments = () => {
-      this.segments = [];
-      for (var i = 1; i < this.points.length; i++) {
-        const pPoint = this.points[i-1],
-              point  = this.points[i],
-              px = pPoint.x + pPoint.tempX,
-              py = pPoint.y + pPoint.tempY,
-              x  = point.x + point.tempX,
-              y  = point.y + point.tempY;
-
-        // const startChar = (i === 1) ? 'M' : 'L'
-        this.segments.push({
-          index:  i,
-          string: `M${px}, ${py/C.CURVE_PERCENT} L${x}, ${y/C.CURVE_PERCENT}`
-        });
-      }
-    }
-
     const getState  = () => { this.state  = store.getState(); }
     const getPoints = () => { this.points = this.state.points.present; }
     const getStyles = () => { this.styles = this.getStyle(); }
     const get = () => {
-      getState(); getPoints(); getSegments(); getPath(); getStyles();
+      getState(); getPoints(); getPath(); getStyles();
     }
 
     get();
@@ -164,6 +162,8 @@ require('./point');
           const x  = ev.offsetX,
                 y  = ev.offsetY*C.CURVE_PERCENT,
                 index = parseInt(target.getAttribute('data-index'));
+
+          console.log(index);
 
           store.dispatch({
             type:      'POINT_ADD',

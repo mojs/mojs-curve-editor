@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "4180f42de19836a486f4"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "94929f4bc804254be486"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -3798,7 +3798,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */(function(riot) {
 	__webpack_require__(13);
 	
-	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}" points-count="{parent.points.length}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="1.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <g id="js-segments"> <path each="{this.segments}" riot-d="{string}" data-index="{index}" stroke="white" stroke-width="" vector-effect="non-scaling-stroke" class="{this.CLASSES[\'curve__svg-segment\']}"></path> </g> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
+	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}" points-count="{parent.points.length}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="0.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <g id="js-segments"> <path each="{this.segments}" riot-d="{str}" data-index="{index}" stroke="white" fill="none" stroke-width="" vector-effect="non-scaling-stroke" class="{this.CLASSES[\'curve__svg-segment\']}"></path> </g> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -3854,29 +3854,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	
 	  var str = '';
+	  var segmentStr = '';
 	
 	  var x = point.x + point.tempX,
 	      y = point.y + point.tempY,
 	      xNext = nextPoint.x + nextPoint.tempX,
 	      yNext = nextPoint.y + nextPoint.tempY;
 	
+	  var part1 = 'M' + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
 	  if (i === 0) {
-	    str += 'M' + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
+	    str += part1;
 	  }
-	  str += getPoint(point, 2);
-	  str += getPoint(nextPoint, 1);
-	  str += xNext + ', ' + yNext / _constants2.default.CURVE_PERCENT + ' ';
+	  segmentStr += part1;
 	
-	  return str;
+	  var part2 = getPoint(point, 2);
+	  str += part2;
+	  segmentStr += part2;
+	
+	  var part3 = getPoint(nextPoint, 1);
+	  str += part3;
+	  segmentStr += part3;
+	
+	  var part4 = xNext + ', ' + yNext / _constants2.default.CURVE_PERCENT + ' ';
+	  str += part4;
+	  segmentStr += part4;
+	
+	  return { str: str, segmentStr: segmentStr };
 	};
 	
 	var getPath = function getPath() {
 	  var str = '';
+	  _this.segments = [];
 	  for (var i = 0; i < _this.points.length - 1; i++) {
 	    var point = _this.points[i],
 	        nextPoint = _this.points[i + 1];
 	
-	    str += getSegment(point, nextPoint, i);
+	    var segment = getSegment(point, nextPoint, i);
+	    str += segment.str;
+	    console.log(i);
+	    _this.segments.push({ index: i, str: segment.segmentStr });
 	  }
 	
 	  _this.path = str;
@@ -3902,24 +3918,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	};
 	
-	var getSegments = function getSegments() {
-	  _this.segments = [];
-	  for (var i = 1; i < _this.points.length; i++) {
-	    var pPoint = _this.points[i - 1],
-	        point = _this.points[i],
-	        px = pPoint.x + pPoint.tempX,
-	        py = pPoint.y + pPoint.tempY,
-	        x = point.x + point.tempX,
-	        y = point.y + point.tempY;
-	
-	    // const startChar = (i === 1) ? 'M' : 'L'
-	    _this.segments.push({
-	      index: i,
-	      string: 'M' + px + ', ' + py / _constants2.default.CURVE_PERCENT + ' L' + x + ', ' + y / _constants2.default.CURVE_PERCENT
-	    });
-	  }
-	};
-	
 	var getState = function getState() {
 	  _this.state = _store2.default.getState();
 	};
@@ -3930,7 +3928,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _this.styles = _this.getStyle();
 	};
 	var get = function get() {
-	  getState();getPoints();getSegments();getPath();getStyles();
+	  getState();getPoints();getPath();getStyles();
 	};
 	
 	get();
@@ -3950,6 +3948,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var x = ev.offsetX,
 	        y = ev.offsetY * _constants2.default.CURVE_PERCENT,
 	        index = parseInt(target.getAttribute('data-index'));
+	
+	    console.log(index);
 	
 	    _store2.default.dispatch({
 	      type: 'POINT_ADD',
