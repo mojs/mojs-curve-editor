@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "94929f4bc804254be486"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "eb4b9d857ba05af5b0bb"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -3891,7 +3891,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    var segment = getSegment(point, nextPoint, i);
 	    str += segment.str;
-	    console.log(i);
 	    _this.segments.push({ index: i, str: segment.segmentStr });
 	  }
 	
@@ -3947,9 +3946,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // coordinates
 	    var x = ev.offsetX,
 	        y = ev.offsetY * _constants2.default.CURVE_PERCENT,
-	        index = parseInt(target.getAttribute('data-index'));
-	
-	    console.log(index);
+	        index = parseInt(target.getAttribute('data-index')) + 1;
 	
 	    _store2.default.dispatch({
 	      type: 'POINT_ADD',

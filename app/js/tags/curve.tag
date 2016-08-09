@@ -113,7 +113,6 @@ require('./point');
 
         const segment = getSegment( point, nextPoint, i );
         str += segment.str;
-        console.log(i);
         this.segments.push({ index: i, str: segment.segmentStr });
       }
 
@@ -161,9 +160,7 @@ require('./point');
           // coordinates
           const x  = ev.offsetX,
                 y  = ev.offsetY*C.CURVE_PERCENT,
-                index = parseInt(target.getAttribute('data-index'));
-
-          console.log(index);
+                index = parseInt(target.getAttribute('data-index')) + 1;
 
           store.dispatch({
             type:      'POINT_ADD',
