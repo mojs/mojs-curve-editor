@@ -20,8 +20,8 @@ require('./icon-button');
       const state = store.getState().pointControls.present;
       this.buttons = {
         'straight': false,
-        'mirrored': false,
         'disconnected': false,
+        'mirrored': false,
         'asymmetric':   false,
       }
       this.buttons[state.type || 'straight'] = true;

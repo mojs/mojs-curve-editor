@@ -2,7 +2,7 @@ import makePoint from '../helpers/make-point';
 import C from '../constants';
 
 const INITIAL_STATE = [
-    makePoint({ x: 0,   y: C.CURVE_SIZE, isLockedX: true }),
+    makePoint({ x: 0,   y: C.CURVE_SIZE, isLockedX: true, type: 'straight' }),
     makePoint({ x: 50,  y: C.CURVE_SIZE/2, type: 'mirrored' }),
     makePoint({ x: 100, y: 0, isLockedX: true })
   ];

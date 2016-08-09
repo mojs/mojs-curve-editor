@@ -15,11 +15,8 @@
     this.CLASSES = require('../../css/blocks/little-handle.postcss.css.json');
     require('../../css/blocks/little-handle');
     import store from '../store';
+    import angleToPoint from '../helpers/angle-to-point';
     store.subscribe(() => { this.update(); });
-
-    const angleToPoint = (angle, radius) => {
-      return mojs.h.getRadialPoint({ angle, radius, center: { x: 0, y: 0 } })
-    }
 
     const anglePointToAngle = (x, y) => {
       let   radius  = Math.sqrt( x*x + y*y ),

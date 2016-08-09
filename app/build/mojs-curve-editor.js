@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "3082a6b3aa4ce9ad3025"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "4180f42de19836a486f4"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -3798,7 +3798,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */(function(riot) {
 	__webpack_require__(13);
 	
-	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}" points-count="{parent.points.length}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="0.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <g id="js-segments"> <path each="{this.segments}" riot-d="{string}" data-index="{index}" stroke="white" stroke-width="" vector-effect="non-scaling-stroke" class="{this.CLASSES[\'curve__svg-segment\']}"></path> </g> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
+	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}" points-count="{parent.points.length}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="1.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <g id="js-segments"> <path each="{this.segments}" riot-d="{string}" data-index="{index}" stroke="white" stroke-width="" vector-effect="non-scaling-stroke" class="{this.CLASSES[\'curve__svg-segment\']}"></path> </g> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -3815,6 +3815,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
+	var _angleToPoint = __webpack_require__(140);
+	
+	var _angleToPoint2 = _interopRequireDefault(_angleToPoint);
+	
 	var _hammerjs = __webpack_require__(102);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
@@ -3828,44 +3832,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	this.CLASSES = __webpack_require__(111);
 	__webpack_require__(112);
 	
-	var angleToPoint = function angleToPoint(angle, radius) {
-	  return mojs.h.getRadialPoint({ angle: angle, radius: radius, center: { x: 0, y: 0 } });
+	var getPoint = function getPoint(point) {
+	  var handleIndex = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+	
+	  var x = point.x + point.tempX,
+	      y = point.y + point.tempY,
+	      handle = point['handle' + handleIndex];
+	
+	  var CHAR = handleIndex === 2 ? 'C' : '';
+	  if (point.type !== 'straight') {
+	    var handleCoords = (0, _angleToPoint2.default)(handle.angle, handle.radius);
+	    return '' + CHAR + (x + handleCoords.x / _constants2.default.CURVE_PERCENT) + ', ' + (y + handleCoords.y) / _constants2.default.CURVE_PERCENT + ' ';
+	  } else {
+	    return '' + CHAR + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
+	  }
+	};
+	
+	var getSegment = function getSegment(point, nextPoint, i) {
+	  if (!nextPoint) {
+	    return 1;
+	  }
+	
+	  var str = '';
+	
+	  var x = point.x + point.tempX,
+	      y = point.y + point.tempY,
+	      xNext = nextPoint.x + nextPoint.tempX,
+	      yNext = nextPoint.y + nextPoint.tempY;
+	
+	  if (i === 0) {
+	    str += 'M' + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
+	  }
+	  str += getPoint(point, 2);
+	  str += getPoint(nextPoint, 1);
+	  str += xNext + ', ' + yNext / _constants2.default.CURVE_PERCENT + ' ';
+	
+	  return str;
 	};
 	
 	var getPath = function getPath() {
 	  var str = '';
-	  for (var i = 0; i < _this.points.length; i++) {
+	  for (var i = 0; i < _this.points.length - 1; i++) {
 	    var point = _this.points[i],
-	        x = point.x + point.tempX,
-	        y = point.y + point.tempY;
+	        nextPoint = _this.points[i + 1];
 	
-	    if (i === 0) {
-	      var nextPoint = _this.points[i + 1];
-	      var xNext = nextPoint.x + nextPoint.tempX,
-	          yNext = nextPoint.y + nextPoint.tempY;
-	
-	      str += 'M' + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
-	      if (point.type !== 'straight') {
-	        var handle2 = angleToPoint(point.handle2.angle, point.handle2.radius);
-	        str += 'C' + (point.x + handle2.x) + ', ' + (point.y / 3.58 + handle2.y / 3.58) + ' ';
-	      } else {
-	        str += 'C' + point.x + ', ' + point.y / 3.58 + ' ';
-	      }
-	
-	      if (nextPoint.type !== 'straight') {
-	        var handle1 = angleToPoint(nextPoint.handle1.angle, nextPoint.handle1.radius);
-	        str += nextPoint.x + handle1.x + ', ' + (nextPoint.y / 3.58 + handle1.y / 3.58) + ' ';
-	      } else {
-	        str += nextPoint.x + ', ' + nextPoint.y / 3.58 + ' ';
-	      }
-	
-	      str += nextPoint.x + ', ' + nextPoint.y / 3.58 + ' ';
-	    } else {}
-	    // str += `L${x}, ${y/C.CURVE_PERCENT} ` ;
-	
-	    // if ( i ===  0) { str += `M${x}, ${y/C.CURVE_PERCENT} `; }
-	    // else { str += `L${x}, ${y/C.CURVE_PERCENT} ` ; }
+	    str += getSegment(point, nextPoint, i);
 	  }
+	
 	  _this.path = str;
 	};
 	
@@ -4132,6 +4145,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _store2 = _interopRequireDefault(_store);
 	
+	var _angleToPoint = __webpack_require__(140);
+	
+	var _angleToPoint2 = _interopRequireDefault(_angleToPoint);
+	
 	var _hammerjs = __webpack_require__(102);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
@@ -4149,10 +4166,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _this.update();
 	});
 	
-	var angleToPoint = function angleToPoint(angle, radius) {
-	  return mojs.h.getRadialPoint({ angle: angle, radius: radius, center: { x: 0, y: 0 } });
-	};
-	
 	var anglePointToAngle = function anglePointToAngle(x, y) {
 	  var radius = Math.sqrt(x * x + y * y),
 	      angle = Math.atan(y / x) * (180 / Math.PI) - 90;
@@ -4164,14 +4177,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	this.getPointStyle = function () {
-	  var point = angleToPoint(_this.angle, _this.radius);
+	  var point = (0, _angleToPoint2.default)(_this.angle, _this.radius);
 	
 	  var translate = 'transform: translate(' + point.x + 'px, ' + point.y + 'px) rotate(' + _this.angle + 'deg)';
 	  return '' + mojs.h.prefix.css + translate + '; ' + translate;
 	};
 	
 	this.getLineStyle = function () {
-	  var point = angleToPoint(_this.angle, _this.radius);
+	  var point = (0, _angleToPoint2.default)(_this.angle, _this.radius);
 	
 	  var translate = 'transform: rotate(' + _this.angle + 'deg) scaleY(' + _this.radius + ')';
 	  return '' + mojs.h.prefix.css + translate + '; ' + translate;
@@ -4179,7 +4192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	this.on('mount', function () {
 	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('pan', function (e) {
-	    var point = angleToPoint(_this.angle, _this.radius),
+	    var point = (0, _angleToPoint2.default)(_this.angle, _this.radius),
 	        newX = point.x + e.deltaX,
 	        newY = point.y + e.deltaY;
 	
@@ -6333,7 +6346,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var INITIAL_STATE = [(0, _makePoint2.default)({ x: 0, y: _constants2.default.CURVE_SIZE, isLockedX: true }), (0, _makePoint2.default)({ x: 50, y: _constants2.default.CURVE_SIZE / 2, type: 'mirrored' }), (0, _makePoint2.default)({ x: 100, y: 0, isLockedX: true })];
+	var INITIAL_STATE = [(0, _makePoint2.default)({ x: 0, y: _constants2.default.CURVE_SIZE, isLockedX: true, type: 'straight' }), (0, _makePoint2.default)({ x: 50, y: _constants2.default.CURVE_SIZE / 2, type: 'mirrored' }), (0, _makePoint2.default)({ x: 100, y: 0, isLockedX: true })];
 	
 	var deslectAll = function deslectAll(state) {
 	  var newState = [];
@@ -10528,8 +10541,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var state = _store2.default.getState().pointControls.present;
 	  _this.buttons = {
 	    'straight': false,
-	    'mirrored': false,
 	    'disconnected': false,
+	    'mirrored': false,
 	    'asymmetric': false
 	  };
 	  _this.buttons[state.type || 'straight'] = true;
@@ -10709,6 +10722,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  CURVE_SIZE: CURVE_SIZE,
 	  CURVE_PERCENT: CURVE_SIZE / 100,
 	  CURVE_PADDING: 10
+	};
+
+/***/ },
+/* 140 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (angle, radius) {
+	  return mojs.h.getRadialPoint({ angle: angle, radius: radius, center: { x: 0, y: 0 } });
 	};
 
 /***/ }

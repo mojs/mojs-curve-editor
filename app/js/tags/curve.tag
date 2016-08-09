@@ -15,7 +15,7 @@ require('./point');
 
       <path d={this.path}
             stroke="#000000"
-            stroke-opacity="0.35"
+            stroke-opacity="1.35"
             stroke-width="4"
             vector-effect="non-scaling-stroke"
             transform="translate(.75,.75)"
@@ -57,47 +57,50 @@ require('./point');
     import store from '../store';
     import mod from '../helpers/resize-mod';
     import C from '../constants';
+    import angleToPoint from '../helpers/angle-to-point';
 
-    const angleToPoint = (angle, radius) => {
-      return mojs.h.getRadialPoint({ angle, radius, center: { x: 0, y: 0 } })
+
+    const getPoint = (point, handleIndex = 1) => {
+      const x      = point.x + point.tempX,
+            y      = point.y + point.tempY,
+            handle = point[`handle${handleIndex}`];
+
+      const CHAR = ( handleIndex === 2 ) ? 'C' : '';
+      if ( point.type !== 'straight' ) {
+        const handleCoords = angleToPoint( handle.angle, handle.radius );
+        return `${CHAR}${x + handleCoords.x/C.CURVE_PERCENT}, ${(y + handleCoords.y)/C.CURVE_PERCENT} `;
+      } else {
+        return `${CHAR}${x}, ${y/C.CURVE_PERCENT} `;
+      }
+    }
+
+    const getSegment = (point, nextPoint, i) => {
+      if ( !nextPoint ) { return 1; }
+
+      let str = '';
+
+      const x = point.x + point.tempX,
+            y = point.y + point.tempY,
+            xNext = nextPoint.x + nextPoint.tempX,
+            yNext = nextPoint.y + nextPoint.tempY;
+
+      if ( i === 0 ) { str += `M${x}, ${y/C.CURVE_PERCENT} ` }
+      str += getPoint( point, 2 );
+      str += getPoint( nextPoint, 1 );
+      str += `${xNext}, ${yNext/C.CURVE_PERCENT} `;
+
+      return str;
     }
 
     const getPath = () => {
       let str = '';
-      for (let i = 0 ; i < this.points.length; i++) {
-        const point = this.points[i],
-              x = point.x + point.tempX,
-              y = point.y + point.tempY;
+      for (let i = 0 ; i < this.points.length-1; i++) {
+        const point     = this.points[i],
+              nextPoint = this.points[i+1];
 
-        if ( i === 0 ) {
-          const nextPoint = this.points[i+1];
-          const xNext = nextPoint.x + nextPoint.tempX,
-                yNext = nextPoint.y + nextPoint.tempY;
-
-          str += `M${x}, ${y/C.CURVE_PERCENT} `;
-          if ( point.type !== 'straight' ) {
-            const handle2 = angleToPoint( point.handle2.angle, point.handle2.radius );
-            str += `C${point.x + handle2.x}, ${point.y/3.58 + handle2.y/3.58} `;
-          } else {
-            str += `C${point.x}, ${point.y/3.58} `;
-          }
-
-          if ( nextPoint.type !== 'straight' ) {
-            const handle1 = angleToPoint( nextPoint.handle1.angle, nextPoint.handle1.radius );
-            str += `${nextPoint.x + handle1.x}, ${nextPoint.y/3.58 + handle1.y/3.58} `;
-          } else {
-            str += `${nextPoint.x}, ${nextPoint.y/3.58} `;
-          }
-
-          str += `${nextPoint.x}, ${nextPoint.y/3.58} `;
-
-        } else {
-          // str += `L${x}, ${y/C.CURVE_PERCENT} ` ;          
-        }
-
-        // if ( i ===  0) { str += `M${x}, ${y/C.CURVE_PERCENT} `; }
-        // else { str += `L${x}, ${y/C.CURVE_PERCENT} ` ; }
+        str += getSegment( point, nextPoint, i );
       }
+
       this.path = str;
     }
 
