@@ -5,8 +5,8 @@
   position:       fixed;
   left:           0;
   top:            0;
-  width:          calc( 411 * $PX );
-  height:         calc( 398 * $PX );
+  width:          calc( 403 * $PX );
+  height:         calc( 378 * $PX );
   border-radius:  calc( 12 * $PX );
   background:     rgba( 58, 8, 58, .85 );
   z-index:        100;

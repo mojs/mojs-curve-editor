@@ -26,9 +26,7 @@ require('./little-handle');
     }
     
     this.getHandles();
-    store.subscribe(() => {
-      this.getHandles(); this.update();
-    });
+    store.subscribe(() => { this.getHandles(); this.update(); });
 
     this.getClass = () => {
       const isSelected = (this.point.isSelected)
@@ -54,6 +52,7 @@ require('./little-handle');
     import Hammer from 'hammerjs';
     import propagating from 'propagating-hammerjs';
     import mod from '../helpers/resize-mod';
+    import roundTo from '../helpers/round-to';
 
     const getTempX = (e) => {
       const {resize} = store.getState();
@@ -65,7 +64,7 @@ require('./little-handle');
       const x = e.deltaX/resize.scalerX;
       if ( this.point.x + x < 0 ) { return 0 - this.point.x; }
       else if ( this.point.x + x > 100 ) { return 100 - this.point.x; }
-      return x;
+      return roundTo( x, 5, 1.5 );
     }
 
     const getY = (e) => {
@@ -80,9 +79,16 @@ require('./little-handle');
       let {resize} = store.getState(),
             y = this.point.y + e.deltaY;
 
-      if ( y < resize.top ) { return (resize.top - this.point.y); }
-      if ( y > C.CURVE_SIZE + resize.bottom ) { return C.CURVE_SIZE + resize.bottom - this.point.y }
-      return e.deltaY;
+      let returnValue = y;
+      if ( y < resize.top ) {
+        returnValue = (resize.top - this.point.y);
+      } else if ( y > C.CURVE_SIZE + resize.bottom ) { returnValue = C.CURVE_SIZE + resize.bottom - this.point.y
+      } else {
+        returnValue = e.deltaY;
+      }
+
+      return roundTo( returnValue, 10*C.CURVE_PERCENT, 2*C.CURVE_PERCENT );
+    
     }
 
     this.on('mount', () => {

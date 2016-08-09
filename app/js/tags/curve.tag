@@ -8,7 +8,7 @@ require('./point');
           each={ point, _index in points }
           points-count={parent.points.length} />
 
-    <svg  height="358"
+    <svg  height="350"
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
           class={ this.CLASSES['curve__svg'] }>

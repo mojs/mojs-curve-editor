@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "eb4b9d857ba05af5b0bb"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "07485cea7385da19154c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -613,7 +613,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(137);
 	
 	document.addEventListener('DOMContentLoaded', function () {
-	  // riot.mount('*',{ store: store })
 	  riot.mount('curve-editor', { store: _store2.default });
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
@@ -3798,7 +3797,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */(function(riot) {
 	__webpack_require__(13);
 	
-	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}" points-count="{parent.points.length}"></point> <svg height="358" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="0.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <g id="js-segments"> <path each="{this.segments}" riot-d="{str}" data-index="{index}" stroke="white" fill="none" stroke-width="" vector-effect="non-scaling-stroke" class="{this.CLASSES[\'curve__svg-segment\']}"></path> </g> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
+	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}" points-count="{parent.points.length}"></point> <svg height="350" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="0.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <g id="js-segments"> <path each="{this.segments}" riot-d="{str}" data-index="{index}" stroke="white" fill="none" stroke-width="" vector-effect="non-scaling-stroke" class="{this.CLASSES[\'curve__svg-segment\']}"></path> </g> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -3997,6 +3996,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
+	var _roundTo = __webpack_require__(141);
+	
+	var _roundTo2 = _interopRequireDefault(_roundTo);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	this.CLASSES = __webpack_require__(108);
@@ -4057,7 +4060,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  } else if (_this.point.x + x > 100) {
 	    return 100 - _this.point.x;
 	  }
-	  return x;
+	  return (0, _roundTo2.default)(x, 5, 1.5);
 	};
 	
 	var getY = function getY(e) {
@@ -4077,13 +4080,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var resize = _store$getState4.resize;
 	  var y = _this.point.y + e.deltaY;
 	
+	  var returnValue = y;
 	  if (y < resize.top) {
-	    return resize.top - _this.point.y;
+	    returnValue = resize.top - _this.point.y;
+	  } else if (y > _constants2.default.CURVE_SIZE + resize.bottom) {
+	    returnValue = _constants2.default.CURVE_SIZE + resize.bottom - _this.point.y;
+	  } else {
+	    returnValue = e.deltaY;
 	  }
-	  if (y > _constants2.default.CURVE_SIZE + resize.bottom) {
-	    return _constants2.default.CURVE_SIZE + resize.bottom - _this.point.y;
-	  }
-	  return e.deltaY;
+	
+	  return (0, _roundTo2.default)(returnValue, 10 * _constants2.default.CURVE_PERCENT, 2 * _constants2.default.CURVE_PERCENT);
 	};
 	
 	this.on('mount', function () {
@@ -10136,10 +10142,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve": "_curve_1gafb_5",
-		"curve__svg-wrapper": "_curve__svg-wrapper_1gafb_1",
-		"curve__svg": "_curve__svg_1gafb_1",
-		"curve__svg-segment": "_curve__svg-segment_1gafb_1"
+		"curve": "_curve_1y7gw_5",
+		"curve__svg-wrapper": "_curve__svg-wrapper_1y7gw_1",
+		"curve__svg": "_curve__svg_1y7gw_1",
+		"curve__svg-segment": "_curve__svg-segment_1y7gw_1"
 	};
 
 /***/ },
@@ -10177,7 +10183,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve_1gafb_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #9c829a;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2}._curve__svg-wrapper_1gafb_1{position:absolute;left:-1px;top:-1px;width:100%}._curve__svg_1gafb_1{display:block;overflow:visible;width:100%}._curve__svg-segment_1gafb_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_1gafb_1:hover{stroke:#ff512f}", ""]);
+	exports.push([module.id, "._curve_1y7gw_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #9c829a;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2}._curve__svg-wrapper_1y7gw_1{position:absolute;left:-1px;right:-1px}._curve__svg_1y7gw_1{display:block;overflow:visible;width:100%}._curve__svg-segment_1y7gw_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_1y7gw_1:hover{stroke:#ff512f}", ""]);
 	
 	// exports
 
@@ -10187,7 +10193,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(riot) {
-	
 	riot.tag2('code-panel', '<div class="{this.CLASSES[\'code-panel__input-wrap\']}"> <input class="{this.CLASSES[\'code-panel__input-field\']}" type="text" readonly="readonly" value="M0,100 C0,100 12.0486221,-124.260309 24,99.7583642 C28.9933624,142.723104"> </div>', '', 'class="{this.CLASSES[\'code-panel\']}"', function(opts) {
 	'use strict';
 	
@@ -10647,7 +10652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve-editor_1sc6s_4{position:fixed;left:0;top:0;width:411px;height:398px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_1sc6s_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__left_1sc6s_1 icon-divider{margin:10px auto}._curve-editor__right_1sc6s_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_1sc6s_1 resize-handle{position:absolute}._curve-editor__right_1sc6s_1 resize-handle[type=top]{top:-16px}._curve-editor__right_1sc6s_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_1sc6s_1 resize-handle[type=bottom],._curve-editor__right_1sc6s_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_1sc6s_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_1sc6s_1{margin-top:10px}._curve-editor__anchor-buttons_1sc6s_1 icon-button{margin-bottom:5px}._curve-editor__mojs-logo_1sc6s_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_1sc6s_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
+	exports.push([module.id, "._curve-editor_1vq6l_4{position:fixed;left:0;top:0;width:403px;height:378px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_1vq6l_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__left_1vq6l_1 icon-divider{margin:10px auto}._curve-editor__right_1vq6l_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_1vq6l_1 resize-handle{position:absolute}._curve-editor__right_1vq6l_1 resize-handle[type=top]{top:-16px}._curve-editor__right_1vq6l_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_1vq6l_1 resize-handle[type=bottom],._curve-editor__right_1vq6l_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_1vq6l_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_1vq6l_1{margin-top:10px}._curve-editor__anchor-buttons_1vq6l_1 icon-button{margin-bottom:5px}._curve-editor__mojs-logo_1vq6l_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_1vq6l_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
 	
 	// exports
 
@@ -10657,11 +10662,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve-editor": "_curve-editor_1sc6s_4",
-		"curve-editor__left": "_curve-editor__left_1sc6s_1",
-		"curve-editor__right": "_curve-editor__right_1sc6s_1",
-		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_1sc6s_1",
-		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_1sc6s_1"
+		"curve-editor": "_curve-editor_1vq6l_4",
+		"curve-editor__left": "_curve-editor__left_1vq6l_1",
+		"curve-editor__right": "_curve-editor__right_1vq6l_1",
+		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_1vq6l_1",
+		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_1vq6l_1"
 	};
 
 /***/ },
@@ -10714,7 +10719,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
-	var CURVE_SIZE = 358;
+	var CURVE_SIZE = 350;
 	exports.default = {
 	  CURVE_SIZE: CURVE_SIZE,
 	  CURVE_PERCENT: CURVE_SIZE / 100,
@@ -10733,6 +10738,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	exports.default = function (angle, radius) {
 	  return mojs.h.getRadialPoint({ angle: angle, radius: radius, center: { x: 0, y: 0 } });
+	};
+
+/***/ },
+/* 141 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (value, base, snap) {
+	  var modified = Math.round(value / base) * base;
+	
+	  return Math.abs(value - modified) < snap ? modified : value;
 	};
 
 /***/ }
