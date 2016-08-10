@@ -6,7 +6,8 @@ require('./point');
 
     <point
           each={ point, _index in points }
-          points-count={parent.points.length} />
+          points-count={parent.points.length}
+          resize = {parent.state.resize} />
 
     <svg  height="350"
           viewBox="0 0 100 100"

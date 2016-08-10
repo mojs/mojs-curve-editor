@@ -43,6 +43,8 @@
     import Hammer from 'hammerjs';
     import propagating from 'propagating-hammerjs';
     this.on('mount', () => {
+      // const mc = propagating(new Hammer.Manager(this.root));
+      // mc.add(new Hammer.Pan({ threshold: 0, pointers: 0 }));
       var hammertime = propagating(new Hammer(this.root))
         .on('pan', (e) => {
           const point = angleToPoint( this.angle, this.radius ),

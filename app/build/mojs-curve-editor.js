@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "07485cea7385da19154c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "4e1cf92a435352a92228"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -611,6 +611,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	__webpack_require__(137);
+	
+	// TODO
+	//   - init points with function
+	//   - move bunch of points at once
+	//   - add grid background
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  riot.mount('curve-editor', { store: _store2.default });
@@ -3289,8 +3294,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(126);
 	__webpack_require__(130);
 	
-	
-	
 	riot.tag2('curve-editor', '<code-panel></code-panel> <icons></icons> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code" title="show code"></icon-button> <icon-divider></icon-divider> <point-controls classname="{this.CLASSES[\'curve-editor__anchor-buttons\']}"></point-controls> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <div class="{this.CLASSES[\'curve-editor__right\']}"> <curve></curve> <resize-handle type="top"></resize-handle> <resize-handle type="right"></resize-handle> <resize-handle type="bottom"></resize-handle> </div>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
@@ -3322,7 +3325,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _opts = opts;
 	var store = _opts.store;
 	
-	store.subscribe(this.update.bind(this));
+	store.subscribe(function () {
+	  _this.resize = store.getState().resize;
+	  _this.update();
+	});
 	
 	this.on('mount', function () {
 	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('pan', function (ev) {
@@ -3797,7 +3803,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */(function(riot) {
 	__webpack_require__(13);
 	
-	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}" points-count="{parent.points.length}"></point> <svg height="350" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="0.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <g id="js-segments"> <path each="{this.segments}" riot-d="{str}" data-index="{index}" stroke="white" fill="none" stroke-width="" vector-effect="non-scaling-stroke" class="{this.CLASSES[\'curve__svg-segment\']}"></path> </g> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
+	riot.tag2('curve', '<div class="{this.CLASSES[\'curve__svg-wrapper\']}" riot-style="{this.styles.transform}"> <point each="{point, _index in points}" points-count="{parent.points.length}" resize="{parent.state.resize}"></point> <svg height="350" viewbox="0 0 100 100" preserveaspectratio="none" class="{this.CLASSES[\'curve__svg\']}"> <path riot-d="{this.path}" stroke="#000000" stroke-opacity="0.35" stroke-width="4" vector-effect="non-scaling-stroke" transform="translate(.75,.75)" fill="none"></path> <g id="js-segments"> <path each="{this.segments}" riot-d="{str}" data-index="{index}" stroke="white" fill="none" stroke-width="" vector-effect="non-scaling-stroke" class="{this.CLASSES[\'curve__svg-segment\']}"></path> </g> </svg> </div>', '', 'class="{this.CLASSES[\'curve\']}" riot-style="{this.styles.background}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -4016,8 +4022,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _this._index !== _this.opts.pointsCount - 1 && _this.handles.push(_this.point.handle2);
 	};
 	
+	this.resize = this.opts.resize;
 	this.getHandles();
 	_store2.default.subscribe(function () {
+	  _this.resize = _this.opts.resize;
 	  _this.getHandles();_this.update();
 	});
 	
@@ -4029,12 +4037,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	this.getStyle = function () {
-	  // console.log(this.point.tempX, this.point.handle1, this.point.handle2);
-	  var _store$getState = _store2.default.getState();
-	
-	  var resize = _store$getState.resize;
-	  var x = clamp(_this.point.x + _this.point.tempX, 0, 100);
-	  var cleanX = x * resize.scalerX;
+	  var x = clamp(_this.point.x + _this.point.tempX, 0, 100),
+	      cleanX = x * _this.resize.scalerX;
 	
 	  var y = _this.point.y + _this.point.tempY;
 	
@@ -4043,18 +4047,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	var getTempX = function getTempX(e) {
-	  var _store$getState2 = _store2.default.getState();
-	
-	  var resize = _store$getState2.resize;
 	
 	  // if point is not locked to x axes ->
 	  // calculate delta regarding scaler
-	
 	  if (_this.point.isLockedX) {
 	    return 0;
 	  };
 	
-	  var x = e.deltaX / resize.scalerX;
+	  var x = e.deltaX / _this.resize.scalerX;
 	  if (_this.point.x + x < 0) {
 	    return 0 - _this.point.x;
 	  } else if (_this.point.x + x > 100) {
@@ -4064,52 +4064,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	var getY = function getY(e) {
-	  var _store$getState3 = _store2.default.getState();
-	
-	  var resize = _store$getState3.resize;
-	
 	  var y = _this.point.y + e.deltaY;
 	  // clamp y to the size of curve
-	  return clamp(y, resize.top, _constants2.default.CURVE_SIZE + resize.bottom);
+	  return clamp(y, _this.resize.top, _constants2.default.CURVE_SIZE + _this.resize.bottom);
 	};
 	
 	// get y delta reagarding curve bounds
 	var getTempY = function getTempY(e) {
-	  var _store$getState4 = _store2.default.getState();
-	
-	  var resize = _store$getState4.resize;
 	  var y = _this.point.y + e.deltaY;
 	
 	  var returnValue = y;
-	  if (y < resize.top) {
-	    returnValue = resize.top - _this.point.y;
-	  } else if (y > _constants2.default.CURVE_SIZE + resize.bottom) {
-	    returnValue = _constants2.default.CURVE_SIZE + resize.bottom - _this.point.y;
+	  if (y < _this.resize.top) {
+	    returnValue = _this.resize.top - _this.point.y;
+	  } else if (y > _constants2.default.CURVE_SIZE + _this.resize.bottom) {
+	    returnValue = _constants2.default.CURVE_SIZE + _this.resize.bottom - _this.point.y;
 	  } else {
 	    returnValue = e.deltaY;
 	  }
 	
-	  return (0, _roundTo2.default)(returnValue, 10 * _constants2.default.CURVE_PERCENT, 2 * _constants2.default.CURVE_PERCENT);
+	  return (0, _roundTo2.default)(returnValue, 5 * _constants2.default.CURVE_PERCENT, 1 * _constants2.default.CURVE_PERCENT);
 	};
 	
 	this.on('mount', function () {
-	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('pan', function (e) {
+	  var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(_this.root));
+	  mc.add(new _hammerjs2.default.Pan({ threshold: 5, pointers: 0 }));
+	  // var hammertime = propagating(new Hammer(this.root, { threshold: 0, pointers: 0 }))
+	  mc.on('pan', function (e) {
 	    _store2.default.dispatch({
 	      type: 'POINT_TRANSLATE',
 	      data: { x: getTempX(e), y: getTempY(e), index: _this._index }
 	    });
 	    e.stopPropagation();
 	  }).on('panend', function (e) {
-	    // reset temporary deltas
-	    _store2.default.dispatch({ type: 'POINT_TRANSLATE', data: { x: 0, y: 0, index: _this._index } });
 	    // fire translate end and save it to the store
 	    _store2.default.dispatch({
 	      type: 'POINT_TRANSLATE_END',
-	      data: {
-	        x: _this.point.x + getTempX(e),
-	        y: getY(e),
-	        index: _this._index
-	      },
+	      data: _this._index,
 	      isRecord: true
 	    });
 	
@@ -4194,6 +4184,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	this.on('mount', function () {
+	  // const mc = propagating(new Hammer.Manager(this.root));
+	  // mc.add(new Hammer.Pan({ threshold: 0, pointers: 0 }));
 	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('pan', function (e) {
 	    var point = (0, _angleToPoint2.default)(_this.angle, _this.radius),
 	        newX = point.x + e.deltaX,
@@ -6385,14 +6377,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    case 'POINT_TRANSLATE_END':
 	      {
-	        var _data = action.data;
-	        var _index = _data.index;
-	        var _oldPoint = state[_index];
-	        var _newState = [].concat((0, _toConsumableArray3.default)(state));
+	        var _index = action.data,
+	            _oldPoint = state[_index],
+	            _newState = [].concat((0, _toConsumableArray3.default)(state));
 	
-	        _newState[_data.index] = (0, _extends3.default)({}, _oldPoint, {
-	          tempX: 0, tempY: 0,
-	          x: _data.x, y: _data.y
+	        _newState[_index] = (0, _extends3.default)({}, _oldPoint, {
+	          x: _oldPoint.x + _oldPoint.tempX,
+	          y: _oldPoint.y + _oldPoint.tempY,
+	          tempX: 0, tempY: 0
 	        });
 	
 	        return _newState;
@@ -6400,9 +6392,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    case 'POINT_SELECT':
 	      {
-	        var _data2 = action.data;
-	        var _index2 = _data2.index;
-	        var isDeselect = _data2.isDeselect;
+	        var _data = action.data;
+	        var _index2 = _data.index;
+	        var isDeselect = _data.isDeselect;
 	        // if should de select all other points
 	        var _newState2 = isDeselect ? deslectAll(state) : [].concat((0, _toConsumableArray3.default)(state));
 	
@@ -6442,10 +6434,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    case 'POINT_ADD':
 	      {
-	        var _data3 = action.data;
-	        var x = _data3.x;
-	        var y = _data3.y;
-	        var _index3 = _data3.index;
+	        var _data2 = action.data;
+	        var x = _data2.x;
+	        var y = _data2.y;
+	        var _index3 = _data2.index;
 	
 	
 	        var deselected = deslectAll(state);
@@ -6510,19 +6502,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // HANDLES
 	    case 'HANDLE_TRANSLATE':
 	      {
-	        var _data4 = action.data;
+	        var _data3 = action.data;
 	        // create new state and copy the new point into it
 	
 	        var _newState5 = [].concat((0, _toConsumableArray3.default)(state));
-	        var newPoint = (0, _extends3.default)({}, _newState5[_data4.parentIndex]);
-	        _newState5[_data4.parentIndex] = newPoint;
+	        var newPoint = (0, _extends3.default)({}, _newState5[_data3.parentIndex]);
+	        _newState5[_data3.parentIndex] = newPoint;
 	        // create handle and copy it into the new point
-	        var _handleName2 = 'handle' + _data4.index;
+	        var _handleName2 = 'handle' + _data3.index;
 	        var newHandle = (0, _extends3.default)({}, newPoint[_handleName2]);
 	        newPoint[_handleName2] = newHandle;
 	        // finally add angle and radius
-	        newHandle.angle = _data4.angle;
-	        newHandle.radius = _data4.radius;
+	        newHandle.angle = _data3.angle;
+	        newHandle.radius = _data3.radius;
 	
 	        return _newState5;
 	      }
@@ -10142,10 +10134,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve": "_curve_1y7gw_5",
-		"curve__svg-wrapper": "_curve__svg-wrapper_1y7gw_1",
-		"curve__svg": "_curve__svg_1y7gw_1",
-		"curve__svg-segment": "_curve__svg-segment_1y7gw_1"
+		"curve": "_curve_19x0u_5",
+		"curve__svg-wrapper": "_curve__svg-wrapper_19x0u_1",
+		"curve__svg": "_curve__svg_19x0u_1",
+		"curve__svg-segment": "_curve__svg-segment_19x0u_1"
 	};
 
 /***/ },
@@ -10183,7 +10175,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve_1y7gw_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #9c829a;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2}._curve__svg-wrapper_1y7gw_1{position:absolute;left:-1px;right:-1px}._curve__svg_1y7gw_1{display:block;overflow:visible;width:100%}._curve__svg-segment_1y7gw_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_1y7gw_1:hover{stroke:#ff512f}", ""]);
+	exports.push([module.id, "._curve_19x0u_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #9c829a;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2;background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMzUwcHgiIGhlaWdodD0iMzUwcHgiIHZpZXdCb3g9IjAgMCAzNTAgMzUwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICAgICAgPHRpdGxlPlNsaWNlIDE8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEuMDAwMDAwLCAwLjAwMDAwMCkiIHN0cm9rZT0iI0ZGRkZGRiI+ICAgICAgICAgICAgPHBhdGggZD0iTTMzMy40OTc4MjEsMzUwLjUwMTA4OCBMMzMzLjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTMxNS45OTc4MjEsMzUwLjUwMTA4OCBMMzE1Ljk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI5OC40OTc4MjEsMzUwLjUwMTA4OCBMMjk4LjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI4MC45OTc4MjEsMzUwLjUwMTA4OCBMMjgwLjk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI0NS45OTc4MjEsMzUwLjUwMTA4OCBMMjQ1Ljk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTIyOC40OTc4MjEsMzUwLjUwMTA4OCBMMjI4LjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTIxMC45OTc4MjEsMzUwLjUwMTA4OCBMMjEwLjk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE5My40OTc4MjEsMzUwLjUwMTA4OCBMMTkzLjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE1OS4zNzI4MjEsMzUwLjUwMTA4OCBMMTU5LjM3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE0MS44NzI4MjEsMzUwLjUwMTA4OCBMMTQxLjg3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTEyNC4zNzI4MjEsMzUwLjUwMTA4OCBMMTI0LjM3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTEwNi44NzI4MjEsMzUwLjUwMTA4OCBMMTA2Ljg3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTcxLjg3MjgyMDcsMzUwLjUwMTA4OCBMNzEuODcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTU0LjM3MjgyMDcsMzUwLjUwMTA4OCBMNTQuMzcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM2Ljg3MjgyMDcsMzUwLjUwMTA4OCBMMzYuODcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE5LjM3MjgyMDcsMzUwLjUwMTA4OCBMMTkuMzcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMTkuMDAyMTc5MyBMMS4wMDEwODgzLDE5LjAwMjE3OTMiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDM2LjUwMjE3OTMgTDEuMDAxMDg4MywzNi41MDIxNzkzIiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCw1NC4wMDIxNzkzIEwxLjAwMTA4ODMsNTQuMDAyMTc5MyIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsNzEuNTAyMTc5MyBMMS4wMDEwODgzLDcxLjUwMjE3OTMiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDEwNi41MDIxNzkgTDEuMDAxMDg4MywxMDYuNTAyMTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwxMjQuMDAyMTc5IEwxLjAwMTA4ODMsMTI0LjAwMjE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMTQxLjUwMjE3OSBMMS4wMDEwODgzLDE0MS41MDIxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDE1OS4wMDIxNzkgTDEuMDAxMDg4MywxNTkuMDAyMTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwxOTMuMTI3MTc5IEwxLjAwMTA4ODMsMTkzLjEyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMjEwLjYyNzE3OSBMMS4wMDEwODgzLDIxMC42MjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDIyOC4xMjcxNzkgTDEuMDAxMDg4MywyMjguMTI3MTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwyNDUuNjI3MTc5IEwxLjAwMTA4ODMsMjQ1LjYyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMjgwLjYyNzE3OSBMMS4wMDEwODgzLDI4MC42MjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDI5OC4xMjcxNzkgTDEuMDAxMDg4MywyOTguMTI3MTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwzMTUuNjI3MTc5IEwxLjAwMTA4ODMsMzE1LjYyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMzMzLjEyNzE3OSBMMS4wMDEwODgzLDMzMy4xMjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik04OC4wNjQxMzUyLDEgTDg4LjA2NDEzNTIsMzUxIiBpZD0icGF0aDgyMTUiIG9wYWNpdHk9IjAuNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNzUuMTI4MjcsMSBMMTc1LjEyODI3LDM1MSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMjYyLjE5MjQwNiwxIEwyNjIuMTkyNDA2LDM1MSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUwLjU2MzU5MSw4OC4wNjQ2NzkzIEwwLjU2MzU5MTAyMiw4OC4wNjQ2NzkzIiBpZD0icGF0aDgyMTUiIG9wYWNpdHk9IjAuNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTAuNTYzNTkxLDE3NS41NjQ2NzkgTDAuNTYzNTkxMDIyLDE3NS41NjQ2NzkiIGlkPSJwYXRoODIxNSIgb3BhY2l0eT0iMC41Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MC41NjM1OTEsMjYzLjA2NDY3OSBMMC41NjM1OTEwMjIsMjYzLjA2NDY3OSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cmVjdCBpZD0icmVjdDEwMDc4IiBvcGFjaXR5PSIwLjc1IiB4PSIwLjg3MjgxNzk1NSIgeT0iMSIgd2lkdGg9IjM1MCIgaGVpZ2h0PSIzNTAiPjwvcmVjdD4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==)}._curve__svg-wrapper_19x0u_1{position:absolute;left:-1px;right:-1px}._curve__svg_19x0u_1{display:block;overflow:visible;width:100%}._curve__svg-segment_19x0u_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_19x0u_1:hover{stroke:#ff512f}", ""]);
 	
 	// exports
 

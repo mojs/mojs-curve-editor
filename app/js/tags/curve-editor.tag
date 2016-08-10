@@ -7,11 +7,6 @@ require('./icon-divider');
 require('./resize-handle');
 require('./point-controls');
 
-<!--
-  TODO:
-    - move bunch of points at once
-  -->
-
 <curve-editor class={this.CLASSES['curve-editor']} style={this.getStyle()}>
   <code-panel />
   <icons />
@@ -38,7 +33,10 @@ require('./point-controls');
     import C from '../constants';
 
     const {store} = opts;
-    store.subscribe(this.update.bind(this));
+    store.subscribe( () => {
+      this.resize = store.getState().resize;
+      this.update();
+    });
 
     import Hammer from 'hammerjs';
     import propagating from 'propagating-hammerjs';

@@ -24,9 +24,13 @@ require('./little-handle');
       // dont set the handle2 for end point
       (this._index !== this.opts.pointsCount-1) && this.handles.push(this.point.handle2);
     }
-    
+
+    this.resize = this.opts.resize;
     this.getHandles();
-    store.subscribe(() => { this.getHandles(); this.update(); });
+    store.subscribe(() => {
+      this.resize = this.opts.resize;
+      this.getHandles(); this.update();
+    });
 
     this.getClass = () => {
       const isSelected = (this.point.isSelected)
@@ -38,10 +42,8 @@ require('./little-handle');
     }
 
     this.getStyle = () => {
-      // console.log(this.point.tempX, this.point.handle1, this.point.handle2);
-      const {resize}  = store.getState(),
-            x         = clamp(this.point.x + this.point.tempX, 0, 100),
-            cleanX    = x * resize.scalerX;
+      const x         = clamp(this.point.x + this.point.tempX, 0, 100),
+            cleanX    = x * this.resize.scalerX;
       
       let y = this.point.y + this.point.tempY;
 
@@ -55,44 +57,44 @@ require('./little-handle');
     import roundTo from '../helpers/round-to';
 
     const getTempX = (e) => {
-      const {resize} = store.getState();
 
       // if point is not locked to x axes ->
       // calculate delta regarding scaler
       if ( this.point.isLockedX ) { return 0 };
         
-      const x = e.deltaX/resize.scalerX;
+      const x = e.deltaX/this.resize.scalerX;
       if ( this.point.x + x < 0 ) { return 0 - this.point.x; }
       else if ( this.point.x + x > 100 ) { return 100 - this.point.x; }
       return roundTo( x, 5, 1.5 );
     }
 
     const getY = (e) => {
-      const {resize} = store.getState();
       const y = this.point.y + e.deltaY
       // clamp y to the size of curve
-      return clamp( y, resize.top, C.CURVE_SIZE + resize.bottom ); 
+      return clamp( y, this.resize.top, C.CURVE_SIZE + this.resize.bottom ); 
     }
 
     // get y delta reagarding curve bounds
     const getTempY = (e) => {
-      let {resize} = store.getState(),
-            y = this.point.y + e.deltaY;
+      let y = this.point.y + e.deltaY;
 
       let returnValue = y;
-      if ( y < resize.top ) {
-        returnValue = (resize.top - this.point.y);
-      } else if ( y > C.CURVE_SIZE + resize.bottom ) { returnValue = C.CURVE_SIZE + resize.bottom - this.point.y
+      if ( y < this.resize.top ) {
+        returnValue = (this.resize.top - this.point.y);
+      } else if ( y > C.CURVE_SIZE + this.resize.bottom ) {
+        returnValue = C.CURVE_SIZE + this.resize.bottom - this.point.y;
       } else {
         returnValue = e.deltaY;
       }
 
-      return roundTo( returnValue, 10*C.CURVE_PERCENT, 2*C.CURVE_PERCENT );
-    
+      return roundTo( returnValue, 5*C.CURVE_PERCENT, 1*C.CURVE_PERCENT );
     }
 
     this.on('mount', () => {
-      var hammertime = propagating(new Hammer(this.root))
+      const mc = propagating(new Hammer.Manager(this.root));
+      mc.add(new Hammer.Pan({ threshold: 5, pointers: 0 }));
+      // var hammertime = propagating(new Hammer(this.root, { threshold: 0, pointers: 0 }))
+      mc
         .on('pan', (e) => {
           store.dispatch({
             type: 'POINT_TRANSLATE',
@@ -101,16 +103,10 @@ require('./little-handle');
           e.stopPropagation();
         })
         .on('panend', (e) => {
-          // reset temporary deltas
-          store.dispatch({ type: 'POINT_TRANSLATE', data: { x: 0, y: 0, index: this._index } });
           // fire translate end and save it to the store
           store.dispatch({
             type: 'POINT_TRANSLATE_END',
-            data: {
-              x: this.point.x + getTempX(e),
-              y: getY(e),
-              index: this._index
-            },
+            data: this._index,
             isRecord: true
           });
 

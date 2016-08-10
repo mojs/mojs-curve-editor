@@ -36,15 +36,15 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
     }
 
     case 'POINT_TRANSLATE_END': {
-      const {data}   = action,
-            {index}  = data,
+      const index    = action.data,
             oldPoint = state[index],
             newState = [ ...state ];
 
-      newState[ data.index ] = {
+      newState[ index ] = {
           ...oldPoint,
-          tempX: 0, tempY: 0,
-          x: data.x, y: data.y
+          x: oldPoint.x + oldPoint.tempX,
+          y: oldPoint.y + oldPoint.tempY,
+          tempX: 0, tempY: 0
         }
 
       return newState;
@@ -125,7 +125,6 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
         newState.push( { ...item } );
         // if item was selected - set the new `type`
         ( selected.indexOf(i) !== -1 ) && (newState[i].type = type);
-        
         
         const index = i;
         const point = newState[index];
