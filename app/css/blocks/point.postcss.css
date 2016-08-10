@@ -15,8 +15,7 @@ $size: 10;
   box-shadow:     calc(3*$PX) calc(3*$PX) 0 rgba(0,0,0,.5);
   border:         calc( 2*$PX ) solid $c-white;
   
-  &:after {
-    content:      '';
+  &__touch {
     position:     absolute;
     left:         50%;
     top:          50%;

@@ -8,6 +8,8 @@ require('./little-handle');
     type={ parent.point.type }
     />
 
+  <div class={ this.CLASSES['point__touch'] } id="js-point-touch"></div>
+
   <script type="babel">
     this.CLASSES = require('../../css/blocks/point.postcss.css.json');
     require('../../css/blocks/point');
@@ -91,9 +93,10 @@ require('./little-handle');
     }
 
     this.on('mount', () => {
-      const mc = propagating(new Hammer.Manager(this.root));
-      mc.add(new Hammer.Pan({ threshold: 5, pointers: 0 }));
-      // var hammertime = propagating(new Hammer(this.root, { threshold: 0, pointers: 0 }))
+
+      const el = this.root.querySelector('#js-point-touch');
+      const mc = propagating(new Hammer.Manager(el));
+      mc.add(new Hammer.Pan({ threshold: 0 }));
       mc
         .on('pan', (e) => {
           store.dispatch({

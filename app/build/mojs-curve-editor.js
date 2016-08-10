@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "4e1cf92a435352a92228"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "748aa06488e4ad46e165"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -610,7 +610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(137);
+	__webpack_require__(140);
 	
 	// TODO
 	//   - init points with function
@@ -3288,39 +3288,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(5);
 	__webpack_require__(6);
 	__webpack_require__(12);
-	__webpack_require__(114);
-	__webpack_require__(118);
-	__webpack_require__(122);
-	__webpack_require__(126);
-	__webpack_require__(130);
+	__webpack_require__(117);
+	__webpack_require__(121);
+	__webpack_require__(125);
+	__webpack_require__(129);
+	__webpack_require__(133);
 	
 	riot.tag2('curve-editor', '<code-panel></code-panel> <icons></icons> <div class="{this.CLASSES[\'curve-editor__left\']}"> <icon-button shape="code" title="show code"></icon-button> <icon-divider></icon-divider> <point-controls classname="{this.CLASSES[\'curve-editor__anchor-buttons\']}"></point-controls> <a href="https://github.com/legomushroom/mojs-curve-editor" target="_blank" class="{this.CLASSES[\'curve-editor__mojs-logo\']}"> <icon shape="mojs-logo"></icon> </a> </div> <div class="{this.CLASSES[\'curve-editor__right\']}"> <curve></curve> <resize-handle type="top"></resize-handle> <resize-handle type="right"></resize-handle> <resize-handle type="bottom"></resize-handle> </div>', '', 'class="{this.CLASSES[\'curve-editor\']}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
 	
-	var _constants = __webpack_require__(139);
+	var _constants = __webpack_require__(76);
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
-	var _hammerjs = __webpack_require__(102);
+	var _hammerjs = __webpack_require__(104);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 	
-	var _propagatingHammerjs = __webpack_require__(103);
+	var _propagatingHammerjs = __webpack_require__(105);
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
 	var _reduxUndo = __webpack_require__(70);
 	
-	var _resizeMod = __webpack_require__(107);
+	var _resizeMod = __webpack_require__(109);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(134);
-	this.CLASSES = __webpack_require__(136);
+	__webpack_require__(137);
+	this.CLASSES = __webpack_require__(139);
 	
 	var _opts = opts;
 	var store = _opts.store;
@@ -3812,30 +3812,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _resizeMod = __webpack_require__(107);
+	var _resizeMod = __webpack_require__(109);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
-	var _constants = __webpack_require__(139);
+	var _constants = __webpack_require__(76);
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
-	var _angleToPoint = __webpack_require__(140);
+	var _angleToPoint = __webpack_require__(103);
 	
 	var _angleToPoint2 = _interopRequireDefault(_angleToPoint);
 	
-	var _hammerjs = __webpack_require__(102);
+	var _hammerjs = __webpack_require__(104);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 	
-	var _propagatingHammerjs = __webpack_require__(103);
+	var _propagatingHammerjs = __webpack_require__(105);
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	this.CLASSES = __webpack_require__(111);
-	__webpack_require__(112);
+	this.CLASSES = __webpack_require__(114);
+	__webpack_require__(115);
 	
 	var getPoint = function getPoint(point) {
 	  var handleIndex = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
@@ -3977,7 +3977,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(14);
 	
-	riot.tag2('point', '<little-handle each="{this.handles}" parent-index="{parent._index}" type="{parent.point.type}"></little-handle>', '', 'class="{this.getClass()}" riot-style="{this.getStyle()}"', function(opts) {
+	riot.tag2('point', '<little-handle each="{this.handles}" parent-index="{parent._index}" type="{parent.point.type}"></little-handle> <div class="{this.CLASSES[\'point__touch\']}" id="js-point-touch"></div>', '', 'class="{this.getClass()}" riot-style="{this.getStyle()}"', function(opts) {
 	'use strict';
 	
 	var _this = this;
@@ -3986,30 +3986,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _constants = __webpack_require__(139);
+	var _constants = __webpack_require__(76);
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
-	var _hammerjs = __webpack_require__(102);
+	var _hammerjs = __webpack_require__(104);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 	
-	var _propagatingHammerjs = __webpack_require__(103);
+	var _propagatingHammerjs = __webpack_require__(105);
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
-	var _resizeMod = __webpack_require__(107);
+	var _resizeMod = __webpack_require__(109);
 	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
 	
-	var _roundTo = __webpack_require__(141);
+	var _roundTo = __webpack_require__(110);
 	
 	var _roundTo2 = _interopRequireDefault(_roundTo);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	this.CLASSES = __webpack_require__(108);
-	__webpack_require__(109);
+	this.CLASSES = __webpack_require__(111);
+	__webpack_require__(112);
 	
 	var clamp = mojs.h.clamp;
 	
@@ -4086,9 +4086,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	this.on('mount', function () {
-	  var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(_this.root));
-	  mc.add(new _hammerjs2.default.Pan({ threshold: 5, pointers: 0 }));
-	  // var hammertime = propagating(new Hammer(this.root, { threshold: 0, pointers: 0 }))
+	
+	  var el = _this.root.querySelector('#js-point-touch');
+	  var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(el));
+	  mc.add(new _hammerjs2.default.Pan({ threshold: 0 }));
 	  mc.on('pan', function (e) {
 	    _store2.default.dispatch({
 	      type: 'POINT_TRANSLATE',
@@ -4138,22 +4139,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _angleToPoint = __webpack_require__(140);
+	var _angleToPoint = __webpack_require__(103);
 	
 	var _angleToPoint2 = _interopRequireDefault(_angleToPoint);
 	
-	var _hammerjs = __webpack_require__(102);
+	var _hammerjs = __webpack_require__(104);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 	
-	var _propagatingHammerjs = __webpack_require__(103);
+	var _propagatingHammerjs = __webpack_require__(105);
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	this.CLASSES = __webpack_require__(104);
-	__webpack_require__(105);
+	this.CLASSES = __webpack_require__(106);
+	__webpack_require__(107);
 	
 	_store2.default.subscribe(function () {
 	  _this.update();
@@ -4184,9 +4185,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	this.on('mount', function () {
-	  // const mc = propagating(new Hammer.Manager(this.root));
-	  // mc.add(new Hammer.Pan({ threshold: 0, pointers: 0 }));
-	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('pan', function (e) {
+	  var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(_this.root));
+	  mc.add(new _hammerjs2.default.Pan({ threshold: 0 }));
+	  // var hammertime = propagating(new Hammer(this.root))
+	  mc.on('pan', function (e) {
 	    var point = (0, _angleToPoint2.default)(_this.angle, _this.radius),
 	        newX = point.x + e.deltaX,
 	        newY = point.y + e.deltaY;
@@ -5266,11 +5268,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _resizeReducer2 = _interopRequireDefault(_resizeReducer);
 	
-	var _pointsReducer = __webpack_require__(76);
+	var _pointsReducer = __webpack_require__(77);
 	
 	var _pointsReducer2 = _interopRequireDefault(_pointsReducer);
 	
-	var _pointControlsReducer = __webpack_require__(101);
+	var _pointControlsReducer = __webpack_require__(102);
 	
 	var _pointControlsReducer2 = _interopRequireDefault(_pointControlsReducer);
 	
@@ -6195,7 +6197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _extends5 = _interopRequireDefault(_extends4);
 	
-	var _constants = __webpack_require__(139);
+	var _constants = __webpack_require__(76);
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
@@ -6315,6 +6317,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 76 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var CURVE_SIZE = 350;
+	exports.default = {
+	  CURVE_SIZE: CURVE_SIZE,
+	  CURVE_PERCENT: CURVE_SIZE / 100,
+	  CURVE_PADDING: 10
+	};
+
+/***/ },
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6323,7 +6342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
-	var _toConsumableArray2 = __webpack_require__(77);
+	var _toConsumableArray2 = __webpack_require__(78);
 	
 	var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 	
@@ -6331,11 +6350,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _makePoint = __webpack_require__(100);
+	var _makePoint = __webpack_require__(101);
 	
 	var _makePoint2 = _interopRequireDefault(_makePoint);
 	
-	var _constants = __webpack_require__(139);
+	var _constants = __webpack_require__(76);
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
@@ -6525,14 +6544,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = pointsReducer;
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	exports.__esModule = true;
 	
-	var _from = __webpack_require__(78);
+	var _from = __webpack_require__(79);
 	
 	var _from2 = _interopRequireDefault(_from);
 	
@@ -6551,28 +6570,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(79), __esModule: true };
-
-/***/ },
 /* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(80);
-	__webpack_require__(93);
-	module.exports = __webpack_require__(38).Array.from;
+	module.exports = { "default": __webpack_require__(80), __esModule: true };
 
 /***/ },
 /* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
+	__webpack_require__(81);
+	__webpack_require__(94);
+	module.exports = __webpack_require__(38).Array.from;
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
-	var $at  = __webpack_require__(81)(true);
+	var $at  = __webpack_require__(82)(true);
 	
 	// 21.1.3.27 String.prototype[@@iterator]()
-	__webpack_require__(82)(String, 'String', function(iterated){
+	__webpack_require__(83)(String, 'String', function(iterated){
 	  this._t = String(iterated); // target
 	  this._i = 0;                // next index
 	// 21.1.5.2.1 %StringIteratorPrototype%.next()
@@ -6587,7 +6606,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var toInteger = __webpack_require__(61)
@@ -6609,20 +6628,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var LIBRARY        = __webpack_require__(83)
+	var LIBRARY        = __webpack_require__(84)
 	  , $export        = __webpack_require__(36)
-	  , redefine       = __webpack_require__(84)
+	  , redefine       = __webpack_require__(85)
 	  , hide           = __webpack_require__(41)
 	  , has            = __webpack_require__(54)
-	  , Iterators      = __webpack_require__(85)
-	  , $iterCreate    = __webpack_require__(86)
-	  , setToStringTag = __webpack_require__(90)
-	  , getPrototypeOf = __webpack_require__(92)
-	  , ITERATOR       = __webpack_require__(91)('iterator')
+	  , Iterators      = __webpack_require__(86)
+	  , $iterCreate    = __webpack_require__(87)
+	  , setToStringTag = __webpack_require__(91)
+	  , getPrototypeOf = __webpack_require__(93)
+	  , ITERATOR       = __webpack_require__(92)('iterator')
 	  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
 	  , FF_ITERATOR    = '@@iterator'
 	  , KEYS           = 'keys'
@@ -6684,35 +6703,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports) {
 
 	module.exports = true;
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(41);
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var create         = __webpack_require__(87)
+	var create         = __webpack_require__(88)
 	  , descriptor     = __webpack_require__(50)
-	  , setToStringTag = __webpack_require__(90)
+	  , setToStringTag = __webpack_require__(91)
 	  , IteratorPrototype = {};
 	
 	// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-	__webpack_require__(41)(IteratorPrototype, __webpack_require__(91)('iterator'), function(){ return this; });
+	__webpack_require__(41)(IteratorPrototype, __webpack_require__(92)('iterator'), function(){ return this; });
 	
 	module.exports = function(Constructor, NAME, next){
 	  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
@@ -6720,12 +6739,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 	var anObject    = __webpack_require__(43)
-	  , dPs         = __webpack_require__(88)
+	  , dPs         = __webpack_require__(89)
 	  , enumBugKeys = __webpack_require__(66)
 	  , IE_PROTO    = __webpack_require__(63)('IE_PROTO')
 	  , Empty       = function(){ /* empty */ }
@@ -6740,7 +6759,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    , gt     = '>'
 	    , iframeDocument;
 	  iframe.style.display = 'none';
-	  __webpack_require__(89).appendChild(iframe);
+	  __webpack_require__(90).appendChild(iframe);
 	  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
 	  // createDict = iframe.contentWindow.Object;
 	  // html.removeChild(iframe);
@@ -6767,7 +6786,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var dP       = __webpack_require__(42)
@@ -6785,25 +6804,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(37).document && document.documentElement;
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var def = __webpack_require__(42).f
 	  , has = __webpack_require__(54)
-	  , TAG = __webpack_require__(91)('toStringTag');
+	  , TAG = __webpack_require__(92)('toStringTag');
 	
 	module.exports = function(it, tag, stat){
 	  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 	};
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var store      = __webpack_require__(64)('wks')
@@ -6819,7 +6838,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	$exports.store = store;
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
@@ -6837,20 +6856,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var ctx            = __webpack_require__(39)
 	  , $export        = __webpack_require__(36)
 	  , toObject       = __webpack_require__(69)
-	  , call           = __webpack_require__(94)
-	  , isArrayIter    = __webpack_require__(95)
+	  , call           = __webpack_require__(95)
+	  , isArrayIter    = __webpack_require__(96)
 	  , toLength       = __webpack_require__(60)
-	  , createProperty = __webpack_require__(96)
-	  , getIterFn      = __webpack_require__(97);
+	  , createProperty = __webpack_require__(97)
+	  , getIterFn      = __webpack_require__(98);
 	
-	$export($export.S + $export.F * !__webpack_require__(99)(function(iter){ Array.from(iter); }), 'Array', {
+	$export($export.S + $export.F * !__webpack_require__(100)(function(iter){ Array.from(iter); }), 'Array', {
 	  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
 	  from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
 	    var O       = toObject(arrayLike)
@@ -6880,7 +6899,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// call something on iterator step with safe closing on error
@@ -6897,12 +6916,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// check on default Array iterator
-	var Iterators  = __webpack_require__(85)
-	  , ITERATOR   = __webpack_require__(91)('iterator')
+	var Iterators  = __webpack_require__(86)
+	  , ITERATOR   = __webpack_require__(92)('iterator')
 	  , ArrayProto = Array.prototype;
 	
 	module.exports = function(it){
@@ -6910,7 +6929,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6923,12 +6942,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var classof   = __webpack_require__(98)
-	  , ITERATOR  = __webpack_require__(91)('iterator')
-	  , Iterators = __webpack_require__(85);
+	var classof   = __webpack_require__(99)
+	  , ITERATOR  = __webpack_require__(92)('iterator')
+	  , Iterators = __webpack_require__(86);
 	module.exports = __webpack_require__(38).getIteratorMethod = function(it){
 	  if(it != undefined)return it[ITERATOR]
 	    || it['@@iterator']
@@ -6936,12 +6955,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 98 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// getting tag from 19.1.3.6 Object.prototype.toString()
 	var cof = __webpack_require__(57)
-	  , TAG = __webpack_require__(91)('toStringTag')
+	  , TAG = __webpack_require__(92)('toStringTag')
 	  // ES3 wrong here
 	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
 	
@@ -6964,10 +6983,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ITERATOR     = __webpack_require__(91)('iterator')
+	var ITERATOR     = __webpack_require__(92)('iterator')
 	  , SAFE_CLOSING = false;
 	
 	try {
@@ -6990,7 +7009,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7061,7 +7080,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = makePoint;
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7109,7 +7128,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = pointControls;
 
 /***/ },
-/* 102 */
+/* 103 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (angle, radius) {
+	  return mojs.h.getRadialPoint({ angle: angle, radius: radius, center: { x: 0, y: 0 } });
+	};
+
+/***/ },
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*! Hammer.JS - v2.0.7 - 2016-04-22
@@ -9758,7 +9791,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 103 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -9995,7 +10028,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 104 */
+/* 106 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10005,13 +10038,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 105 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(106);
+	var content = __webpack_require__(108);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(11)(content, {});
@@ -10020,8 +10053,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(106, function() {
-				var newContent = __webpack_require__(106);
+			module.hot.accept(108, function() {
+				var newContent = __webpack_require__(108);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -10031,7 +10064,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 106 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(10)();
@@ -10045,7 +10078,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 107 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10054,7 +10087,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: true
 	});
 	
-	var _constants = __webpack_require__(139);
+	var _constants = __webpack_require__(76);
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
@@ -10080,64 +10113,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = mod;
 
 /***/ },
-/* 108 */
+/* 110 */
 /***/ function(module, exports) {
 
-	module.exports = {
-		"point": "_point_vx4ul_5",
-		"is-selected": "_is-selected_vx4ul_32",
-		"is-hide-handles": "_is-hide-handles_vx4ul_43"
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (value, base, snap) {
+	  var modified = Math.round(value / base) * base;
+	
+	  return Math.abs(value - modified) < snap ? modified : value;
 	};
-
-/***/ },
-/* 109 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(110);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(11)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(true) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept(110, function() {
-				var newContent = __webpack_require__(110);
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 110 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(10)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "._point_vx4ul_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5);border:2px solid #fff}._point_vx4ul_5 little-handle{display:none}._point_vx4ul_5:after{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_vx4ul_5._is-selected_vx4ul_32,._point_vx4ul_5:hover{border-color:#ff512f}._point_vx4ul_5._is-selected_vx4ul_32 little-handle{display:block}._point_vx4ul_5._is-hide-handles_vx4ul_43 little-handle{display:none}", ""]);
-	
-	// exports
-
 
 /***/ },
 /* 111 */
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve": "_curve_19x0u_5",
-		"curve__svg-wrapper": "_curve__svg-wrapper_19x0u_1",
-		"curve__svg": "_curve__svg_19x0u_1",
-		"curve__svg-segment": "_curve__svg-segment_19x0u_1"
+		"point": "_point_1xqxg_5",
+		"point__touch": "_point__touch_1xqxg_1",
+		"is-selected": "_is-selected_1xqxg_31",
+		"is-hide-handles": "_is-hide-handles_1xqxg_42"
 	};
 
 /***/ },
@@ -10175,13 +10174,64 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve_19x0u_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #9c829a;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2;background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMzUwcHgiIGhlaWdodD0iMzUwcHgiIHZpZXdCb3g9IjAgMCAzNTAgMzUwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICAgICAgPHRpdGxlPlNsaWNlIDE8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEuMDAwMDAwLCAwLjAwMDAwMCkiIHN0cm9rZT0iI0ZGRkZGRiI+ICAgICAgICAgICAgPHBhdGggZD0iTTMzMy40OTc4MjEsMzUwLjUwMTA4OCBMMzMzLjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTMxNS45OTc4MjEsMzUwLjUwMTA4OCBMMzE1Ljk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI5OC40OTc4MjEsMzUwLjUwMTA4OCBMMjk4LjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI4MC45OTc4MjEsMzUwLjUwMTA4OCBMMjgwLjk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI0NS45OTc4MjEsMzUwLjUwMTA4OCBMMjQ1Ljk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTIyOC40OTc4MjEsMzUwLjUwMTA4OCBMMjI4LjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTIxMC45OTc4MjEsMzUwLjUwMTA4OCBMMjEwLjk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE5My40OTc4MjEsMzUwLjUwMTA4OCBMMTkzLjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE1OS4zNzI4MjEsMzUwLjUwMTA4OCBMMTU5LjM3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE0MS44NzI4MjEsMzUwLjUwMTA4OCBMMTQxLjg3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTEyNC4zNzI4MjEsMzUwLjUwMTA4OCBMMTI0LjM3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTEwNi44NzI4MjEsMzUwLjUwMTA4OCBMMTA2Ljg3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTcxLjg3MjgyMDcsMzUwLjUwMTA4OCBMNzEuODcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTU0LjM3MjgyMDcsMzUwLjUwMTA4OCBMNTQuMzcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM2Ljg3MjgyMDcsMzUwLjUwMTA4OCBMMzYuODcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE5LjM3MjgyMDcsMzUwLjUwMTA4OCBMMTkuMzcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMTkuMDAyMTc5MyBMMS4wMDEwODgzLDE5LjAwMjE3OTMiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDM2LjUwMjE3OTMgTDEuMDAxMDg4MywzNi41MDIxNzkzIiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCw1NC4wMDIxNzkzIEwxLjAwMTA4ODMsNTQuMDAyMTc5MyIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsNzEuNTAyMTc5MyBMMS4wMDEwODgzLDcxLjUwMjE3OTMiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDEwNi41MDIxNzkgTDEuMDAxMDg4MywxMDYuNTAyMTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwxMjQuMDAyMTc5IEwxLjAwMTA4ODMsMTI0LjAwMjE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMTQxLjUwMjE3OSBMMS4wMDEwODgzLDE0MS41MDIxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDE1OS4wMDIxNzkgTDEuMDAxMDg4MywxNTkuMDAyMTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwxOTMuMTI3MTc5IEwxLjAwMTA4ODMsMTkzLjEyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMjEwLjYyNzE3OSBMMS4wMDEwODgzLDIxMC42MjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDIyOC4xMjcxNzkgTDEuMDAxMDg4MywyMjguMTI3MTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwyNDUuNjI3MTc5IEwxLjAwMTA4ODMsMjQ1LjYyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMjgwLjYyNzE3OSBMMS4wMDEwODgzLDI4MC42MjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDI5OC4xMjcxNzkgTDEuMDAxMDg4MywyOTguMTI3MTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwzMTUuNjI3MTc5IEwxLjAwMTA4ODMsMzE1LjYyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMzMzLjEyNzE3OSBMMS4wMDEwODgzLDMzMy4xMjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik04OC4wNjQxMzUyLDEgTDg4LjA2NDEzNTIsMzUxIiBpZD0icGF0aDgyMTUiIG9wYWNpdHk9IjAuNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNzUuMTI4MjcsMSBMMTc1LjEyODI3LDM1MSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMjYyLjE5MjQwNiwxIEwyNjIuMTkyNDA2LDM1MSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUwLjU2MzU5MSw4OC4wNjQ2NzkzIEwwLjU2MzU5MTAyMiw4OC4wNjQ2NzkzIiBpZD0icGF0aDgyMTUiIG9wYWNpdHk9IjAuNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTAuNTYzNTkxLDE3NS41NjQ2NzkgTDAuNTYzNTkxMDIyLDE3NS41NjQ2NzkiIGlkPSJwYXRoODIxNSIgb3BhY2l0eT0iMC41Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MC41NjM1OTEsMjYzLjA2NDY3OSBMMC41NjM1OTEwMjIsMjYzLjA2NDY3OSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cmVjdCBpZD0icmVjdDEwMDc4IiBvcGFjaXR5PSIwLjc1IiB4PSIwLjg3MjgxNzk1NSIgeT0iMSIgd2lkdGg9IjM1MCIgaGVpZ2h0PSIzNTAiPjwvcmVjdD4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==)}._curve__svg-wrapper_19x0u_1{position:absolute;left:-1px;right:-1px}._curve__svg_19x0u_1{display:block;overflow:visible;width:100%}._curve__svg-segment_19x0u_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_19x0u_1:hover{stroke:#ff512f}", ""]);
+	exports.push([module.id, "._point_1xqxg_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5);border:2px solid #fff}._point_1xqxg_5 little-handle{display:none}._point__touch_1xqxg_1{position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_1xqxg_5._is-selected_1xqxg_31,._point_1xqxg_5:hover{border-color:#ff512f}._point_1xqxg_5._is-selected_1xqxg_31 little-handle{display:block}._point_1xqxg_5._is-hide-handles_1xqxg_42 little-handle{display:none}", ""]);
 	
 	// exports
 
 
 /***/ },
 /* 114 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"curve": "_curve_19x0u_5",
+		"curve__svg-wrapper": "_curve__svg-wrapper_19x0u_1",
+		"curve__svg": "_curve__svg_19x0u_1",
+		"curve__svg-segment": "_curve__svg-segment_19x0u_1"
+	};
+
+/***/ },
+/* 115 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(116);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(11)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(116, function() {
+				var newContent = __webpack_require__(116);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 116 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(10)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "._curve_19x0u_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #9c829a;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2;background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMzUwcHgiIGhlaWdodD0iMzUwcHgiIHZpZXdCb3g9IjAgMCAzNTAgMzUwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICAgICAgPHRpdGxlPlNsaWNlIDE8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEuMDAwMDAwLCAwLjAwMDAwMCkiIHN0cm9rZT0iI0ZGRkZGRiI+ICAgICAgICAgICAgPHBhdGggZD0iTTMzMy40OTc4MjEsMzUwLjUwMTA4OCBMMzMzLjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTMxNS45OTc4MjEsMzUwLjUwMTA4OCBMMzE1Ljk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI5OC40OTc4MjEsMzUwLjUwMTA4OCBMMjk4LjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI4MC45OTc4MjEsMzUwLjUwMTA4OCBMMjgwLjk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI0NS45OTc4MjEsMzUwLjUwMTA4OCBMMjQ1Ljk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTIyOC40OTc4MjEsMzUwLjUwMTA4OCBMMjI4LjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTIxMC45OTc4MjEsMzUwLjUwMTA4OCBMMjEwLjk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE5My40OTc4MjEsMzUwLjUwMTA4OCBMMTkzLjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE1OS4zNzI4MjEsMzUwLjUwMTA4OCBMMTU5LjM3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE0MS44NzI4MjEsMzUwLjUwMTA4OCBMMTQxLjg3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTEyNC4zNzI4MjEsMzUwLjUwMTA4OCBMMTI0LjM3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTEwNi44NzI4MjEsMzUwLjUwMTA4OCBMMTA2Ljg3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTcxLjg3MjgyMDcsMzUwLjUwMTA4OCBMNzEuODcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTU0LjM3MjgyMDcsMzUwLjUwMTA4OCBMNTQuMzcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM2Ljg3MjgyMDcsMzUwLjUwMTA4OCBMMzYuODcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE5LjM3MjgyMDcsMzUwLjUwMTA4OCBMMTkuMzcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMTkuMDAyMTc5MyBMMS4wMDEwODgzLDE5LjAwMjE3OTMiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDM2LjUwMjE3OTMgTDEuMDAxMDg4MywzNi41MDIxNzkzIiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCw1NC4wMDIxNzkzIEwxLjAwMTA4ODMsNTQuMDAyMTc5MyIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsNzEuNTAyMTc5MyBMMS4wMDEwODgzLDcxLjUwMjE3OTMiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDEwNi41MDIxNzkgTDEuMDAxMDg4MywxMDYuNTAyMTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwxMjQuMDAyMTc5IEwxLjAwMTA4ODMsMTI0LjAwMjE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMTQxLjUwMjE3OSBMMS4wMDEwODgzLDE0MS41MDIxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDE1OS4wMDIxNzkgTDEuMDAxMDg4MywxNTkuMDAyMTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwxOTMuMTI3MTc5IEwxLjAwMTA4ODMsMTkzLjEyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMjEwLjYyNzE3OSBMMS4wMDEwODgzLDIxMC42MjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDIyOC4xMjcxNzkgTDEuMDAxMDg4MywyMjguMTI3MTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwyNDUuNjI3MTc5IEwxLjAwMTA4ODMsMjQ1LjYyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMjgwLjYyNzE3OSBMMS4wMDEwODgzLDI4MC42MjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDI5OC4xMjcxNzkgTDEuMDAxMDg4MywyOTguMTI3MTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwzMTUuNjI3MTc5IEwxLjAwMTA4ODMsMzE1LjYyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMzMzLjEyNzE3OSBMMS4wMDEwODgzLDMzMy4xMjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik04OC4wNjQxMzUyLDEgTDg4LjA2NDEzNTIsMzUxIiBpZD0icGF0aDgyMTUiIG9wYWNpdHk9IjAuNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNzUuMTI4MjcsMSBMMTc1LjEyODI3LDM1MSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMjYyLjE5MjQwNiwxIEwyNjIuMTkyNDA2LDM1MSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUwLjU2MzU5MSw4OC4wNjQ2NzkzIEwwLjU2MzU5MTAyMiw4OC4wNjQ2NzkzIiBpZD0icGF0aDgyMTUiIG9wYWNpdHk9IjAuNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTAuNTYzNTkxLDE3NS41NjQ2NzkgTDAuNTYzNTkxMDIyLDE3NS41NjQ2NzkiIGlkPSJwYXRoODIxNSIgb3BhY2l0eT0iMC41Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MC41NjM1OTEsMjYzLjA2NDY3OSBMMC41NjM1OTEwMjIsMjYzLjA2NDY3OSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cmVjdCBpZD0icmVjdDEwMDc4IiBvcGFjaXR5PSIwLjc1IiB4PSIwLjg3MjgxNzk1NSIgeT0iMSIgd2lkdGg9IjM1MCIgaGVpZ2h0PSIzNTAiPjwvcmVjdD4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==)}._curve__svg-wrapper_19x0u_1{position:absolute;left:-1px;right:-1px}._curve__svg_19x0u_1{display:block;overflow:visible;width:100%}._curve__svg-segment_19x0u_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_19x0u_1:hover{stroke:#ff512f}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(riot) {
@@ -10190,18 +10240,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _this = this;
 	
-	var _hammerjs = __webpack_require__(102);
+	var _hammerjs = __webpack_require__(104);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 	
-	var _propagatingHammerjs = __webpack_require__(103);
+	var _propagatingHammerjs = __webpack_require__(105);
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	this.CLASSES = __webpack_require__(115);
-	__webpack_require__(116);
+	this.CLASSES = __webpack_require__(118);
+	__webpack_require__(119);
 	
 	this.on('mount', function () {
 	  var hammertime = (0, _propagatingHammerjs2.default)(new _hammerjs2.default(_this.root)).on('pan', function (e) {
@@ -10215,7 +10265,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 115 */
+/* 118 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10225,13 +10275,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 116 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(117);
+	var content = __webpack_require__(120);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(11)(content, {});
@@ -10240,8 +10290,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(117, function() {
-				var newContent = __webpack_require__(117);
+			module.hot.accept(120, function() {
+				var newContent = __webpack_require__(120);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -10251,7 +10301,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 117 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(10)();
@@ -10265,7 +10315,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 118 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(6);
@@ -10275,18 +10325,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _this = this;
 	
-	var _hammerjs = __webpack_require__(102);
+	var _hammerjs = __webpack_require__(104);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 	
-	var _propagatingHammerjs = __webpack_require__(103);
+	var _propagatingHammerjs = __webpack_require__(105);
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var CLASSES = __webpack_require__(119);
-	__webpack_require__(120);
+	var CLASSES = __webpack_require__(122);
+	__webpack_require__(123);
 	
 	this.getClass = function () {
 	  var isCheck = opts.isCheck ? CLASSES['is-checked'] : '';
@@ -10305,7 +10355,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 119 */
+/* 122 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10314,13 +10364,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 120 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(121);
+	var content = __webpack_require__(124);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(11)(content, {});
@@ -10329,8 +10379,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(121, function() {
-				var newContent = __webpack_require__(121);
+			module.hot.accept(124, function() {
+				var newContent = __webpack_require__(124);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -10340,7 +10390,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 121 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(10)();
@@ -10354,20 +10404,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 122 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(6);
 	
 	riot.tag2('icon-divider', '', '', 'class="{this.CLASSES[\'icon-divider\']}"', function(opts) {
-	    this.CLASSES = __webpack_require__(123);
-	    __webpack_require__(124);
+	    this.CLASSES = __webpack_require__(126);
+	    __webpack_require__(127);
 	});
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 123 */
+/* 126 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10375,13 +10425,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 124 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(125);
+	var content = __webpack_require__(128);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(11)(content, {});
@@ -10390,8 +10440,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(125, function() {
-				var newContent = __webpack_require__(125);
+			module.hot.accept(128, function() {
+				var newContent = __webpack_require__(128);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -10401,7 +10451,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 125 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(10)();
@@ -10415,7 +10465,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 126 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(riot) {riot.tag2('resize-handle', '<icon shape="ellipsis"></icon>', '', 'class="{this.applyClass}"', function(opts) {
@@ -10427,22 +10477,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _hammerjs = __webpack_require__(102);
+	var _hammerjs = __webpack_require__(104);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 	
-	var _propagatingHammerjs = __webpack_require__(103);
+	var _propagatingHammerjs = __webpack_require__(105);
 	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var type = this.opts.type;
-	var CLASSES = __webpack_require__(127);
+	var CLASSES = __webpack_require__(130);
 	
 	this.applyClass = CLASSES['resize-handle'] + ' ' + (opts.adc || '');
 	this.applyClass = this.applyClass + ' ' + CLASSES['resize-handle--' + this.opts.type];
-	__webpack_require__(128);
+	__webpack_require__(131);
 	__webpack_require__(8);
 	
 	this.on('mount', function () {
@@ -10462,7 +10512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 127 */
+/* 130 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10470,95 +10520,6 @@ return /******/ (function(modules) { // webpackBootstrap
 		"resize-handle--right": "_resize-handle--right_5gtb1_1",
 		"resize-handle--bottom": "_resize-handle--bottom_5gtb1_1"
 	};
-
-/***/ },
-/* 128 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(129);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(11)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(true) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept(129, function() {
-				var newContent = __webpack_require__(129);
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 129 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(10)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "._resize-handle_5gtb1_4{background:#3d1b3c;width:32px;height:16px;display:block;cursor:n-resize;overflow:hidden;position:relative;border-top-left-radius:3px;border-top-right-radius:3px;-webkit-transform-origin:50% 100%;transform-origin:50% 100%}._resize-handle_5gtb1_4:after{content:'';position:absolute;left:0;top:0;right:0;bottom:0;z-index:2}._resize-handle_5gtb1_4 icon{position:absolute;left:0;top:-7px}._resize-handle_5gtb1_4:hover{opacity:.85}._resize-handle--right_5gtb1_1{-webkit-transform:rotate(90deg);transform:rotate(90deg);cursor:e-resize}._resize-handle--bottom_5gtb1_1{-webkit-transform:rotate(180deg);transform:rotate(180deg);cursor:s-resize}", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 130 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(118);
-	
-	riot.tag2('point-controls', '<icon-button each="{name, value in buttons}" name="{name}" is-check="{value}" shape="{\'point-\' + name}" on-tap="{parent.onButtonTap.bind(this)}" title="{name}"></icon-button>', '', 'class="{this.getClass()}"', function(opts) {
-	'use strict';
-	
-	var _this = this;
-	
-	var _store = __webpack_require__(15);
-	
-	var _store2 = _interopRequireDefault(_store);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	__webpack_require__(131);
-	var CLASSES = __webpack_require__(133);
-	
-	this.getButtons = function () {
-	  var state = _store2.default.getState().pointControls.present;
-	  _this.buttons = {
-	    'straight': false,
-	    'disconnected': false,
-	    'mirrored': false,
-	    'asymmetric': false
-	  };
-	  _this.buttons[state.type || 'straight'] = true;
-	};
-	
-	this.getClass = function () {
-	  var state = _store2.default.getState().pointControls.present;
-	  var isShow = state.isShow ? CLASSES['is-show'] : '';
-	  return opts.classname + ' ' + CLASSES['point-controls'] + ' ' + isShow;
-	};
-	
-	this.onButtonTap = function (ev, opts) {
-	  _store2.default.dispatch({ type: 'POINT_CHANGE_TYPE', data: opts.name, isRecord: true });
-	  ev.stopPropagation();
-	};
-	
-	_store2.default.subscribe(function () {
-	  _this.getButtons();
-	  _this.update();
-	});
-	});
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 131 */
@@ -10595,19 +10556,59 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._point-controls_1j5f4_4{display:none}._point-controls_1j5f4_4._is-show_1j5f4_7{display:block}", ""]);
+	exports.push([module.id, "._resize-handle_5gtb1_4{background:#3d1b3c;width:32px;height:16px;display:block;cursor:n-resize;overflow:hidden;position:relative;border-top-left-radius:3px;border-top-right-radius:3px;-webkit-transform-origin:50% 100%;transform-origin:50% 100%}._resize-handle_5gtb1_4:after{content:'';position:absolute;left:0;top:0;right:0;bottom:0;z-index:2}._resize-handle_5gtb1_4 icon{position:absolute;left:0;top:-7px}._resize-handle_5gtb1_4:hover{opacity:.85}._resize-handle--right_5gtb1_1{-webkit-transform:rotate(90deg);transform:rotate(90deg);cursor:e-resize}._resize-handle--bottom_5gtb1_1{-webkit-transform:rotate(180deg);transform:rotate(180deg);cursor:s-resize}", ""]);
 	
 	// exports
 
 
 /***/ },
 /* 133 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = {
-		"point-controls": "_point-controls_1j5f4_4",
-		"is-show": "_is-show_1j5f4_7"
+	/* WEBPACK VAR INJECTION */(function(riot) {__webpack_require__(121);
+	
+	riot.tag2('point-controls', '<icon-button each="{name, value in buttons}" name="{name}" is-check="{value}" shape="{\'point-\' + name}" on-tap="{parent.onButtonTap.bind(this)}" title="{name}"></icon-button>', '', 'class="{this.getClass()}"', function(opts) {
+	'use strict';
+	
+	var _this = this;
+	
+	var _store = __webpack_require__(15);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	__webpack_require__(134);
+	var CLASSES = __webpack_require__(136);
+	
+	this.getButtons = function () {
+	  var state = _store2.default.getState().pointControls.present;
+	  _this.buttons = {
+	    'straight': false,
+	    'disconnected': false,
+	    'mirrored': false,
+	    'asymmetric': false
+	  };
+	  _this.buttons[state.type || 'straight'] = true;
 	};
+	
+	this.getClass = function () {
+	  var state = _store2.default.getState().pointControls.present;
+	  var isShow = state.isShow ? CLASSES['is-show'] : '';
+	  return opts.classname + ' ' + CLASSES['point-controls'] + ' ' + isShow;
+	};
+	
+	this.onButtonTap = function (ev, opts) {
+	  _store2.default.dispatch({ type: 'POINT_CHANGE_TYPE', data: opts.name, isRecord: true });
+	  ev.stopPropagation();
+	};
+	
+	_store2.default.subscribe(function () {
+	  _this.getButtons();
+	  _this.update();
+	});
+	});
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 134 */
@@ -10644,7 +10645,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve-editor_1vq6l_4{position:fixed;left:0;top:0;width:403px;height:378px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_1vq6l_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__left_1vq6l_1 icon-divider{margin:10px auto}._curve-editor__right_1vq6l_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_1vq6l_1 resize-handle{position:absolute}._curve-editor__right_1vq6l_1 resize-handle[type=top]{top:-16px}._curve-editor__right_1vq6l_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_1vq6l_1 resize-handle[type=bottom],._curve-editor__right_1vq6l_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_1vq6l_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_1vq6l_1{margin-top:10px}._curve-editor__anchor-buttons_1vq6l_1 icon-button{margin-bottom:5px}._curve-editor__mojs-logo_1vq6l_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_1vq6l_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
+	exports.push([module.id, "._point-controls_1j5f4_4{display:none}._point-controls_1j5f4_4._is-show_1j5f4_7{display:block}", ""]);
 	
 	// exports
 
@@ -10654,11 +10655,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve-editor": "_curve-editor_1vq6l_4",
-		"curve-editor__left": "_curve-editor__left_1vq6l_1",
-		"curve-editor__right": "_curve-editor__right_1vq6l_1",
-		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_1vq6l_1",
-		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_1vq6l_1"
+		"point-controls": "_point-controls_1j5f4_4",
+		"is-show": "_is-show_1j5f4_7"
 	};
 
 /***/ },
@@ -10696,7 +10694,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "body,html{margin:0;padding:0;background:#fff5e4}*{box-sizing:border-box}", ""]);
+	exports.push([module.id, "._curve-editor_1vq6l_4{position:fixed;left:0;top:0;width:403px;height:378px;border-radius:12px;background:rgba(58,8,58,.85);z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor__left_1vq6l_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px}._curve-editor__left_1vq6l_1 icon-divider{margin:10px auto}._curve-editor__right_1vq6l_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_1vq6l_1 resize-handle{position:absolute}._curve-editor__right_1vq6l_1 resize-handle[type=top]{top:-16px}._curve-editor__right_1vq6l_1 resize-handle[type=bottom]{bottom:0}._curve-editor__right_1vq6l_1 resize-handle[type=bottom],._curve-editor__right_1vq6l_1 resize-handle[type=top]{left:50%;margin-left:-21px}._curve-editor__right_1vq6l_1 resize-handle[type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_1vq6l_1{margin-top:10px}._curve-editor__anchor-buttons_1vq6l_1 icon-button{margin-bottom:5px}._curve-editor__mojs-logo_1vq6l_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_1vq6l_1 icon{fill:#ff512f;width:12px;height:12px}", ""]);
 	
 	// exports
 
@@ -10705,48 +10703,53 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 139 */
 /***/ function(module, exports) {
 
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var CURVE_SIZE = 350;
-	exports.default = {
-	  CURVE_SIZE: CURVE_SIZE,
-	  CURVE_PERCENT: CURVE_SIZE / 100,
-	  CURVE_PADDING: 10
+	module.exports = {
+		"curve-editor": "_curve-editor_1vq6l_4",
+		"curve-editor__left": "_curve-editor__left_1vq6l_1",
+		"curve-editor__right": "_curve-editor__right_1vq6l_1",
+		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_1vq6l_1",
+		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_1vq6l_1"
 	};
 
 /***/ },
 /* 140 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	exports.default = function (angle, radius) {
-	  return mojs.h.getRadialPoint({ angle: angle, radius: radius, center: { x: 0, y: 0 } });
-	};
+	// load the styles
+	var content = __webpack_require__(141);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(11)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(141, function() {
+				var newContent = __webpack_require__(141);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
 
 /***/ },
 /* 141 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	exports = module.exports = __webpack_require__(10)();
+	// imports
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 	
-	exports.default = function (value, base, snap) {
-	  var modified = Math.round(value / base) * base;
+	// module
+	exports.push([module.id, "body,html{margin:0;padding:0;background:#fff5e4}*{box-sizing:border-box}", ""]);
 	
-	  return Math.abs(value - modified) < snap ? modified : value;
-	};
+	// exports
+
 
 /***/ }
 /******/ ])
