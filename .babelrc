@@ -1,1 +1,5 @@
-{ "presets": ["es2015-riot", "babel-preset-stage-2"] }
+{
+  "plugins": [
+    ["transform-react-jsx", { "pragma":"h" }]
+  ]
+}

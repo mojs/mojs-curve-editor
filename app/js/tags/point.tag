@@ -31,7 +31,8 @@ require('./little-handle');
     this.getHandles();
     store.subscribe(() => {
       this.resize = this.opts.resize;
-      this.getHandles(); this.update();
+      this.getHandles();
+      this.update();
     });
 
     this.getClass = () => {
@@ -95,16 +96,15 @@ require('./little-handle');
     this.on('mount', () => {
 
       const el = this.root.querySelector('#js-point-touch');
-      const mc = propagating(new Hammer.Manager(el));
+      // const mc = propagating(new Hammer.Manager(el));
+      const mc = new Hammer.Manager(el);
       mc.add(new Hammer.Pan({ threshold: 0 }));
       mc
         .on('pan', (e) => {
-          console.time('point translate');
           store.dispatch({
             type: 'POINT_TRANSLATE',
             data: { x: getTempX(e), y: getTempY(e), index: this._index }
           });
-          console.timeEnd('point translate');
           e.stopPropagation();
         })
         .on('panend', (e) => {

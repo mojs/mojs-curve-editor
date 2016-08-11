@@ -150,7 +150,7 @@ require('./point');
     }
 
     const getState  = () => { this.state  = store.getState(); }
-    const getPoints = () => { this.points = this.state.points.present; }
+    const getPoints = () => { this.points = this.state.points.present;}
     const getStyles = () => { this.styles = this.getStyle(); }
     const get = () => {
       getState(); getPoints(); getPath(); getStyles();

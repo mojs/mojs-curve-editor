@@ -1,5 +1,5 @@
-var path = require('path');
 var webpack = require('webpack');
+var path = require('path');
 var autoprefixer = require('autoprefixer');
 var UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
 
@@ -7,13 +7,19 @@ module.exports = {
   watch:   true,
   context: __dirname + "/",
   entry: [
-    __dirname + '/app/js/app.babel.js'
+    __dirname + '/app/js/app.babel.jsx'
     // 'webpack/hot/dev-server',
   ],
   module: {
+    preLoaders: [
+      {
+        exclude: /src\//,
+        loader: 'source-map'
+      }
+    ],
     loaders: [
       { test: /\.(json)$/, exclude: /node_modules/, loaders: ['json-loader'] },
-      { test: /\.(jsx|es6.js|babel.js|.js)$/,
+      { test: /\.(jsx|.js|babel.jsx|babel.js)$/,
         exclude: /node_modules/,
         loader:  'babel-loader',
         query: {
@@ -21,13 +27,13 @@ module.exports = {
           plugins: [ 'transform-runtime' ]
         }
       },
-      {
-        test:   /\.tag$/,
-        loader: 'riotjs-loader',
-        type:   'babel',
-        exclude: /node_modules/
-      },
-      { test: /\.jade$/, loaders: ['jade'] },
+      // {
+      //   test:   /\.tag$/,
+      //   loader: 'riotjs-loader',
+      //   type:   'babel',
+      //   exclude: /node_modules/
+      // },
+      // { test: /\.jade$/, loaders: ['jade'] },
       { test: /\.(postcss.css)$/,  loader: "style-loader!css-loader!postcss-loader" },
       { test: /\.html$/, loader: 'raw-loader' },
       {
@@ -52,9 +58,11 @@ module.exports = {
     hotUpdateChunkFilename: "[id].hot-update.js"
   },
   plugins: [
-    new webpack.ProvidePlugin({
-        riot: 'riot'
-      }),
+    // new webpack.ProvidePlugin({
+    //     riot: 'riot'
+    //   }),
+    new webpack.NoErrorsPlugin(),
+    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
           warnings: false
@@ -63,12 +71,13 @@ module.exports = {
     new UnminifiedWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin()
   ],
+  devtool: process.env.NODE_ENV==='production' ? 'source-map' : 'inline-source-map',
   resolve: {
     root: [ path.resolve('./') ],
     moduleDirectories: ['node_modules'],
     target: 'node',
     extensions: [
-      '', '.js', '.es6', '.babel.js', '.coffee', '.tag',
+      '', '.js', '.babel.js', '.babel.jsx',
       '.postcss.css', '.css', '.json'
     ]
   }
