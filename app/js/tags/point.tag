@@ -89,7 +89,7 @@ require('./little-handle');
         returnValue = e.deltaY;
       }
 
-      return roundTo( returnValue, 5*C.CURVE_PERCENT, 1*C.CURVE_PERCENT );
+      return roundTo( returnValue, 5*C.CURVE_PERCENT, 2*C.CURVE_PERCENT );
     }
 
     this.on('mount', () => {
@@ -99,10 +99,12 @@ require('./little-handle');
       mc.add(new Hammer.Pan({ threshold: 0 }));
       mc
         .on('pan', (e) => {
+          console.time('point translate');
           store.dispatch({
             type: 'POINT_TRANSLATE',
             data: { x: getTempX(e), y: getTempY(e), index: this._index }
           });
+          console.timeEnd('point translate');
           e.stopPropagation();
         })
         .on('panend', (e) => {

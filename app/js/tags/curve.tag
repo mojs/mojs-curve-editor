@@ -1,7 +1,12 @@
 
 require('./point');
 
-<curve class={ this.CLASSES['curve']} style={this.styles.background}>
+<curve class={ this.CLASSES['curve']}>
+  
+  <div
+        class={ this.CLASSES['curve__background']}
+        style={this.styles.background} />
+
   <div class={ this.CLASSES['curve__svg-wrapper']} style={this.styles.transform}>
 
     <point
@@ -123,13 +128,19 @@ require('./point');
     this.getStyle = () => {
       const {resize} = this.state;
       let {temp_top} = resize;
+      let {temp_bottom} = resize;
+      let {temp_right} = resize;
 
       temp_top += resize.top;
+      temp_bottom += resize.bottom;
+      temp_right += resize.right;
 
       if (C.CURVE_SIZE - temp_top < C.CURVE_SIZE) { temp_top = 0; }
       temp_top = mod( temp_top, -1 );
 
-      const background = `background-position: 0 ${-temp_top - 1}px`;
+      const scale = `transform: scaleX(${(C.CURVE_SIZE + Math.max(temp_right,0))/C.CURVE_SIZE})`;
+      const bgTransform = `${mojs.h.prefix.css}${scale}; ${scale};`;
+      const background = `background-position: 0 ${-temp_top - 1}px; height: ${C.CURVE_SIZE + Math.max(Math.abs(temp_top), 0) + Math.max(temp_bottom, 0)}px; ${bgTransform}`;
       const transform  = `transform: translate(0px, ${-temp_top}px)`;
 
       return {

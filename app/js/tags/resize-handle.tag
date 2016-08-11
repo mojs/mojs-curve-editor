@@ -16,7 +16,10 @@
     require('../../css/blocks/icon');
     
     this.on('mount', () => {
-      var hammertime = propagating(new Hammer(this.root))
+      const mc = propagating(new Hammer.Manager(this.root));
+      mc.add(new Hammer.Pan({ threshold: 0 }));
+      mc
+      // var hammertime = propagating(new Hammer(this.root))
         .on('pan', (ev) => {
           const x = ev.deltaX, y = ev.deltaY;
           store.dispatch({ type: 'EDITOR_RESIZE', data: { x, y, type } });
