@@ -59,8 +59,8 @@ module.exports = {
   },
   plugins: [
     // new webpack.ProvidePlugin({
-    //     riot: 'riot'
-    //   }),
+    //   h: 'preact'
+    // }),
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({

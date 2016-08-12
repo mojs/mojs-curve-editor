@@ -140,7 +140,7 @@ require('./point');
 
       const scale = `transform: scaleX(${(C.CURVE_SIZE + Math.max(temp_right,0))/C.CURVE_SIZE})`;
       const bgTransform = `${mojs.h.prefix.css}${scale}; ${scale};`;
-      const background = `background-position: 0 ${-temp_top - 1}px; height: ${C.CURVE_SIZE + Math.max(Math.abs(temp_top), 0) + Math.max(temp_bottom, 0)}px; ${bgTransform}`;
+      const background = `background-position: 0 ${-temp_top}px; height: ${C.CURVE_SIZE + Math.max(Math.abs(temp_top), 0) + Math.max(temp_bottom, 0)}px; ${bgTransform}`;
       const transform  = `transform: translate(0px, ${-temp_top}px)`;
 
       return {

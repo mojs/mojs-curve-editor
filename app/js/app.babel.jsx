@@ -3,6 +3,7 @@ require('../css/main');
 import {render, h} from 'preact';
 import CurveEditor from './tags/curve-editor';
 import store from './store';
+import { Provider } from 'preact-redux';
 
 // TODO
 //   - init points with function
@@ -10,6 +11,8 @@ import store from './store';
 //   - add grid background
 
 document.addEventListener('DOMContentLoaded', () => {
-  render(<CurveEditor state={ store.getState() }  />, document.body);
-  // store.subscribe(renderRoot);
+  render(
+    <Provider store={store}>
+      <CurveEditor />
+    </Provider>, document.body);
 });

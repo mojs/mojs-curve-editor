@@ -1,7 +1,12 @@
 import C from '../constants';
 
 const INITIAL_STATE = {
-  translate:    { x: 150, y: 100 },
+  x:            150,
+  tempX:        0,
+
+  y:            100,
+  tempY:        0,
+
   top:          0,
   temp_top:     0,
 
@@ -44,7 +49,18 @@ const resizeReducer = (state = INITIAL_STATE, action) => {
       return newState;
     }
 
-    case 'EDITOR_TRANSLATE': { return { ...state, translate: action.data }; }
+    case 'EDITOR_TRANSLATE': {
+      const {x, y} = action.data;
+      return { ...state, tempX: x, tempY: y };
+    }
+
+    case 'EDITOR_TRANSLATE_END': {
+      let {x, y} = action.data;
+      x += state.x;
+      y += state.y;
+      return { ...state, x, y, tempX: 0, tempY: 0 };
+    }
+
   }
   return state;
 }

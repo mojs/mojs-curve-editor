@@ -23,7 +23,7 @@ $radius: 16;
     z-index:      2;
   }
   
-  & icon {
+  & [data-component="icon"] {
     position:     absolute;
     left:         0;
     top:          calc( -7*$PX )
