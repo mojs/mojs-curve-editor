@@ -76,6 +76,8 @@ require('./point-controls');
       }
     }
 
+    // store.subscribe(this.render.bind(this));
+
     import mod from '../helpers/resize-mod';
     this.getStyle = () => {
       const state = store.getState().resize;

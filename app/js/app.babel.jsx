@@ -1,6 +1,7 @@
-import './tags/curve-editor.tag';
+// import './tags/curve-editor.tag';
 require('../css/main');
-
+import {render, h} from 'preact';
+import CurveEditor from './tags/curve-editor';
 import store from './store';
 
 // TODO
@@ -9,5 +10,6 @@ import store from './store';
 //   - add grid background
 
 document.addEventListener('DOMContentLoaded', () => {
-  riot.mount('curve-editor', { store });
+  render(<CurveEditor state={ store.getState() }  />, document.body);
+  // store.subscribe(renderRoot);
 });
