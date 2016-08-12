@@ -25,7 +25,7 @@ $size: 10;
     margin-top:   calc( -$size*$PX );
   }
 
-  little-handle { display: none; }
+  [data-component="little-handle"] { display: none; }
 
   &:hover,
   &.is-selected {
@@ -34,13 +34,13 @@ $size: 10;
   }
 
   &.is-selected {
-    & little-handle {
+    & [data-component="little-handle"] {
       display:    block;
     }
   }
 
   &.is-hide-handles {
-    & little-handle {
+    & [data-component="little-handle"] {
       display:    none;
     } 
   }

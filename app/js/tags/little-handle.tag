@@ -1,6 +1,4 @@
 
-
-
 <little-handle class={ this.CLASSES['little-handle'] }>
 
   <div
