@@ -21,11 +21,7 @@ module.exports = {
       { test: /\.(json)$/, exclude: /node_modules/, loaders: ['json-loader'] },
       { test: /\.(jsx|.js|babel.jsx|babel.js)$/,
         exclude: /node_modules/,
-        loader:  'babel-loader',
-        query: {
-          presets: [ 'es2015', 'babel-preset-stage-2' ],
-          plugins: [ 'transform-runtime' ]
-        }
+        loader:  'babel-loader'
       },
       // {
       //   test:   /\.tag$/,

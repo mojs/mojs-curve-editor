@@ -10,7 +10,7 @@
   border-radius:    calc( 3*$PX );
   box-shadow:       calc( 1*$PX ) calc( 1*$PX ) 0 rgba(0,0,0,.15);
 
-  & icon {
+  & [data-component="icon"] {
     position:     absolute;
     left:         50%;
     top:          50%;
@@ -23,7 +23,7 @@
     box-shadow:   none;
   }
 
-  &:hover icon {
+  &:hover [data-component="icon"] {
     transform:    translate( -52%, -52% );
   }
 
@@ -34,8 +34,8 @@
                     inset calc( 1 * $PX ) calc( 1 * $PX ) calc( 1 * $PX ) rgba( 0, 0, 0, .4 );
   }
 
-  &:active icon,
-  &.is-checked icon {
+  &:active [data-component="icon"],
+  &.is-checked [data-component="icon"] {
       transform:    translate( -54%, -54% ) scale(.95);
   }
 }

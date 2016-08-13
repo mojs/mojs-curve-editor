@@ -21,7 +21,7 @@
     bottom:       0;
     padding:      calc( $gap * $PX );
 
-    & icon-divider {
+    & [data-component="icon-divider"] {
       margin: calc( 10*$PX ) auto;
     }
   }
@@ -65,7 +65,7 @@
     margin-top:   calc(  10*$PX );
     /*display:      none;*/
 
-    & icon-button {
+    & [data-component="icon-button"] {
       margin-bottom: calc(  5*$PX );
     }
 

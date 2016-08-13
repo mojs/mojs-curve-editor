@@ -34,8 +34,7 @@
     "preact": "^5.6.0",
     "propagating-hammerjs": "^1.4.6",
     "redux": "^3.5.2",
-    "redux-undo": "^0.6.1",
-    "riot": "^2.5.0"
+    "redux-undo": "^0.6.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.7",
