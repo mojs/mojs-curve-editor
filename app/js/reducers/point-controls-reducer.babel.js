@@ -11,7 +11,8 @@ const pointControls = (state = INITIAL_STATE, action) => {
     //   return { ...state, isShow: true, type: 'straight' };
     // }
     case 'POINT_SELECT': {
-      return { ...state, isShow: !action.isDeselect, type: action.data.type };
+      const type = action.data.type;
+      return { ...state, isShow: !action.isDeselect, type };
     }
     case 'POINT_CHANGE_TYPE': {
       return { ...state, type: action.data }; 

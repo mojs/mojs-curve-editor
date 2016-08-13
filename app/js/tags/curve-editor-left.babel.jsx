@@ -8,7 +8,7 @@ import PointControls from './point-controls';
 const CLASSES = require('../../css/blocks/curve-editor.postcss.css.json');
 
 const CurveEditorLeft = ({state}) => {
-  return  <div className={CLASSES['curve-editor__left']}>
+  return  <div className={CLASSES['curve-editor__left']} id="js-left-panel">
             <IconButton shape="code" />
             <IconDivider />
             <PointControls  state={state}

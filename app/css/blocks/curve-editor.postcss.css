@@ -20,6 +20,7 @@
     top:          0;
     bottom:       0;
     padding:      calc( $gap * $PX );
+    cursor:       move;
 
     & [data-component="icon-divider"] {
       margin: calc( 10*$PX ) auto;

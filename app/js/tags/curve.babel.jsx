@@ -26,6 +26,7 @@ class Curve extends Component {
                 <svg  height={ C.CURVE_SIZE }
                       viewBox="0 0 100 100"
                       preserveAspectRatio="none"
+                      id="js-svg"
                       class={ CLASSES['curve__svg'] }>
 
                   <path d={path}
@@ -160,7 +161,7 @@ class Curve extends Component {
     const el = this.base.querySelector('#js-segments'),
           mc = propagating(new Hammer.Manager(el));
 
-    mc.add(new Hammer.Pan({ threshold: 0 }));
+    // mc.add(new Hammer.Pan({ threshold: 0 }));
     mc.add(new Hammer.Tap);
 
     mc
@@ -182,14 +183,20 @@ class Curve extends Component {
 
         store.dispatch({
           type: 'POINT_SELECT',
-          data: { index }
+          data: { index, type: 'straight' }
         });
 
         e.stopPropagation();
-      })
-    .on('tap', (e) => {
-      e.stopPropagation();
     });
+
+    const svg   = this.base.querySelector('#js-svg'),
+          svgMc = propagating(new Hammer.Manager(svg));
+
+    svgMc.add(new Hammer.Tap);
+
+    svgMc
+      .on('tap', (e) => { store.dispatch({ type: 'POINT_DESELECT_ALL' }); });
+
   }
 }
 

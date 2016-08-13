@@ -54,7 +54,8 @@ class CurveEditor extends Component {
 
   componentDidMount () {
     const {store} = this.context,
-          mc = propagating(new Hammer.Manager(this.base));
+          el = this.base.querySelector('#js-left-panel'),
+          mc = propagating(new Hammer.Manager(el));
 
     mc.add(new Hammer.Pan({ threshold: 0 }));
     mc
@@ -66,7 +67,7 @@ class CurveEditor extends Component {
         const x = e.deltaX, y = e.deltaY;
         store.dispatch({ type: 'EDITOR_TRANSLATE_END', data: { x, y } })
       })
-      .on('tap', (e) => { store.dispatch({ type: 'POINT_DESELECT_ALL' }); });
+      // .on('tap', (e) => { store.dispatch({ type: 'POINT_DESELECT_ALL' }); });
 
     this._addKeyUp();
     store.subscribe(this.forceUpdate.bind(this));

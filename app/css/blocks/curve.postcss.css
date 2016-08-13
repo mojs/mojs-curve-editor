@@ -43,9 +43,8 @@ $gap : 10;
     z-index:    1;
     left:       calc( -1*$PX );
     right:      calc( -1*$PX );
-    /*top:        calc( -1*$PX );*/
-    /*width:      100%;*/
   }
+  
   &__svg {
     display:    block;
     overflow:   visible;

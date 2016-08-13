@@ -19,7 +19,8 @@ class Point extends Component {
     const littleHandles = this._getLittleHandles( state );
 
     return  <div  className={`${CLASSES['point']} ${selected} ${handles}`}
-                  style={ this._getStyle(state) }>
+                  style={ this._getStyle(state) }
+                  data-component="point">
 
               <div className={CLASSES['point__touch'] } id="js-point-touch" />
 
@@ -122,7 +123,6 @@ class Point extends Component {
         store.dispatch({
           type: 'POINT_TRANSLATE_END', data: index, isRecord: true
         });
-
         e.stopPropagation();
       })
       .on('tap', (e) => {
