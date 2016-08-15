@@ -1,5 +1,6 @@
 import makePoint from '../helpers/make-point';
 import C from '../constants';
+import initPoints from '../helpers/init-points';
 
 const INITIAL_STATE = [
     makePoint({ x: 0,   y: C.CURVE_SIZE, isLockedX: true, type: 'straight' }),
@@ -23,7 +24,7 @@ const findSelectedIndecies = (state) => {
   return indecies;
 }
 
-const pointsReducer = (state = INITIAL_STATE, action) => {
+const pointsReducer = (state = initPoints(INITIAL_STATE), action) => {
   switch( action.type ) {
     case 'POINT_TRANSLATE': {
       const {data}   = action,
@@ -51,57 +52,29 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
     }
     
     case 'POINT_SELECT': {
-      const {data}        = action,
-            {index}       = data,
-            {isDeselect}  = data,
-            // if should de select all other points
-            newState      = (isDeselect) ? deslectAll( state ) : [ ...state ];
-
+      const {data}              = action,
+            {index, isDeselect} = data,
+            newState            = (isDeselect) ? deslectAll( state ) : [ ...state ];
+      
       const point = newState[index];
-      const sibPoint = (index === newState.length-1)
-              ? newState[index-1] : newState[index+1];
-
-      const handleIndex = (index === newState.length-1) ? 1 : 2;
-
-      const handleName = `handle${handleIndex}`;
-      const sibHandleIndex = (handleIndex === 1) ? 2 : 1;
-      const sibHandleName = `handle${sibHandleIndex}`;
-      const handle = { ...point[handleName] };
-      const sibHandle = { ...point[sibHandleName] };
-      point[handleName] = handle;
-      point[sibHandleName] = sibHandle;
-
-      const wasntSet = handle.angle == null || handle.radius == null;
-      const type = point.type;
-      if ( wasntSet ) {
-        handle.radius = 50;
-
-        const dy = (sibPoint.y - point.y) / C.CURVE_PERCENT;
-        const dx = sibPoint.x - point.x;
-        let angle = Math.atan( dy/dx ) * (180/Math.PI) - 90;
-        if ( dx > 0 ) { angle = angle - 180 };
-        handle.angle = angle;
-
-        sibHandle.radius = handle.radius;
-        sibHandle.angle  = handle.angle - 180;
-      }
-
       point.isSelected = true;
       return newState;
     }
 
     case 'POINT_ADD': {
       const {data}        = action,
-            {x, y, index} = data;
+            {x, y, index} = data,
+            deselected = deslectAll( state );
 
-      const deselected = deslectAll( state );
-
-      return [
+      const newState = [
         ...deselected.slice( 0, index ),
         makePoint({ x, y, isSelected: true }),
         ...deselected.slice( index )
-      ]
+      ];
+
+      return initPoints( newState );
     }
+    
     case 'POINT_DELETE': {
       const selected = findSelectedIndecies(state);
 

@@ -6,9 +6,9 @@ import store from './store';
 import { Provider } from 'preact-redux';
 
 // TODO
-//   - init points with function
+//   - select at touch
 //   - move bunch of points at once
-//   - add grid background
+//   - add APIs
 
 document.addEventListener('DOMContentLoaded', () => {
   render(

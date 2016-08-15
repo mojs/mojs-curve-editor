@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "eced036c9ccfa30d3859"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "13c3afd561d1cd32c030"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -621,9 +621,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// TODO
-	//   - init points with function
+	//   - select at touch
 	//   - move bunch of points at once
-	//   - add grid background
+	//   - add APIs
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  (0, _preact.render)((0, _preact.h)(
@@ -1521,11 +1521,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_addKeyUp',
 	    value: function _addKeyUp() {
-	      document.addEventListener('keyup', this._onKeyUp);
+	      document.addEventListener('keyup', this._onKeyUp.bind(this));
 	    }
 	  }, {
 	    key: '_onKeyUp',
 	    value: function _onKeyUp(e) {
+	      var store = this.context.store;
+	
 	      if (!e.altKey) {
 	        return;
 	      }
@@ -6848,17 +6850,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _this2 = this;
 	
 	      var store = this.context.store;
-	      var resize = this.props.state.resize;
-	      var _props3 = this.props;
-	      var point = _props3.point;
-	      var index = _props3.index;
 	
 	
 	      var getTempX = function getTempX(e) {
 	        var resize = _this2.props.state.resize;
-	        var _props4 = _this2.props;
-	        var point = _props4.point;
-	        var index = _props4.index;
+	        var _props3 = _this2.props;
+	        var point = _props3.point;
+	        var index = _props3.index;
 	        // if point is not locked to x axes ->
 	        // calculate delta regarding scaler
 	
@@ -6877,9 +6875,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      var getY = function getY(e) {
 	        var resize = _this2.props.state.resize;
-	        var _props5 = _this2.props;
-	        var point = _props5.point;
-	        var index = _props5.index;
+	        var _props4 = _this2.props;
+	        var point = _props4.point;
+	        var index = _props4.index;
 	        var y = point.y + e.deltaY;
 	
 	        // clamp y to the size of curve
@@ -6889,9 +6887,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // get y delta reagarding curve bounds
 	      var getTempY = function getTempY(e) {
 	        var resize = _this2.props.state.resize;
-	        var _props6 = _this2.props;
-	        var point = _props6.point;
-	        var index = _props6.index;
+	        var _props5 = _this2.props;
+	        var point = _props5.point;
+	        var index = _props5.index;
 	
 	
 	        var y = point.y + e.deltaY,
@@ -6913,22 +6911,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	      mc.add(new _hammerjs2.default.Tap());
 	
 	      mc.on('pan', function (e) {
+	        var _props6 = _this2.props;
+	        var point = _props6.point;
+	        var index = _props6.index;
+	
 	        store.dispatch({
 	          type: 'POINT_TRANSLATE',
 	          data: { x: getTempX(e), y: getTempY(e), index: index }
 	        });
 	        e.stopPropagation();
 	      }).on('panend', function (e) {
+	        var _props7 = _this2.props;
+	        var point = _props7.point;
+	        var index = _props7.index;
 	        // fire translate end and save it to the store
+	
 	        store.dispatch({
 	          type: 'POINT_TRANSLATE_END', data: index, isRecord: true
 	        });
 	        e.stopPropagation();
 	      }).on('tap', function (e) {
+	        var _props8 = _this2.props;
+	        var point = _props8.point;
+	        var index = _props8.index;
+	
 	        store.dispatch({
 	          type: 'POINT_SELECT',
 	          data: {
-	            index: index, type: point.type, isDeselect: !e.srcEvent.shiftKey
+	            index: index, isDeselect: !e.srcEvent.shiftKey,
+	            type: point.type
 	          }
 	        });
 	        e.stopPropagation();
@@ -9520,6 +9531,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
+	var _initPoints = __webpack_require__(180);
+	
+	var _initPoints2 = _interopRequireDefault(_initPoints);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var INITIAL_STATE = [(0, _makePoint2.default)({ x: 0, y: _constants2.default.CURVE_SIZE, isLockedX: true, type: 'straight' }), (0, _makePoint2.default)({ x: 50, y: _constants2.default.CURVE_SIZE / 2, type: 'mirrored' }), (0, _makePoint2.default)({ x: 100, y: 0, isLockedX: true })];
@@ -9541,7 +9556,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	var pointsReducer = function pointsReducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? (0, _initPoints2.default)(INITIAL_STATE) : arguments[0];
 	  var action = arguments[1];
 	
 	  switch (action.type) {
@@ -9576,39 +9591,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _data = action.data;
 	        var _index2 = _data.index;
 	        var isDeselect = _data.isDeselect;
-	        // if should de select all other points
 	        var _newState2 = isDeselect ? deslectAll(state) : [].concat((0, _toConsumableArray3.default)(state));
 	
 	        var point = _newState2[_index2];
-	        var sibPoint = _index2 === _newState2.length - 1 ? _newState2[_index2 - 1] : _newState2[_index2 + 1];
-	
-	        var handleIndex = _index2 === _newState2.length - 1 ? 1 : 2;
-	
-	        var handleName = 'handle' + handleIndex;
-	        var sibHandleIndex = handleIndex === 1 ? 2 : 1;
-	        var sibHandleName = 'handle' + sibHandleIndex;
-	        var handle = (0, _extends3.default)({}, point[handleName]);
-	        var sibHandle = (0, _extends3.default)({}, point[sibHandleName]);
-	        point[handleName] = handle;
-	        point[sibHandleName] = sibHandle;
-	
-	        var wasntSet = handle.angle == null || handle.radius == null;
-	        var type = point.type;
-	        if (wasntSet) {
-	          handle.radius = 50;
-	
-	          var dy = (sibPoint.y - point.y) / _constants2.default.CURVE_PERCENT;
-	          var dx = sibPoint.x - point.x;
-	          var angle = Math.atan(dy / dx) * (180 / Math.PI) - 90;
-	          if (dx > 0) {
-	            angle = angle - 180;
-	          };
-	          handle.angle = angle;
-	
-	          sibHandle.radius = handle.radius;
-	          sibHandle.angle = handle.angle - 180;
-	        }
-	
 	        point.isSelected = true;
 	        return _newState2;
 	      }
@@ -9619,60 +9604,61 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var x = _data2.x;
 	        var y = _data2.y;
 	        var _index3 = _data2.index;
-	
-	
 	        var deselected = deslectAll(state);
 	
-	        return [].concat((0, _toConsumableArray3.default)(deselected.slice(0, _index3)), [(0, _makePoint2.default)({ x: x, y: y, isSelected: true })], (0, _toConsumableArray3.default)(deselected.slice(_index3)));
+	        var _newState3 = [].concat((0, _toConsumableArray3.default)(deselected.slice(0, _index3)), [(0, _makePoint2.default)({ x: x, y: y, isSelected: true })], (0, _toConsumableArray3.default)(deselected.slice(_index3)));
+	
+	        return (0, _initPoints2.default)(_newState3);
 	      }
+	
 	    case 'POINT_DELETE':
 	      {
 	        var selected = findSelectedIndecies(state);
 	
-	        var _newState3 = [];
+	        var _newState4 = [];
 	        for (var i = 0; i < state.length; i++) {
 	          var item = state[i];
-	          (selected.indexOf(i) === -1 || item.isLockedX) && _newState3.push(item);
+	          (selected.indexOf(i) === -1 || item.isLockedX) && _newState4.push(item);
 	        }
 	
-	        return _newState3;
+	        return _newState4;
 	      }
 	
 	    case 'POINT_CHANGE_TYPE':
 	      {
 	        var _selected = findSelectedIndecies(state);
 	
-	        var _newState4 = [];
+	        var _newState5 = [];
 	        for (var i = 0; i < state.length; i++) {
 	          var _item = state[i];
-	          var _type = action.data;
+	          var type = action.data;
 	          // copy all items from previous state
-	          _newState4.push((0, _extends3.default)({}, _item));
+	          _newState5.push((0, _extends3.default)({}, _item));
 	          // if item was selected - set the new `type`
-	          _selected.indexOf(i) !== -1 && (_newState4[i].type = _type);
+	          _selected.indexOf(i) !== -1 && (_newState5[i].type = type);
 	
 	          var _index4 = i;
-	          var _point = _newState4[_index4];
-	          var _sibPoint = _index4 === _newState4.length - 1 ? _newState4[_index4 - 1] : _newState4[_index4 + 1];
+	          var _point = _newState5[_index4];
+	          var sibPoint = _index4 === _newState5.length - 1 ? _newState5[_index4 - 1] : _newState5[_index4 + 1];
 	
-	          var _handleIndex = _index4 === _newState4.length - 1 ? 1 : 2;
-	          var _sibHandleIndex = _handleIndex === 1 ? 2 : 1;
-	          var _handleName = 'handle' + _handleIndex;
-	          var _sibHandleName = 'handle' + _sibHandleIndex;
-	          var _handle = (0, _extends3.default)({}, _point[_handleName]);
-	          var _sibHandle = (0, _extends3.default)({}, _point[_sibHandleName]);
-	          _point[_handleName] = _handle;
-	          _point[_sibHandleName] = _sibHandle;
+	          var handleIndex = _index4 === _newState5.length - 1 ? 1 : 2;
+	          var sibHandleIndex = handleIndex === 1 ? 2 : 1;
+	          var handleName = 'handle' + handleIndex;
+	          var sibHandleName = 'handle' + sibHandleIndex;
+	          var handle = (0, _extends3.default)({}, _point[handleName]);
+	          var sibHandle = (0, _extends3.default)({}, _point[sibHandleName]);
+	          _point[handleName] = handle;
+	          _point[sibHandleName] = sibHandle;
 	
-	          if (_type === 'mirrored' || _type === 'asymmetric') {
-	            _sibHandle.angle = _handle.angle - 180;
-	            if (_type === 'mirrored') {
-	              _sibHandle.radius = _handle.radius;
+	          if (type === 'mirrored' || type === 'asymmetric') {
+	            sibHandle.angle = handle.angle - 180;
+	            if (type === 'mirrored') {
+	              sibHandle.radius = handle.radius;
 	            }
 	          }
 	        }
 	
-	        return _newState4;
+	        return _newState5;
 	      }
 	
 	    case 'POINT_DESELECT_ALL':
@@ -9686,18 +9672,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _data3 = action.data;
 	        // create new state and copy the new point into it
 	
-	        var _newState5 = [].concat((0, _toConsumableArray3.default)(state));
-	        var newPoint = (0, _extends3.default)({}, _newState5[_data3.parentIndex]);
-	        _newState5[_data3.parentIndex] = newPoint;
+	        var _newState6 = [].concat((0, _toConsumableArray3.default)(state));
+	        var newPoint = (0, _extends3.default)({}, _newState6[_data3.parentIndex]);
+	        _newState6[_data3.parentIndex] = newPoint;
 	        // create handle and copy it into the new point
-	        var _handleName2 = 'handle' + _data3.index;
-	        var newHandle = (0, _extends3.default)({}, newPoint[_handleName2]);
-	        newPoint[_handleName2] = newHandle;
+	        var _handleName = 'handle' + _data3.index;
+	        var newHandle = (0, _extends3.default)({}, newPoint[_handleName]);
+	        newPoint[_handleName] = newHandle;
 	        // finally add angle and radius
 	        newHandle.angle = _data3.angle;
 	        newHandle.radius = _data3.radius;
 	
-	        return _newState5;
+	        return _newState6;
 	      }
 	  }
 	  return state;
@@ -10849,6 +10835,88 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	// exports
 
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _initPoint = __webpack_require__(181);
+	
+	var _initPoint2 = _interopRequireDefault(_initPoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (points) {
+	
+	  var newPoints = [];
+	  for (var i = 0; i < points.length; i++) {
+	    var point = points[i],
+	        sibPoint = i === points.length - 1 ? points[i - 1] : points[i + 1],
+	        handleIndex = i === points.length - 1 ? 1 : 2;
+	
+	    newPoints.push((0, _initPoint2.default)(point, sibPoint, handleIndex));
+	  }
+	  return newPoints;
+	};
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	      value: true
+	});
+	
+	var _extends2 = __webpack_require__(102);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
+	var _constants = __webpack_require__(92);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (point, sibPoint, handleIndex) {
+	
+	      point = (0, _extends3.default)({}, point);
+	
+	      var handleName = 'handle' + handleIndex,
+	          sibHandleIndex = handleIndex === 1 ? 2 : 1,
+	          sibHandleName = 'handle' + sibHandleIndex,
+	          handle = (0, _extends3.default)({}, point[handleName]),
+	          sibHandle = (0, _extends3.default)({}, point[sibHandleName]),
+	          type = point.type;
+	
+	      point[handleName] = handle;
+	      point[sibHandleName] = sibHandle;
+	
+	      if (handle.angle == null || handle.radius == null) {
+	            handle.radius = 50;
+	
+	            var dy = (sibPoint.y - point.y) / _constants2.default.CURVE_PERCENT,
+	                dx = sibPoint.x - point.x;
+	
+	            var angle = Math.atan(dy / dx) * (180 / Math.PI) - 90;
+	            if (dx > 0) {
+	                  angle = angle - 180;
+	            };
+	
+	            handle.angle = angle;
+	            sibHandle.radius = handle.radius;
+	            sibHandle.angle = handle.angle - 180;
+	      }
+	
+	      return point;
+	};
 
 /***/ }
 /******/ ])

@@ -61,9 +61,7 @@ class Point extends Component {
   }
   
   componentDidMount () {
-    const {store}  = this.context,
-          {resize} = this.props.state,
-          {point, index} = this.props;
+    const {store}  = this.context;
 
     const getTempX = (e) => {
       const {resize} = this.props.state,
@@ -112,6 +110,7 @@ class Point extends Component {
 
     mc
       .on('pan', (e) => {
+        const {point, index} = this.props;
         store.dispatch({
           type: 'POINT_TRANSLATE',
           data: { x: getTempX(e), y: getTempY(e), index }
@@ -119,6 +118,7 @@ class Point extends Component {
         e.stopPropagation();
       })
       .on('panend', (e) => {
+        const {point, index} = this.props;
         // fire translate end and save it to the store
         store.dispatch({
           type: 'POINT_TRANSLATE_END', data: index, isRecord: true
@@ -126,10 +126,12 @@ class Point extends Component {
         e.stopPropagation();
       })
       .on('tap', (e) => {
+        const {point, index} = this.props
         store.dispatch({
           type: 'POINT_SELECT',
           data: {
-            index, type: point.type, isDeselect: !e.srcEvent.shiftKey
+            index, isDeselect: !e.srcEvent.shiftKey,
+            type: point.type
           }
         });
         e.stopPropagation();

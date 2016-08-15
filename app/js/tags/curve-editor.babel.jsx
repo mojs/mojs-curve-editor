@@ -73,9 +73,10 @@ class CurveEditor extends Component {
     store.subscribe(this.forceUpdate.bind(this));
   }
 
-  _addKeyUp () { document.addEventListener('keyup', this._onKeyUp); }
+  _addKeyUp () { document.addEventListener('keyup', this._onKeyUp.bind(this)); }
 
   _onKeyUp (e) {
+    const {store} = this.context;
     if ( !e.altKey ) { return; }
     switch (e.which) {
       case 90: { return store.dispatch(ActionCreators.undo()); }
