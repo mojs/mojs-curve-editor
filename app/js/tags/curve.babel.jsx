@@ -10,10 +10,11 @@ require('../../css/blocks/curve');
 const CLASSES = require('../../css/blocks/curve.postcss.css.json');
 class Curve extends Component {
   render () {
-    const {state} = this.props,
-          styles  = this._getStyle( state ),
-          points  = this._renderPoints( state ),
-          {path, segments} = this._getPath( state );
+    const {state}   = this.props,
+          {path}    = state.points.present,
+          styles    = this._getStyle( state ),
+          points    = this._renderPoints( state ),
+          segments  = this._renderSegments( state );
 
     return <div className={CLASSES['curve']}>
               <div  className={ CLASSES['curve__background']}
@@ -37,9 +38,7 @@ class Curve extends Component {
                         transform="translate(.75,.75)"
                         fill="none" />
 
-                  <g id="js-segments">
-                    { segments }
-                  </g>
+                  <g id="js-segments"> { segments } </g>
 
                 </svg>
 
@@ -69,7 +68,7 @@ class Curve extends Component {
   }
 
   _renderPoints (state) {
-    const pointsData = state.points.present,
+    const pointsData = state.points.present.points,
           points     = [],
           len        = pointsData.length;
 
@@ -82,78 +81,39 @@ class Curve extends Component {
     return points;
   }
 
-  _getPath (state) {
-    const pointsData = state.points.present;
+  _renderSegments (state) {
+    const {segments}  = state.points.present,
+          domSegments = [];
 
-    let path     = '',
-        segments = [];
-
-    for (let index = 0; index < pointsData.length-1; index++) {
-      const point     = pointsData[index],
-            nextPoint = pointsData[index+1];
-
-      const segment = this._getSegment( point, nextPoint, index );
-      path += segment.string;
-      segments.push(this._renderSegment(index, segment.segmentString));
+    for (var i = 0; i < segments.length; i++) {
+      const segment = segments[i];
+      domSegments.push(
+        <path d={segment.segmentString}
+              data-index={segment.index}
+              stroke="white"
+              fill="none"
+              stroke-width=""
+              vector-effect="non-scaling-stroke"
+              class={CLASSES['curve__svg-segment']}
+              />
+      );
     }
 
-    return { path, segments };
+    return domSegments;
   }
 
-  _renderSegment ( index, string) {
-    return <path
-            d={string}
-            data-index={index}
-            stroke="white"
-            fill="none"
-            stroke-width=""
-            vector-effect="non-scaling-stroke"
-            class={CLASSES['curve__svg-segment']}
-            />;
-  }
+  // _renderSegment ( index, string) {
+  //   return <path
+  //           d={string}
+  //           data-index={index}
+  //           stroke="white"
+  //           fill="none"
+  //           stroke-width=""
+  //           vector-effect="non-scaling-stroke"
+  //           class={CLASSES['curve__svg-segment']}
+  //           />;
+  // }
 
-  _getSegment (point, nextPoint, i) {
-    if ( !nextPoint ) { return 1; }
-
-    let string = '',
-        segmentString = '';
-
-    const x = point.x + point.tempX,
-          y = point.y + point.tempY,
-          xNext = nextPoint.x + nextPoint.tempX,
-          yNext = nextPoint.y + nextPoint.tempY;
-
-    const part1 = `M${x}, ${y/C.CURVE_PERCENT} `;
-    if ( i === 0 ) { string += part1 }
-    segmentString += part1;
-
-    const part2 = this._getPoint( point, 2 );
-    string += part2;
-    segmentString += part2;
-
-    const part3 = this._getPoint( nextPoint, 1 );
-    string += part3;
-    segmentString += part3;
-
-    const part4 = `${xNext}, ${yNext/C.CURVE_PERCENT} `;
-    string += part4;
-    segmentString += part4;
-
-    return { string, segmentString };
-  }
-  _getPoint (point, handleIndex = 1) {
-    const x      = point.x + point.tempX,
-          y      = point.y + point.tempY,
-          handle = point[`handle${handleIndex}`];
-
-    const CHAR = ( handleIndex === 2 ) ? 'C' : '';
-    if ( point.type !== 'straight' ) {
-      const handleCoords = angleToPoint( handle.angle, handle.radius );
-      return `${CHAR}${x + handleCoords.x/C.CURVE_PERCENT}, ${(y + handleCoords.y)/C.CURVE_PERCENT} `;
-    } else {
-      return `${CHAR}${x}, ${y/C.CURVE_PERCENT} `;
-    }
-  }
 
   componentDidMount () {
     const {store} = this.context;
@@ -177,7 +137,7 @@ class Curve extends Component {
 
         store.dispatch({
           type:      'POINT_ADD',
-          data:      { x, y, index },
+          data:      { point: { x, y }, index },
           isRecord:  true
         });
 

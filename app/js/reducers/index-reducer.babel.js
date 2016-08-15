@@ -3,9 +3,10 @@ import { combineReducers } from 'redux';
 // redux-undo higher-order reducer
 import undoable from 'redux-undo';
 
-import resizeReducer    from './resize-reducer';
-import pointsReducer    from './points-reducer';
-import pointControlsReducer  from './point-controls-reducer';
+import resizeReducer        from './resize-reducer';
+import pointsReducer        from './points-reducer';
+import controlsReducer      from './controls-reducer';
+import pointControlsReducer from './point-controls-reducer';
 
 const UNDOABLE_OPTS = {
   limit: 10,
@@ -16,9 +17,10 @@ const UNDOABLE_OPTS = {
 };
 
 const reducer = combineReducers({
-  pointControls: undoable(pointControlsReducer, { ...UNDOABLE_OPTS }),
   resize:        resizeReducer,
-  points:        undoable(pointsReducer, { ...UNDOABLE_OPTS })
+  points:        undoable(pointsReducer, { ...UNDOABLE_OPTS }),
+  controls:      controlsReducer,
+  pointControls: undoable(pointControlsReducer, { ...UNDOABLE_OPTS })
 });
 
 export default reducer;

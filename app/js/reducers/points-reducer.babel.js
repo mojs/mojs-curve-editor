@@ -1,115 +1,136 @@
 import makePoint from '../helpers/make-point';
 import C from '../constants';
 import initPoints from '../helpers/init-points';
+import calculatePath from '../helpers/calculate-path';
 
-const INITIAL_STATE = [
-    makePoint({ x: 0,   y: C.CURVE_SIZE, isLockedX: true, type: 'straight' }),
-    makePoint({ x: 50,  y: C.CURVE_SIZE/2, type: 'mirrored' }),
-    makePoint({ x: 100, y: 0, isLockedX: true })
-  ];
+const INITIAL_STATE = {
+  path:       '',
+  segments:   [],
+  points:     []
+  // points: initPoints([
+  //   makePoint({ x: 0,   y: C.CURVE_SIZE, isLockedX: true, type: 'straight' }),
+  //   // makePoint({ x: 50,  y: C.CURVE_SIZE/2, type: 'mirrored' }),
+  //   makePoint({ x: 100, y: 0, isLockedX: true })
+  // ])
+}
 
-const deslectAll = (state) => {
-  const newState = [];
-  for (var i = 0; i < state.length; i++) {
-    newState.push({ ...state[i], isSelected: false });
+const deselectAll = (state) => {
+  const newState = { ...state, points: [] },
+        points   = state.points;
+
+  for (var i = 0; i < points.length; i++) {
+    newState.points.push({ ...points[i], isSelected: false });
   }
   return newState;
 }
 
-const findSelectedIndecies = (state) => {
-  const indecies = [];
-  for (var i = 0; i < state.length; i++) {
-    state[i].isSelected && indecies.push( i );
+const findSelectedIndecies = (points) => {
+  const indecies  = [];
+
+  for (var i = 0; i < points.length; i++) {
+    points[i].isSelected && indecies.push( i );
   }
   return indecies;
 }
 
-const pointsReducer = (state = initPoints(INITIAL_STATE), action) => {
+const pointsReducer = (state = INITIAL_STATE, action) => {
   switch( action.type ) {
     case 'POINT_TRANSLATE': {
-      const {data}   = action,
-            {index}  = data,
-            oldPoint = state[index],
-            newState = [ ...state ];
+      const {data}    = action,
+            {index}   = data,
+            {points}  = state,
+            oldPoint  = points[index],
+            newPoints = [ ...points ];
 
-      newState[ data.index ] = { ...oldPoint, tempX: data.x, tempY: data.y }
-      return newState;
+      newPoints[ data.index ] = { ...oldPoint, tempX: data.x, tempY: data.y }
+      return { points: newPoints, ...calculatePath( newPoints ) };
     }
 
     case 'POINT_TRANSLATE_END': {
-      const index    = action.data,
-            oldPoint = state[index],
-            newState = [ ...state ];
+      const index     = action.data,
+            {points}  = state,
+            oldPoint  = points[index],
+            newPoints = [ ...points ];
 
-      newState[ index ] = {
+      newPoints[ index ] = {
           ...oldPoint,
           x: oldPoint.x + oldPoint.tempX,
           y: oldPoint.y + oldPoint.tempY,
           tempX: 0, tempY: 0
         }
 
-      return newState;
+      return { points: newPoints, ...calculatePath( newPoints ) };
     }
     
     case 'POINT_SELECT': {
       const {data}              = action,
             {index, isDeselect} = data,
-            newState            = (isDeselect) ? deslectAll( state ) : [ ...state ];
+            newState            = (isDeselect) ? deselectAll( state ) : { ...state },
+            {points}            = newState;
       
-      const point = newState[index];
+      const point = points[index];
       point.isSelected = true;
-      return newState;
+      return { ...state, points };
     }
 
     case 'POINT_ADD': {
       const {data}        = action,
-            {x, y, index} = data,
-            deselected = deslectAll( state );
+            {index, point}= data,
+            deselected    = deselectAll( state );
 
-      const newState = [
-        ...deselected.slice( 0, index ),
-        makePoint({ x, y, isSelected: true }),
-        ...deselected.slice( index )
+      const newPoints = [
+        ...deselected.points.slice( 0, index ),
+        makePoint({ ...point }),
+        ...deselected.points.slice( index )
       ];
 
-      return initPoints( newState );
+      const points = (newPoints.length > 1)
+                        ? initPoints( newPoints ) : newPoints;
+
+      const path = (points.length > 1)
+                      ? calculatePath( points ) : {};
+
+      return { points, ...path };
     }
     
     case 'POINT_DELETE': {
-      const selected = findSelectedIndecies(state);
+      const {points} = state,
+            selected = findSelectedIndecies(points);
 
-      const newState = [];
-      for (var i = 0; i < state.length; i++) {
-        const item = state[i];
-        ( selected.indexOf(i) === -1 || item.isLockedX ) && newState.push( item );
+      const newPoints = [];
+      for (var i = 0; i < points.length; i++) {
+        const item = points[i];
+        ( selected.indexOf(i) === -1 || item.isLockedX ) && newPoints.push( item );
       }
 
-      return newState;
+      return { points: newPoints, ...calculatePath( newPoints ) };
     }
 
     case 'POINT_CHANGE_TYPE': {
-      const selected = findSelectedIndecies(state);
+      const {points} = state,
+            selected = findSelectedIndecies(points);
 
-      const newState = [];
-      for (var i = 0; i < state.length; i++) {
-        const item = state[i];
-        const type = action.data;
-        // copy all items from previous state
-        newState.push( { ...item } );
+      const newPoints = [];
+      for (var i = 0; i < points.length; i++) {
+        const item = points[i],
+              type = action.data;
+        // copy all items from previous points
+        newPoints.push( { ...item } );
         // if item was selected - set the new `type`
-        ( selected.indexOf(i) !== -1 ) && (newState[i].type = type);
+        ( selected.indexOf(i) !== -1 ) && (newPoints[i].type = type);
         
-        const index = i;
-        const point = newState[index];
-        const sibPoint = (index === newState.length-1)
-                ? newState[index-1] : newState[index+1];
+        const index = i,
+              point = newPoints[index],
+              sibPoint = (index === newPoints.length-1)
+                ? newPoints[index-1] : newPoints[index+1];
 
-        const handleIndex = (index === newState.length-1) ? 1 : 2;
-        const sibHandleIndex = (handleIndex === 1) ? 2 : 1;
-        const handleName = `handle${handleIndex}`;
-        const sibHandleName = `handle${sibHandleIndex}`;
-        const handle = { ...point[handleName] };
-        const sibHandle = { ...point[sibHandleName] };
+        const handleIndex = (index === newPoints.length-1) ? 1 : 2,
+              sibHandleIndex = (handleIndex === 1) ? 2 : 1,
+              handleName = `handle${handleIndex}`,
+              sibHandleName = `handle${sibHandleIndex}`,
+              handle = { ...point[handleName] },
+              sibHandle = { ...point[sibHandleName] };
+
         point[handleName] = handle;
         point[sibHandleName] = sibHandle;
 
@@ -120,31 +141,41 @@ const pointsReducer = (state = initPoints(INITIAL_STATE), action) => {
 
       }
 
-      return newState;
+      return { points: newPoints, ...calculatePath( newPoints ) };
     }
     
     case 'POINT_DESELECT_ALL': {
-      return deslectAll( state );
+      return { ...deselectAll( state ) };
     }
-
 
     // HANDLES
     case 'HANDLE_TRANSLATE': {
-      const {data} = action;
+      const {points}  = state,
+            {data}    = action;
       // create new state and copy the new point into it
-      const newState = [...state];
-      const newPoint = { ...newState[data.parentIndex] };
-      newState[data.parentIndex] = newPoint;
+      const newPoints = [...points],
+            newPoint  = { ...newPoints[data.parentIndex] };
+
+      newPoints[data.parentIndex] = newPoint;
       // create handle and copy it into the new point
-      const handleName = `handle${data.index}`;
-      const newHandle = { ...newPoint[handleName] };
+      const handleName = `handle${data.index}`,
+            newHandle = { ...newPoint[handleName] };
+
       newPoint[ handleName ] = newHandle;
       // finally add angle and radius
       newHandle.angle  = data.angle;
       newHandle.radius = data.radius;
-      
-      return newState;
+
+      return { points: newPoints, ...calculatePath( newPoints ) };
     }
+
+    // case 'POINT_TRANSLATE':
+    // case 'POINT_TRANSLATE_END':
+    // case 'POINT_ADD':
+    // case 'POINT_REMOVDE':
+    // case 'POINT_CHANGE_TYPE':
+    // case 'HANDLE_TRANSLATE':
+    //   return { ...state, ...calculatePath( state.points.present ) }
   }
   return state;
 }

@@ -1,8 +1,9 @@
 import { h, Component } from 'preact';
+import addPointerDown from '../helpers/add-pointer-down';
 import LittleHandle from './little-handle';
-import Hammer from 'hammerjs';
 import propagating from 'propagating-hammerjs';
 import roundTo from '../helpers/round-to';
+import Hammer from 'hammerjs';
 import clamp from '../helpers/clamp';
 import mod from '../helpers/resize-mod';
 import C from '../constants';
@@ -16,7 +17,7 @@ class Point extends Component {
           selected  = (point.isSelected) ? CLASSES['is-selected'] : '',
           handles   = (point.type === 'straight') ? CLASSES['is-hide-handles'] : '';
 
-    const littleHandles = this._getLittleHandles( state );
+    const littleHandles = this._getLittleHandles( );
 
     return  <div  className={`${CLASSES['point']} ${selected} ${handles}`}
                   style={ this._getStyle(state) }
@@ -34,13 +35,15 @@ class Point extends Component {
           {resize}  = state,
           x         = clamp(point.x + point.tempX, 0, 100),
           cleanX    = x * resize.scalerX,
-          y = point.y + point.tempY;
+          y         = point.y + point.tempY;
+
+    // console.log(point);
 
     const translate = `transform: translate(${cleanX}px, ${y-1}px)`;
     return `${mojs.h.prefix.css}${translate}; ${translate}`;
   }
 
-  _getLittleHandles (state) {
+  _getLittleHandles () {
     const {index, point, pointsCount} = this.props,
           handles = [];
     // dont set the handle1 for start point
@@ -106,7 +109,6 @@ class Point extends Component {
           mc = propagating(new Hammer.Manager(el));
 
     mc.add(new Hammer.Pan({ threshold: 0 }));
-    mc.add(new Hammer.Tap);
 
     mc
       .on('pan', (e) => {
@@ -125,17 +127,29 @@ class Point extends Component {
         });
         e.stopPropagation();
       })
-      .on('tap', (e) => {
+      // .on('tap', (e) => {
+      //   const {point, index} = this.props
+      //   store.dispatch({
+      //     type: 'POINT_SELECT',
+      //     data: {
+      //       index, isDeselect: !e.srcEvent.shiftKey,
+      //       type: point.type
+      //     }
+      //   });
+      //   e.stopPropagation();
+      // });
+
+      addPointerDown( el, (e) => {
         const {point, index} = this.props
         store.dispatch({
           type: 'POINT_SELECT',
           data: {
-            index, isDeselect: !e.srcEvent.shiftKey,
+            index, isDeselect: !e.shiftKey,
             type: point.type
           }
         });
-        e.stopPropagation();
-      });
+        // e.stopPropagation();
+      } );
   }
 }
 

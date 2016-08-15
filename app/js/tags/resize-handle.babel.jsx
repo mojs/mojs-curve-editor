@@ -13,7 +13,8 @@ class ResizeHandle extends Component {
           classType = `${CLASSES['resize-handle--' + type ]}`;
     return <div
       className={ `${className} ${classType} ${this.props.className}` }
-      data-type={type}>
+      data-type={type}
+      data-component="resize-handle">
         <Icon shape="ellipsis" />
       </div>;
   }
