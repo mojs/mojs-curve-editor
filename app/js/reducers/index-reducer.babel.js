@@ -16,11 +16,13 @@ const UNDOABLE_OPTS = {
   debug: false
 };
 
-const reducer = combineReducers({
+import recycleState from 'redux-recycle'
+
+const reducer = recycleState(combineReducers({
   resize:        resizeReducer,
   points:        undoable(pointsReducer, { ...UNDOABLE_OPTS }),
   controls:      controlsReducer,
   pointControls: undoable(pointControlsReducer, { ...UNDOABLE_OPTS })
-});
+}), ['SET_STATE'], (state, action) => action.data );
 
 export default reducer;

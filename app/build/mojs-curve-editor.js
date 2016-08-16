@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "980aff0a81b940f9b10a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "0fbe62e89598a8d1018a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -602,6 +602,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _stringify = __webpack_require__(193);
+	
+	var _stringify2 = _interopRequireDefault(_stringify);
+	
+	var _extends2 = __webpack_require__(118);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
+	var _classCallCheck2 = __webpack_require__(47);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(48);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
 	var _preactRedux = __webpack_require__(2);
 	
 	var _preact = __webpack_require__(3);
@@ -618,34 +638,128 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
+	var _hash = __webpack_require__(195);
+	
+	var _hash2 = _interopRequireDefault(_hash);
+	
+	var _fallbackTo = __webpack_require__(196);
+	
+	var _fallbackTo2 = _interopRequireDefault(_fallbackTo);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// import './tags/curve-editor.tag';
-	__webpack_require__(187);
-	
+	__webpack_require__(190);
 	
 	// TODO
-	//   - instance dropdown on code panel
-	//   - add orange point on seleced point control/ hightlight the control
-	//   - save state to LC
 	//   - add APIs
+	//   - resize down when points are above the editor border
+	//   - instance dropdown on code panel
 	//   - import path data
 	//   - move bunch of points at once
 	
-	document.addEventListener('DOMContentLoaded', function () {
-	  (0, _preact.render)((0, _preact.h)(
-	    _preactRedux.Provider,
-	    { store: _store2.default },
-	    (0, _preact.h)(_curveEditor2.default, null)
-	  ), document.body);
-	});
+	var API = function () {
+	  function API() {
+	    var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, API);
 	
-	_store2.default.dispatch({ type: 'POINT_ADD', data: { point: { x: 0, y: _constants2.default.CURVE_SIZE, isLockedX: true }, index: 0 } });
-	_store2.default.dispatch({ type: 'POINT_ADD', data: { point: { x: 100, y: 0, isLockedX: true }, index: 1 } });
+	    this._o = o;
 	
-	//   makePoint({ x: 0,   y: C.CURVE_SIZE, isLockedX: true, type: 'straight' }),
-	//   // makePoint({ x: 50,  y: C.CURVE_SIZE/2, type: 'mirrored' }),
-	//   makePoint({ x: 100, y: 0, isLockedX: true })
+	    this._decalareDefaults();
+	    this._vars();
+	    this._render();
+	    this._tryToRestore();
+	    this._listenUnload();
+	
+	    this._subscribe();
+	  }
+	
+	  (0, _createClass3.default)(API, [{
+	    key: '_decalareDefaults',
+	    value: function _decalareDefaults() {
+	      this._defaults = {
+	        name: 'mojs-curve-editor',
+	        isSaveState: true
+	      };
+	    }
+	  }, {
+	    key: '_vars',
+	    value: function _vars() {
+	      this.revision = '1.0.0';
+	      this.store = (0, _store2.default)();
+	
+	      var str = (0, _fallbackTo2.default)(this._o.name, this._defaults.name);
+	      str += str === this._defaults.name ? '' : '__' + this._defaults.name;
+	      this._localStorage = str + '__' + (0, _hash2.default)(str);
+	    }
+	  }, {
+	    key: '_render',
+	    value: function _render() {
+	      var _this = this;
+	
+	      document.addEventListener('DOMContentLoaded', function () {
+	        (0, _preact.render)((0, _preact.h)(
+	          _preactRedux.Provider,
+	          { store: _this.store },
+	          (0, _preact.h)(_curveEditor2.default, null)
+	        ), document.body);
+	      });
+	    }
+	  }, {
+	    key: '_listenUnload',
+	    value: function _listenUnload() {
+	      var _this2 = this;
+	
+	      var unloadEvent = 'onpagehide' in window ? 'pagehide' : 'beforeunload';
+	      window.addEventListener(unloadEvent, function () {
+	
+	        var preState = (0, _extends3.default)({}, _this2.store.getState());
+	
+	        delete preState.points.history;
+	        delete preState.pointControls.history;
+	
+	        localStorage.setItem(_this2._localStorage, (0, _stringify2.default)(preState));
+	      });
+	    }
+	  }, {
+	    key: '_tryToRestore',
+	    value: function _tryToRestore() {
+	      // localStorage.removeItem(this._localStorage);
+	      var stored = localStorage.getItem(this._localStorage);
+	      if (stored) {
+	        this.store.dispatch({ type: 'SET_STATE', data: JSON.parse(stored) });
+	      } else {
+	        this.store.dispatch({ type: 'POINT_ADD', data: { point: { x: 0, y: _constants2.default.CURVE_SIZE, isLockedX: true }, index: 0 } });
+	        this.store.dispatch({ type: 'POINT_ADD', data: { point: { x: 100, y: 0, isLockedX: true }, index: 1 } });
+	        this.store.dispatch({ type: 'POINT_SELECT', data: { index: 0, type: 'straight' } });
+	      }
+	    }
+	  }, {
+	    key: '_subscribe',
+	    value: function _subscribe() {
+	      this._compilePath();
+	      this.store.subscribe(this._compilePath.bind(this));
+	    }
+	  }, {
+	    key: '_compilePath',
+	    value: function _compilePath() {
+	      var state = this.store.getState();
+	      var points = state.points.present;
+	      var path = points.path;
+	
+	
+	      if (this._prevPath !== path) {
+	        this._prevPath = path;
+	        this._easing = mojs.easing.path(path);
+	      }
+	    }
+	  }]);
+	  return API;
+	}();
+	
+	exports.default = API;
+	
+	window.MojsCurveEditor = API;
 	
 	// curve
 	//   .getFunction({ isInverseX: false, isInverseY: true, name: 'Some name' })
@@ -10107,7 +10221,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._point-controls_1j5f4_4{display:none}._point-controls_1j5f4_4._is-show_1j5f4_7{display:block}", ""]);
+	exports.push([module.id, "._point-controls_1xcu7_4{display:none}._point-controls_1xcu7_4 [data-component=icon-button]:after{content:'';position:absolute;width:3px;height:7.5px;background:#ff512f;border-top-right-radius:2px;border-bottom-right-radius:2px;left:-10px;top:50%;margin-top:-3.75px;display:none}._point-controls_1xcu7_4 [data-component=icon-button][class*=is-checked]:after,._point-controls_1xcu7_4._is-show_1xcu7_7{display:block}", ""]);
 	
 	// exports
 
@@ -10117,8 +10231,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"point-controls": "_point-controls_1j5f4_4",
-		"is-show": "_is-show_1j5f4_7"
+		"point-controls": "_point-controls_1xcu7_4",
+		"is-show": "_is-show_1xcu7_7"
 	};
 
 /***/ },
@@ -10297,9 +10411,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var store = (0, _redux.createStore)(_indexReducer2.default);
+	var initStore = function initStore() {
+	  return (0, _redux.createStore)(_indexReducer2.default);
+	};
 	// import reducer
-	exports.default = store;
+	exports.default = initStore;
 
 /***/ },
 /* 168 */
@@ -10329,13 +10445,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _pointsReducer2 = _interopRequireDefault(_pointsReducer);
 	
-	var _controlsReducer = __webpack_require__(185);
+	var _controlsReducer = __webpack_require__(188);
 	
 	var _controlsReducer2 = _interopRequireDefault(_controlsReducer);
 	
-	var _pointControlsReducer = __webpack_require__(186);
+	var _pointControlsReducer = __webpack_require__(189);
 	
 	var _pointControlsReducer2 = _interopRequireDefault(_pointControlsReducer);
+	
+	var _reduxRecycle = __webpack_require__(192);
+	
+	var _reduxRecycle2 = _interopRequireDefault(_reduxRecycle);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -10350,11 +10470,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	// redux-undo higher-order reducer
 	
 	
-	var reducer = (0, _redux.combineReducers)({
+	var reducer = (0, _reduxRecycle2.default)((0, _redux.combineReducers)({
 	  resize: _resizeReducer2.default,
 	  points: (0, _reduxUndo2.default)(_pointsReducer2.default, (0, _extends3.default)({}, UNDOABLE_OPTS)),
 	  controls: _controlsReducer2.default,
 	  pointControls: (0, _reduxUndo2.default)(_pointControlsReducer2.default, (0, _extends3.default)({}, UNDOABLE_OPTS))
+	}), ['SET_STATE'], function (state, action) {
+	  return action.data;
 	});
 	
 	exports.default = reducer;
@@ -10522,7 +10644,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _initPoints2 = _interopRequireDefault(_initPoints);
 	
-	var _calculatePath = __webpack_require__(190);
+	var _calculatePath = __webpack_require__(185);
 	
 	var _calculatePath2 = _interopRequireDefault(_calculatePath);
 	
@@ -11071,11 +11193,134 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
+	var _calculateSegment = __webpack_require__(186);
+	
+	var _calculateSegment2 = _interopRequireDefault(_calculateSegment);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (points) {
+	  var path = '',
+	      segments = [];
+	
+	  for (var index = 0; index < points.length - 1; index++) {
+	    var point = points[index],
+	        nextPoint = points[index + 1];
+	
+	    var segment = (0, _calculateSegment2.default)(point, nextPoint, index);
+	    segments.push(segment);
+	
+	    path += segment.string;
+	  }
+	
+	  return { path: path, segments: segments };
+	};
+
+/***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _constants = __webpack_require__(107);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	var _calculatePoint = __webpack_require__(187);
+	
+	var _calculatePoint2 = _interopRequireDefault(_calculatePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (point, nextPoint, index) {
+	    if (!nextPoint) {
+	        return 1;
+	    }
+	
+	    var string = '',
+	        segmentString = '';
+	
+	    var x = point.x + point.tempX,
+	        y = point.y + point.tempY,
+	        xNext = nextPoint.x + nextPoint.tempX,
+	        yNext = nextPoint.y + nextPoint.tempY;
+	
+	    var part1 = 'M' + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
+	    if (index === 0) {
+	        string += part1;
+	    }
+	    segmentString += part1;
+	
+	    var part2 = (0, _calculatePoint2.default)(point, 2);
+	    string += part2;
+	    segmentString += part2;
+	
+	    var part3 = (0, _calculatePoint2.default)(nextPoint, 1);
+	    string += part3;
+	    segmentString += part3;
+	
+	    var part4 = xNext + ', ' + yNext / _constants2.default.CURVE_PERCENT + ' ';
+	    string += part4;
+	    segmentString += part4;
+	
+	    return { string: string, segmentString: segmentString, index: index };
+	};
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _angleToPoint = __webpack_require__(114);
+	
+	var _angleToPoint2 = _interopRequireDefault(_angleToPoint);
+	
+	var _constants = __webpack_require__(107);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (point) {
+	  var handleIndex = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+	
+	  var x = point.x + point.tempX,
+	      y = point.y + point.tempY,
+	      handle = point['handle' + handleIndex];
+	
+	  var CHAR = handleIndex === 2 ? 'C' : '';
+	  if (point.type !== 'straight') {
+	    var handleCoords = (0, _angleToPoint2.default)(handle.angle, handle.radius);
+	    return '' + CHAR + (x + handleCoords.x / _constants2.default.CURVE_PERCENT) + ', ' + (y + handleCoords.y) / _constants2.default.CURVE_PERCENT + ' ';
+	  } else {
+	    return '' + CHAR + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
+	  }
+	};
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
 	var _extends2 = __webpack_require__(118);
 	
 	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _calculatePath = __webpack_require__(190);
+	var _calculatePath = __webpack_require__(185);
 	
 	var _calculatePath2 = _interopRequireDefault(_calculatePath);
 	
@@ -11101,7 +11346,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = pointControls;
 
 /***/ },
-/* 186 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11150,13 +11395,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = pointControls;
 
 /***/ },
-/* 187 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(188);
+	var content = __webpack_require__(191);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(127)(content, {});
@@ -11165,8 +11410,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(188, function() {
-				var newContent = __webpack_require__(188);
+			module.hot.accept(191, function() {
+				var newContent = __webpack_require__(191);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -11176,7 +11421,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 188 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(126)();
@@ -11190,127 +11435,98 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 189 */,
-/* 190 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _calculateSegment = __webpack_require__(191);
-	
-	var _calculateSegment2 = _interopRequireDefault(_calculateSegment);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (points) {
-	  var path = '',
-	      segments = [];
-	
-	  for (var index = 0; index < points.length - 1; index++) {
-	    var point = points[index],
-	        nextPoint = points[index + 1];
-	
-	    var segment = (0, _calculateSegment2.default)(point, nextPoint, index);
-	    segments.push(segment);
-	
-	    path += segment.string;
-	  }
-	
-	  return { path: path, segments: segments };
-	};
-
-/***/ },
-/* 191 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _constants = __webpack_require__(107);
-	
-	var _constants2 = _interopRequireDefault(_constants);
-	
-	var _calculatePoint = __webpack_require__(192);
-	
-	var _calculatePoint2 = _interopRequireDefault(_calculatePoint);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (point, nextPoint, index) {
-	    if (!nextPoint) {
-	        return 1;
-	    }
-	
-	    var string = '',
-	        segmentString = '';
-	
-	    var x = point.x + point.tempX,
-	        y = point.y + point.tempY,
-	        xNext = nextPoint.x + nextPoint.tempX,
-	        yNext = nextPoint.y + nextPoint.tempY;
-	
-	    var part1 = 'M' + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
-	    if (index === 0) {
-	        string += part1;
-	    }
-	    segmentString += part1;
-	
-	    var part2 = (0, _calculatePoint2.default)(point, 2);
-	    string += part2;
-	    segmentString += part2;
-	
-	    var part3 = (0, _calculatePoint2.default)(nextPoint, 1);
-	    string += part3;
-	    segmentString += part3;
-	
-	    var part4 = xNext + ', ' + yNext / _constants2.default.CURVE_PERCENT + ' ';
-	    string += part4;
-	    segmentString += part4;
-	
-	    return { string: string, segmentString: segmentString, index: index };
-	};
-
-/***/ },
 /* 192 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.default = recycleState;
+	// redux-recycle higher order reducer
+	function recycleState(reducer) {
+	  var actions = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+	  var initialState = arguments[2];
 	
-	var _angleToPoint = __webpack_require__(114);
+	  var getInitialState = typeof initialState === 'function' ? initialState : function () {
+	    return initialState;
+	  };
 	
-	var _angleToPoint2 = _interopRequireDefault(_angleToPoint);
+	  return function (state, action) {
+	    if (actions.indexOf(action.type) >= 0) {
+	      return reducer(getInitialState(state, action), { type: '@@redux-recycle/INIT' });
+	    }
+	    return reducer(state, action);
+	  };
+	}
+	// /redux-recycle
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(194), __esModule: true };
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var core  = __webpack_require__(34)
+	  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
+	module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
+	  return $JSON.stringify.apply($JSON, arguments);
+	};
+
+/***/ },
+/* 195 */
+/***/ function(module, exports) {
+
+	"use strict";
 	
-	var _constants = __webpack_require__(107);
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	
-	var _constants2 = _interopRequireDefault(_constants);
+	/*
+	  Function to generate hash code.
+	  @private
+	  @return {String} Hash code.
+	*/
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (point) {
-	  var handleIndex = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
-	
-	  var x = point.x + point.tempX,
-	      y = point.y + point.tempY,
-	      handle = point['handle' + handleIndex];
-	
-	  var CHAR = handleIndex === 2 ? 'C' : '';
-	  if (point.type !== 'straight') {
-	    var handleCoords = (0, _angleToPoint2.default)(handle.angle, handle.radius);
-	    return '' + CHAR + (x + handleCoords.x / _constants2.default.CURVE_PERCENT) + ', ' + (y + handleCoords.y) / _constants2.default.CURVE_PERCENT + ' ';
-	  } else {
-	    return '' + CHAR + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
+	exports.default = function (str) {
+	  var hash = 0,
+	      i,
+	      chr,
+	      len;
+	  if (str.length === 0) return hash;
+	  for (i = 0, len = str.length; i < len; i++) {
+	    chr = str.charCodeAt(i);
+	    hash = (hash << 5) - hash + chr;
+	    hash |= 0; // Convert to 32bit integer
 	  }
+	  return Math.abs(hash);
+	};
+
+/***/ },
+/* 196 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	/*
+	  Function that returns the second argument if the first one isn't set.
+	  @private
+	  @param {Any} Property to set.
+	  @param {Any} Property to return as fallback.
+	  @returns {Any} If set - the first property, if not - the second.
+	*/
+	exports.default = function (prop, fallback) {
+	  return prop != null ? prop : fallback;
 	};
 
 /***/ }

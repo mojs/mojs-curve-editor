@@ -7,4 +7,30 @@
   &.is-show {
     display:    block;
   }
+  
+  [data-component="icon-button"] {
+    $width: 3;
+    $height: 2.5*$width;
+    
+    &:after {
+      content:        '';
+      position:       absolute;
+      width:          calc( $width*$PX );
+      height:         calc( $height*$PX );
+      background:     $c-orange;
+      border-top-right-radius:    calc( 2*$PX );
+      border-bottom-right-radius: calc( 2*$PX );
+      /*border-radius:  50%;*/
+      left:           calc( -(3*$width + 1)*$PX );
+      top:            50%;
+      margin-top:     calc( -($height/2)*$PX );
+      display:        none;
+    }
+    
+    &[class*="is-checked"] {
+      &:after {
+        display:      block; 
+      }
+    }
+  }
 }
