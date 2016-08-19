@@ -13,7 +13,7 @@ $size: 10;
   border-radius:  50%;
   z-index:        3;
   box-shadow:     calc(3*$PX) calc(3*$PX) 0 rgba(0,0,0,.5);
-  border:         calc( 2*$PX ) solid $c-white;
+  /*border:         calc( 2*$PX ) solid $c-white;*/
   
   &__touch {
     position:     absolute;
@@ -30,7 +30,8 @@ $size: 10;
   &:hover,
   &.is-selected {
     /*border-color: #8C6D8B;*/
-    border-color: $c-orange;
+    /*border-color: $c-orange;*/
+    background: $c-orange;
   }
 
   &.is-selected {

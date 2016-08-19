@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import angleToPoint from '../helpers/angle-to-point';
+import ProgressLine from './progress-line';
 import Point from './point';
 import mod from '../helpers/resize-mod';
 import C from '../constants';
@@ -14,11 +15,16 @@ class Curve extends Component {
           {path}    = state.points.present,
           styles    = this._getStyle( state ),
           points    = this._renderPoints( state ),
-          segments  = this._renderSegments( state );
+          segments  = this._renderSegments( state ),
+          progressLines = this._renderProgressLines( state );
 
     return <div className={CLASSES['curve']}>
-              <div  className={ CLASSES['curve__background']}
+              <div  id="js-background"
+                    className={ CLASSES['curve__background']}
                     style={styles.background} />
+
+              {progressLines}
+              
               <div  className={ CLASSES['curve__svg-wrapper']}
                     style={styles.transform}>
 
@@ -102,6 +108,30 @@ class Curve extends Component {
     return domSegments;
   }
 
+  _renderProgressLines ( state ) {
+    const {progressLines} = state,
+          {lines}         = progressLines,
+          renderedLines   = [];
+    
+    for (var i = lines.length-1; i >= 0; i--) {
+      const line = lines[i];
+      renderedLines.push(<ProgressLine {...line} />);
+    }
+
+    return renderedLines;
+  }
+
+  _updateDomProgressLines () {
+    const {progressLines} = this.props;
+    // DO NOT MUTATE THE ARRAY TO PREVENT LOOSING THE LINK TO IT
+    progressLines.length = 0;
+
+    const lines = this.base.querySelectorAll('[data-component="progress-line"]');
+    for (var i = 0; i < lines.length; i++) {
+      progressLines[i] = lines[i];
+    }
+  }
+
   // _renderSegment ( index, string) {
   //   return <path
   //           d={string}
@@ -114,11 +144,13 @@ class Curve extends Component {
   //           />;
   // }
 
+  componentDidUpdate () { this._updateDomProgressLines(); }
 
   componentDidMount () {
-    const {store} = this.context;
-
-    const el = this.base.querySelector('#js-segments'),
+    this._updateDomProgressLines();
+    
+    const {store} = this.context,
+          el = this.base.querySelector('#js-segments'),
           mc = propagating(new Hammer.Manager(el));
 
     // mc.add(new Hammer.Pan({ threshold: 0 }));
@@ -150,12 +182,14 @@ class Curve extends Component {
     });
 
     const svg   = this.base.querySelector('#js-svg'),
-          svgMc = propagating(new Hammer.Manager(svg));
+          svgMc = propagating(new Hammer.Manager(this.base));
 
     svgMc.add(new Hammer.Tap);
 
     svgMc
-      .on('tap', (e) => { store.dispatch({ type: 'POINT_DESELECT_ALL' }); });
+      .on('tap', (e) => {
+        store.dispatch({ type: 'POINT_DESELECT_ALL' });
+      });
 
   }
 }

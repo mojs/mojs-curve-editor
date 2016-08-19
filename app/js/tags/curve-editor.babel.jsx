@@ -3,11 +3,11 @@ import C from '../constants';
 import Hammer from 'hammerjs';
 import propagating from 'propagating-hammerjs';
 import { ActionCreators } from 'redux-undo';
-import mod from '../helpers/resize-mod';
 import CurveEditorRight from './curve-editor-right';
 import CurveEditorLeft  from './curve-editor-left';
-import Icons from './icons';
 import CodePanel from './code-panel';
+import Icons from './icons';
+import mod from '../helpers/resize-mod';
 require('../../css/blocks/curve-editor');
 
 class CurveEditor extends Component {
@@ -17,13 +17,14 @@ class CurveEditor extends Component {
 
     const {store} = this.context,
           state   = store.getState(),
-          style   = this._getStyle(state);
+          style   = this._getStyle(state),
+          p       = this.props;
 
-    return  (<div className={CLASSES['curve-editor']} style={ style }>
+    return  ( <div className={CLASSES['curve-editor']} style={ style }>
                 <Icons />
                 <CodePanel state={ state }/>
                 <CurveEditorLeft state={ state } />
-                <CurveEditorRight state={ state } />
+                <CurveEditorRight state={ state } progressLines={p.progressLines} />
               </div>);
   }
 

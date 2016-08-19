@@ -6,10 +6,10 @@ const fallback = ( value, fallback ) => {
 
 const makeHandlePoint = (o={}) => {
   return {
-    index:    fallback( o.index, 0 ),
+    index:      fallback( o.index, 0 ),
     // coordinates
-    angle:    fallback( o.angle,  null ),
-    radius:   fallback( o.radius, null ),
+    angle:      fallback( o.angle,  null ),
+    radius:     fallback( o.radius, null ),
     // state
     isTouched:  fallback( o.isTouched, false ),
     isSelected: fallback( o.isSelected, false ),

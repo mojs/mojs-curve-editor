@@ -74,9 +74,9 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
     }
 
     case 'POINT_ADD': {
-      const {data}        = action,
-            {index, point}= data,
-            deselected    = deselectAll( state );
+      const {data}         = action,
+            {index, point} = data,
+            deselected     = deselectAll( state );
 
       const newPoints = [
         ...deselected.points.slice( 0, index ),
@@ -136,7 +136,9 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
 
         if ( type === 'mirrored' || type === 'asymmetric' ) {
           sibHandle.angle = handle.angle - 180;
-          if ( type === 'mirrored' ) { sibHandle.radius = handle.radius; }
+          if ( type === 'mirrored' ) {
+            sibHandle.radius = handle.radius;
+          }
         }
 
       }
@@ -167,6 +169,10 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
       newHandle.radius = data.radius;
 
       return { points: newPoints, ...calculatePath( newPoints ) };
+    }
+
+    case 'HANDLE_TRANSLATE_END': {
+      return state;//{ ...state };
     }
 
     // case 'POINT_TRANSLATE':

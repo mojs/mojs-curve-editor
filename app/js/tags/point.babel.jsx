@@ -127,17 +127,9 @@ class Point extends Component {
         });
         e.stopPropagation();
       })
-      // .on('tap', (e) => {
-      //   const {point, index} = this.props
-      //   store.dispatch({
-      //     type: 'POINT_SELECT',
-      //     data: {
-      //       index, isDeselect: !e.srcEvent.shiftKey,
-      //       type: point.type
-      //     }
-      //   });
-      //   e.stopPropagation();
-      // });
+      .on('tap', (e) => {
+        e.stopPropagation();
+      });
 
       addPointerDown( el, (e) => {
         const {point, index} = this.props

@@ -4,9 +4,9 @@ import ResizeHandle from './resize-handle';
 
 const CLASSES = require('../../css/blocks/curve-editor.postcss.css.json');
 
-const CurveEditorRight = ({state}) => {
+const CurveEditorRight = ({state, progressLines}) => {
   return (<div className={CLASSES['curve-editor__right']}>
-            <Curve state ={ state } />
+            <Curve state ={ state } progressLines={progressLines} />
             <ResizeHandle type="right" className={ CLASSES['curve-editor__resize-handle'] } />
             <ResizeHandle type="bottom" className={ CLASSES['curve-editor__resize-handle'] } />
           </div>)

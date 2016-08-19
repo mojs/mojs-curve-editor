@@ -6,13 +6,67 @@
 </head>
 <body>
 
-  <!-- <curve-editor></curve-editor> -->
+  <div class="el" id="js-el"></div>
+  <style>
+    .el {
+      position: absolute;
+      left: 10%;
+      top: 50%;
+      width: 100px;
+      height: 100px;
+      margin-left: -50px;
+      margin-top: -50px;
+      background: #572B53;
+      border-radius: 3px;
+    }
+  </style>
   
-  <script src="/node_modules/mo-js/build/mo.js" charset="utf-8"></script>
+  <script src="../node_modules/mo-js/build/mo.js" charset="utf-8"></script>
+  <script src="../node_modules/mojs-player/build/mojs-player.js" charset="utf-8"></script>
   <script src="build/mojs-curve-editor.js" charset="utf-8"></script>
 
   <script>
-    new window.MojsCurveEditor;
+    var curveEditor = new window.MojsCurveEditor({ name: 'curve1', isSaveState: false });
+    var curveEditor2 = new window.MojsCurveEditor({ name: 'curve2', isSaveState: true });
+
+    // var shape = new mojs.Shape({
+    //   fill: 'yellow',
+    //   stroke: 'cyan',
+    //   scaleX: { 0: 1 },
+    //   easing: curveEditor.getEasing()
+    // });
+
+
+    var duration = 500,
+        shift    = 75;
+
+    var html = new mojs.Html({
+      el: '#js-el',
+      y:  { [-shift]: shift, easing: 'cubic.in', duration },
+      rotateZ: { 0: 90, easing: 'linear.none', duration }
+      // transformOrigin: '50% 100%',
+    })
+    .then({
+      scaleX: {
+        1: 1,
+        curve: curveEditor.getEasing(),
+        duration: duration
+      },
+      scaleY: {
+        1: 1,
+        curve: curveEditor.getEasing({ transform: (k) => { return 1 + ( 1-k )/1.5; } }),
+        duration: duration
+      },
+      // transformOrigin: { '50% 50%': '50% 50%', curve: curveEditor2.getEasing() },
+      y: { to: -shift, easing: 'cubic.out', delay: .75*duration, duration },
+      rotateZ: { 0: 90, delay: .75*duration, easing: 'linear.none', duration }
+    })
+    // .then({
+    //   y: { to: -shift, easing: 'cubic.out' }
+    // });
+
+    var player = new MojsPlayer({ add: html });
+
   </script>
 
 </body>

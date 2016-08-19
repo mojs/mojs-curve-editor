@@ -1,0 +1,9 @@
+@import '../assets/globals.postcss.css';
+
+.progress-line {
+  position:     absolute;
+  top:          0;
+  bottom:       0;
+  width:        calc( 1*$PX );
+  margin-left:  calc( -1.5*$PX );
+}
