@@ -67,6 +67,7 @@ class Curve extends Component {
           bgTransform = `${mojs.h.prefix.css}${scale}; ${scale};`,
           background = `background-position: 0 ${-temp_top - 1}px; ${bgTransform}`,
           transform  = `transform: translate(0px, ${-temp_top}px)`;
+
     return {
       background,
       transform: `${mojs.h.prefix.css}${transform}; ${transform};`

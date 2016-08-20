@@ -8,6 +8,7 @@ import CurveEditorLeft  from './curve-editor-left';
 import CodePanel from './code-panel';
 import Icons from './icons';
 import mod from '../helpers/resize-mod';
+import addPointerDown from '../helpers/add-pointer-down';
 require('../../css/blocks/curve-editor');
 
 class CurveEditor extends Component {
@@ -20,6 +21,7 @@ class CurveEditor extends Component {
           style   = this._getStyle(state),
           p       = this.props;
 
+    this._state = state;
     return  ( <div className={CLASSES['curve-editor']} style={ style }>
                 <Icons />
                 <CodePanel state={ state }/>
@@ -73,7 +75,14 @@ class CurveEditor extends Component {
       // .on('tap', (e) => { store.dispatch({ type: 'POINT_DESELECT_ALL' }); });
 
     this._addKeyUp();
+    this._subscribeFocus();
     store.subscribe(this.forceUpdate.bind(this));
+  }
+
+  _subscribeFocus () {
+    addPointerDown( this.base, (e) => {
+      e._mojsCurveEditorName = this._state.points.present.name;
+    });
   }
 
   _addKeyUp () { document.addEventListener('keyup', this._onKeyUp.bind(this)); }

@@ -5,6 +5,7 @@ import calculatePath from '../helpers/calculate-path';
 
 const INITIAL_STATE = {
   path:       '',
+  name:       'mojs-curve-editor',
   segments:   [],
   points:     []
   // points: initPoints([
@@ -35,6 +36,10 @@ const findSelectedIndecies = (points) => {
 
 const pointsReducer = (state = INITIAL_STATE, action) => {
   switch( action.type ) {
+    case 'SET_EDITOR_NAME': {
+      return { ...state, name: action.data };
+    }
+
     case 'POINT_TRANSLATE': {
       const {data}    = action,
             {index}   = data,
@@ -43,7 +48,7 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
             newPoints = [ ...points ];
 
       newPoints[ data.index ] = { ...oldPoint, tempX: data.x, tempY: data.y }
-      return { points: newPoints, ...calculatePath( newPoints ) };
+      return { ...state, points: newPoints, ...calculatePath( newPoints ) };
     }
 
     case 'POINT_TRANSLATE_END': {
@@ -59,7 +64,7 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
           tempX: 0, tempY: 0
         }
 
-      return { points: newPoints, ...calculatePath( newPoints ) };
+      return { ...state, points: newPoints, ...calculatePath( newPoints ) };
     }
     
     case 'POINT_SELECT': {
@@ -90,7 +95,7 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
       const path = (points.length > 1)
                       ? calculatePath( points ) : {};
 
-      return { points, ...path };
+      return { ...state, points, ...path };
     }
     
     case 'POINT_DELETE': {
@@ -103,7 +108,7 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
         ( selected.indexOf(i) === -1 || item.isLockedX ) && newPoints.push( item );
       }
 
-      return { points: newPoints, ...calculatePath( newPoints ) };
+      return { ...state, points: newPoints, ...calculatePath( newPoints ) };
     }
 
     case 'POINT_CHANGE_TYPE': {
@@ -143,7 +148,7 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
 
       }
 
-      return { points: newPoints, ...calculatePath( newPoints ) };
+      return { ...state, points: newPoints, ...calculatePath( newPoints ) };
     }
     
     case 'POINT_DESELECT_ALL': {
@@ -168,20 +173,13 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
       newHandle.angle  = data.angle;
       newHandle.radius = data.radius;
 
-      return { points: newPoints, ...calculatePath( newPoints ) };
+      return { ...state, points: newPoints, ...calculatePath( newPoints ) };
     }
 
     case 'HANDLE_TRANSLATE_END': {
       return state;//{ ...state };
     }
 
-    // case 'POINT_TRANSLATE':
-    // case 'POINT_TRANSLATE_END':
-    // case 'POINT_ADD':
-    // case 'POINT_REMOVDE':
-    // case 'POINT_CHANGE_TYPE':
-    // case 'HANDLE_TRANSLATE':
-    //   return { ...state, ...calculatePath( state.points.present ) }
   }
   return state;
 }

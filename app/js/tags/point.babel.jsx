@@ -23,7 +23,7 @@ class Point extends Component {
                   style={ this._getStyle(state) }
                   data-component="point">
 
-              <div className={CLASSES['point__touch'] } id="js-point-touch" />
+              <div className={ CLASSES['point__touch'] } id="js-point-touch" />
 
               { littleHandles }
 
@@ -127,12 +127,10 @@ class Point extends Component {
         });
         e.stopPropagation();
       })
-      .on('tap', (e) => {
-        e.stopPropagation();
-      });
+      .on('tap', (e) => { e.stopPropagation(); });
 
       addPointerDown( el, (e) => {
-        const {point, index} = this.props
+        const {point, index} = this.props;
         store.dispatch({
           type: 'POINT_SELECT',
           data: {
@@ -140,7 +138,6 @@ class Point extends Component {
             type: point.type
           }
         });
-        // e.stopPropagation();
       } );
   }
 }

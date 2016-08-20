@@ -8,15 +8,18 @@ import C            from './constants';
 import hash         from './helpers/hash';
 import fallbackTo   from './helpers/fallback-to';
 import defer        from './helpers/defer';
+import addPointerDown from './helpers/add-pointer-down';
 
 // TODO
-//   - handle translate isRecord
-//   - multiple editors short cuts
 //   - resize down when points are above the editor border
-//   - instance dropdown on code panel
+//   - performance
 //   - import path data
 //   - move bunch of points at once
 
+
+/*
+  API wrapper above the app itself.
+*/
 class API {
   constructor ( o = {} ) {
     this._o = o;
@@ -29,6 +32,7 @@ class API {
     this._listenUnload();
 
     this._subscribe();
+    this._subscribeFocus();
   }
 
   _decalareDefaults ( ) {
@@ -57,6 +61,8 @@ class API {
     let str = fallbackTo( this._o.name, this._defaults.name );
     str += ( str === this._defaults.name ) ? '' : `__${this._defaults.name}`;
     this._localStorage = `${str}__${ hash( str ) }`;
+
+    this.store.dispatch({ type: 'SET_EDITOR_NAME', data: this._localStorage });
   }
 
   _render () {
@@ -83,6 +89,8 @@ class API {
         localStorage.removeItem( this._localStorage );
       }
     });
+
+
   }
 
   _tryToRestore () {
@@ -98,6 +106,14 @@ class API {
   _subscribe () {
     this._compilePath();
     this.store.subscribe( this._compilePath.bind(this) );
+  }
+
+  _subscribeFocus () {
+    addPointerDown( document.body, (e) => {
+      if (this._localStorage !== e._mojsCurveEditorName) {
+        this.store.dispatch({ type: 'POINT_DESELECT_ALL' });
+      }
+    });
   }
 
   _compilePath () {
@@ -172,11 +188,6 @@ class API {
     if ( !el ) { return; }
 
     el.style.left = `${p*100}%`;
-
-    // const x = p * ( C.CURVE_SIZE + resize.temp_right + resize.right ),
-    //       transform = `translateX(${x}px)`;
-
-    // mojs.h.setPrefixedStyle( el, 'transform', transform );
   }
 
 }
