@@ -1,6 +1,6 @@
 # mojs Curve Editor
 
-<img src="https://github.com/legomushroom/mojs-curve-editor/blob/master/mockups/curve-editor.png?raw=true" alt="mojs-curve-editor" />
+<img width="444" src="https://github.com/legomushroom/mojs-curve-editor/blob/master/mockups/curve-editor.png?raw=true" alt="mojs-curve-editor" />
 
 `MojsCurveEditor` is a GUI plugin for interactive `custom easings`/`property curves` editing while crafting your animations. Part of `mojs` tools.
 
