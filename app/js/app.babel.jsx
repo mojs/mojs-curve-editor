@@ -12,10 +12,10 @@ import addPointerDown from './helpers/add-pointer-down';
 
 // TODO
 //   - resize down when points are above the editor border
+//   - add points shortcuts
 //   - performance
 //   - import path data
 //   - move bunch of points at once
-
 
 /*
   API wrapper above the app itself.

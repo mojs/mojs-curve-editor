@@ -1,4 +1,4 @@
-# mojs Curve Editor
+# mojs curve editor
 
 <img width="444" src="https://github.com/legomushroom/mojs-curve-editor/blob/master/mockups/curve-editor.png?raw=true" alt="mojs-curve-editor" />
 
@@ -6,7 +6,7 @@
 
 ## Installation
 
-The `MojsCurveEditor` depends on `mojs >= 0.225.2`, holding tween autoupdates available for `mojs >= 0.276.2`. Please make sure you've linked `mojs` library first.
+The `MojsCurveEditor` depends on `mojs >= 0.225.2`, tween autoupdates available for `mojs >= 0.276.2`. Please make sure you've linked [mojs](https://github.com/legomushroom/mojs) library first.
 
 [CDN](https://www.jsdelivr.com/):
 
@@ -91,6 +91,16 @@ The `getEasing` function recieves options hash:
   });
   // ...
 
+```
+
+After you are happy with the curve you need to change the `sample`(`mojsCurve.getEasing()` calls) with actual path data which you can get by clicking on the `code` button (<img width="64" src="https://github.com/legomushroom/mojs-curve-editor/blob/master/mockups/code-button.png?raw=true" alt="code button" />):
+
+```javascript
+  const html = new mojs.Html({
+    el:     '#js-el',
+    // after the change
+    x:      { 0: 100, easing: 'M0, 100 C0, 100 19.8984745544779, 40.10152544552211 30, 30 C40.1015254455221, 19.89847455447789 80, 45 80, 45 C80, 45 100, 0 100, 0 ' }
+  });
 ```
 
 ## Shortcuts
