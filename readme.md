@@ -93,7 +93,7 @@ The `getEasing` function recieves options hash:
 
 ```
 
-After you are happy with the curve you need to change the `sample`(`mojsCurve.getEasing()` calls) with actual path data which you can get by clicking on the `code` button (<img width="64" src="https://github.com/legomushroom/mojs-curve-editor/blob/master/mockups/code-button.png?raw=true" alt="code button" />):
+After you are happy with the curve you need to change the `sample`(`mojsCurve.getEasing()` calls) with actual path data which you can get by clicking on the `code` button (<img width="32" style="margin-bottom: -10px" src="https://github.com/legomushroom/mojs-curve-editor/blob/master/mockups/code-button.png?raw=true" alt="code button" />):
 
 ```javascript
   const html = new mojs.Html({
@@ -107,11 +107,7 @@ After you are happy with the curve you need to change the `sample`(`mojsCurve.ge
 
 - `alt + z`  - `undo` curve action
 - `alt + x`  - `rendo` curve action
-- `alt + r`  - `remove` selected point(s)
-- `alt + s`  - set selected point(s) to `straight` type
-- `alt + d`  - set selected point(s) to `disconnected` type
-- `alt + m`  - set selected point(s) to `mirrored` type
-- `alt + a`  - set selected point(s) to `asymmetric` type
+- `alt + d`  - `delete` selected point(s)
 
 ## Development
 

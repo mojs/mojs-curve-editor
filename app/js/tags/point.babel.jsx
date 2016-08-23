@@ -37,8 +37,6 @@ class Point extends Component {
           cleanX    = x * resize.scalerX,
           y         = point.y + point.tempY;
 
-    // console.log(point);
-
     const translate = `transform: translate(${cleanX}px, ${y-1}px)`;
     return `${mojs.h.prefix.css}${translate}; ${translate}`;
   }

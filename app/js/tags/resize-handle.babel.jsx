@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import Icon from './icon';
 import Hammer from 'hammerjs';
 import propagating from 'propagating-hammerjs';
+import modDeltas from '../helpers/mod-deltas';
 
 const CLASSES = require('../../css/blocks/resize-handle.postcss.css.json');
 
@@ -20,20 +21,24 @@ class ResizeHandle extends Component {
   }
 
   componentDidMount () {
-    const {store} = this.context,
-          {type}  = this.props,
+    const {type}  = this.props,
+          {store} = this.context,
           mc      = propagating(new Hammer.Manager(this.base));
 
     mc.add(new Hammer.Pan({ threshold: 0 }));
     mc
       .on('pan', (e) => {
-        const x = e.deltaX, y = e.deltaY;
-        store.dispatch({ type: 'EDITOR_RESIZE', data: { x, y, type } });
+        store.dispatch({ type: 'EDITOR_RESIZE', data: {
+            ...modDeltas(e.deltaX, e.deltaY, type, this.props.state)
+          }
+        });
         e.stopPropagation();
       })
       .on('panend', (e) => {
-        const x = e.deltaX, y = e.deltaY;
-        store.dispatch({ type: 'EDITOR_RESIZE_END', data: { x, y, type } });
+        store.dispatch({ type: 'EDITOR_RESIZE_END', data: {
+            ...modDeltas(e.deltaX, e.deltaY, type, this.props.state)
+          }
+        });
         e.stopPropagation();
       });
   }

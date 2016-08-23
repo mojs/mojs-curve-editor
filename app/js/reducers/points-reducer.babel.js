@@ -177,7 +177,34 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
     }
 
     case 'HANDLE_TRANSLATE_END': {
-      return state;//{ ...state };
+      return state;
+    }
+
+    case 'EDITOR_RESIZE': {
+      const {data} = action,
+            points = [...state.points],
+            {type, resize} = data;
+
+      // return state if resize to the `right`
+      if (type === 'right') { return state; }
+
+      // normalize points' y regarding resize
+      if ( type === 'top' ) {
+        for (var i = 0; i < points.length; i++) {
+          const borderTop = Math.min(resize.top + data.y, 0),
+                point     = points[i];
+          if (point.y < borderTop) { point.y = borderTop; }
+        }
+      } else if ( type === 'bottom' ) {
+        for (var i = 0; i < points.length; i++) {
+          const borderBottom = Math.max(resize.bottom + data.y, 0) + C.CURVE_SIZE,
+                point     = points[i];
+
+          if (point.y > borderBottom) { point.y = borderBottom; }
+        }
+      }
+
+      return { ...state, points, ...calculatePath( points ) };
     }
 
   }

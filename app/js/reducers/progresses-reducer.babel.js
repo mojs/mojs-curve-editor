@@ -1,4 +1,3 @@
-
 const INITIAL_STATE = {
   selected:   0,
   lines:      []

@@ -40,14 +40,6 @@ class CurveEditor extends Component {
     temp_bottom += resize.bottom;
     temp_right  += resize.right;
 
-    // constrain min height
-    if (Y_SIZE - temp_top < Y_SIZE) { temp_top = 0; }
-    if (Y_SIZE + temp_bottom < Y_SIZE) { temp_bottom = 0; }
-    if (X_SIZE + temp_right < X_SIZE) { temp_right = 0; }
-
-    temp_top    = mod( temp_top, -1 );
-    temp_bottom = mod( temp_bottom );
-
     const height = `height: ${Y_SIZE - temp_top + temp_bottom}px`,
           width  = `width: ${X_SIZE + temp_right}px`,
           x = resize.x + resize.tempX,
@@ -91,8 +83,11 @@ class CurveEditor extends Component {
     const {store} = this.context;
     if ( !e.altKey ) { return; }
     switch (e.which) {
+      // z
       case 90: { return store.dispatch(ActionCreators.undo()); }
+      // x
       case 88: { return store.dispatch(ActionCreators.redo()); }
+      // d
       case 68: { return store.dispatch({ type: 'POINT_DELETE' }); }
     }
   }

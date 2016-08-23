@@ -12,7 +12,7 @@ export default ({state}) => {
 
   return  <div className={mainClass}>
             <div className={ CLASSES['code-panel__inner'] }>
-              <ResizeHandle type="top" />
+              <ResizeHandle state={ state } type="top" />
               <div className={ CLASSES['code-panel__input-wrap'] }>
                 <input  className={ CLASSES['code-panel__input-field'] }
                         type="text" readonly="readonly"

@@ -46,28 +46,28 @@ module.exports = {
   },
   output: {
     path:           __dirname + '/app/build/',
-    filename:       'mojs-curve-editor.min.js',
+    filename:       'mojs-curve-editor.js',
     publicPath:     'build/',
     library:        'mojs-curve-editor',
     libraryTarget:  'umd',
     umdNamedDefine: true,
-    hotUpdateChunkFilename: "[id].hot-update.js"
+    // hotUpdateChunkFilename: "[id].hot-update.js"
   },
   plugins: [
     // new webpack.ProvidePlugin({
     //   h: 'preact'
     // }),
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-          warnings: false
-      }
-    }),
-    new UnminifiedWebpackPlugin(),
+    // new webpack.NoErrorsPlugin(),
+    // new webpack.optimize.DedupePlugin(),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //       warnings: false
+    //   }
+    // }),
+    // new UnminifiedWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin()
   ],
-  devtool: process.env.NODE_ENV==='production' ? 'source-map' : 'inline-source-map',
+  // devtool: process.env.NODE_ENV==='production' ? 'source-map' : 'inline-source-map',
   resolve: {
     root: [ path.resolve('./') ],
     moduleDirectories: ['node_modules'],

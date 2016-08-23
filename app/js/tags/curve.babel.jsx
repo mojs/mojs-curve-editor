@@ -18,15 +18,15 @@ class Curve extends Component {
           segments  = this._renderSegments( state ),
           progressLines = this._renderProgressLines( state );
 
-    return <div className={CLASSES['curve']}>
+    return <div className={ CLASSES['curve'] }>
               <div  id="js-background"
                     className={ CLASSES['curve__background']}
-                    style={styles.background} />
+                    style={ styles.background } />
 
-              {progressLines}
+              { progressLines }
               
               <div  className={ CLASSES['curve__svg-wrapper']}
-                    style={styles.transform}>
+                    style={ styles.transform }>
 
                 { points }
 
@@ -36,7 +36,7 @@ class Curve extends Component {
                       id="js-svg"
                       class={ CLASSES['curve__svg'] }>
 
-                  <path d={path}
+                  <path d={ path }
                         stroke="#000000"
                         stroke-opacity="0.35"
                         stroke-width="4"
@@ -47,9 +47,7 @@ class Curve extends Component {
                   <g id="js-segments"> { segments } </g>
 
                 </svg>
-
               </div>
-
             </div>;
   }
 
@@ -59,9 +57,6 @@ class Curve extends Component {
 
     temp_top    += resize.top;
     temp_right  += resize.right;
-
-    if (C.CURVE_SIZE - temp_top < C.CURVE_SIZE) { temp_top = 0; }
-    temp_top = mod( temp_top, -1 );
 
     const scale = `transform: scaleX(${(C.CURVE_SIZE + Math.max(temp_right,0))/C.CURVE_SIZE})`,
           bgTransform = `${mojs.h.prefix.css}${scale}; ${scale};`,

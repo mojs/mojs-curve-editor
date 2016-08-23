@@ -11,11 +11,9 @@ import defer        from './helpers/defer';
 import addPointerDown from './helpers/add-pointer-down';
 
 // TODO
-//   - resize down when points are above the editor border
-//   - add points shortcuts
-//   - performance
 //   - import path data
 //   - move bunch of points at once
+//   - add period generator
 
 /*
   API wrapper above the app itself.
@@ -117,15 +115,21 @@ class API {
   }
 
   _compilePath () {
+
     const state     = this.store.getState(),
           points    = state.points.present,
           {path}    = points;
 
-    if ( this._prevPath !== path ) {
-      this._prevPath = path;
-      this._easing = mojs.easing.path( path );
-      this._fireOnChange( path );
-    }
+    if ( !this._easing ) { this._easing = mojs.easing.path( path ); }
+
+    clearTimeout( this._tm );
+    this._tm = setTimeout( () => {
+      if ( this._prevPath !== path ) {
+        this._prevPath = path;
+        this._easing = mojs.easing.path( path );
+        this._fireOnChange( path );
+      }
+    }, 40 );
   }
 
   _fireOnChange ( path ) {
