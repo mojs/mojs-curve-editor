@@ -1,5 +1,3 @@
-// import './tags/curve-editor.tag';
-require('../css/main');
 import { Provider } from 'preact-redux';
 import {render, h}  from 'preact';
 import CurveEditor  from './tags/curve-editor';
