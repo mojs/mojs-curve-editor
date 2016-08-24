@@ -8,7 +8,7 @@
 
 The `MojsCurveEditor` depends on `mojs >= 0.225.2`, tween autoupdates available for `mojs >= 0.276.2`. Please make sure you've linked [mojs](https://github.com/legomushroom/mojs) library first.
 
-[CDN](https://www.jsdelivr.com/):
+[CDN](https://www.jsdelivr.com/)(pending approval):
 
 ```
 <script src="//cdn.jsdelivr.net/mojs-curve-editor/latest/mojs-curve-editor.min.js"></script>
