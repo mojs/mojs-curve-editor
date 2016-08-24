@@ -9,584 +9,45 @@
 		root["mojs-curve-editor"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
-/******/ 	var parentHotUpdateCallback = this["webpackHotUpdatemojs_curve_editor"];
-/******/ 	this["webpackHotUpdatemojs_curve_editor"] = 
-/******/ 	function webpackHotUpdateCallback(chunkId, moreModules) { // eslint-disable-line no-unused-vars
-/******/ 		hotAddUpdateChunk(chunkId, moreModules);
-/******/ 		if(parentHotUpdateCallback) parentHotUpdateCallback(chunkId, moreModules);
-/******/ 	}
-/******/ 	
-/******/ 	function hotDownloadUpdateChunk(chunkId) { // eslint-disable-line no-unused-vars
-/******/ 		var head = document.getElementsByTagName("head")[0];
-/******/ 		var script = document.createElement("script");
-/******/ 		script.type = "text/javascript";
-/******/ 		script.charset = "utf-8";
-/******/ 		script.src = __webpack_require__.p + "" + chunkId + "." + hotCurrentHash + ".hot-update.js";
-/******/ 		head.appendChild(script);
-/******/ 	}
-/******/ 	
-/******/ 	function hotDownloadManifest(callback) { // eslint-disable-line no-unused-vars
-/******/ 		if(typeof XMLHttpRequest === "undefined")
-/******/ 			return callback(new Error("No browser support"));
-/******/ 		try {
-/******/ 			var request = new XMLHttpRequest();
-/******/ 			var requestPath = __webpack_require__.p + "" + hotCurrentHash + ".hot-update.json";
-/******/ 			request.open("GET", requestPath, true);
-/******/ 			request.timeout = 10000;
-/******/ 			request.send(null);
-/******/ 		} catch(err) {
-/******/ 			return callback(err);
-/******/ 		}
-/******/ 		request.onreadystatechange = function() {
-/******/ 			if(request.readyState !== 4) return;
-/******/ 			if(request.status === 0) {
-/******/ 				// timeout
-/******/ 				callback(new Error("Manifest request to " + requestPath + " timed out."));
-/******/ 			} else if(request.status === 404) {
-/******/ 				// no update available
-/******/ 				callback();
-/******/ 			} else if(request.status !== 200 && request.status !== 304) {
-/******/ 				// other failure
-/******/ 				callback(new Error("Manifest request to " + requestPath + " failed."));
-/******/ 			} else {
-/******/ 				// success
-/******/ 				try {
-/******/ 					var update = JSON.parse(request.responseText);
-/******/ 				} catch(e) {
-/******/ 					callback(e);
-/******/ 					return;
-/******/ 				}
-/******/ 				callback(null, update);
-/******/ 			}
-/******/ 		};
-/******/ 	}
-
-/******/ 	
-/******/ 	
-/******/ 	// Copied from https://github.com/facebook/react/blob/bef45b0/src/shared/utils/canDefineProperty.js
-/******/ 	var canDefineProperty = false;
-/******/ 	try {
-/******/ 		Object.defineProperty({}, "x", {
-/******/ 			get: function() {}
-/******/ 		});
-/******/ 		canDefineProperty = true;
-/******/ 	} catch(x) {
-/******/ 		// IE will fail on defineProperty
-/******/ 	}
-/******/ 	
-/******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "77b904e9bcab7cf73800"; // eslint-disable-line no-unused-vars
-/******/ 	var hotCurrentModuleData = {};
-/******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
-/******/ 	
-/******/ 	function hotCreateRequire(moduleId) { // eslint-disable-line no-unused-vars
-/******/ 		var me = installedModules[moduleId];
-/******/ 		if(!me) return __webpack_require__;
-/******/ 		var fn = function(request) {
-/******/ 			if(me.hot.active) {
-/******/ 				if(installedModules[request]) {
-/******/ 					if(installedModules[request].parents.indexOf(moduleId) < 0)
-/******/ 						installedModules[request].parents.push(moduleId);
-/******/ 					if(me.children.indexOf(request) < 0)
-/******/ 						me.children.push(request);
-/******/ 				} else hotCurrentParents = [moduleId];
-/******/ 			} else {
-/******/ 				console.warn("[HMR] unexpected require(" + request + ") from disposed module " + moduleId);
-/******/ 				hotCurrentParents = [];
-/******/ 			}
-/******/ 			return __webpack_require__(request);
-/******/ 		};
-/******/ 		for(var name in __webpack_require__) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(__webpack_require__, name)) {
-/******/ 				if(canDefineProperty) {
-/******/ 					Object.defineProperty(fn, name, (function(name) {
-/******/ 						return {
-/******/ 							configurable: true,
-/******/ 							enumerable: true,
-/******/ 							get: function() {
-/******/ 								return __webpack_require__[name];
-/******/ 							},
-/******/ 							set: function(value) {
-/******/ 								__webpack_require__[name] = value;
-/******/ 							}
-/******/ 						};
-/******/ 					}(name)));
-/******/ 				} else {
-/******/ 					fn[name] = __webpack_require__[name];
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		function ensure(chunkId, callback) {
-/******/ 			if(hotStatus === "ready")
-/******/ 				hotSetStatus("prepare");
-/******/ 			hotChunksLoading++;
-/******/ 			__webpack_require__.e(chunkId, function() {
-/******/ 				try {
-/******/ 					callback.call(null, fn);
-/******/ 				} finally {
-/******/ 					finishChunkLoading();
-/******/ 				}
-/******/ 	
-/******/ 				function finishChunkLoading() {
-/******/ 					hotChunksLoading--;
-/******/ 					if(hotStatus === "prepare") {
-/******/ 						if(!hotWaitingFilesMap[chunkId]) {
-/******/ 							hotEnsureUpdateChunk(chunkId);
-/******/ 						}
-/******/ 						if(hotChunksLoading === 0 && hotWaitingFiles === 0) {
-/******/ 							hotUpdateDownloaded();
-/******/ 						}
-/******/ 					}
-/******/ 				}
-/******/ 			});
-/******/ 		}
-/******/ 		if(canDefineProperty) {
-/******/ 			Object.defineProperty(fn, "e", {
-/******/ 				enumerable: true,
-/******/ 				value: ensure
-/******/ 			});
-/******/ 		} else {
-/******/ 			fn.e = ensure;
-/******/ 		}
-/******/ 		return fn;
-/******/ 	}
-/******/ 	
-/******/ 	function hotCreateModule(moduleId) { // eslint-disable-line no-unused-vars
-/******/ 		var hot = {
-/******/ 			// private stuff
-/******/ 			_acceptedDependencies: {},
-/******/ 			_declinedDependencies: {},
-/******/ 			_selfAccepted: false,
-/******/ 			_selfDeclined: false,
-/******/ 			_disposeHandlers: [],
-/******/ 	
-/******/ 			// Module API
-/******/ 			active: true,
-/******/ 			accept: function(dep, callback) {
-/******/ 				if(typeof dep === "undefined")
-/******/ 					hot._selfAccepted = true;
-/******/ 				else if(typeof dep === "function")
-/******/ 					hot._selfAccepted = dep;
-/******/ 				else if(typeof dep === "object")
-/******/ 					for(var i = 0; i < dep.length; i++)
-/******/ 						hot._acceptedDependencies[dep[i]] = callback;
-/******/ 				else
-/******/ 					hot._acceptedDependencies[dep] = callback;
-/******/ 			},
-/******/ 			decline: function(dep) {
-/******/ 				if(typeof dep === "undefined")
-/******/ 					hot._selfDeclined = true;
-/******/ 				else if(typeof dep === "number")
-/******/ 					hot._declinedDependencies[dep] = true;
-/******/ 				else
-/******/ 					for(var i = 0; i < dep.length; i++)
-/******/ 						hot._declinedDependencies[dep[i]] = true;
-/******/ 			},
-/******/ 			dispose: function(callback) {
-/******/ 				hot._disposeHandlers.push(callback);
-/******/ 			},
-/******/ 			addDisposeHandler: function(callback) {
-/******/ 				hot._disposeHandlers.push(callback);
-/******/ 			},
-/******/ 			removeDisposeHandler: function(callback) {
-/******/ 				var idx = hot._disposeHandlers.indexOf(callback);
-/******/ 				if(idx >= 0) hot._disposeHandlers.splice(idx, 1);
-/******/ 			},
-/******/ 	
-/******/ 			// Management API
-/******/ 			check: hotCheck,
-/******/ 			apply: hotApply,
-/******/ 			status: function(l) {
-/******/ 				if(!l) return hotStatus;
-/******/ 				hotStatusHandlers.push(l);
-/******/ 			},
-/******/ 			addStatusHandler: function(l) {
-/******/ 				hotStatusHandlers.push(l);
-/******/ 			},
-/******/ 			removeStatusHandler: function(l) {
-/******/ 				var idx = hotStatusHandlers.indexOf(l);
-/******/ 				if(idx >= 0) hotStatusHandlers.splice(idx, 1);
-/******/ 			},
-/******/ 	
-/******/ 			//inherit from previous dispose call
-/******/ 			data: hotCurrentModuleData[moduleId]
-/******/ 		};
-/******/ 		return hot;
-/******/ 	}
-/******/ 	
-/******/ 	var hotStatusHandlers = [];
-/******/ 	var hotStatus = "idle";
-/******/ 	
-/******/ 	function hotSetStatus(newStatus) {
-/******/ 		hotStatus = newStatus;
-/******/ 		for(var i = 0; i < hotStatusHandlers.length; i++)
-/******/ 			hotStatusHandlers[i].call(null, newStatus);
-/******/ 	}
-/******/ 	
-/******/ 	// while downloading
-/******/ 	var hotWaitingFiles = 0;
-/******/ 	var hotChunksLoading = 0;
-/******/ 	var hotWaitingFilesMap = {};
-/******/ 	var hotRequestedFilesMap = {};
-/******/ 	var hotAvailibleFilesMap = {};
-/******/ 	var hotCallback;
-/******/ 	
-/******/ 	// The update info
-/******/ 	var hotUpdate, hotUpdateNewHash;
-/******/ 	
-/******/ 	function toModuleId(id) {
-/******/ 		var isNumber = (+id) + "" === id;
-/******/ 		return isNumber ? +id : id;
-/******/ 	}
-/******/ 	
-/******/ 	function hotCheck(apply, callback) {
-/******/ 		if(hotStatus !== "idle") throw new Error("check() is only allowed in idle status");
-/******/ 		if(typeof apply === "function") {
-/******/ 			hotApplyOnUpdate = false;
-/******/ 			callback = apply;
-/******/ 		} else {
-/******/ 			hotApplyOnUpdate = apply;
-/******/ 			callback = callback || function(err) {
-/******/ 				if(err) throw err;
-/******/ 			};
-/******/ 		}
-/******/ 		hotSetStatus("check");
-/******/ 		hotDownloadManifest(function(err, update) {
-/******/ 			if(err) return callback(err);
-/******/ 			if(!update) {
-/******/ 				hotSetStatus("idle");
-/******/ 				callback(null, null);
-/******/ 				return;
-/******/ 			}
-/******/ 	
-/******/ 			hotRequestedFilesMap = {};
-/******/ 			hotAvailibleFilesMap = {};
-/******/ 			hotWaitingFilesMap = {};
-/******/ 			for(var i = 0; i < update.c.length; i++)
-/******/ 				hotAvailibleFilesMap[update.c[i]] = true;
-/******/ 			hotUpdateNewHash = update.h;
-/******/ 	
-/******/ 			hotSetStatus("prepare");
-/******/ 			hotCallback = callback;
-/******/ 			hotUpdate = {};
-/******/ 			var chunkId = 0;
-/******/ 			{ // eslint-disable-line no-lone-blocks
-/******/ 				/*globals chunkId */
-/******/ 				hotEnsureUpdateChunk(chunkId);
-/******/ 			}
-/******/ 			if(hotStatus === "prepare" && hotChunksLoading === 0 && hotWaitingFiles === 0) {
-/******/ 				hotUpdateDownloaded();
-/******/ 			}
-/******/ 		});
-/******/ 	}
-/******/ 	
-/******/ 	function hotAddUpdateChunk(chunkId, moreModules) { // eslint-disable-line no-unused-vars
-/******/ 		if(!hotAvailibleFilesMap[chunkId] || !hotRequestedFilesMap[chunkId])
-/******/ 			return;
-/******/ 		hotRequestedFilesMap[chunkId] = false;
-/******/ 		for(var moduleId in moreModules) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				hotUpdate[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 		if(--hotWaitingFiles === 0 && hotChunksLoading === 0) {
-/******/ 			hotUpdateDownloaded();
-/******/ 		}
-/******/ 	}
-/******/ 	
-/******/ 	function hotEnsureUpdateChunk(chunkId) {
-/******/ 		if(!hotAvailibleFilesMap[chunkId]) {
-/******/ 			hotWaitingFilesMap[chunkId] = true;
-/******/ 		} else {
-/******/ 			hotRequestedFilesMap[chunkId] = true;
-/******/ 			hotWaitingFiles++;
-/******/ 			hotDownloadUpdateChunk(chunkId);
-/******/ 		}
-/******/ 	}
-/******/ 	
-/******/ 	function hotUpdateDownloaded() {
-/******/ 		hotSetStatus("ready");
-/******/ 		var callback = hotCallback;
-/******/ 		hotCallback = null;
-/******/ 		if(!callback) return;
-/******/ 		if(hotApplyOnUpdate) {
-/******/ 			hotApply(hotApplyOnUpdate, callback);
-/******/ 		} else {
-/******/ 			var outdatedModules = [];
-/******/ 			for(var id in hotUpdate) {
-/******/ 				if(Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/ 					outdatedModules.push(toModuleId(id));
-/******/ 				}
-/******/ 			}
-/******/ 			callback(null, outdatedModules);
-/******/ 		}
-/******/ 	}
-/******/ 	
-/******/ 	function hotApply(options, callback) {
-/******/ 		if(hotStatus !== "ready") throw new Error("apply() is only allowed in ready status");
-/******/ 		if(typeof options === "function") {
-/******/ 			callback = options;
-/******/ 			options = {};
-/******/ 		} else if(options && typeof options === "object") {
-/******/ 			callback = callback || function(err) {
-/******/ 				if(err) throw err;
-/******/ 			};
-/******/ 		} else {
-/******/ 			options = {};
-/******/ 			callback = callback || function(err) {
-/******/ 				if(err) throw err;
-/******/ 			};
-/******/ 		}
-/******/ 	
-/******/ 		function getAffectedStuff(module) {
-/******/ 			var outdatedModules = [module];
-/******/ 			var outdatedDependencies = {};
-/******/ 	
-/******/ 			var queue = outdatedModules.slice();
-/******/ 			while(queue.length > 0) {
-/******/ 				var moduleId = queue.pop();
-/******/ 				var module = installedModules[moduleId];
-/******/ 				if(!module || module.hot._selfAccepted)
-/******/ 					continue;
-/******/ 				if(module.hot._selfDeclined) {
-/******/ 					return new Error("Aborted because of self decline: " + moduleId);
-/******/ 				}
-/******/ 				if(moduleId === 0) {
-/******/ 					return;
-/******/ 				}
-/******/ 				for(var i = 0; i < module.parents.length; i++) {
-/******/ 					var parentId = module.parents[i];
-/******/ 					var parent = installedModules[parentId];
-/******/ 					if(parent.hot._declinedDependencies[moduleId]) {
-/******/ 						return new Error("Aborted because of declined dependency: " + moduleId + " in " + parentId);
-/******/ 					}
-/******/ 					if(outdatedModules.indexOf(parentId) >= 0) continue;
-/******/ 					if(parent.hot._acceptedDependencies[moduleId]) {
-/******/ 						if(!outdatedDependencies[parentId])
-/******/ 							outdatedDependencies[parentId] = [];
-/******/ 						addAllToSet(outdatedDependencies[parentId], [moduleId]);
-/******/ 						continue;
-/******/ 					}
-/******/ 					delete outdatedDependencies[parentId];
-/******/ 					outdatedModules.push(parentId);
-/******/ 					queue.push(parentId);
-/******/ 				}
-/******/ 			}
-/******/ 	
-/******/ 			return [outdatedModules, outdatedDependencies];
-/******/ 		}
-/******/ 	
-/******/ 		function addAllToSet(a, b) {
-/******/ 			for(var i = 0; i < b.length; i++) {
-/******/ 				var item = b[i];
-/******/ 				if(a.indexOf(item) < 0)
-/******/ 					a.push(item);
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// at begin all updates modules are outdated
-/******/ 		// the "outdated" status can propagate to parents if they don't accept the children
-/******/ 		var outdatedDependencies = {};
-/******/ 		var outdatedModules = [];
-/******/ 		var appliedUpdate = {};
-/******/ 		for(var id in hotUpdate) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/ 				var moduleId = toModuleId(id);
-/******/ 				var result = getAffectedStuff(moduleId);
-/******/ 				if(!result) {
-/******/ 					if(options.ignoreUnaccepted)
-/******/ 						continue;
-/******/ 					hotSetStatus("abort");
-/******/ 					return callback(new Error("Aborted because " + moduleId + " is not accepted"));
-/******/ 				}
-/******/ 				if(result instanceof Error) {
-/******/ 					hotSetStatus("abort");
-/******/ 					return callback(result);
-/******/ 				}
-/******/ 				appliedUpdate[moduleId] = hotUpdate[moduleId];
-/******/ 				addAllToSet(outdatedModules, result[0]);
-/******/ 				for(var moduleId in result[1]) {
-/******/ 					if(Object.prototype.hasOwnProperty.call(result[1], moduleId)) {
-/******/ 						if(!outdatedDependencies[moduleId])
-/******/ 							outdatedDependencies[moduleId] = [];
-/******/ 						addAllToSet(outdatedDependencies[moduleId], result[1][moduleId]);
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// Store self accepted outdated modules to require them later by the module system
-/******/ 		var outdatedSelfAcceptedModules = [];
-/******/ 		for(var i = 0; i < outdatedModules.length; i++) {
-/******/ 			var moduleId = outdatedModules[i];
-/******/ 			if(installedModules[moduleId] && installedModules[moduleId].hot._selfAccepted)
-/******/ 				outdatedSelfAcceptedModules.push({
-/******/ 					module: moduleId,
-/******/ 					errorHandler: installedModules[moduleId].hot._selfAccepted
-/******/ 				});
-/******/ 		}
-/******/ 	
-/******/ 		// Now in "dispose" phase
-/******/ 		hotSetStatus("dispose");
-/******/ 		var queue = outdatedModules.slice();
-/******/ 		while(queue.length > 0) {
-/******/ 			var moduleId = queue.pop();
-/******/ 			var module = installedModules[moduleId];
-/******/ 			if(!module) continue;
-/******/ 	
-/******/ 			var data = {};
-/******/ 	
-/******/ 			// Call dispose handlers
-/******/ 			var disposeHandlers = module.hot._disposeHandlers;
-/******/ 			for(var j = 0; j < disposeHandlers.length; j++) {
-/******/ 				var cb = disposeHandlers[j];
-/******/ 				cb(data);
-/******/ 			}
-/******/ 			hotCurrentModuleData[moduleId] = data;
-/******/ 	
-/******/ 			// disable module (this disables requires from this module)
-/******/ 			module.hot.active = false;
-/******/ 	
-/******/ 			// remove module from cache
-/******/ 			delete installedModules[moduleId];
-/******/ 	
-/******/ 			// remove "parents" references from all children
-/******/ 			for(var j = 0; j < module.children.length; j++) {
-/******/ 				var child = installedModules[module.children[j]];
-/******/ 				if(!child) continue;
-/******/ 				var idx = child.parents.indexOf(moduleId);
-/******/ 				if(idx >= 0) {
-/******/ 					child.parents.splice(idx, 1);
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// remove outdated dependency from module children
-/******/ 		for(var moduleId in outdatedDependencies) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)) {
-/******/ 				var module = installedModules[moduleId];
-/******/ 				var moduleOutdatedDependencies = outdatedDependencies[moduleId];
-/******/ 				for(var j = 0; j < moduleOutdatedDependencies.length; j++) {
-/******/ 					var dependency = moduleOutdatedDependencies[j];
-/******/ 					var idx = module.children.indexOf(dependency);
-/******/ 					if(idx >= 0) module.children.splice(idx, 1);
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// Not in "apply" phase
-/******/ 		hotSetStatus("apply");
-/******/ 	
-/******/ 		hotCurrentHash = hotUpdateNewHash;
-/******/ 	
-/******/ 		// insert new code
-/******/ 		for(var moduleId in appliedUpdate) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(appliedUpdate, moduleId)) {
-/******/ 				modules[moduleId] = appliedUpdate[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// call accept handlers
-/******/ 		var error = null;
-/******/ 		for(var moduleId in outdatedDependencies) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)) {
-/******/ 				var module = installedModules[moduleId];
-/******/ 				var moduleOutdatedDependencies = outdatedDependencies[moduleId];
-/******/ 				var callbacks = [];
-/******/ 				for(var i = 0; i < moduleOutdatedDependencies.length; i++) {
-/******/ 					var dependency = moduleOutdatedDependencies[i];
-/******/ 					var cb = module.hot._acceptedDependencies[dependency];
-/******/ 					if(callbacks.indexOf(cb) >= 0) continue;
-/******/ 					callbacks.push(cb);
-/******/ 				}
-/******/ 				for(var i = 0; i < callbacks.length; i++) {
-/******/ 					var cb = callbacks[i];
-/******/ 					try {
-/******/ 						cb(outdatedDependencies);
-/******/ 					} catch(err) {
-/******/ 						if(!error)
-/******/ 							error = err;
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// Load self accepted modules
-/******/ 		for(var i = 0; i < outdatedSelfAcceptedModules.length; i++) {
-/******/ 			var item = outdatedSelfAcceptedModules[i];
-/******/ 			var moduleId = item.module;
-/******/ 			hotCurrentParents = [moduleId];
-/******/ 			try {
-/******/ 				__webpack_require__(moduleId);
-/******/ 			} catch(err) {
-/******/ 				if(typeof item.errorHandler === "function") {
-/******/ 					try {
-/******/ 						item.errorHandler(err);
-/******/ 					} catch(err) {
-/******/ 						if(!error)
-/******/ 							error = err;
-/******/ 					}
-/******/ 				} else if(!error)
-/******/ 					error = err;
-/******/ 			}
-/******/ 		}
-/******/ 	
-/******/ 		// handle errors in accept handlers and self accepted module load
-/******/ 		if(error) {
-/******/ 			hotSetStatus("fail");
-/******/ 			return callback(error);
-/******/ 		}
-/******/ 	
-/******/ 		hotSetStatus("idle");
-/******/ 		callback(null, outdatedModules);
-/******/ 	}
-
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
-/******/ 			loaded: false,
-/******/ 			hot: hotCreateModule(moduleId),
-/******/ 			parents: hotCurrentParents,
-/******/ 			children: []
+/******/ 			loaded: false
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, hotCreateRequire(moduleId));
-
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "build/";
-
-/******/ 	// __webpack_hash__
-/******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
-
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire(0)(0);
+/******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -601,66 +62,66 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _stringify = __webpack_require__(2);
-
+	
 	var _stringify2 = _interopRequireDefault(_stringify);
-
+	
 	var _extends2 = __webpack_require__(5);
-
+	
 	var _extends3 = _interopRequireDefault(_extends2);
-
+	
 	var _classCallCheck2 = __webpack_require__(42);
-
+	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
+	
 	var _createClass2 = __webpack_require__(43);
-
+	
 	var _createClass3 = _interopRequireDefault(_createClass2);
-
+	
 	var _preactRedux = __webpack_require__(47);
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _curveEditor = __webpack_require__(65);
-
+	
 	var _curveEditor2 = _interopRequireDefault(_curveEditor);
-
+	
 	var _store = __webpack_require__(174);
-
+	
 	var _store2 = _interopRequireDefault(_store);
-
+	
 	var _constants = __webpack_require__(114);
-
+	
 	var _constants2 = _interopRequireDefault(_constants);
-
+	
 	var _hash = __webpack_require__(200);
-
+	
 	var _hash2 = _interopRequireDefault(_hash);
-
+	
 	var _fallbackTo = __webpack_require__(201);
-
+	
 	var _fallbackTo2 = _interopRequireDefault(_fallbackTo);
-
+	
 	var _defer = __webpack_require__(202);
-
+	
 	var _defer2 = _interopRequireDefault(_defer);
-
+	
 	var _addPointerDown = __webpack_require__(128);
-
+	
 	var _addPointerDown2 = _interopRequireDefault(_addPointerDown);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	// TODO
 	//   - import path data
 	//   - move bunch of points at once
 	//   - add period generator
-
+	
 	/*
 	  API wrapper above the app itself.
 	*/
@@ -668,20 +129,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function API() {
 	    var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	    (0, _classCallCheck3.default)(this, API);
-
+	
 	    this._o = o;
-
+	
 	    this._decalareDefaults();
 	    this._extendDefaults();
 	    this._vars();
 	    this._render();
 	    this._tryToRestore();
 	    this._listenUnload();
-
+	
 	    this._subscribe();
 	    this._subscribeFocus();
 	  }
-
+	
 	  (0, _createClass3.default)(API, [{
 	    key: '_decalareDefaults',
 	    value: function _decalareDefaults() {
@@ -694,7 +155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_extendDefaults',
 	    value: function _extendDefaults() {
 	      this._props = {};
-
+	
 	      for (var key in this._defaults) {
 	        this._props[key] = (0, _fallbackTo2.default)(this._o[key], this._defaults[key]);
 	      }
@@ -704,21 +165,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _vars() {
 	      this.revision = '1.0.0';
 	      this.store = (0, _store2.default)();
-
+	
 	      this._easings = [];
 	      this._progressLines = [];
-
+	
 	      var str = (0, _fallbackTo2.default)(this._o.name, this._defaults.name);
 	      str += str === this._defaults.name ? '' : '__' + this._defaults.name;
 	      this._localStorage = str + '__' + (0, _hash2.default)(str);
-
+	
 	      this.store.dispatch({ type: 'SET_EDITOR_NAME', data: this._localStorage });
 	    }
 	  }, {
 	    key: '_render',
 	    value: function _render() {
 	      var _this = this;
-
+	
 	      document.addEventListener('DOMContentLoaded', function () {
 	        (0, _preact.render)((0, _preact.h)(
 	          _preactRedux.Provider,
@@ -731,16 +192,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_listenUnload',
 	    value: function _listenUnload() {
 	      var _this2 = this;
-
+	
 	      var unloadEvent = 'onpagehide' in window ? 'pagehide' : 'beforeunload';
 	      window.addEventListener(unloadEvent, function () {
 	        if (_this2._props.isSaveState) {
 	          var preState = (0, _extends3.default)({}, _this2.store.getState());
-
+	
 	          delete preState.points.history;
 	          delete preState.pointControls.history;
 	          preState.progressLines.lines = [];
-
+	
 	          localStorage.setItem(_this2._localStorage, (0, _stringify2.default)(preState));
 	        } else {
 	          localStorage.removeItem(_this2._localStorage);
@@ -769,7 +230,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_subscribeFocus',
 	    value: function _subscribeFocus() {
 	      var _this3 = this;
-
+	
 	      (0, _addPointerDown2.default)(document.body, function (e) {
 	        if (_this3._localStorage !== e._mojsCurveEditorName) {
 	          _this3.store.dispatch({ type: 'POINT_DESELECT_ALL' });
@@ -780,16 +241,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_compilePath',
 	    value: function _compilePath() {
 	      var _this4 = this;
-
+	
 	      var state = this.store.getState();
 	      var points = state.points.present;
 	      var path = points.path;
-
-
+	
+	
 	      if (!this._easing) {
 	        this._easing = mojs.easing.path(path);
 	      }
-
+	
 	      clearTimeout(this._tm);
 	      this._tm = setTimeout(function () {
 	        if (_this4._prevPath !== path) {
@@ -807,8 +268,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var options = record.options;
 	        var easing = record.easing;
 	        var onChange = options.onChange;
-
-
+	
+	
 	        typeof onChange === 'function' && onChange(easing, path);
 	        this._updateParent(easing);
 	      }
@@ -817,7 +278,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_updateParent',
 	    value: function _updateParent(easing) {
 	      var parent = easing._parent;
-
+	
 	      if (parent && parent.setProgress) {
 	        this._triggerParent(parent);
 	      } else if (parent.timeline) {
@@ -832,7 +293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var step = 0.001;
 	      var progress = parent.progress;
 	      var updateProgress = progress + step < 1 ? progress + step : progress - step;
-
+	
 	      parent.setProgress(updateProgress);
 	      parent.setProgress(progress);
 	    }
@@ -840,9 +301,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'getEasing',
 	    value: function getEasing() {
 	      var _this5 = this;
-
+	
 	      var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
+	
 	      // get the easing function regarding reverse options
 	      var fun = function () {
 	        var i = _this5._easings.length;
@@ -852,10 +313,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return transform ? transform(_this5._easing(k)) : _this5._easing(k);
 	        };
 	      }();
-
+	
 	      this.store.dispatch({ type: 'ADD_PROGRESS_LINE', data: {} });
 	      this._easings.push({ options: o, easing: fun });
-
+	
 	      (0, _defer2.default)(function () {
 	        _this5._fireOnChange(_this5._prevPath);
 	      });
@@ -867,22 +328,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var el = lines[i];
 	      var state = this.store.getState();
 	      var resize = state.resize;
-
-
+	
+	
 	      if (!el) {
 	        return;
 	      }
-
+	
 	      el.style.left = p * 100 + '%';
 	    }
 	  }]);
 	  return API;
 	}();
-
+	
 	exports.default = API;
-
+	
 	window.MojsCurveEditor = API;
-
+	
 	// curve
 	//   .getFunction({ isInverseX: false, isInverseY: true, name: 'Some name' })
 	//   .getCode()
@@ -915,26 +376,26 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-
+	
 	exports.__esModule = true;
-
+	
 	var _assign = __webpack_require__(6);
-
+	
 	var _assign2 = _interopRequireDefault(_assign);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = _assign2.default || function (target) {
 	  for (var i = 1; i < arguments.length; i++) {
 	    var source = arguments[i];
-
+	
 	    for (var key in source) {
 	      if (Object.prototype.hasOwnProperty.call(source, key)) {
 	        target[key] = source[key];
 	      }
 	    }
 	  }
-
+	
 	  return target;
 	};
 
@@ -957,7 +418,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// 19.1.3.1 Object.assign(target, source)
 	var $export = __webpack_require__(9);
-
+	
 	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(23)});
 
 /***/ },
@@ -969,7 +430,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , ctx       = __webpack_require__(11)
 	  , hide      = __webpack_require__(13)
 	  , PROTOTYPE = 'prototype';
-
+	
 	var $export = function(type, name, source){
 	  var IS_FORCED = type & $export.F
 	    , IS_GLOBAL = type & $export.G
@@ -1090,7 +551,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , IE8_DOM_DEFINE = __webpack_require__(17)
 	  , toPrimitive    = __webpack_require__(21)
 	  , dP             = Object.defineProperty;
-
+	
 	exports.f = __webpack_require__(18) ? Object.defineProperty : function defineProperty(O, P, Attributes){
 	  anObject(O);
 	  P = toPrimitive(P, true);
@@ -1204,7 +665,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , toObject = __webpack_require__(41)
 	  , IObject  = __webpack_require__(28)
 	  , $assign  = Object.assign;
-
+	
 	// should work with symbols and should have deterministic property order (V8 bug)
 	module.exports = !$assign || __webpack_require__(19)(function(){
 	  var A = {}
@@ -1237,7 +698,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
 	var $keys       = __webpack_require__(25)
 	  , enumBugKeys = __webpack_require__(38);
-
+	
 	module.exports = Object.keys || function keys(O){
 	  return $keys(O, enumBugKeys);
 	};
@@ -1250,7 +711,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , toIObject    = __webpack_require__(27)
 	  , arrayIndexOf = __webpack_require__(31)(false)
 	  , IE_PROTO     = __webpack_require__(35)('IE_PROTO');
-
+	
 	module.exports = function(object, names){
 	  var O      = toIObject(object)
 	    , i      = 0
@@ -1299,7 +760,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
-
+	
 	module.exports = function(it){
 	  return toString.call(it).slice(8, -1);
 	};
@@ -1441,9 +902,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	exports.__esModule = true;
-
+	
 	exports.default = function (instance, Constructor) {
 	  if (!(instance instanceof Constructor)) {
 	    throw new TypeError("Cannot call a class as a function");
@@ -1455,15 +916,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-
+	
 	exports.__esModule = true;
-
+	
 	var _defineProperty = __webpack_require__(44);
-
+	
 	var _defineProperty2 = _interopRequireDefault(_defineProperty);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = function () {
 	  function defineProperties(target, props) {
 	    for (var i = 0; i < props.length; i++) {
@@ -1474,7 +935,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
 	    }
 	  }
-
+	
 	  return function (Constructor, protoProps, staticProps) {
 	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
 	    if (staticProps) defineProperties(Constructor, staticProps);
@@ -1515,37 +976,37 @@ return /******/ (function(modules) { // webpackBootstrap
 		typeof define === 'function' && define.amd ? define(['exports', 'preact', 'redux'], factory) :
 		(factory((global.preactRedux = global.preactRedux || {}),global.preact,global.redux));
 	}(this, function (exports,preact,redux) { 'use strict';
-
+	
 		function __commonjs(fn, module) { return module = { exports: {} }, fn(module, module.exports), module.exports; }
-
-
+	
+	
 		var babelHelpers = {};
-
+	
 		babelHelpers.classCallCheck = function (instance, Constructor) {
 		  if (!(instance instanceof Constructor)) {
 		    throw new TypeError("Cannot call a class as a function");
 		  }
 		};
-
+	
 		babelHelpers.extends = Object.assign || function (target) {
 		  for (var i = 1; i < arguments.length; i++) {
 		    var source = arguments[i];
-
+	
 		    for (var key in source) {
 		      if (Object.prototype.hasOwnProperty.call(source, key)) {
 		        target[key] = source[key];
 		      }
 		    }
 		  }
-
+	
 		  return target;
 		};
-
+	
 		babelHelpers.inherits = function (subClass, superClass) {
 		  if (typeof superClass !== "function" && superClass !== null) {
 		    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
 		  }
-
+	
 		  subClass.prototype = Object.create(superClass && superClass.prototype, {
 		    constructor: {
 		      value: subClass,
@@ -1556,26 +1017,26 @@ return /******/ (function(modules) { // webpackBootstrap
 		  });
 		  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 		};
-
+	
 		babelHelpers.possibleConstructorReturn = function (self, call) {
 		  if (!self) {
 		    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 		  }
-
+	
 		  return call && (typeof call === "object" || typeof call === "function") ? call : self;
 		};
-
+	
 		babelHelpers;
-
+	
 		var Children = {
 			only: function (children) {
 				return children && children[0] || null;
 			}
 		};
-
+	
 		function proptype() {}
 		proptype.isRequired = proptype;
-
+	
 		var PropTypes = {
 			element: proptype,
 			func: proptype,
@@ -1583,13 +1044,13 @@ return /******/ (function(modules) { // webpackBootstrap
 				return proptype;
 			}
 		};
-
+	
 		var storeShape = PropTypes.shape({
 		  subscribe: PropTypes.func.isRequired,
 		  dispatch: PropTypes.func.isRequired,
 		  getState: PropTypes.func.isRequired
 		});
-
+	
 		/**
 		 * Prints a warning in the console if it exists.
 		 *
@@ -1610,70 +1071,70 @@ return /******/ (function(modules) { // webpackBootstrap
 		  } catch (e) {}
 		  /* eslint-enable no-empty */
 		}
-
+	
 		var didWarnAboutReceivingStore = false;
 		function warnAboutReceivingStore() {
 		  if (didWarnAboutReceivingStore) {
 		    return;
 		  }
 		  didWarnAboutReceivingStore = true;
-
+	
 		  warning('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
 		}
-
+	
 		var Provider = function (_Component) {
 		  babelHelpers.inherits(Provider, _Component);
-
+	
 		  Provider.prototype.getChildContext = function getChildContext() {
 		    return { store: this.store };
 		  };
-
+	
 		  function Provider(props, context) {
 		    babelHelpers.classCallCheck(this, Provider);
-
+	
 		    var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props, context));
-
+	
 		    _this.store = props.store;
 		    return _this;
 		  }
-
+	
 		  Provider.prototype.render = function render() {
 		    var children = this.props.children;
-
+	
 		    return Children.only(children);
 		  };
-
+	
 		  return Provider;
 		}(preact.Component);
-
+	
 		if (true) {
 		  Provider.prototype.componentWillReceiveProps = function (nextProps) {
 		    var store = this.store;
 		    var nextStore = nextProps.store;
-
-
+	
+	
 		    if (store !== nextStore) {
 		      warnAboutReceivingStore();
 		    }
 		  };
 		}
-
+	
 		Provider.childContextTypes = {
 		  store: storeShape.isRequired
 		};
-
+	
 		function shallowEqual(objA, objB) {
 		  if (objA === objB) {
 		    return true;
 		  }
-
+	
 		  var keysA = Object.keys(objA);
 		  var keysB = Object.keys(objB);
-
+	
 		  if (keysA.length !== keysB.length) {
 		    return false;
 		  }
-
+	
 		  // Test for A's keys different from B.
 		  var hasOwn = Object.prototype.hasOwnProperty;
 		  for (var i = 0; i < keysA.length; i++) {
@@ -1681,16 +1142,16 @@ return /******/ (function(modules) { // webpackBootstrap
 		      return false;
 		    }
 		  }
-
+	
 		  return true;
 		}
-
+	
 		function wrapActionCreators(actionCreators) {
 		  return function (dispatch) {
 		    return redux.bindActionCreators(actionCreators, dispatch);
 		  };
 		}
-
+	
 		var isObjectLike = __commonjs(function (module) {
 		  /**
 		   * Checks if `value` is object-like. A value is object-like if it's not `null`
@@ -1719,12 +1180,12 @@ return /******/ (function(modules) { // webpackBootstrap
 		  function isObjectLike(value) {
 		    return !!value && typeof value == 'object';
 		  }
-
+	
 		  module.exports = isObjectLike;
 		});
-
+	
 		var require$$0 = isObjectLike && typeof isObjectLike === 'object' && 'default' in isObjectLike ? isObjectLike['default'] : isObjectLike;
-
+	
 		var _isHostObject = __commonjs(function (module) {
 		  /**
 		   * Checks if `value` is a host object in IE < 9.
@@ -1744,16 +1205,16 @@ return /******/ (function(modules) { // webpackBootstrap
 		    }
 		    return result;
 		  }
-
+	
 		  module.exports = isHostObject;
 		});
-
+	
 		var require$$1 = _isHostObject && typeof _isHostObject === 'object' && 'default' in _isHostObject ? _isHostObject['default'] : _isHostObject;
-
+	
 		var _getPrototype = __commonjs(function (module) {
 		  /* Built-in method references for those with the same name as other `lodash` methods. */
 		  var nativeGetPrototype = Object.getPrototypeOf;
-
+	
 		  /**
 		   * Gets the `[[Prototype]]` of `value`.
 		   *
@@ -1764,39 +1225,39 @@ return /******/ (function(modules) { // webpackBootstrap
 		  function getPrototype(value) {
 		    return nativeGetPrototype(Object(value));
 		  }
-
+	
 		  module.exports = getPrototype;
 		});
-
+	
 		var require$$2 = _getPrototype && typeof _getPrototype === 'object' && 'default' in _getPrototype ? _getPrototype['default'] : _getPrototype;
-
+	
 		var isPlainObject = __commonjs(function (module) {
 		  var getPrototype = require$$2,
 		      isHostObject = require$$1,
 		      isObjectLike = require$$0;
-
+	
 		  /** `Object#toString` result references. */
 		  var objectTag = '[object Object]';
-
+	
 		  /** Used for built-in method references. */
 		  var objectProto = Object.prototype;
-
+	
 		  /** Used to resolve the decompiled source of functions. */
 		  var funcToString = Function.prototype.toString;
-
+	
 		  /** Used to check objects for own properties. */
 		  var hasOwnProperty = objectProto.hasOwnProperty;
-
+	
 		  /** Used to infer the `Object` constructor. */
 		  var objectCtorString = funcToString.call(Object);
-
+	
 		  /**
 		   * Used to resolve the
 		   * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
 		   * of values.
 		   */
 		  var objectToString = objectProto.toString;
-
+	
 		  /**
 		   * Checks if `value` is a plain object, that is, an object created by the
 		   * `Object` constructor or one with a `[[Prototype]]` of `null`.
@@ -1837,19 +1298,19 @@ return /******/ (function(modules) { // webpackBootstrap
 		    var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
 		    return typeof Ctor == 'function' && Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString;
 		  }
-
+	
 		  module.exports = isPlainObject;
 		});
-
+	
 		var isPlainObject$1 = isPlainObject && typeof isPlainObject === 'object' && 'default' in isPlainObject ? isPlainObject['default'] : isPlainObject;
-
+	
 		var index = __commonjs(function (module) {
 		    /**
 		     * Copyright 2015, Yahoo! Inc.
 		     * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
 		     */
 		    'use strict';
-
+	
 		    var REACT_STATICS = {
 		        childContextTypes: true,
 		        contextTypes: true,
@@ -1860,7 +1321,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		        propTypes: true,
 		        type: true
 		    };
-
+	
 		    var KNOWN_STATICS = {
 		        name: true,
 		        length: true,
@@ -1869,7 +1330,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		        arguments: true,
 		        arity: true
 		    };
-
+	
 		    module.exports = function hoistNonReactStatics(targetComponent, sourceComponent) {
 		        if (typeof sourceComponent !== 'string') {
 		            // don't hoist over string (html) components
@@ -1882,13 +1343,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		                }
 		            }
 		        }
-
+	
 		        return targetComponent;
 		    };
 		});
-
+	
 		var hoistStatics = index && typeof index === 'object' && 'default' in index ? index['default'] : index;
-
+	
 		var invariant = __commonjs(function (module) {
 		  /**
 		   * Copyright 2013-2015, Facebook, Inc.
@@ -1898,9 +1359,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		   * LICENSE file in the root directory of this source tree. An additional grant
 		   * of patent rights can be found in the PATENTS file in the same directory.
 		   */
-
+	
 		  'use strict';
-
+	
 		  /**
 		   * Use invariant() to assert state which your program assumes to be true.
 		   *
@@ -1911,16 +1372,16 @@ return /******/ (function(modules) { // webpackBootstrap
 		   * The invariant message will be stripped in production, but the invariant
 		   * will remain to ensure logic does not differ in production.
 		   */
-
+	
 		  var NODE_ENV = 'development';
-
+	
 		  var invariant = function (condition, format, a, b, c, d, e, f) {
 		    if (NODE_ENV !== 'production') {
 		      if (format === undefined) {
 		        throw new Error('invariant requires an error message argument');
 		      }
 		    }
-
+	
 		    if (!condition) {
 		      var error;
 		      if (format === undefined) {
@@ -1933,17 +1394,17 @@ return /******/ (function(modules) { // webpackBootstrap
 		        }));
 		        error.name = 'Invariant Violation';
 		      }
-
+	
 		      error.framesToPop = 1; // we don't care about invariant's own frame
 		      throw error;
 		    }
 		  };
-
+	
 		  module.exports = invariant;
 		});
-
+	
 		var invariant$1 = invariant && typeof invariant === 'object' && 'default' in invariant ? invariant['default'] : invariant;
-
+	
 		var defaultMapStateToProps = function (state) {
 		  return {};
 		}; // eslint-disable-line no-unused-vars
@@ -1953,11 +1414,11 @@ return /******/ (function(modules) { // webpackBootstrap
 		var defaultMergeProps = function (stateProps, dispatchProps, parentProps) {
 		  return babelHelpers.extends({}, parentProps, stateProps, dispatchProps);
 		};
-
+	
 		function getDisplayName(WrappedComponent) {
 		  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 		}
-
+	
 		var errorObject = { value: null };
 		function tryCatch(fn, ctx) {
 		  try {
@@ -1967,16 +1428,16 @@ return /******/ (function(modules) { // webpackBootstrap
 		    return errorObject;
 		  }
 		}
-
+	
 		// Helps track hot reloading.
 		var nextVersion = 0;
-
+	
 		function connect(mapStateToProps, mapDispatchToProps, mergeProps) {
 		  var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
-
+	
 		  var shouldSubscribe = Boolean(mapStateToProps);
 		  var mapState = mapStateToProps || defaultMapStateToProps;
-
+	
 		  var mapDispatch = void 0;
 		  if (typeof mapDispatchToProps === 'function') {
 		    mapDispatch = mapDispatchToProps;
@@ -1985,27 +1446,27 @@ return /******/ (function(modules) { // webpackBootstrap
 		  } else {
 		    mapDispatch = wrapActionCreators(mapDispatchToProps);
 		  }
-
+	
 		  var finalMergeProps = mergeProps || defaultMergeProps;
 		  var _options$pure = options.pure;
 		  var pure = _options$pure === undefined ? true : _options$pure;
 		  var _options$withRef = options.withRef;
 		  var withRef = _options$withRef === undefined ? false : _options$withRef;
-
+	
 		  var checkMergedEquals = pure && finalMergeProps !== defaultMergeProps;
-
+	
 		  // Helps track hot reloading.
 		  var version = nextVersion++;
-
+	
 		  return function wrapWithConnect(WrappedComponent) {
 		    var connectDisplayName = 'Connect(' + getDisplayName(WrappedComponent) + ')';
-
+	
 		    function checkStateShape(props, methodName) {
 		      if (!isPlainObject$1(props)) {
 		        warning(methodName + '() in ' + connectDisplayName + ' must return a plain object. ' + ('Instead received ' + props + '.'));
 		      }
 		    }
-
+	
 		    function computeMergedProps(stateProps, dispatchProps, parentProps) {
 		      var mergedProps = finalMergeProps(stateProps, dispatchProps, parentProps);
 		      if (true) {
@@ -2013,156 +1474,156 @@ return /******/ (function(modules) { // webpackBootstrap
 		      }
 		      return mergedProps;
 		    }
-
+	
 		    var Connect = function (_Component) {
 		      babelHelpers.inherits(Connect, _Component);
-
+	
 		      Connect.prototype.shouldComponentUpdate = function shouldComponentUpdate() {
 		        return !pure || this.haveOwnPropsChanged || this.hasStoreStateChanged;
 		      };
-
+	
 		      function Connect(props, context) {
 		        babelHelpers.classCallCheck(this, Connect);
-
+	
 		        var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props, context));
-
+	
 		        _this.version = version;
 		        _this.store = props.store || context.store;
-
+	
 		        invariant$1(_this.store, 'Could not find "store" in either the context or ' + ('props of "' + connectDisplayName + '". ') + 'Either wrap the root component in a <Provider>, ' + ('or explicitly pass "store" as a prop to "' + connectDisplayName + '".'));
-
+	
 		        var storeState = _this.store.getState();
 		        _this.state = { storeState: storeState };
 		        _this.clearCache();
 		        return _this;
 		      }
-
+	
 		      Connect.prototype.computeStateProps = function computeStateProps(store, props) {
 		        if (!this.finalMapStateToProps) {
 		          return this.configureFinalMapState(store, props);
 		        }
-
+	
 		        var state = store.getState();
 		        var stateProps = this.doStatePropsDependOnOwnProps ? this.finalMapStateToProps(state, props) : this.finalMapStateToProps(state);
-
+	
 		        if (true) {
 		          checkStateShape(stateProps, 'mapStateToProps');
 		        }
 		        return stateProps;
 		      };
-
+	
 		      Connect.prototype.configureFinalMapState = function configureFinalMapState(store, props) {
 		        var mappedState = mapState(store.getState(), props);
 		        var isFactory = typeof mappedState === 'function';
-
+	
 		        this.finalMapStateToProps = isFactory ? mappedState : mapState;
 		        this.doStatePropsDependOnOwnProps = this.finalMapStateToProps.length !== 1;
-
+	
 		        if (isFactory) {
 		          return this.computeStateProps(store, props);
 		        }
-
+	
 		        if (true) {
 		          checkStateShape(mappedState, 'mapStateToProps');
 		        }
 		        return mappedState;
 		      };
-
+	
 		      Connect.prototype.computeDispatchProps = function computeDispatchProps(store, props) {
 		        if (!this.finalMapDispatchToProps) {
 		          return this.configureFinalMapDispatch(store, props);
 		        }
-
+	
 		        var dispatch = store.dispatch;
-
+	
 		        var dispatchProps = this.doDispatchPropsDependOnOwnProps ? this.finalMapDispatchToProps(dispatch, props) : this.finalMapDispatchToProps(dispatch);
-
+	
 		        if (true) {
 		          checkStateShape(dispatchProps, 'mapDispatchToProps');
 		        }
 		        return dispatchProps;
 		      };
-
+	
 		      Connect.prototype.configureFinalMapDispatch = function configureFinalMapDispatch(store, props) {
 		        var mappedDispatch = mapDispatch(store.dispatch, props);
 		        var isFactory = typeof mappedDispatch === 'function';
-
+	
 		        this.finalMapDispatchToProps = isFactory ? mappedDispatch : mapDispatch;
 		        this.doDispatchPropsDependOnOwnProps = this.finalMapDispatchToProps.length !== 1;
-
+	
 		        if (isFactory) {
 		          return this.computeDispatchProps(store, props);
 		        }
-
+	
 		        if (true) {
 		          checkStateShape(mappedDispatch, 'mapDispatchToProps');
 		        }
 		        return mappedDispatch;
 		      };
-
+	
 		      Connect.prototype.updateStatePropsIfNeeded = function updateStatePropsIfNeeded() {
 		        var nextStateProps = this.computeStateProps(this.store, this.props);
 		        if (this.stateProps && shallowEqual(nextStateProps, this.stateProps)) {
 		          return false;
 		        }
-
+	
 		        this.stateProps = nextStateProps;
 		        return true;
 		      };
-
+	
 		      Connect.prototype.updateDispatchPropsIfNeeded = function updateDispatchPropsIfNeeded() {
 		        var nextDispatchProps = this.computeDispatchProps(this.store, this.props);
 		        if (this.dispatchProps && shallowEqual(nextDispatchProps, this.dispatchProps)) {
 		          return false;
 		        }
-
+	
 		        this.dispatchProps = nextDispatchProps;
 		        return true;
 		      };
-
+	
 		      Connect.prototype.updateMergedPropsIfNeeded = function updateMergedPropsIfNeeded() {
 		        var nextMergedProps = computeMergedProps(this.stateProps, this.dispatchProps, this.props);
 		        if (this.mergedProps && checkMergedEquals && shallowEqual(nextMergedProps, this.mergedProps)) {
 		          return false;
 		        }
-
+	
 		        this.mergedProps = nextMergedProps;
 		        return true;
 		      };
-
+	
 		      Connect.prototype.isSubscribed = function isSubscribed() {
 		        return typeof this.unsubscribe === 'function';
 		      };
-
+	
 		      Connect.prototype.trySubscribe = function trySubscribe() {
 		        if (shouldSubscribe && !this.unsubscribe) {
 		          this.unsubscribe = this.store.subscribe(this.handleChange.bind(this));
 		          this.handleChange();
 		        }
 		      };
-
+	
 		      Connect.prototype.tryUnsubscribe = function tryUnsubscribe() {
 		        if (this.unsubscribe) {
 		          this.unsubscribe();
 		          this.unsubscribe = null;
 		        }
 		      };
-
+	
 		      Connect.prototype.componentDidMount = function componentDidMount() {
 		        this.trySubscribe();
 		      };
-
+	
 		      Connect.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
 		        if (!pure || !shallowEqual(nextProps, this.props)) {
 		          this.haveOwnPropsChanged = true;
 		        }
 		      };
-
+	
 		      Connect.prototype.componentWillUnmount = function componentWillUnmount() {
 		        this.tryUnsubscribe();
 		        this.clearCache();
 		      };
-
+	
 		      Connect.prototype.clearCache = function clearCache() {
 		        this.dispatchProps = null;
 		        this.stateProps = null;
@@ -2175,18 +1636,18 @@ return /******/ (function(modules) { // webpackBootstrap
 		        this.finalMapDispatchToProps = null;
 		        this.finalMapStateToProps = null;
 		      };
-
+	
 		      Connect.prototype.handleChange = function handleChange() {
 		        if (!this.unsubscribe) {
 		          return;
 		        }
-
+	
 		        var storeState = this.store.getState();
 		        var prevStoreState = this.state.storeState;
 		        if (pure && prevStoreState === storeState) {
 		          return;
 		        }
-
+	
 		        if (pure && !this.doStatePropsDependOnOwnProps) {
 		          var haveStatePropsChanged = tryCatch(this.updateStatePropsIfNeeded, this);
 		          if (!haveStatePropsChanged) {
@@ -2197,41 +1658,41 @@ return /******/ (function(modules) { // webpackBootstrap
 		          }
 		          this.haveStatePropsBeenPrecalculated = true;
 		        }
-
+	
 		        this.hasStoreStateChanged = true;
 		        this.setState({ storeState: storeState });
 		      };
-
+	
 		      Connect.prototype.getWrappedInstance = function getWrappedInstance() {
 		        invariant$1(withRef, 'To access the wrapped instance, you need to specify ' + '{ withRef: true } as the fourth argument of the connect() call.');
-
+	
 		        return this.refs.wrappedInstance;
 		      };
-
+	
 		      Connect.prototype.render = function render() {
 		        var haveOwnPropsChanged = this.haveOwnPropsChanged;
 		        var hasStoreStateChanged = this.hasStoreStateChanged;
 		        var haveStatePropsBeenPrecalculated = this.haveStatePropsBeenPrecalculated;
 		        var statePropsPrecalculationError = this.statePropsPrecalculationError;
 		        var renderedElement = this.renderedElement;
-
-
+	
+	
 		        this.haveOwnPropsChanged = false;
 		        this.hasStoreStateChanged = false;
 		        this.haveStatePropsBeenPrecalculated = false;
 		        this.statePropsPrecalculationError = null;
-
+	
 		        if (statePropsPrecalculationError) {
 		          throw statePropsPrecalculationError;
 		        }
-
+	
 		        var shouldUpdateStateProps = true;
 		        var shouldUpdateDispatchProps = true;
 		        if (pure && renderedElement) {
 		          shouldUpdateStateProps = hasStoreStateChanged || haveOwnPropsChanged && this.doStatePropsDependOnOwnProps;
 		          shouldUpdateDispatchProps = haveOwnPropsChanged && this.doDispatchPropsDependOnOwnProps;
 		        }
-
+	
 		        var haveStatePropsChanged = false;
 		        var haveDispatchPropsChanged = false;
 		        if (haveStatePropsBeenPrecalculated) {
@@ -2242,18 +1703,18 @@ return /******/ (function(modules) { // webpackBootstrap
 		        if (shouldUpdateDispatchProps) {
 		          haveDispatchPropsChanged = this.updateDispatchPropsIfNeeded();
 		        }
-
+	
 		        var haveMergedPropsChanged = true;
 		        if (haveStatePropsChanged || haveDispatchPropsChanged || haveOwnPropsChanged) {
 		          haveMergedPropsChanged = this.updateMergedPropsIfNeeded();
 		        } else {
 		          haveMergedPropsChanged = false;
 		        }
-
+	
 		        if (!haveMergedPropsChanged && renderedElement) {
 		          return renderedElement;
 		        }
-
+	
 		        if (withRef) {
 		          this.renderedElement = preact.h(WrappedComponent, babelHelpers.extends({}, this.mergedProps, {
 		            ref: 'wrappedInstance'
@@ -2261,37 +1722,37 @@ return /******/ (function(modules) { // webpackBootstrap
 		        } else {
 		          this.renderedElement = preact.h(WrappedComponent, this.mergedProps);
 		        }
-
+	
 		        return this.renderedElement;
 		      };
-
+	
 		      return Connect;
 		    }(preact.Component);
-
+	
 		    Connect.displayName = connectDisplayName;
 		    Connect.WrappedComponent = WrappedComponent;
 		    Connect.contextTypes = {
 		      store: storeShape
 		    };
-
-
+	
+	
 		    if (true) {
 		      Connect.prototype.componentWillUpdate = function componentWillUpdate() {
 		        if (this.version === version) {
 		          return;
 		        }
-
+	
 		        // We are hot reloading!
 		        this.version = version;
 		        this.trySubscribe();
 		        this.clearCache();
 		      };
 		    }
-
+	
 		    return hoistStatics(Connect, WrappedComponent);
 		  };
 		}
-
+	
 		exports.Provider = Provider;
 		exports.connect = connect;
 
@@ -2822,7 +2283,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    exports.rerender = rerender;
 	    exports.options = options;
 	});
-
+	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(49).setImmediate))
 
 /***/ },
@@ -2834,9 +2295,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var slice = Array.prototype.slice;
 	var immediateIds = {};
 	var nextImmediateId = 0;
-
+	
 	// DOM APIs, for completeness
-
+	
 	exports.setTimeout = function() {
 	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
 	};
@@ -2845,7 +2306,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	exports.clearTimeout =
 	exports.clearInterval = function(timeout) { timeout.close(); };
-
+	
 	function Timeout(id, clearFn) {
 	  this._id = id;
 	  this._clearFn = clearFn;
@@ -2854,21 +2315,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	Timeout.prototype.close = function() {
 	  this._clearFn.call(window, this._id);
 	};
-
+	
 	// Does not start the time, just sets up the members needed.
 	exports.enroll = function(item, msecs) {
 	  clearTimeout(item._idleTimeoutId);
 	  item._idleTimeout = msecs;
 	};
-
+	
 	exports.unenroll = function(item) {
 	  clearTimeout(item._idleTimeoutId);
 	  item._idleTimeout = -1;
 	};
-
+	
 	exports._unrefActive = exports.active = function(item) {
 	  clearTimeout(item._idleTimeoutId);
-
+	
 	  var msecs = item._idleTimeout;
 	  if (msecs >= 0) {
 	    item._idleTimeoutId = setTimeout(function onTimeout() {
@@ -2877,14 +2338,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, msecs);
 	  }
 	};
-
+	
 	// That's not how node.js implements it but the exposed api is the same.
 	exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
 	  var id = nextImmediateId++;
 	  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
-
+	
 	  immediateIds[id] = true;
-
+	
 	  nextTick(function onNextTick() {
 	    if (immediateIds[id]) {
 	      // fn.call() is faster so we optimize for the common use-case
@@ -2898,10 +2359,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      exports.clearImmediate(id);
 	    }
 	  });
-
+	
 	  return id;
 	};
-
+	
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
@@ -2912,17 +2373,17 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	// shim for using process in browser
-
+	
 	var process = module.exports = {};
-
+	
 	// cached from whatever global is present so that test runners that stub it
 	// don't break things.  But we need to wrap it in a try catch in case it is
 	// wrapped in strict mode code which doesn't define any globals.  It's inside a
 	// function because try/catches deoptimize in certain engines.
-
+	
 	var cachedSetTimeout;
 	var cachedClearTimeout;
-
+	
 	(function () {
 	  try {
 	    cachedSetTimeout = setTimeout;
@@ -2943,7 +2404,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var draining = false;
 	var currentQueue;
 	var queueIndex = -1;
-
+	
 	function cleanUpNextTick() {
 	    if (!draining || !currentQueue) {
 	        return;
@@ -2958,14 +2419,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        drainQueue();
 	    }
 	}
-
+	
 	function drainQueue() {
 	    if (draining) {
 	        return;
 	    }
 	    var timeout = cachedSetTimeout.call(null, cleanUpNextTick);
 	    draining = true;
-
+	
 	    var len = queue.length;
 	    while(len) {
 	        currentQueue = queue;
@@ -2982,7 +2443,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    draining = false;
 	    cachedClearTimeout.call(null, timeout);
 	}
-
+	
 	process.nextTick = function (fun) {
 	    var args = new Array(arguments.length - 1);
 	    if (arguments.length > 1) {
@@ -2995,7 +2456,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        cachedSetTimeout.call(null, drainQueue, 0);
 	    }
 	};
-
+	
 	// v8 likes predictible objects
 	function Item(fun, array) {
 	    this.fun = fun;
@@ -3010,9 +2471,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	process.argv = [];
 	process.version = ''; // empty string to avoid regexp issues
 	process.versions = {};
-
+	
 	function noop() {}
-
+	
 	process.on = noop;
 	process.addListener = noop;
 	process.once = noop;
@@ -3020,11 +2481,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	process.removeListener = noop;
 	process.removeAllListeners = noop;
 	process.emit = noop;
-
+	
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
 	};
-
+	
 	process.cwd = function () { return '/' };
 	process.chdir = function (dir) {
 	    throw new Error('process.chdir is not supported');
@@ -3037,46 +2498,46 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-
+	
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
-
+	
 	var _createStore = __webpack_require__(52);
-
+	
 	var _createStore2 = _interopRequireDefault(_createStore);
-
+	
 	var _combineReducers = __webpack_require__(60);
-
+	
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
-
+	
 	var _bindActionCreators = __webpack_require__(62);
-
+	
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
-
+	
 	var _applyMiddleware = __webpack_require__(63);
-
+	
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
-
+	
 	var _compose = __webpack_require__(64);
-
+	
 	var _compose2 = _interopRequireDefault(_compose);
-
+	
 	var _warning = __webpack_require__(61);
-
+	
 	var _warning2 = _interopRequireDefault(_warning);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
+	
 	/*
 	* This is a dummy function to check if the function name has been altered by minification.
 	* If the function has been minified and NODE_ENV !== 'production', warn the user.
 	*/
 	function isCrushed() {}
-
+	
 	if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
 	  (0, _warning2["default"])('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
 	}
-
+	
 	exports.createStore = _createStore2["default"];
 	exports.combineReducers = _combineReducers2["default"];
 	exports.bindActionCreators = _bindActionCreators2["default"];
@@ -3089,21 +2550,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	exports.__esModule = true;
 	exports.ActionTypes = undefined;
 	exports["default"] = createStore;
-
+	
 	var _isPlainObject = __webpack_require__(53);
-
+	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
-
+	
 	var _symbolObservable = __webpack_require__(58);
-
+	
 	var _symbolObservable2 = _interopRequireDefault(_symbolObservable);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
+	
 	/**
 	 * These are private action types reserved by Redux.
 	 * For any unknown actions, you must return the current state.
@@ -3113,7 +2574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ActionTypes = exports.ActionTypes = {
 	  INIT: '@@redux/INIT'
 	};
-
+	
 	/**
 	 * Creates a Redux store that holds the state tree.
 	 * The only way to change the data in the store is to call `dispatch()` on it.
@@ -3141,36 +2602,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function createStore(reducer, initialState, enhancer) {
 	  var _ref2;
-
+	
 	  if (typeof initialState === 'function' && typeof enhancer === 'undefined') {
 	    enhancer = initialState;
 	    initialState = undefined;
 	  }
-
+	
 	  if (typeof enhancer !== 'undefined') {
 	    if (typeof enhancer !== 'function') {
 	      throw new Error('Expected the enhancer to be a function.');
 	    }
-
+	
 	    return enhancer(createStore)(reducer, initialState);
 	  }
-
+	
 	  if (typeof reducer !== 'function') {
 	    throw new Error('Expected the reducer to be a function.');
 	  }
-
+	
 	  var currentReducer = reducer;
 	  var currentState = initialState;
 	  var currentListeners = [];
 	  var nextListeners = currentListeners;
 	  var isDispatching = false;
-
+	
 	  function ensureCanMutateNextListeners() {
 	    if (nextListeners === currentListeners) {
 	      nextListeners = currentListeners.slice();
 	    }
 	  }
-
+	
 	  /**
 	   * Reads the state tree managed by the store.
 	   *
@@ -3179,7 +2640,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function getState() {
 	    return currentState;
 	  }
-
+	
 	  /**
 	   * Adds a change listener. It will be called any time an action is dispatched,
 	   * and some part of the state tree may potentially have changed. You may then
@@ -3207,25 +2668,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (typeof listener !== 'function') {
 	      throw new Error('Expected listener to be a function.');
 	    }
-
+	
 	    var isSubscribed = true;
-
+	
 	    ensureCanMutateNextListeners();
 	    nextListeners.push(listener);
-
+	
 	    return function unsubscribe() {
 	      if (!isSubscribed) {
 	        return;
 	      }
-
+	
 	      isSubscribed = false;
-
+	
 	      ensureCanMutateNextListeners();
 	      var index = nextListeners.indexOf(listener);
 	      nextListeners.splice(index, 1);
 	    };
 	  }
-
+	
 	  /**
 	   * Dispatches an action. It is the only way to trigger a state change.
 	   *
@@ -3255,30 +2716,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!(0, _isPlainObject2["default"])(action)) {
 	      throw new Error('Actions must be plain objects. ' + 'Use custom middleware for async actions.');
 	    }
-
+	
 	    if (typeof action.type === 'undefined') {
 	      throw new Error('Actions may not have an undefined "type" property. ' + 'Have you misspelled a constant?');
 	    }
-
+	
 	    if (isDispatching) {
 	      throw new Error('Reducers may not dispatch actions.');
 	    }
-
+	
 	    try {
 	      isDispatching = true;
 	      currentState = currentReducer(currentState, action);
 	    } finally {
 	      isDispatching = false;
 	    }
-
+	
 	    var listeners = currentListeners = nextListeners;
 	    for (var i = 0; i < listeners.length; i++) {
 	      listeners[i]();
 	    }
-
+	
 	    return action;
 	  }
-
+	
 	  /**
 	   * Replaces the reducer currently used by the store to calculate the state.
 	   *
@@ -3293,11 +2754,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (typeof nextReducer !== 'function') {
 	      throw new Error('Expected the nextReducer to be a function.');
 	    }
-
+	
 	    currentReducer = nextReducer;
 	    dispatch({ type: ActionTypes.INIT });
 	  }
-
+	
 	  /**
 	   * Interoperability point for observable/reactive libraries.
 	   * @returns {observable} A minimal observable of state changes.
@@ -3306,7 +2767,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  function observable() {
 	    var _ref;
-
+	
 	    var outerSubscribe = subscribe;
 	    return _ref = {
 	      /**
@@ -3317,18 +2778,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	       * be used to unsubscribe the observable from the store, and prevent further
 	       * emission of values from the observable.
 	       */
-
+	
 	      subscribe: function subscribe(observer) {
 	        if (typeof observer !== 'object') {
 	          throw new TypeError('Expected the observer to be an object.');
 	        }
-
+	
 	        function observeState() {
 	          if (observer.next) {
 	            observer.next(getState());
 	          }
 	        }
-
+	
 	        observeState();
 	        var unsubscribe = outerSubscribe(observeState);
 	        return { unsubscribe: unsubscribe };
@@ -3337,12 +2798,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this;
 	    }, _ref;
 	  }
-
+	
 	  // When a store is created, an "INIT" action is dispatched so that every
 	  // reducer returns their initial state. This effectively populates
 	  // the initial state tree.
 	  dispatch({ type: ActionTypes.INIT });
-
+	
 	  return _ref2 = {
 	    dispatch: dispatch,
 	    subscribe: subscribe,
@@ -3358,29 +2819,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	var getPrototype = __webpack_require__(54),
 	    isHostObject = __webpack_require__(56),
 	    isObjectLike = __webpack_require__(57);
-
+	
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
-
+	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
-
+	
 	/** Used to resolve the decompiled source of functions. */
 	var funcToString = Function.prototype.toString;
-
+	
 	/** Used to check objects for own properties. */
 	var hasOwnProperty = objectProto.hasOwnProperty;
-
+	
 	/** Used to infer the `Object` constructor. */
 	var objectCtorString = funcToString.call(Object);
-
+	
 	/**
 	 * Used to resolve the
 	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
 	var objectToString = objectProto.toString;
-
+	
 	/**
 	 * Checks if `value` is a plain object, that is, an object created by the
 	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
@@ -3423,7 +2884,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return (typeof Ctor == 'function' &&
 	    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
 	}
-
+	
 	module.exports = isPlainObject;
 
 
@@ -3432,10 +2893,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var overArg = __webpack_require__(55);
-
+	
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeGetPrototype = Object.getPrototypeOf;
-
+	
 	/**
 	 * Gets the `[[Prototype]]` of `value`.
 	 *
@@ -3444,7 +2905,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns {null|Object} Returns the `[[Prototype]]`.
 	 */
 	var getPrototype = overArg(nativeGetPrototype, Object);
-
+	
 	module.exports = getPrototype;
 
 
@@ -3465,7 +2926,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return func(transform(arg));
 	  };
 	}
-
+	
 	module.exports = overArg;
 
 
@@ -3491,7 +2952,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  return result;
 	}
-
+	
 	module.exports = isHostObject;
 
 
@@ -3526,7 +2987,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function isObjectLike(value) {
 	  return !!value && typeof value == 'object';
 	}
-
+	
 	module.exports = isObjectLike;
 
 
@@ -3536,9 +2997,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* WEBPACK VAR INJECTION */(function(global) {/* global window */
 	'use strict';
-
+	
 	module.exports = __webpack_require__(59)(global || window || this);
-
+	
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
@@ -3546,11 +3007,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	'use strict';
-
+	
 	module.exports = function symbolObservablePonyfill(root) {
 		var result;
 		var Symbol = root.Symbol;
-
+	
 		if (typeof Symbol === 'function') {
 			if (Symbol.observable) {
 				result = Symbol.observable;
@@ -3561,7 +3022,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		} else {
 			result = '@@observable';
 		}
-
+	
 		return result;
 	};
 
@@ -3571,66 +3032,66 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-
+	
 	exports.__esModule = true;
 	exports["default"] = combineReducers;
-
+	
 	var _createStore = __webpack_require__(52);
-
+	
 	var _isPlainObject = __webpack_require__(53);
-
+	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
-
+	
 	var _warning = __webpack_require__(61);
-
+	
 	var _warning2 = _interopRequireDefault(_warning);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
+	
 	function getUndefinedStateErrorMessage(key, action) {
 	  var actionType = action && action.type;
 	  var actionName = actionType && '"' + actionType.toString() + '"' || 'an action';
-
+	
 	  return 'Given action ' + actionName + ', reducer "' + key + '" returned undefined. ' + 'To ignore an action, you must explicitly return the previous state.';
 	}
-
+	
 	function getUnexpectedStateShapeWarningMessage(inputState, reducers, action) {
 	  var reducerKeys = Object.keys(reducers);
 	  var argumentName = action && action.type === _createStore.ActionTypes.INIT ? 'initialState argument passed to createStore' : 'previous state received by the reducer';
-
+	
 	  if (reducerKeys.length === 0) {
 	    return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
 	  }
-
+	
 	  if (!(0, _isPlainObject2["default"])(inputState)) {
 	    return 'The ' + argumentName + ' has unexpected type of "' + {}.toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + '". Expected argument to be an object with the following ' + ('keys: "' + reducerKeys.join('", "') + '"');
 	  }
-
+	
 	  var unexpectedKeys = Object.keys(inputState).filter(function (key) {
 	    return !reducers.hasOwnProperty(key);
 	  });
-
+	
 	  if (unexpectedKeys.length > 0) {
 	    return 'Unexpected ' + (unexpectedKeys.length > 1 ? 'keys' : 'key') + ' ' + ('"' + unexpectedKeys.join('", "') + '" found in ' + argumentName + '. ') + 'Expected to find one of the known reducer keys instead: ' + ('"' + reducerKeys.join('", "') + '". Unexpected keys will be ignored.');
 	  }
 	}
-
+	
 	function assertReducerSanity(reducers) {
 	  Object.keys(reducers).forEach(function (key) {
 	    var reducer = reducers[key];
 	    var initialState = reducer(undefined, { type: _createStore.ActionTypes.INIT });
-
+	
 	    if (typeof initialState === 'undefined') {
 	      throw new Error('Reducer "' + key + '" returned undefined during initialization. ' + 'If the state passed to the reducer is undefined, you must ' + 'explicitly return the initial state. The initial state may ' + 'not be undefined.');
 	    }
-
+	
 	    var type = '@@redux/PROBE_UNKNOWN_ACTION_' + Math.random().toString(36).substring(7).split('').join('.');
 	    if (typeof reducer(undefined, { type: type }) === 'undefined') {
 	      throw new Error('Reducer "' + key + '" returned undefined when probed with a random type. ' + ('Don\'t try to handle ' + _createStore.ActionTypes.INIT + ' or other actions in "redux/*" ') + 'namespace. They are considered private. Instead, you must return the ' + 'current state for any unknown actions, unless it is undefined, ' + 'in which case you must return the initial state, regardless of the ' + 'action type. The initial state may not be undefined.');
 	    }
 	  });
 	}
-
+	
 	/**
 	 * Turns an object whose values are different reducer functions, into a single
 	 * reducer function. It will call every child reducer, and gather their results
@@ -3657,29 +3118,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 	  var finalReducerKeys = Object.keys(finalReducers);
-
+	
 	  var sanityError;
 	  try {
 	    assertReducerSanity(finalReducers);
 	  } catch (e) {
 	    sanityError = e;
 	  }
-
+	
 	  return function combination() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	    var action = arguments[1];
-
+	
 	    if (sanityError) {
 	      throw sanityError;
 	    }
-
+	
 	    if (process.env.NODE_ENV !== 'production') {
 	      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action);
 	      if (warningMessage) {
 	        (0, _warning2["default"])(warningMessage);
 	      }
 	    }
-
+	
 	    var hasChanged = false;
 	    var nextState = {};
 	    for (var i = 0; i < finalReducerKeys.length; i++) {
@@ -3704,7 +3165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	'use strict';
-
+	
 	exports.__esModule = true;
 	exports["default"] = warning;
 	/**
@@ -3734,7 +3195,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	'use strict';
-
+	
 	exports.__esModule = true;
 	exports["default"] = bindActionCreators;
 	function bindActionCreator(actionCreator, dispatch) {
@@ -3742,7 +3203,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return dispatch(actionCreator.apply(undefined, arguments));
 	  };
 	}
-
+	
 	/**
 	 * Turns an object whose values are action creators, into an object with the
 	 * same keys, but with every function wrapped into a `dispatch` call so they
@@ -3768,11 +3229,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (typeof actionCreators === 'function') {
 	    return bindActionCreator(actionCreators, dispatch);
 	  }
-
+	
 	  if (typeof actionCreators !== 'object' || actionCreators === null) {
 	    throw new Error('bindActionCreators expected an object or a function, instead received ' + (actionCreators === null ? 'null' : typeof actionCreators) + '. ' + 'Did you write "import ActionCreators from" instead of "import * as ActionCreators from"?');
 	  }
-
+	
 	  var keys = Object.keys(actionCreators);
 	  var boundActionCreators = {};
 	  for (var i = 0; i < keys.length; i++) {
@@ -3790,19 +3251,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	exports.__esModule = true;
-
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
+	
 	exports["default"] = applyMiddleware;
-
+	
 	var _compose = __webpack_require__(64);
-
+	
 	var _compose2 = _interopRequireDefault(_compose);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
+	
 	/**
 	 * Creates a store enhancer that applies middleware to the dispatch method
 	 * of the Redux store. This is handy for a variety of tasks, such as expressing
@@ -3823,13 +3284,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  for (var _len = arguments.length, middlewares = Array(_len), _key = 0; _key < _len; _key++) {
 	    middlewares[_key] = arguments[_key];
 	  }
-
+	
 	  return function (createStore) {
 	    return function (reducer, initialState, enhancer) {
 	      var store = createStore(reducer, initialState, enhancer);
 	      var _dispatch = store.dispatch;
 	      var chain = [];
-
+	
 	      var middlewareAPI = {
 	        getState: store.getState,
 	        dispatch: function dispatch(action) {
@@ -3840,7 +3301,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return middleware(middlewareAPI);
 	      });
 	      _dispatch = _compose2["default"].apply(undefined, chain)(store.dispatch);
-
+	
 	      return _extends({}, store, {
 	        dispatch: _dispatch
 	      });
@@ -3853,7 +3314,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	exports.__esModule = true;
 	exports["default"] = compose;
 	/**
@@ -3866,12 +3327,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * from right to left. For example, compose(f, g, h) is identical to doing
 	 * (...args) => f(g(h(...args))).
 	 */
-
+	
 	function compose() {
 	  for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
 	    funcs[_key] = arguments[_key];
 	  }
-
+	
 	  if (funcs.length === 0) {
 	    return function (arg) {
 	      return arg;
@@ -3888,7 +3349,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      };
 	    }();
-
+	
 	    if (typeof _ret === "object") return _ret.v;
 	  }
 	}
@@ -3898,93 +3359,93 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _getPrototypeOf = __webpack_require__(66);
-
+	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
+	
 	var _classCallCheck2 = __webpack_require__(42);
-
+	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
+	
 	var _createClass2 = __webpack_require__(43);
-
+	
 	var _createClass3 = _interopRequireDefault(_createClass2);
-
+	
 	var _possibleConstructorReturn2 = __webpack_require__(71);
-
+	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
+	
 	var _inherits2 = __webpack_require__(106);
-
+	
 	var _inherits3 = _interopRequireDefault(_inherits2);
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _constants = __webpack_require__(114);
-
+	
 	var _constants2 = _interopRequireDefault(_constants);
-
+	
 	var _hammerjs = __webpack_require__(115);
-
+	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
-
+	
 	var _propagatingHammerjs = __webpack_require__(116);
-
+	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
-
+	
 	var _reduxUndo = __webpack_require__(117);
-
+	
 	var _curveEditorRight = __webpack_require__(118);
-
+	
 	var _curveEditorRight2 = _interopRequireDefault(_curveEditorRight);
-
+	
 	var _curveEditorLeft = __webpack_require__(153);
-
+	
 	var _curveEditorLeft2 = _interopRequireDefault(_curveEditorLeft);
-
+	
 	var _codePanel = __webpack_require__(167);
-
+	
 	var _codePanel2 = _interopRequireDefault(_codePanel);
-
+	
 	var _icons = __webpack_require__(171);
-
+	
 	var _icons2 = _interopRequireDefault(_icons);
-
+	
 	var _resizeMod = __webpack_require__(136);
-
+	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
-
+	
 	var _addPointerDown = __webpack_require__(128);
-
+	
 	var _addPointerDown2 = _interopRequireDefault(_addPointerDown);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	__webpack_require__(172);
-
+	
 	var CurveEditor = function (_Component) {
 	  (0, _inherits3.default)(CurveEditor, _Component);
-
+	
 	  function CurveEditor() {
 	    (0, _classCallCheck3.default)(this, CurveEditor);
 	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(CurveEditor).apply(this, arguments));
 	  }
-
+	
 	  (0, _createClass3.default)(CurveEditor, [{
 	    key: 'render',
 	    value: function render() {
 	      var CLASSES = __webpack_require__(152);
-
+	
 	      var store = this.context.store;
 	      var state = store.getState();
 	      var style = this._getStyle(state);
 	      var p = this.props;
-
+	
 	      this._state = state;
 	      return (0, _preact.h)(
 	        'div',
@@ -4005,18 +3466,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var temp_bottom = resize.temp_bottom;
 	      var temp_right = resize.temp_right;
 	      var translate = resize.translate;
-
-
+	
+	
 	      temp_top += resize.top;
 	      temp_bottom += resize.bottom;
 	      temp_right += resize.right;
-
+	
 	      var height = 'height: ' + (Y_SIZE - temp_top + temp_bottom) + 'px',
 	          width = 'width: ' + (X_SIZE + temp_right) + 'px',
 	          x = resize.x + resize.tempX,
 	          y = resize.y + resize.tempY,
 	          transform = 'transform: translate(' + x + 'px, ' + (y + temp_top) + 'px)';
-
+	
 	      return '' + mojs.h.prefix.css + transform + '; ' + transform + '; ' + width + '; ' + height + ';';
 	    }
 	  }, {
@@ -4025,7 +3486,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var store = this.context.store;
 	      var el = this.base.querySelector('#js-left-panel');
 	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(el));
-
+	
 	      mc.add(new _hammerjs2.default.Pan({ threshold: 0 }));
 	      mc.on('pan', function (e) {
 	        var x = e.deltaX,
@@ -4037,7 +3498,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        store.dispatch({ type: 'EDITOR_TRANSLATE_END', data: { x: x, y: y } });
 	      });
 	      // .on('tap', (e) => { store.dispatch({ type: 'POINT_DESELECT_ALL' }); });
-
+	
 	      this._addKeyUp();
 	      this._subscribeFocus();
 	      store.subscribe(this.forceUpdate.bind(this));
@@ -4046,7 +3507,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_subscribeFocus',
 	    value: function _subscribeFocus() {
 	      var _this2 = this;
-
+	
 	      (0, _addPointerDown2.default)(this.base, function (e) {
 	        e._mojsCurveEditorName = _this2._state.points.present.name;
 	      });
@@ -4060,7 +3521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_onKeyUp',
 	    value: function _onKeyUp(e) {
 	      var store = this.context.store;
-
+	
 	      if (!e.altKey) {
 	        return;
 	      }
@@ -4085,7 +3546,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	  return CurveEditor;
 	}(_preact.Component);
-
+	
 	exports.default = CurveEditor;
 
 /***/ },
@@ -4108,7 +3569,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// 19.1.2.9 Object.getPrototypeOf(O)
 	var toObject        = __webpack_require__(41)
 	  , $getPrototypeOf = __webpack_require__(69);
-
+	
 	__webpack_require__(70)('getPrototypeOf', function(){
 	  return function getPrototypeOf(it){
 	    return $getPrototypeOf(toObject(it));
@@ -4124,7 +3585,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , toObject    = __webpack_require__(41)
 	  , IE_PROTO    = __webpack_require__(35)('IE_PROTO')
 	  , ObjectProto = Object.prototype;
-
+	
 	module.exports = Object.getPrototypeOf || function(O){
 	  O = toObject(O);
 	  if(has(O, IE_PROTO))return O[IE_PROTO];
@@ -4153,20 +3614,20 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-
+	
 	exports.__esModule = true;
-
+	
 	var _typeof2 = __webpack_require__(72);
-
+	
 	var _typeof3 = _interopRequireDefault(_typeof2);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = function (self, call) {
 	  if (!self) {
 	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 	  }
-
+	
 	  return call && ((typeof call === "undefined" ? "undefined" : (0, _typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
 	};
 
@@ -4175,21 +3636,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-
+	
 	exports.__esModule = true;
-
+	
 	var _iterator = __webpack_require__(73);
-
+	
 	var _iterator2 = _interopRequireDefault(_iterator);
-
+	
 	var _symbol = __webpack_require__(92);
-
+	
 	var _symbol2 = _interopRequireDefault(_symbol);
-
+	
 	var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default ? "symbol" : typeof obj; };
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.default) === "symbol" ? function (obj) {
 	  return typeof obj === "undefined" ? "undefined" : _typeof(obj);
 	} : function (obj) {
@@ -4216,7 +3677,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	var $at  = __webpack_require__(76)(true);
-
+	
 	// 21.1.3.27 String.prototype[@@iterator]()
 	__webpack_require__(77)(String, 'String', function(iterated){
 	  this._t = String(iterated); // target
@@ -4273,9 +3734,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , FF_ITERATOR    = '@@iterator'
 	  , KEYS           = 'keys'
 	  , VALUES         = 'values';
-
+	
 	var returnThis = function(){ return this; };
-
+	
 	module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
 	  $iterCreate(Constructor, NAME, next);
 	  var getMethod = function(kind){
@@ -4356,10 +3817,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , descriptor     = __webpack_require__(22)
 	  , setToStringTag = __webpack_require__(85)
 	  , IteratorPrototype = {};
-
+	
 	// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
 	__webpack_require__(13)(IteratorPrototype, __webpack_require__(86)('iterator'), function(){ return this; });
-
+	
 	module.exports = function(Constructor, NAME, next){
 	  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
 	  setToStringTag(Constructor, NAME + ' Iterator');
@@ -4376,7 +3837,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , IE_PROTO    = __webpack_require__(35)('IE_PROTO')
 	  , Empty       = function(){ /* empty */ }
 	  , PROTOTYPE   = 'prototype';
-
+	
 	// Create object with fake `null` prototype: use iframe Object with cleared prototype
 	var createDict = function(){
 	  // Thrash, waste and sodomy: IE GC bug
@@ -4398,7 +3859,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
 	  return createDict();
 	};
-
+	
 	module.exports = Object.create || function create(O, Properties){
 	  var result;
 	  if(O !== null){
@@ -4419,7 +3880,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var dP       = __webpack_require__(14)
 	  , anObject = __webpack_require__(15)
 	  , getKeys  = __webpack_require__(24);
-
+	
 	module.exports = __webpack_require__(18) ? Object.defineProperties : function defineProperties(O, Properties){
 	  anObject(O);
 	  var keys   = getKeys(Properties)
@@ -4443,7 +3904,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var def = __webpack_require__(14).f
 	  , has = __webpack_require__(26)
 	  , TAG = __webpack_require__(86)('toStringTag');
-
+	
 	module.exports = function(it, tag, stat){
 	  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 	};
@@ -4456,12 +3917,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , uid        = __webpack_require__(37)
 	  , Symbol     = __webpack_require__(10).Symbol
 	  , USE_SYMBOL = typeof Symbol == 'function';
-
+	
 	var $exports = module.exports = function(name){
 	  return store[name] || (store[name] =
 	    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
 	};
-
+	
 	$exports.store = store;
 
 /***/ },
@@ -4473,7 +3934,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , hide          = __webpack_require__(13)
 	  , Iterators     = __webpack_require__(80)
 	  , TO_STRING_TAG = __webpack_require__(86)('toStringTag');
-
+	
 	for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
 	  var NAME       = collections[i]
 	    , Collection = global[NAME]
@@ -4491,7 +3952,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , step             = __webpack_require__(90)
 	  , Iterators        = __webpack_require__(80)
 	  , toIObject        = __webpack_require__(27);
-
+	
 	// 22.1.3.4 Array.prototype.entries()
 	// 22.1.3.13 Array.prototype.keys()
 	// 22.1.3.29 Array.prototype.values()
@@ -4513,10 +3974,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if(kind == 'values')return step(0, O[index]);
 	  return step(0, [index, O[index]]);
 	}, 'values');
-
+	
 	// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
 	Iterators.Arguments = Iterators.Array;
-
+	
 	addToUnscopables('keys');
 	addToUnscopables('values');
 	addToUnscopables('entries');
@@ -4606,7 +4067,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , QObject        = global.QObject;
 	// Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 	var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
-
+	
 	// fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
 	var setSymbolDesc = DESCRIPTORS && $fails(function(){
 	  return _create(dP({}, 'a', {
@@ -4618,19 +4079,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	  dP(it, key, D);
 	  if(protoDesc && it !== ObjectProto)dP(ObjectProto, key, protoDesc);
 	} : dP;
-
+	
 	var wrap = function(tag){
 	  var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
 	  sym._k = tag;
 	  return sym;
 	};
-
+	
 	var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
 	  return typeof it == 'symbol';
 	} : function(it){
 	  return it instanceof $Symbol;
 	};
-
+	
 	var $defineProperty = function defineProperty(it, key, D){
 	  if(it === ObjectProto)$defineProperty(OPSymbols, key, D);
 	  anObject(it);
@@ -4690,7 +4151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if(has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true))result.push(AllSymbols[key]);
 	  } return result;
 	};
-
+	
 	// 19.4.1.1 Symbol([description])
 	if(!USE_NATIVE){
 	  $Symbol = function Symbol(){
@@ -4707,31 +4168,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	  redefine($Symbol[PROTOTYPE], 'toString', function toString(){
 	    return this._k;
 	  });
-
+	
 	  $GOPD.f = $getOwnPropertyDescriptor;
 	  $DP.f   = $defineProperty;
 	  __webpack_require__(101).f = gOPNExt.f = $getOwnPropertyNames;
 	  __webpack_require__(40).f  = $propertyIsEnumerable;
 	  __webpack_require__(39).f = $getOwnPropertySymbols;
-
+	
 	  if(DESCRIPTORS && !__webpack_require__(78)){
 	    redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
 	  }
-
+	
 	  wksExt.f = function(name){
 	    return wrap(wks(name));
 	  }
 	}
-
+	
 	$export($export.G + $export.W + $export.F * !USE_NATIVE, {Symbol: $Symbol});
-
+	
 	for(var symbols = (
 	  // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
 	  'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
 	).split(','), i = 0; symbols.length > i; )wks(symbols[i++]);
-
+	
 	for(var symbols = $keys(wks.store), i = 0; symbols.length > i; )wksDefine(symbols[i++]);
-
+	
 	$export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
 	  // 19.4.2.1 Symbol.for(key)
 	  'for': function(key){
@@ -4747,7 +4208,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  useSetter: function(){ setter = true; },
 	  useSimple: function(){ setter = false; }
 	});
-
+	
 	$export($export.S + $export.F * !USE_NATIVE, 'Object', {
 	  // 19.1.2.2 Object.create(O [, Properties])
 	  create: $create,
@@ -4762,7 +4223,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // 19.1.2.8 Object.getOwnPropertySymbols(O)
 	  getOwnPropertySymbols: $getOwnPropertySymbols
 	});
-
+	
 	// 24.3.2 JSON.stringify(value [, replacer [, space]])
 	$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function(){
 	  var S = $Symbol();
@@ -4787,7 +4248,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _stringify.apply($JSON, args);
 	  }
 	});
-
+	
 	// 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
 	$Symbol[PROTOTYPE][TO_PRIMITIVE] || __webpack_require__(13)($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
 	// 19.4.3.5 Symbol.prototype[@@toStringTag]
@@ -4922,10 +4383,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var toIObject = __webpack_require__(27)
 	  , gOPN      = __webpack_require__(101).f
 	  , toString  = {}.toString;
-
+	
 	var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
 	  ? Object.getOwnPropertyNames(window) : [];
-
+	
 	var getWindowNames = function(it){
 	  try {
 	    return gOPN(it);
@@ -4933,7 +4394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return windowNames.slice();
 	  }
 	};
-
+	
 	module.exports.f = function getOwnPropertyNames(it){
 	  return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 	};
@@ -4946,7 +4407,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 	var $keys      = __webpack_require__(25)
 	  , hiddenKeys = __webpack_require__(38).concat('length', 'prototype');
-
+	
 	exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
 	  return $keys(O, hiddenKeys);
 	};
@@ -4962,7 +4423,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , has            = __webpack_require__(26)
 	  , IE8_DOM_DEFINE = __webpack_require__(17)
 	  , gOPD           = Object.getOwnPropertyDescriptor;
-
+	
 	exports.f = __webpack_require__(18) ? gOPD : function getOwnPropertyDescriptor(O, P){
 	  O = toIObject(O);
 	  P = toPrimitive(P, true);
@@ -4976,7 +4437,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 103 */
 /***/ function(module, exports) {
 
-	
+
 
 /***/ },
 /* 104 */
@@ -4995,28 +4456,28 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-
+	
 	exports.__esModule = true;
-
+	
 	var _setPrototypeOf = __webpack_require__(107);
-
+	
 	var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);
-
+	
 	var _create = __webpack_require__(111);
-
+	
 	var _create2 = _interopRequireDefault(_create);
-
+	
 	var _typeof2 = __webpack_require__(72);
-
+	
 	var _typeof3 = _interopRequireDefault(_typeof2);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = function (subClass, superClass) {
 	  if (typeof superClass !== "function" && superClass !== null) {
 	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : (0, _typeof3.default)(superClass)));
 	  }
-
+	
 	  subClass.prototype = (0, _create2.default)(superClass && superClass.prototype, {
 	    constructor: {
 	      value: subClass,
@@ -5108,11 +4569,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var CURVE_SIZE = 350;
 	exports.default = {
 	  CURVE_SIZE: CURVE_SIZE,
@@ -5131,16 +4592,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Licensed under the MIT license */
 	(function(window, document, exportName, undefined) {
 	  'use strict';
-
+	
 	var VENDOR_PREFIXES = ['', 'webkit', 'Moz', 'MS', 'ms', 'o'];
 	var TEST_ELEMENT = document.createElement('div');
-
+	
 	var TYPE_FUNCTION = 'function';
-
+	
 	var round = Math.round;
 	var abs = Math.abs;
 	var now = Date.now;
-
+	
 	/**
 	 * set a timeout with a given scope
 	 * @param {Function} fn
@@ -5151,7 +4612,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function setTimeoutContext(fn, timeout, context) {
 	    return setTimeout(bindFn(fn, context), timeout);
 	}
-
+	
 	/**
 	 * if the argument is an array, we want to execute the fn on each entry
 	 * if it aint an array we don't want to do a thing.
@@ -5168,7 +4629,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return false;
 	}
-
+	
 	/**
 	 * walk objects and arrays
 	 * @param {Object} obj
@@ -5177,11 +4638,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function each(obj, iterator, context) {
 	    var i;
-
+	
 	    if (!obj) {
 	        return;
 	    }
-
+	
 	    if (obj.forEach) {
 	        obj.forEach(iterator, context);
 	    } else if (obj.length !== undefined) {
@@ -5196,7 +4657,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 	}
-
+	
 	/**
 	 * wrap a method with a deprecation warning and stack trace
 	 * @param {Function} method
@@ -5211,7 +4672,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var stack = e && e.stack ? e.stack.replace(/^[^\(]+?[\n$]/gm, '')
 	            .replace(/^\s+at\s+/gm, '')
 	            .replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@') : 'Unknown Stack Trace';
-
+	
 	        var log = window.console && (window.console.warn || window.console.log);
 	        if (log) {
 	            log.call(window.console, deprecationMessage, stack);
@@ -5219,7 +4680,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return method.apply(this, arguments);
 	    };
 	}
-
+	
 	/**
 	 * extend object.
 	 * means that properties in dest will be overwritten by the ones in src.
@@ -5233,7 +4694,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (target === undefined || target === null) {
 	            throw new TypeError('Cannot convert undefined or null to object');
 	        }
-
+	
 	        var output = Object(target);
 	        for (var index = 1; index < arguments.length; index++) {
 	            var source = arguments[index];
@@ -5250,7 +4711,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	} else {
 	    assign = Object.assign;
 	}
-
+	
 	/**
 	 * extend object.
 	 * means that properties in dest will be overwritten by the ones in src.
@@ -5270,7 +4731,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return dest;
 	}, 'extend', 'Use `assign`.');
-
+	
 	/**
 	 * merge the values from src in the dest.
 	 * means that properties that exist in dest will not be overwritten by src
@@ -5281,7 +4742,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var merge = deprecate(function merge(dest, src) {
 	    return extend(dest, src, true);
 	}, 'merge', 'Use `assign`.');
-
+	
 	/**
 	 * simple class inheritance
 	 * @param {Function} child
@@ -5291,16 +4752,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	function inherit(child, base, properties) {
 	    var baseP = base.prototype,
 	        childP;
-
+	
 	    childP = child.prototype = Object.create(baseP);
 	    childP.constructor = child;
 	    childP._super = baseP;
-
+	
 	    if (properties) {
 	        assign(childP, properties);
 	    }
 	}
-
+	
 	/**
 	 * simple function bind
 	 * @param {Function} fn
@@ -5312,7 +4773,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return fn.apply(context, arguments);
 	    };
 	}
-
+	
 	/**
 	 * let a boolean value also be a function that must return a boolean
 	 * this first item in args will be used as the context
@@ -5326,7 +4787,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return val;
 	}
-
+	
 	/**
 	 * use the val2 when val1 is undefined
 	 * @param {*} val1
@@ -5336,7 +4797,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function ifUndefined(val1, val2) {
 	    return (val1 === undefined) ? val2 : val1;
 	}
-
+	
 	/**
 	 * addEventListener with multiple events at once
 	 * @param {EventTarget} target
@@ -5348,7 +4809,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        target.addEventListener(type, handler, false);
 	    });
 	}
-
+	
 	/**
 	 * removeEventListener with multiple events at once
 	 * @param {EventTarget} target
@@ -5360,7 +4821,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        target.removeEventListener(type, handler, false);
 	    });
 	}
-
+	
 	/**
 	 * find if a node is in the given parent
 	 * @method hasParent
@@ -5377,7 +4838,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return false;
 	}
-
+	
 	/**
 	 * small indexOf wrapper
 	 * @param {String} str
@@ -5387,7 +4848,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function inStr(str, find) {
 	    return str.indexOf(find) > -1;
 	}
-
+	
 	/**
 	 * split string on whitespace
 	 * @param {String} str
@@ -5396,7 +4857,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function splitStr(str) {
 	    return str.trim().split(/\s+/g);
 	}
-
+	
 	/**
 	 * find if a array contains the object using indexOf or a simple polyFill
 	 * @param {Array} src
@@ -5418,7 +4879,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return -1;
 	    }
 	}
-
+	
 	/**
 	 * convert array-like objects to real arrays
 	 * @param {Object} obj
@@ -5427,7 +4888,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function toArray(obj) {
 	    return Array.prototype.slice.call(obj, 0);
 	}
-
+	
 	/**
 	 * unique array with objects based on a key (like 'id') or just by the array's value
 	 * @param {Array} src [{id:1},{id:2},{id:1}]
@@ -5439,7 +4900,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var results = [];
 	    var values = [];
 	    var i = 0;
-
+	
 	    while (i < src.length) {
 	        var val = key ? src[i][key] : src[i];
 	        if (inArray(values, val) < 0) {
@@ -5448,7 +4909,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        values[i] = val;
 	        i++;
 	    }
-
+	
 	    if (sort) {
 	        if (!key) {
 	            results = results.sort();
@@ -5458,10 +4919,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        }
 	    }
-
+	
 	    return results;
 	}
-
+	
 	/**
 	 * get the prefixed property
 	 * @param {Object} obj
@@ -5471,12 +4932,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	function prefixed(obj, property) {
 	    var prefix, prop;
 	    var camelProp = property[0].toUpperCase() + property.slice(1);
-
+	
 	    var i = 0;
 	    while (i < VENDOR_PREFIXES.length) {
 	        prefix = VENDOR_PREFIXES[i];
 	        prop = (prefix) ? prefix + camelProp : property;
-
+	
 	        if (prop in obj) {
 	            return prop;
 	        }
@@ -5484,7 +4945,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return undefined;
 	}
-
+	
 	/**
 	 * get a unique id
 	 * @returns {number} uniqueId
@@ -5493,7 +4954,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function uniqueId() {
 	    return _uniqueId++;
 	}
-
+	
 	/**
 	 * get the window object of an element
 	 * @param {HTMLElement} element
@@ -5503,38 +4964,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var doc = element.ownerDocument || element;
 	    return (doc.defaultView || doc.parentWindow || window);
 	}
-
+	
 	var MOBILE_REGEX = /mobile|tablet|ip(ad|hone|od)|android/i;
-
+	
 	var SUPPORT_TOUCH = ('ontouchstart' in window);
 	var SUPPORT_POINTER_EVENTS = prefixed(window, 'PointerEvent') !== undefined;
 	var SUPPORT_ONLY_TOUCH = SUPPORT_TOUCH && MOBILE_REGEX.test(navigator.userAgent);
-
+	
 	var INPUT_TYPE_TOUCH = 'touch';
 	var INPUT_TYPE_PEN = 'pen';
 	var INPUT_TYPE_MOUSE = 'mouse';
 	var INPUT_TYPE_KINECT = 'kinect';
-
+	
 	var COMPUTE_INTERVAL = 25;
-
+	
 	var INPUT_START = 1;
 	var INPUT_MOVE = 2;
 	var INPUT_END = 4;
 	var INPUT_CANCEL = 8;
-
+	
 	var DIRECTION_NONE = 1;
 	var DIRECTION_LEFT = 2;
 	var DIRECTION_RIGHT = 4;
 	var DIRECTION_UP = 8;
 	var DIRECTION_DOWN = 16;
-
+	
 	var DIRECTION_HORIZONTAL = DIRECTION_LEFT | DIRECTION_RIGHT;
 	var DIRECTION_VERTICAL = DIRECTION_UP | DIRECTION_DOWN;
 	var DIRECTION_ALL = DIRECTION_HORIZONTAL | DIRECTION_VERTICAL;
-
+	
 	var PROPS_XY = ['x', 'y'];
 	var PROPS_CLIENT_XY = ['clientX', 'clientY'];
-
+	
 	/**
 	 * create new input type manager
 	 * @param {Manager} manager
@@ -5548,7 +5009,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.callback = callback;
 	    this.element = manager.element;
 	    this.target = manager.options.inputTarget;
-
+	
 	    // smaller wrapper around the handler, for the scope and the enabled state of the manager,
 	    // so when disabled the input events are completely bypassed.
 	    this.domHandler = function(ev) {
@@ -5556,18 +5017,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	            self.handler(ev);
 	        }
 	    };
-
+	
 	    this.init();
-
+	
 	}
-
+	
 	Input.prototype = {
 	    /**
 	     * should handle the inputEvent data and trigger the callback
 	     * @virtual
 	     */
 	    handler: function() { },
-
+	
 	    /**
 	     * bind the events
 	     */
@@ -5576,7 +5037,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.evTarget && addEventListeners(this.target, this.evTarget, this.domHandler);
 	        this.evWin && addEventListeners(getWindowForElement(this.element), this.evWin, this.domHandler);
 	    },
-
+	
 	    /**
 	     * unbind the events
 	     */
@@ -5586,7 +5047,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.evWin && removeEventListeners(getWindowForElement(this.element), this.evWin, this.domHandler);
 	    }
 	};
-
+	
 	/**
 	 * create new input type manager
 	 * called by the Manager constructor
@@ -5596,7 +5057,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function createInputInstance(manager) {
 	    var Type;
 	    var inputClass = manager.options.inputClass;
-
+	
 	    if (inputClass) {
 	        Type = inputClass;
 	    } else if (SUPPORT_POINTER_EVENTS) {
@@ -5610,7 +5071,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return new (Type)(manager, inputHandler);
 	}
-
+	
 	/**
 	 * handle input events
 	 * @param {Manager} manager
@@ -5622,28 +5083,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var changedPointersLen = input.changedPointers.length;
 	    var isFirst = (eventType & INPUT_START && (pointersLen - changedPointersLen === 0));
 	    var isFinal = (eventType & (INPUT_END | INPUT_CANCEL) && (pointersLen - changedPointersLen === 0));
-
+	
 	    input.isFirst = !!isFirst;
 	    input.isFinal = !!isFinal;
-
+	
 	    if (isFirst) {
 	        manager.session = {};
 	    }
-
+	
 	    // source event is the normalized value of the domEvents
 	    // like 'touchstart, mouseup, pointerdown'
 	    input.eventType = eventType;
-
+	
 	    // compute scale, rotation etc
 	    computeInputData(manager, input);
-
+	
 	    // emit secret event
 	    manager.emit('hammer.input', input);
-
+	
 	    manager.recognize(input);
 	    manager.session.prevInput = input;
 	}
-
+	
 	/**
 	 * extend the data with some usable properties like scale, rotate, velocity etc
 	 * @param {Object} manager
@@ -5653,46 +5114,46 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var session = manager.session;
 	    var pointers = input.pointers;
 	    var pointersLength = pointers.length;
-
+	
 	    // store the first input to calculate the distance and direction
 	    if (!session.firstInput) {
 	        session.firstInput = simpleCloneInputData(input);
 	    }
-
+	
 	    // to compute scale and rotation we need to store the multiple touches
 	    if (pointersLength > 1 && !session.firstMultiple) {
 	        session.firstMultiple = simpleCloneInputData(input);
 	    } else if (pointersLength === 1) {
 	        session.firstMultiple = false;
 	    }
-
+	
 	    var firstInput = session.firstInput;
 	    var firstMultiple = session.firstMultiple;
 	    var offsetCenter = firstMultiple ? firstMultiple.center : firstInput.center;
-
+	
 	    var center = input.center = getCenter(pointers);
 	    input.timeStamp = now();
 	    input.deltaTime = input.timeStamp - firstInput.timeStamp;
-
+	
 	    input.angle = getAngle(offsetCenter, center);
 	    input.distance = getDistance(offsetCenter, center);
-
+	
 	    computeDeltaXY(session, input);
 	    input.offsetDirection = getDirection(input.deltaX, input.deltaY);
-
+	
 	    var overallVelocity = getVelocity(input.deltaTime, input.deltaX, input.deltaY);
 	    input.overallVelocityX = overallVelocity.x;
 	    input.overallVelocityY = overallVelocity.y;
 	    input.overallVelocity = (abs(overallVelocity.x) > abs(overallVelocity.y)) ? overallVelocity.x : overallVelocity.y;
-
+	
 	    input.scale = firstMultiple ? getScale(firstMultiple.pointers, pointers) : 1;
 	    input.rotation = firstMultiple ? getRotation(firstMultiple.pointers, pointers) : 0;
-
+	
 	    input.maxPointers = !session.prevInput ? input.pointers.length : ((input.pointers.length >
 	        session.prevInput.maxPointers) ? input.pointers.length : session.prevInput.maxPointers);
-
+	
 	    computeIntervalInputData(session, input);
-
+	
 	    // find the correct target
 	    var target = manager.element;
 	    if (hasParent(input.srcEvent.target, target)) {
@@ -5700,29 +5161,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    input.target = target;
 	}
-
+	
 	function computeDeltaXY(session, input) {
 	    var center = input.center;
 	    var offset = session.offsetDelta || {};
 	    var prevDelta = session.prevDelta || {};
 	    var prevInput = session.prevInput || {};
-
+	
 	    if (input.eventType === INPUT_START || prevInput.eventType === INPUT_END) {
 	        prevDelta = session.prevDelta = {
 	            x: prevInput.deltaX || 0,
 	            y: prevInput.deltaY || 0
 	        };
-
+	
 	        offset = session.offsetDelta = {
 	            x: center.x,
 	            y: center.y
 	        };
 	    }
-
+	
 	    input.deltaX = prevDelta.x + (center.x - offset.x);
 	    input.deltaY = prevDelta.y + (center.y - offset.y);
 	}
-
+	
 	/**
 	 * velocity is calculated every x ms
 	 * @param {Object} session
@@ -5732,17 +5193,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var last = session.lastInterval || input,
 	        deltaTime = input.timeStamp - last.timeStamp,
 	        velocity, velocityX, velocityY, direction;
-
+	
 	    if (input.eventType != INPUT_CANCEL && (deltaTime > COMPUTE_INTERVAL || last.velocity === undefined)) {
 	        var deltaX = input.deltaX - last.deltaX;
 	        var deltaY = input.deltaY - last.deltaY;
-
+	
 	        var v = getVelocity(deltaTime, deltaX, deltaY);
 	        velocityX = v.x;
 	        velocityY = v.y;
 	        velocity = (abs(v.x) > abs(v.y)) ? v.x : v.y;
 	        direction = getDirection(deltaX, deltaY);
-
+	
 	        session.lastInterval = input;
 	    } else {
 	        // use latest velocity info if it doesn't overtake a minimum period
@@ -5751,13 +5212,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        velocityY = last.velocityY;
 	        direction = last.direction;
 	    }
-
+	
 	    input.velocity = velocity;
 	    input.velocityX = velocityX;
 	    input.velocityY = velocityY;
 	    input.direction = direction;
 	}
-
+	
 	/**
 	 * create a simple clone from the input used for storage of firstInput and firstMultiple
 	 * @param {Object} input
@@ -5775,7 +5236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	        i++;
 	    }
-
+	
 	    return {
 	        timeStamp: now(),
 	        pointers: pointers,
@@ -5784,7 +5245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        deltaY: input.deltaY
 	    };
 	}
-
+	
 	/**
 	 * get the center of all the pointers
 	 * @param {Array} pointers
@@ -5792,7 +5253,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function getCenter(pointers) {
 	    var pointersLength = pointers.length;
-
+	
 	    // no need to loop when only one touch
 	    if (pointersLength === 1) {
 	        return {
@@ -5800,20 +5261,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	            y: round(pointers[0].clientY)
 	        };
 	    }
-
+	
 	    var x = 0, y = 0, i = 0;
 	    while (i < pointersLength) {
 	        x += pointers[i].clientX;
 	        y += pointers[i].clientY;
 	        i++;
 	    }
-
+	
 	    return {
 	        x: round(x / pointersLength),
 	        y: round(y / pointersLength)
 	    };
 	}
-
+	
 	/**
 	 * calculate the velocity between two points. unit is in px per ms.
 	 * @param {Number} deltaTime
@@ -5827,7 +5288,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        y: y / deltaTime || 0
 	    };
 	}
-
+	
 	/**
 	 * get the direction between two points
 	 * @param {Number} x
@@ -5838,13 +5299,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (x === y) {
 	        return DIRECTION_NONE;
 	    }
-
+	
 	    if (abs(x) >= abs(y)) {
 	        return x < 0 ? DIRECTION_LEFT : DIRECTION_RIGHT;
 	    }
 	    return y < 0 ? DIRECTION_UP : DIRECTION_DOWN;
 	}
-
+	
 	/**
 	 * calculate the absolute distance between two points
 	 * @param {Object} p1 {x, y}
@@ -5858,10 +5319,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    var x = p2[props[0]] - p1[props[0]],
 	        y = p2[props[1]] - p1[props[1]];
-
+	
 	    return Math.sqrt((x * x) + (y * y));
 	}
-
+	
 	/**
 	 * calculate the angle between two coordinates
 	 * @param {Object} p1
@@ -5877,7 +5338,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        y = p2[props[1]] - p1[props[1]];
 	    return Math.atan2(y, x) * 180 / Math.PI;
 	}
-
+	
 	/**
 	 * calculate the rotation degrees between two pointersets
 	 * @param {Array} start array of pointers
@@ -5887,7 +5348,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function getRotation(start, end) {
 	    return getAngle(end[1], end[0], PROPS_CLIENT_XY) + getAngle(start[1], start[0], PROPS_CLIENT_XY);
 	}
-
+	
 	/**
 	 * calculate the scale factor between two pointersets
 	 * no scale is 1, and goes down to 0 when pinched together, and bigger when pinched out
@@ -5898,16 +5359,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	function getScale(start, end) {
 	    return getDistance(end[0], end[1], PROPS_CLIENT_XY) / getDistance(start[0], start[1], PROPS_CLIENT_XY);
 	}
-
+	
 	var MOUSE_INPUT_MAP = {
 	    mousedown: INPUT_START,
 	    mousemove: INPUT_MOVE,
 	    mouseup: INPUT_END
 	};
-
+	
 	var MOUSE_ELEMENT_EVENTS = 'mousedown';
 	var MOUSE_WINDOW_EVENTS = 'mousemove mouseup';
-
+	
 	/**
 	 * Mouse events input
 	 * @constructor
@@ -5916,12 +5377,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	function MouseInput() {
 	    this.evEl = MOUSE_ELEMENT_EVENTS;
 	    this.evWin = MOUSE_WINDOW_EVENTS;
-
+	
 	    this.pressed = false; // mousedown state
-
+	
 	    Input.apply(this, arguments);
 	}
-
+	
 	inherit(MouseInput, Input, {
 	    /**
 	     * handle mouse events
@@ -5929,25 +5390,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    handler: function MEhandler(ev) {
 	        var eventType = MOUSE_INPUT_MAP[ev.type];
-
+	
 	        // on start we want to have the left mouse button down
 	        if (eventType & INPUT_START && ev.button === 0) {
 	            this.pressed = true;
 	        }
-
+	
 	        if (eventType & INPUT_MOVE && ev.which !== 1) {
 	            eventType = INPUT_END;
 	        }
-
+	
 	        // mouse must be down
 	        if (!this.pressed) {
 	            return;
 	        }
-
+	
 	        if (eventType & INPUT_END) {
 	            this.pressed = false;
 	        }
-
+	
 	        this.callback(this.manager, eventType, {
 	            pointers: [ev],
 	            changedPointers: [ev],
@@ -5956,7 +5417,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    }
 	});
-
+	
 	var POINTER_INPUT_MAP = {
 	    pointerdown: INPUT_START,
 	    pointermove: INPUT_MOVE,
@@ -5964,7 +5425,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    pointercancel: INPUT_CANCEL,
 	    pointerout: INPUT_CANCEL
 	};
-
+	
 	// in IE10 the pointer types is defined as an enum
 	var IE10_POINTER_TYPE_ENUM = {
 	    2: INPUT_TYPE_TOUCH,
@@ -5972,16 +5433,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    4: INPUT_TYPE_MOUSE,
 	    5: INPUT_TYPE_KINECT // see https://twitter.com/jacobrossi/status/480596438489890816
 	};
-
+	
 	var POINTER_ELEMENT_EVENTS = 'pointerdown';
 	var POINTER_WINDOW_EVENTS = 'pointermove pointerup pointercancel';
-
+	
 	// IE10 has prefixed support, and case-sensitive
 	if (window.MSPointerEvent && !window.PointerEvent) {
 	    POINTER_ELEMENT_EVENTS = 'MSPointerDown';
 	    POINTER_WINDOW_EVENTS = 'MSPointerMove MSPointerUp MSPointerCancel';
 	}
-
+	
 	/**
 	 * Pointer events input
 	 * @constructor
@@ -5990,12 +5451,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	function PointerEventInput() {
 	    this.evEl = POINTER_ELEMENT_EVENTS;
 	    this.evWin = POINTER_WINDOW_EVENTS;
-
+	
 	    Input.apply(this, arguments);
-
+	
 	    this.store = (this.manager.session.pointerEvents = []);
 	}
-
+	
 	inherit(PointerEventInput, Input, {
 	    /**
 	     * handle mouse events
@@ -6004,16 +5465,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    handler: function PEhandler(ev) {
 	        var store = this.store;
 	        var removePointer = false;
-
+	
 	        var eventTypeNormalized = ev.type.toLowerCase().replace('ms', '');
 	        var eventType = POINTER_INPUT_MAP[eventTypeNormalized];
 	        var pointerType = IE10_POINTER_TYPE_ENUM[ev.pointerType] || ev.pointerType;
-
+	
 	        var isTouch = (pointerType == INPUT_TYPE_TOUCH);
-
+	
 	        // get index of the event in the store
 	        var storeIndex = inArray(store, ev.pointerId, 'pointerId');
-
+	
 	        // start and mouse must be down
 	        if (eventType & INPUT_START && (ev.button === 0 || isTouch)) {
 	            if (storeIndex < 0) {
@@ -6023,39 +5484,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else if (eventType & (INPUT_END | INPUT_CANCEL)) {
 	            removePointer = true;
 	        }
-
+	
 	        // it not found, so the pointer hasn't been down (so it's probably a hover)
 	        if (storeIndex < 0) {
 	            return;
 	        }
-
+	
 	        // update the event in the store
 	        store[storeIndex] = ev;
-
+	
 	        this.callback(this.manager, eventType, {
 	            pointers: store,
 	            changedPointers: [ev],
 	            pointerType: pointerType,
 	            srcEvent: ev
 	        });
-
+	
 	        if (removePointer) {
 	            // remove from the store
 	            store.splice(storeIndex, 1);
 	        }
 	    }
 	});
-
+	
 	var SINGLE_TOUCH_INPUT_MAP = {
 	    touchstart: INPUT_START,
 	    touchmove: INPUT_MOVE,
 	    touchend: INPUT_END,
 	    touchcancel: INPUT_CANCEL
 	};
-
+	
 	var SINGLE_TOUCH_TARGET_EVENTS = 'touchstart';
 	var SINGLE_TOUCH_WINDOW_EVENTS = 'touchstart touchmove touchend touchcancel';
-
+	
 	/**
 	 * Touch events input
 	 * @constructor
@@ -6065,30 +5526,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.evTarget = SINGLE_TOUCH_TARGET_EVENTS;
 	    this.evWin = SINGLE_TOUCH_WINDOW_EVENTS;
 	    this.started = false;
-
+	
 	    Input.apply(this, arguments);
 	}
-
+	
 	inherit(SingleTouchInput, Input, {
 	    handler: function TEhandler(ev) {
 	        var type = SINGLE_TOUCH_INPUT_MAP[ev.type];
-
+	
 	        // should we handle the touch events?
 	        if (type === INPUT_START) {
 	            this.started = true;
 	        }
-
+	
 	        if (!this.started) {
 	            return;
 	        }
-
+	
 	        var touches = normalizeSingleTouches.call(this, ev, type);
-
+	
 	        // when done, reset the started state
 	        if (type & (INPUT_END | INPUT_CANCEL) && touches[0].length - touches[1].length === 0) {
 	            this.started = false;
 	        }
-
+	
 	        this.callback(this.manager, type, {
 	            pointers: touches[0],
 	            changedPointers: touches[1],
@@ -6097,7 +5558,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    }
 	});
-
+	
 	/**
 	 * @this {TouchInput}
 	 * @param {Object} ev
@@ -6107,23 +5568,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	function normalizeSingleTouches(ev, type) {
 	    var all = toArray(ev.touches);
 	    var changed = toArray(ev.changedTouches);
-
+	
 	    if (type & (INPUT_END | INPUT_CANCEL)) {
 	        all = uniqueArray(all.concat(changed), 'identifier', true);
 	    }
-
+	
 	    return [all, changed];
 	}
-
+	
 	var TOUCH_INPUT_MAP = {
 	    touchstart: INPUT_START,
 	    touchmove: INPUT_MOVE,
 	    touchend: INPUT_END,
 	    touchcancel: INPUT_CANCEL
 	};
-
+	
 	var TOUCH_TARGET_EVENTS = 'touchstart touchmove touchend touchcancel';
-
+	
 	/**
 	 * Multi-user touch events input
 	 * @constructor
@@ -6132,10 +5593,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	function TouchInput() {
 	    this.evTarget = TOUCH_TARGET_EVENTS;
 	    this.targetIds = {};
-
+	
 	    Input.apply(this, arguments);
 	}
-
+	
 	inherit(TouchInput, Input, {
 	    handler: function MTEhandler(ev) {
 	        var type = TOUCH_INPUT_MAP[ev.type];
@@ -6143,7 +5604,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (!touches) {
 	            return;
 	        }
-
+	
 	        this.callback(this.manager, type, {
 	            pointers: touches[0],
 	            changedPointers: touches[1],
@@ -6152,7 +5613,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    }
 	});
-
+	
 	/**
 	 * @this {TouchInput}
 	 * @param {Object} ev
@@ -6162,24 +5623,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	function getTouches(ev, type) {
 	    var allTouches = toArray(ev.touches);
 	    var targetIds = this.targetIds;
-
+	
 	    // when there is only one touch, the process can be simplified
 	    if (type & (INPUT_START | INPUT_MOVE) && allTouches.length === 1) {
 	        targetIds[allTouches[0].identifier] = true;
 	        return [allTouches, allTouches];
 	    }
-
+	
 	    var i,
 	        targetTouches,
 	        changedTouches = toArray(ev.changedTouches),
 	        changedTargetTouches = [],
 	        target = this.target;
-
+	
 	    // get target touches from touches
 	    targetTouches = allTouches.filter(function(touch) {
 	        return hasParent(touch.target, target);
 	    });
-
+	
 	    // collect touches
 	    if (type === INPUT_START) {
 	        i = 0;
@@ -6188,32 +5649,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	            i++;
 	        }
 	    }
-
+	
 	    // filter changed touches to only contain touches that exist in the collected target ids
 	    i = 0;
 	    while (i < changedTouches.length) {
 	        if (targetIds[changedTouches[i].identifier]) {
 	            changedTargetTouches.push(changedTouches[i]);
 	        }
-
+	
 	        // cleanup removed touches
 	        if (type & (INPUT_END | INPUT_CANCEL)) {
 	            delete targetIds[changedTouches[i].identifier];
 	        }
 	        i++;
 	    }
-
+	
 	    if (!changedTargetTouches.length) {
 	        return;
 	    }
-
+	
 	    return [
 	        // merge targetTouches with changedTargetTouches so it contains ALL touches, including 'end' and 'cancel'
 	        uniqueArray(targetTouches.concat(changedTargetTouches), 'identifier', true),
 	        changedTargetTouches
 	    ];
 	}
-
+	
 	/**
 	 * Combined touch and mouse input
 	 *
@@ -6223,21 +5684,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @constructor
 	 * @extends Input
 	 */
-
+	
 	var DEDUP_TIMEOUT = 2500;
 	var DEDUP_DISTANCE = 25;
-
+	
 	function TouchMouseInput() {
 	    Input.apply(this, arguments);
-
+	
 	    var handler = bindFn(this.handler, this);
 	    this.touch = new TouchInput(this.manager, handler);
 	    this.mouse = new MouseInput(this.manager, handler);
-
+	
 	    this.primaryTouch = null;
 	    this.lastTouches = [];
 	}
-
+	
 	inherit(TouchMouseInput, Input, {
 	    /**
 	     * handle mouse and touch events
@@ -6248,21 +5709,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    handler: function TMEhandler(manager, inputEvent, inputData) {
 	        var isTouch = (inputData.pointerType == INPUT_TYPE_TOUCH),
 	            isMouse = (inputData.pointerType == INPUT_TYPE_MOUSE);
-
+	
 	        if (isMouse && inputData.sourceCapabilities && inputData.sourceCapabilities.firesTouchEvents) {
 	            return;
 	        }
-
+	
 	        // when we're in a touch event, record touches to  de-dupe synthetic mouse event
 	        if (isTouch) {
 	            recordTouches.call(this, inputEvent, inputData);
 	        } else if (isMouse && isSyntheticEvent.call(this, inputData)) {
 	            return;
 	        }
-
+	
 	        this.callback(manager, inputEvent, inputData);
 	    },
-
+	
 	    /**
 	     * remove the event listeners
 	     */
@@ -6271,7 +5732,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.mouse.destroy();
 	    }
 	});
-
+	
 	function recordTouches(eventType, eventData) {
 	    if (eventType & INPUT_START) {
 	        this.primaryTouch = eventData.changedPointers[0].identifier;
@@ -6280,10 +5741,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        setLastTouch.call(this, eventData);
 	    }
 	}
-
+	
 	function setLastTouch(eventData) {
 	    var touch = eventData.changedPointers[0];
-
+	
 	    if (touch.identifier === this.primaryTouch) {
 	        var lastTouch = {x: touch.clientX, y: touch.clientY};
 	        this.lastTouches.push(lastTouch);
@@ -6297,7 +5758,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        setTimeout(removeLastTouch, DEDUP_TIMEOUT);
 	    }
 	}
-
+	
 	function isSyntheticEvent(eventData) {
 	    var x = eventData.srcEvent.clientX, y = eventData.srcEvent.clientY;
 	    for (var i = 0; i < this.lastTouches.length; i++) {
@@ -6309,10 +5770,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return false;
 	}
-
+	
 	var PREFIXED_TOUCH_ACTION = prefixed(TEST_ELEMENT.style, 'touchAction');
 	var NATIVE_TOUCH_ACTION = PREFIXED_TOUCH_ACTION !== undefined;
-
+	
 	// magical touchAction value
 	var TOUCH_ACTION_COMPUTE = 'compute';
 	var TOUCH_ACTION_AUTO = 'auto';
@@ -6321,7 +5782,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var TOUCH_ACTION_PAN_X = 'pan-x';
 	var TOUCH_ACTION_PAN_Y = 'pan-y';
 	var TOUCH_ACTION_MAP = getTouchActionProps();
-
+	
 	/**
 	 * Touch Action
 	 * sets the touchAction property or uses the js alternative
@@ -6333,7 +5794,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.manager = manager;
 	    this.set(value);
 	}
-
+	
 	TouchAction.prototype = {
 	    /**
 	     * set the touchAction value on the element or enable the polyfill
@@ -6344,20 +5805,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (value == TOUCH_ACTION_COMPUTE) {
 	            value = this.compute();
 	        }
-
+	
 	        if (NATIVE_TOUCH_ACTION && this.manager.element.style && TOUCH_ACTION_MAP[value]) {
 	            this.manager.element.style[PREFIXED_TOUCH_ACTION] = value;
 	        }
 	        this.actions = value.toLowerCase().trim();
 	    },
-
+	
 	    /**
 	     * just re-set the touchAction value
 	     */
 	    update: function() {
 	        this.set(this.manager.options.touchAction);
 	    },
-
+	
 	    /**
 	     * compute the value for the touchAction property based on the recognizer's settings
 	     * @returns {String} value
@@ -6371,7 +5832,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	        return cleanTouchActions(actions.join(' '));
 	    },
-
+	
 	    /**
 	     * this method is called on each input cycle and provides the preventing of the browser behavior
 	     * @param {Object} input
@@ -6379,42 +5840,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	    preventDefaults: function(input) {
 	        var srcEvent = input.srcEvent;
 	        var direction = input.offsetDirection;
-
+	
 	        // if the touch action did prevented once this session
 	        if (this.manager.session.prevented) {
 	            srcEvent.preventDefault();
 	            return;
 	        }
-
+	
 	        var actions = this.actions;
 	        var hasNone = inStr(actions, TOUCH_ACTION_NONE) && !TOUCH_ACTION_MAP[TOUCH_ACTION_NONE];
 	        var hasPanY = inStr(actions, TOUCH_ACTION_PAN_Y) && !TOUCH_ACTION_MAP[TOUCH_ACTION_PAN_Y];
 	        var hasPanX = inStr(actions, TOUCH_ACTION_PAN_X) && !TOUCH_ACTION_MAP[TOUCH_ACTION_PAN_X];
-
+	
 	        if (hasNone) {
 	            //do not prevent defaults if this is a tap gesture
-
+	
 	            var isTapPointer = input.pointers.length === 1;
 	            var isTapMovement = input.distance < 2;
 	            var isTapTouchTime = input.deltaTime < 250;
-
+	
 	            if (isTapPointer && isTapMovement && isTapTouchTime) {
 	                return;
 	            }
 	        }
-
+	
 	        if (hasPanX && hasPanY) {
 	            // `pan-x pan-y` means browser handles all scrolling/panning, do not prevent
 	            return;
 	        }
-
+	
 	        if (hasNone ||
 	            (hasPanY && direction & DIRECTION_HORIZONTAL) ||
 	            (hasPanX && direction & DIRECTION_VERTICAL)) {
 	            return this.preventSrc(srcEvent);
 	        }
 	    },
-
+	
 	    /**
 	     * call preventDefault to prevent the browser's default behavior (scrolling in most cases)
 	     * @param {Object} srcEvent
@@ -6424,7 +5885,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        srcEvent.preventDefault();
 	    }
 	};
-
+	
 	/**
 	 * when the touchActions are collected they are not a valid value, so we need to clean things up. *
 	 * @param {String} actions
@@ -6435,10 +5896,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (inStr(actions, TOUCH_ACTION_NONE)) {
 	        return TOUCH_ACTION_NONE;
 	    }
-
+	
 	    var hasPanX = inStr(actions, TOUCH_ACTION_PAN_X);
 	    var hasPanY = inStr(actions, TOUCH_ACTION_PAN_Y);
-
+	
 	    // if both pan-x and pan-y are set (different recognizers
 	    // for different directions, e.g. horizontal pan but vertical swipe?)
 	    // we need none (as otherwise with pan-x pan-y combined none of these
@@ -6446,20 +5907,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (hasPanX && hasPanY) {
 	        return TOUCH_ACTION_NONE;
 	    }
-
+	
 	    // pan-x OR pan-y
 	    if (hasPanX || hasPanY) {
 	        return hasPanX ? TOUCH_ACTION_PAN_X : TOUCH_ACTION_PAN_Y;
 	    }
-
+	
 	    // manipulation
 	    if (inStr(actions, TOUCH_ACTION_MANIPULATION)) {
 	        return TOUCH_ACTION_MANIPULATION;
 	    }
-
+	
 	    return TOUCH_ACTION_AUTO;
 	}
-
+	
 	function getTouchActionProps() {
 	    if (!NATIVE_TOUCH_ACTION) {
 	        return false;
@@ -6467,14 +5928,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var touchMap = {};
 	    var cssSupports = window.CSS && window.CSS.supports;
 	    ['auto', 'manipulation', 'pan-y', 'pan-x', 'pan-x pan-y', 'none'].forEach(function(val) {
-
+	
 	        // If css.supports is not supported but there is native touch-action assume it supports
 	        // all values. This is the case for IE 10 and 11.
 	        touchMap[val] = cssSupports ? window.CSS.supports('touch-action', val) : true;
 	    });
 	    return touchMap;
 	}
-
+	
 	/**
 	 * Recognizer flow explained; *
 	 * All recognizers have the initial state of POSSIBLE when a input session starts.
@@ -6509,7 +5970,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var STATE_RECOGNIZED = STATE_ENDED;
 	var STATE_CANCELLED = 16;
 	var STATE_FAILED = 32;
-
+	
 	/**
 	 * Recognizer
 	 * Every recognizer needs to extend from this class.
@@ -6518,27 +5979,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function Recognizer(options) {
 	    this.options = assign({}, this.defaults, options || {});
-
+	
 	    this.id = uniqueId();
-
+	
 	    this.manager = null;
-
+	
 	    // default is enable true
 	    this.options.enable = ifUndefined(this.options.enable, true);
-
+	
 	    this.state = STATE_POSSIBLE;
-
+	
 	    this.simultaneous = {};
 	    this.requireFail = [];
 	}
-
+	
 	Recognizer.prototype = {
 	    /**
 	     * @virtual
 	     * @type {Object}
 	     */
 	    defaults: {},
-
+	
 	    /**
 	     * set options
 	     * @param {Object} options
@@ -6546,12 +6007,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    set: function(options) {
 	        assign(this.options, options);
-
+	
 	        // also update the touchAction, in case something changed about the directions/enabled state
 	        this.manager && this.manager.touchAction.update();
 	        return this;
 	    },
-
+	
 	    /**
 	     * recognize simultaneous with an other recognizer.
 	     * @param {Recognizer} otherRecognizer
@@ -6561,7 +6022,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (invokeArrayArg(otherRecognizer, 'recognizeWith', this)) {
 	            return this;
 	        }
-
+	
 	        var simultaneous = this.simultaneous;
 	        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
 	        if (!simultaneous[otherRecognizer.id]) {
@@ -6570,7 +6031,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return this;
 	    },
-
+	
 	    /**
 	     * drop the simultaneous link. it doesnt remove the link on the other recognizer.
 	     * @param {Recognizer} otherRecognizer
@@ -6580,12 +6041,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (invokeArrayArg(otherRecognizer, 'dropRecognizeWith', this)) {
 	            return this;
 	        }
-
+	
 	        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
 	        delete this.simultaneous[otherRecognizer.id];
 	        return this;
 	    },
-
+	
 	    /**
 	     * recognizer can only run when an other is failing
 	     * @param {Recognizer} otherRecognizer
@@ -6595,7 +6056,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (invokeArrayArg(otherRecognizer, 'requireFailure', this)) {
 	            return this;
 	        }
-
+	
 	        var requireFail = this.requireFail;
 	        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
 	        if (inArray(requireFail, otherRecognizer) === -1) {
@@ -6604,7 +6065,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return this;
 	    },
-
+	
 	    /**
 	     * drop the requireFailure link. it does not remove the link on the other recognizer.
 	     * @param {Recognizer} otherRecognizer
@@ -6614,7 +6075,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (invokeArrayArg(otherRecognizer, 'dropRequireFailure', this)) {
 	            return this;
 	        }
-
+	
 	        otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this);
 	        var index = inArray(this.requireFail, otherRecognizer);
 	        if (index > -1) {
@@ -6622,7 +6083,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return this;
 	    },
-
+	
 	    /**
 	     * has require failures boolean
 	     * @returns {boolean}
@@ -6630,7 +6091,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    hasRequireFailures: function() {
 	        return this.requireFail.length > 0;
 	    },
-
+	
 	    /**
 	     * if the recognizer can recognize simultaneous with an other recognizer
 	     * @param {Recognizer} otherRecognizer
@@ -6639,7 +6100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    canRecognizeWith: function(otherRecognizer) {
 	        return !!this.simultaneous[otherRecognizer.id];
 	    },
-
+	
 	    /**
 	     * You should use `tryEmit` instead of `emit` directly to check
 	     * that all the needed recognizers has failed before emitting.
@@ -6648,28 +6109,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    emit: function(input) {
 	        var self = this;
 	        var state = this.state;
-
+	
 	        function emit(event) {
 	            self.manager.emit(event, input);
 	        }
-
+	
 	        // 'panstart' and 'panmove'
 	        if (state < STATE_ENDED) {
 	            emit(self.options.event + stateStr(state));
 	        }
-
+	
 	        emit(self.options.event); // simple 'eventName' events
-
+	
 	        if (input.additionalEvent) { // additional event(panleft, panright, pinchin, pinchout...)
 	            emit(input.additionalEvent);
 	        }
-
+	
 	        // panend and pancancel
 	        if (state >= STATE_ENDED) {
 	            emit(self.options.event + stateStr(state));
 	        }
 	    },
-
+	
 	    /**
 	     * Check that all the require failure recognizers has failed,
 	     * if true, it emits a gesture event,
@@ -6683,7 +6144,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // it's failing anyway
 	        this.state = STATE_FAILED;
 	    },
-
+	
 	    /**
 	     * can we emit?
 	     * @returns {boolean}
@@ -6698,7 +6159,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return true;
 	    },
-
+	
 	    /**
 	     * update the recognizer
 	     * @param {Object} inputData
@@ -6707,28 +6168,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // make a new copy of the inputData
 	        // so we can change the inputData without messing up the other recognizers
 	        var inputDataClone = assign({}, inputData);
-
+	
 	        // is is enabled and allow recognizing?
 	        if (!boolOrFn(this.options.enable, [this, inputDataClone])) {
 	            this.reset();
 	            this.state = STATE_FAILED;
 	            return;
 	        }
-
+	
 	        // reset when we've reached the end
 	        if (this.state & (STATE_RECOGNIZED | STATE_CANCELLED | STATE_FAILED)) {
 	            this.state = STATE_POSSIBLE;
 	        }
-
+	
 	        this.state = this.process(inputDataClone);
-
+	
 	        // the recognizer has recognized a gesture
 	        // so trigger an event
 	        if (this.state & (STATE_BEGAN | STATE_CHANGED | STATE_ENDED | STATE_CANCELLED)) {
 	            this.tryEmit(inputDataClone);
 	        }
 	    },
-
+	
 	    /**
 	     * return the state of the recognizer
 	     * the actual recognizing happens in this method
@@ -6737,14 +6198,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {Const} STATE
 	     */
 	    process: function(inputData) { }, // jshint ignore:line
-
+	
 	    /**
 	     * return the preferred touch-action
 	     * @virtual
 	     * @returns {Array}
 	     */
 	    getTouchAction: function() { },
-
+	
 	    /**
 	     * called when the gesture isn't allowed to recognize
 	     * like when another is being recognized or it is disabled
@@ -6752,7 +6213,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    reset: function() { }
 	};
-
+	
 	/**
 	 * get a usable string, used as event postfix
 	 * @param {Const} state
@@ -6770,7 +6231,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return '';
 	}
-
+	
 	/**
 	 * direction cons to string
 	 * @param {Const} direction
@@ -6788,7 +6249,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return '';
 	}
-
+	
 	/**
 	 * get a recognizer by name if it is bound to a manager
 	 * @param {Recognizer|String} otherRecognizer
@@ -6802,7 +6263,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return otherRecognizer;
 	}
-
+	
 	/**
 	 * This recognizer is just used as a base for the simple attribute recognizers.
 	 * @constructor
@@ -6811,7 +6272,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function AttrRecognizer() {
 	    Recognizer.apply(this, arguments);
 	}
-
+	
 	inherit(AttrRecognizer, Recognizer, {
 	    /**
 	     * @namespace
@@ -6824,7 +6285,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         */
 	        pointers: 1
 	    },
-
+	
 	    /**
 	     * Used to check if it the recognizer receives valid input, like input.distance > 10.
 	     * @memberof AttrRecognizer
@@ -6835,7 +6296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var optionPointers = this.options.pointers;
 	        return optionPointers === 0 || input.pointers.length === optionPointers;
 	    },
-
+	
 	    /**
 	     * Process the input and return the state for the recognizer
 	     * @memberof AttrRecognizer
@@ -6845,10 +6306,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    process: function(input) {
 	        var state = this.state;
 	        var eventType = input.eventType;
-
+	
 	        var isRecognized = state & (STATE_BEGAN | STATE_CHANGED);
 	        var isValid = this.attrTest(input);
-
+	
 	        // on cancel input and we've recognized before, return STATE_CANCELLED
 	        if (isRecognized && (eventType & INPUT_CANCEL || !isValid)) {
 	            return state | STATE_CANCELLED;
@@ -6863,7 +6324,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return STATE_FAILED;
 	    }
 	});
-
+	
 	/**
 	 * Pan
 	 * Recognized when the pointer is down and moved in the allowed direction.
@@ -6872,11 +6333,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function PanRecognizer() {
 	    AttrRecognizer.apply(this, arguments);
-
+	
 	    this.pX = null;
 	    this.pY = null;
 	}
-
+	
 	inherit(PanRecognizer, AttrRecognizer, {
 	    /**
 	     * @namespace
@@ -6888,7 +6349,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        pointers: 1,
 	        direction: DIRECTION_ALL
 	    },
-
+	
 	    getTouchAction: function() {
 	        var direction = this.options.direction;
 	        var actions = [];
@@ -6900,7 +6361,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return actions;
 	    },
-
+	
 	    directionTest: function(input) {
 	        var options = this.options;
 	        var hasMoved = true;
@@ -6908,7 +6369,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var direction = input.direction;
 	        var x = input.deltaX;
 	        var y = input.deltaY;
-
+	
 	        // lock to axis?
 	        if (!(direction & options.direction)) {
 	            if (options.direction & DIRECTION_HORIZONTAL) {
@@ -6924,26 +6385,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	        input.direction = direction;
 	        return hasMoved && distance > options.threshold && direction & options.direction;
 	    },
-
+	
 	    attrTest: function(input) {
 	        return AttrRecognizer.prototype.attrTest.call(this, input) &&
 	            (this.state & STATE_BEGAN || (!(this.state & STATE_BEGAN) && this.directionTest(input)));
 	    },
-
+	
 	    emit: function(input) {
-
+	
 	        this.pX = input.deltaX;
 	        this.pY = input.deltaY;
-
+	
 	        var direction = directionStr(input.direction);
-
+	
 	        if (direction) {
 	            input.additionalEvent = this.options.event + direction;
 	        }
 	        this._super.emit.call(this, input);
 	    }
 	});
-
+	
 	/**
 	 * Pinch
 	 * Recognized when two or more pointers are moving toward (zoom-in) or away from each other (zoom-out).
@@ -6953,7 +6414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function PinchRecognizer() {
 	    AttrRecognizer.apply(this, arguments);
 	}
-
+	
 	inherit(PinchRecognizer, AttrRecognizer, {
 	    /**
 	     * @namespace
@@ -6964,16 +6425,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        threshold: 0,
 	        pointers: 2
 	    },
-
+	
 	    getTouchAction: function() {
 	        return [TOUCH_ACTION_NONE];
 	    },
-
+	
 	    attrTest: function(input) {
 	        return this._super.attrTest.call(this, input) &&
 	            (Math.abs(input.scale - 1) > this.options.threshold || this.state & STATE_BEGAN);
 	    },
-
+	
 	    emit: function(input) {
 	        if (input.scale !== 1) {
 	            var inOut = input.scale < 1 ? 'in' : 'out';
@@ -6982,7 +6443,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this._super.emit.call(this, input);
 	    }
 	});
-
+	
 	/**
 	 * Press
 	 * Recognized when the pointer is down for x ms without any movement.
@@ -6991,11 +6452,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function PressRecognizer() {
 	    Recognizer.apply(this, arguments);
-
+	
 	    this._timer = null;
 	    this._input = null;
 	}
-
+	
 	inherit(PressRecognizer, Recognizer, {
 	    /**
 	     * @namespace
@@ -7007,19 +6468,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        time: 251, // minimal time of the pointer to be pressed
 	        threshold: 9 // a minimal movement is ok, but keep it low
 	    },
-
+	
 	    getTouchAction: function() {
 	        return [TOUCH_ACTION_AUTO];
 	    },
-
+	
 	    process: function(input) {
 	        var options = this.options;
 	        var validPointers = input.pointers.length === options.pointers;
 	        var validMovement = input.distance < options.threshold;
 	        var validTime = input.deltaTime > options.time;
-
+	
 	        this._input = input;
-
+	
 	        // we only allow little movement
 	        // and we've reached an end event, so a tap is possible
 	        if (!validMovement || !validPointers || (input.eventType & (INPUT_END | INPUT_CANCEL) && !validTime)) {
@@ -7035,16 +6496,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return STATE_FAILED;
 	    },
-
+	
 	    reset: function() {
 	        clearTimeout(this._timer);
 	    },
-
+	
 	    emit: function(input) {
 	        if (this.state !== STATE_RECOGNIZED) {
 	            return;
 	        }
-
+	
 	        if (input && (input.eventType & INPUT_END)) {
 	            this.manager.emit(this.options.event + 'up', input);
 	        } else {
@@ -7053,7 +6514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 	});
-
+	
 	/**
 	 * Rotate
 	 * Recognized when two or more pointer are moving in a circular motion.
@@ -7063,7 +6524,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function RotateRecognizer() {
 	    AttrRecognizer.apply(this, arguments);
 	}
-
+	
 	inherit(RotateRecognizer, AttrRecognizer, {
 	    /**
 	     * @namespace
@@ -7074,17 +6535,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        threshold: 0,
 	        pointers: 2
 	    },
-
+	
 	    getTouchAction: function() {
 	        return [TOUCH_ACTION_NONE];
 	    },
-
+	
 	    attrTest: function(input) {
 	        return this._super.attrTest.call(this, input) &&
 	            (Math.abs(input.rotation) > this.options.threshold || this.state & STATE_BEGAN);
 	    }
 	});
-
+	
 	/**
 	 * Swipe
 	 * Recognized when the pointer is moving fast (velocity), with enough distance in the allowed direction.
@@ -7094,7 +6555,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function SwipeRecognizer() {
 	    AttrRecognizer.apply(this, arguments);
 	}
-
+	
 	inherit(SwipeRecognizer, AttrRecognizer, {
 	    /**
 	     * @namespace
@@ -7107,15 +6568,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        direction: DIRECTION_HORIZONTAL | DIRECTION_VERTICAL,
 	        pointers: 1
 	    },
-
+	
 	    getTouchAction: function() {
 	        return PanRecognizer.prototype.getTouchAction.call(this);
 	    },
-
+	
 	    attrTest: function(input) {
 	        var direction = this.options.direction;
 	        var velocity;
-
+	
 	        if (direction & (DIRECTION_HORIZONTAL | DIRECTION_VERTICAL)) {
 	            velocity = input.overallVelocity;
 	        } else if (direction & DIRECTION_HORIZONTAL) {
@@ -7123,24 +6584,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else if (direction & DIRECTION_VERTICAL) {
 	            velocity = input.overallVelocityY;
 	        }
-
+	
 	        return this._super.attrTest.call(this, input) &&
 	            direction & input.offsetDirection &&
 	            input.distance > this.options.threshold &&
 	            input.maxPointers == this.options.pointers &&
 	            abs(velocity) > this.options.velocity && input.eventType & INPUT_END;
 	    },
-
+	
 	    emit: function(input) {
 	        var direction = directionStr(input.offsetDirection);
 	        if (direction) {
 	            this.manager.emit(this.options.event + direction, input);
 	        }
-
+	
 	        this.manager.emit(this.options.event, input);
 	    }
 	});
-
+	
 	/**
 	 * A tap is ecognized when the pointer is doing a small tap/click. Multiple taps are recognized if they occur
 	 * between the given interval and position. The delay option can be used to recognize multi-taps without firing
@@ -7153,17 +6614,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function TapRecognizer() {
 	    Recognizer.apply(this, arguments);
-
+	
 	    // previous time and center,
 	    // used for tap counting
 	    this.pTime = false;
 	    this.pCenter = false;
-
+	
 	    this._timer = null;
 	    this._input = null;
 	    this.count = 0;
 	}
-
+	
 	inherit(TapRecognizer, Recognizer, {
 	    /**
 	     * @namespace
@@ -7178,45 +6639,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	        threshold: 9, // a minimal movement is ok, but keep it low
 	        posThreshold: 10 // a multi-tap can be a bit off the initial position
 	    },
-
+	
 	    getTouchAction: function() {
 	        return [TOUCH_ACTION_MANIPULATION];
 	    },
-
+	
 	    process: function(input) {
 	        var options = this.options;
-
+	
 	        var validPointers = input.pointers.length === options.pointers;
 	        var validMovement = input.distance < options.threshold;
 	        var validTouchTime = input.deltaTime < options.time;
-
+	
 	        this.reset();
-
+	
 	        if ((input.eventType & INPUT_START) && (this.count === 0)) {
 	            return this.failTimeout();
 	        }
-
+	
 	        // we only allow little movement
 	        // and we've reached an end event, so a tap is possible
 	        if (validMovement && validTouchTime && validPointers) {
 	            if (input.eventType != INPUT_END) {
 	                return this.failTimeout();
 	            }
-
+	
 	            var validInterval = this.pTime ? (input.timeStamp - this.pTime < options.interval) : true;
 	            var validMultiTap = !this.pCenter || getDistance(this.pCenter, input.center) < options.posThreshold;
-
+	
 	            this.pTime = input.timeStamp;
 	            this.pCenter = input.center;
-
+	
 	            if (!validMultiTap || !validInterval) {
 	                this.count = 1;
 	            } else {
 	                this.count += 1;
 	            }
-
+	
 	            this._input = input;
-
+	
 	            // if tap count matches we have recognized it,
 	            // else it has began recognizing...
 	            var tapCount = this.count % options.taps;
@@ -7236,18 +6697,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return STATE_FAILED;
 	    },
-
+	
 	    failTimeout: function() {
 	        this._timer = setTimeoutContext(function() {
 	            this.state = STATE_FAILED;
 	        }, this.options.interval, this);
 	        return STATE_FAILED;
 	    },
-
+	
 	    reset: function() {
 	        clearTimeout(this._timer);
 	    },
-
+	
 	    emit: function() {
 	        if (this.state == STATE_RECOGNIZED) {
 	            this._input.tapCount = this.count;
@@ -7255,7 +6716,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 	});
-
+	
 	/**
 	 * Simple way to create a manager with a default set of recognizers.
 	 * @param {HTMLElement} element
@@ -7267,12 +6728,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    options.recognizers = ifUndefined(options.recognizers, Hammer.defaults.preset);
 	    return new Manager(element, options);
 	}
-
+	
 	/**
 	 * @const {string}
 	 */
 	Hammer.VERSION = '2.0.7';
-
+	
 	/**
 	 * default settings
 	 * @namespace
@@ -7285,7 +6746,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @default false
 	     */
 	    domEvents: false,
-
+	
 	    /**
 	     * The value for the touchAction property/fallback.
 	     * When set to `compute` it will magically set the correct value based on the added recognizers.
@@ -7293,13 +6754,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @default compute
 	     */
 	    touchAction: TOUCH_ACTION_COMPUTE,
-
+	
 	    /**
 	     * @type {Boolean}
 	     * @default true
 	     */
 	    enable: true,
-
+	
 	    /**
 	     * EXPERIMENTAL FEATURE -- can be removed/changed
 	     * Change the parent input target element.
@@ -7308,14 +6769,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @default null
 	     */
 	    inputTarget: null,
-
+	
 	    /**
 	     * force an input class
 	     * @type {Null|Function}
 	     * @default null
 	     */
 	    inputClass: null,
-
+	
 	    /**
 	     * Default recognizer setup when calling `Hammer()`
 	     * When creating a new Manager these will be skipped.
@@ -7331,7 +6792,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        [TapRecognizer, {event: 'doubletap', taps: 2}, ['tap']],
 	        [PressRecognizer]
 	    ],
-
+	
 	    /**
 	     * Some CSS properties can be used to improve the working of Hammer.
 	     * Add them to this method and they will be set when creating a new Manager.
@@ -7344,14 +6805,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @default 'none'
 	         */
 	        userSelect: 'none',
-
+	
 	        /**
 	         * Disable the Windows Phone grippers when pressing an element.
 	         * @type {String}
 	         * @default 'none'
 	         */
 	        touchSelect: 'none',
-
+	
 	        /**
 	         * Disables the default callout shown when you touch and hold a touch target.
 	         * On iOS, when you touch and hold a touch target such as a link, Safari displays
@@ -7360,21 +6821,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @default 'none'
 	         */
 	        touchCallout: 'none',
-
+	
 	        /**
 	         * Specifies whether zooming is enabled. Used by IE10>
 	         * @type {String}
 	         * @default 'none'
 	         */
 	        contentZooming: 'none',
-
+	
 	        /**
 	         * Specifies that an entire element should be draggable instead of its contents. Mainly for desktop browsers.
 	         * @type {String}
 	         * @default 'none'
 	         */
 	        userDrag: 'none',
-
+	
 	        /**
 	         * Overrides the highlight color shown when the user taps a link or a JavaScript
 	         * clickable element in iOS. This property obeys the alpha value, if specified.
@@ -7384,10 +6845,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        tapHighlightColor: 'rgba(0,0,0,0)'
 	    }
 	};
-
+	
 	var STOP = 1;
 	var FORCED_STOP = 2;
-
+	
 	/**
 	 * Manager
 	 * @param {HTMLElement} element
@@ -7396,27 +6857,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function Manager(element, options) {
 	    this.options = assign({}, Hammer.defaults, options || {});
-
+	
 	    this.options.inputTarget = this.options.inputTarget || element;
-
+	
 	    this.handlers = {};
 	    this.session = {};
 	    this.recognizers = [];
 	    this.oldCssProps = {};
-
+	
 	    this.element = element;
 	    this.input = createInputInstance(this);
 	    this.touchAction = new TouchAction(this, this.options.touchAction);
-
+	
 	    toggleCssProps(this, true);
-
+	
 	    each(this.options.recognizers, function(item) {
 	        var recognizer = this.add(new (item[0])(item[1]));
 	        item[2] && recognizer.recognizeWith(item[2]);
 	        item[3] && recognizer.requireFailure(item[3]);
 	    }, this);
 	}
-
+	
 	Manager.prototype = {
 	    /**
 	     * set options
@@ -7425,7 +6886,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    set: function(options) {
 	        assign(this.options, options);
-
+	
 	        // Options that need a little more setup
 	        if (options.touchAction) {
 	            this.touchAction.update();
@@ -7438,7 +6899,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return this;
 	    },
-
+	
 	    /**
 	     * stop recognizing for this session.
 	     * This session will be discarded, when a new [input]start event is fired.
@@ -7448,7 +6909,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    stop: function(force) {
 	        this.session.stopped = force ? FORCED_STOP : STOP;
 	    },
-
+	
 	    /**
 	     * run the recognizers!
 	     * called by the inputHandler function on every movement of the pointers (touches)
@@ -7460,28 +6921,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (session.stopped) {
 	            return;
 	        }
-
+	
 	        // run the touch-action polyfill
 	        this.touchAction.preventDefaults(inputData);
-
+	
 	        var recognizer;
 	        var recognizers = this.recognizers;
-
+	
 	        // this holds the recognizer that is being recognized.
 	        // so the recognizer's state needs to be BEGAN, CHANGED, ENDED or RECOGNIZED
 	        // if no recognizer is detecting a thing, it is set to `null`
 	        var curRecognizer = session.curRecognizer;
-
+	
 	        // reset when the last recognizer is recognized
 	        // or when we're in a new session
 	        if (!curRecognizer || (curRecognizer && curRecognizer.state & STATE_RECOGNIZED)) {
 	            curRecognizer = session.curRecognizer = null;
 	        }
-
+	
 	        var i = 0;
 	        while (i < recognizers.length) {
 	            recognizer = recognizers[i];
-
+	
 	            // find out if we are allowed try to recognize the input for this one.
 	            // 1.   allow if the session is NOT forced stopped (see the .stop() method)
 	            // 2.   allow if we still haven't recognized a gesture in this session, or the this recognizer is the one
@@ -7495,7 +6956,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            } else {
 	                recognizer.reset();
 	            }
-
+	
 	            // if the recognizer has been recognizing the input as a valid gesture, we want to store this one as the
 	            // current active recognizer. but only if we don't already have an active recognizer
 	            if (!curRecognizer && recognizer.state & (STATE_BEGAN | STATE_CHANGED | STATE_ENDED)) {
@@ -7504,7 +6965,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            i++;
 	        }
 	    },
-
+	
 	    /**
 	     * get a recognizer by its event name.
 	     * @param {Recognizer|String} recognizer
@@ -7514,7 +6975,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (recognizer instanceof Recognizer) {
 	            return recognizer;
 	        }
-
+	
 	        var recognizers = this.recognizers;
 	        for (var i = 0; i < recognizers.length; i++) {
 	            if (recognizers[i].options.event == recognizer) {
@@ -7523,7 +6984,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return null;
 	    },
-
+	
 	    /**
 	     * add a recognizer to the manager
 	     * existing recognizers with the same event name will be removed
@@ -7534,20 +6995,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (invokeArrayArg(recognizer, 'add', this)) {
 	            return this;
 	        }
-
+	
 	        // remove existing
 	        var existing = this.get(recognizer.options.event);
 	        if (existing) {
 	            this.remove(existing);
 	        }
-
+	
 	        this.recognizers.push(recognizer);
 	        recognizer.manager = this;
-
+	
 	        this.touchAction.update();
 	        return recognizer;
 	    },
-
+	
 	    /**
 	     * remove a recognizer by name or instance
 	     * @param {Recognizer|String} recognizer
@@ -7557,23 +7018,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (invokeArrayArg(recognizer, 'remove', this)) {
 	            return this;
 	        }
-
+	
 	        recognizer = this.get(recognizer);
-
+	
 	        // let's make sure this recognizer exists
 	        if (recognizer) {
 	            var recognizers = this.recognizers;
 	            var index = inArray(recognizers, recognizer);
-
+	
 	            if (index !== -1) {
 	                recognizers.splice(index, 1);
 	                this.touchAction.update();
 	            }
 	        }
-
+	
 	        return this;
 	    },
-
+	
 	    /**
 	     * bind event
 	     * @param {String} events
@@ -7587,7 +7048,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (handler === undefined) {
 	            return;
 	        }
-
+	
 	        var handlers = this.handlers;
 	        each(splitStr(events), function(event) {
 	            handlers[event] = handlers[event] || [];
@@ -7595,7 +7056,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	        return this;
 	    },
-
+	
 	    /**
 	     * unbind event, leave emit blank to remove all handlers
 	     * @param {String} events
@@ -7606,7 +7067,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (events === undefined) {
 	            return;
 	        }
-
+	
 	        var handlers = this.handlers;
 	        each(splitStr(events), function(event) {
 	            if (!handler) {
@@ -7617,7 +7078,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	        return this;
 	    },
-
+	
 	    /**
 	     * emit event to the listeners
 	     * @param {String} event
@@ -7628,39 +7089,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (this.options.domEvents) {
 	            triggerDomEvent(event, data);
 	        }
-
+	
 	        // no handlers, so skip it all
 	        var handlers = this.handlers[event] && this.handlers[event].slice();
 	        if (!handlers || !handlers.length) {
 	            return;
 	        }
-
+	
 	        data.type = event;
 	        data.preventDefault = function() {
 	            data.srcEvent.preventDefault();
 	        };
-
+	
 	        var i = 0;
 	        while (i < handlers.length) {
 	            handlers[i](data);
 	            i++;
 	        }
 	    },
-
+	
 	    /**
 	     * destroy the manager and unbinds all events
 	     * it doesn't unbind dom events, that is the user own responsibility
 	     */
 	    destroy: function() {
 	        this.element && toggleCssProps(this, false);
-
+	
 	        this.handlers = {};
 	        this.session = {};
 	        this.input.destroy();
 	        this.element = null;
 	    }
 	};
-
+	
 	/**
 	 * add/remove the css properties as defined in manager.options.cssProps
 	 * @param {Manager} manager
@@ -7685,7 +7146,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        manager.oldCssProps = {};
 	    }
 	}
-
+	
 	/**
 	 * trigger dom event
 	 * @param {String} event
@@ -7697,13 +7158,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    gestureEvent.gesture = data;
 	    data.target.dispatchEvent(gestureEvent);
 	}
-
+	
 	assign(Hammer, {
 	    INPUT_START: INPUT_START,
 	    INPUT_MOVE: INPUT_MOVE,
 	    INPUT_END: INPUT_END,
 	    INPUT_CANCEL: INPUT_CANCEL,
-
+	
 	    STATE_POSSIBLE: STATE_POSSIBLE,
 	    STATE_BEGAN: STATE_BEGAN,
 	    STATE_CHANGED: STATE_CHANGED,
@@ -7711,7 +7172,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    STATE_RECOGNIZED: STATE_RECOGNIZED,
 	    STATE_CANCELLED: STATE_CANCELLED,
 	    STATE_FAILED: STATE_FAILED,
-
+	
 	    DIRECTION_NONE: DIRECTION_NONE,
 	    DIRECTION_LEFT: DIRECTION_LEFT,
 	    DIRECTION_RIGHT: DIRECTION_RIGHT,
@@ -7720,17 +7181,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    DIRECTION_HORIZONTAL: DIRECTION_HORIZONTAL,
 	    DIRECTION_VERTICAL: DIRECTION_VERTICAL,
 	    DIRECTION_ALL: DIRECTION_ALL,
-
+	
 	    Manager: Manager,
 	    Input: Input,
 	    TouchAction: TouchAction,
-
+	
 	    TouchInput: TouchInput,
 	    MouseInput: MouseInput,
 	    PointerEventInput: PointerEventInput,
 	    TouchMouseInput: TouchMouseInput,
 	    SingleTouchInput: SingleTouchInput,
-
+	
 	    Recognizer: Recognizer,
 	    AttrRecognizer: AttrRecognizer,
 	    Tap: TapRecognizer,
@@ -7739,7 +7200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Pinch: PinchRecognizer,
 	    Rotate: RotateRecognizer,
 	    Press: PressRecognizer,
-
+	
 	    on: addEventListeners,
 	    off: removeEventListeners,
 	    each: each,
@@ -7750,12 +7211,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    bindFn: bindFn,
 	    prefixed: prefixed
 	});
-
+	
 	// this prevents errors when Hammer is loaded in the presence of an AMD
 	//  style loader but by script tag, not by the loader.
 	var freeGlobal = (typeof window !== 'undefined' ? window : (typeof self !== 'undefined' ? self : {})); // jshint ignore:line
 	freeGlobal.Hammer = Hammer;
-
+	
 	if (true) {
 	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
 	        return Hammer;
@@ -7765,7 +7226,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	} else {
 	    window[exportName] = Hammer;
 	}
-
+	
 	})(window, document, 'Hammer');
 
 
@@ -7774,7 +7235,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-
+	
 	(function (factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
@@ -7790,7 +7251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}(function () {
 	  var _firstTarget = null; // singleton, will contain the target element where the touch event started
-
+	
 	  /**
 	   * Extend an Hammer.js instance with event propagation.
 	   *
@@ -7817,38 +7278,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _options = options || {
 	      preventDefault: false
 	    };
-
+	
 	    if (hammer.Manager) {
 	      // This looks like the Hammer constructor.
 	      // Overload the constructors with our own.
 	      var Hammer = hammer;
-
+	
 	      var PropagatingHammer = function(element, options) {
 	        var o = Object.create(_options);
 	        if (options) Hammer.assign(o, options);
 	        return propagating(new Hammer(element, o), o);
 	      };
 	      Hammer.assign(PropagatingHammer, Hammer);
-
+	
 	      PropagatingHammer.Manager = function (element, options) {
 	        var o = Object.create(_options);
 	        if (options) Hammer.assign(o, options);
 	        return propagating(new Hammer.Manager(element, o), o);
 	      };
-
+	
 	      return PropagatingHammer;
 	    }
-
+	
 	    // create a wrapper object which will override the functions
 	    // `on`, `off`, `destroy`, and `emit` of the hammer instance
 	    var wrapper = Object.create(hammer);
-
+	
 	    // attach to DOM element
 	    var element = hammer.element;
-
+	
 	    if(!element.hammer) element.hammer = [];
 	    element.hammer.push(wrapper);
-
+	
 	    // register an event to catch the start of a gesture and store the
 	    // target in a singleton
 	    hammer.on('hammer.input', function (event) {
@@ -7859,10 +7320,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _firstTarget = event.target;
 	      }
 	    });
-
+	
 	    /** @type {Object.<String, Array.<function>>} */
 	    wrapper._handlers = {};
-
+	
 	    /**
 	     * Register a handler for one or multiple events
 	     * @param {String} events    A space separated string with events
@@ -7875,16 +7336,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _handlers = wrapper._handlers[event];
 	        if (!_handlers) {
 	          wrapper._handlers[event] = _handlers = [];
-
+	
 	          // register the static, propagated handler
 	          hammer.on(event, propagatedHandler);
 	        }
 	        _handlers.push(handler);
 	      });
-
+	
 	      return wrapper;
 	    };
-
+	
 	    /**
 	     * Unregister a handler for one or multiple events
 	     * @param {String} events      A space separated string with events
@@ -7901,7 +7362,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          _handlers = handler ? _handlers.filter(function (h) {
 	            return h !== handler;
 	          }) : [];
-
+	
 	          if (_handlers.length > 0) {
 	            wrapper._handlers[event] = _handlers;
 	          }
@@ -7912,10 +7373,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	        }
 	      });
-
+	
 	      return wrapper;
 	    };
-
+	
 	    /**
 	     * Emit to the event listeners
 	     * @param {string} eventType
@@ -7925,26 +7386,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _firstTarget = event.target;
 	      hammer.emit(eventType, event);
 	    };
-
+	
 	    wrapper.destroy = function () {
 	      // Detach from DOM element
 	      var hammers = hammer.element.hammer;
 	      var idx = hammers.indexOf(wrapper);
 	      if(idx !== -1) hammers.splice(idx,1);
 	      if(!hammers.length) delete hammer.element.hammer;
-
+	
 	      // clear all handlers
 	      wrapper._handlers = {};
-
+	
 	      // call original hammer destroy
 	      hammer.destroy();
 	    };
-
+	
 	    // split a string with space separated words
 	    function split(events) {
 	      return events.match(/[^ ]+/g);
 	    }
-
+	
 	    /**
 	     * A static event handler, applying event propagation.
 	     * @param {Object} event
@@ -7957,7 +7418,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (!event.srcEvent._handled) {
 	          event.srcEvent._handled = {};
 	        }
-
+	
 	        if (event.srcEvent._handled[event.type]) {
 	          return;
 	        }
@@ -7965,13 +7426,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          event.srcEvent._handled[event.type] = true;
 	        }
 	      }
-
+	
 	      // attach a stopPropagation function to the event
 	      var stopped = false;
 	      event.stopPropagation = function () {
 	        stopped = true;
 	      };
-
+	
 	      //wrap the srcEvent's stopPropagation to also stop hammer propagation:
 	      var srcStop = event.srcEvent.stopPropagation.bind(event.srcEvent);
 	      if(typeof srcStop == "function") {
@@ -7980,10 +7441,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          event.stopPropagation();
 	        }
 	      }
-
+	
 	      // attach firstTarget property to the event
 	      event.firstTarget = _firstTarget;
-
+	
 	      // propagate over all elements (until stopped)
 	      var elem = _firstTarget;
 	      while (elem && !stopped) {
@@ -8000,7 +7461,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        elem = elem.parentNode;
 	      }
 	    }
-
+	
 	    return wrapper;
 	  };
 	}));
@@ -8011,32 +7472,32 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
+	
 	exports.parseActions = parseActions;
 	exports.default = undoable;
 	exports.distinctState = distinctState;
 	exports.includeAction = includeAction;
 	exports.ifAction = ifAction;
 	exports.excludeAction = excludeAction;
-
+	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
+	
 	// debug output
 	var __DEBUG__ = undefined;
 	function debug() {
 	  if (__DEBUG__) {
 	    var _console;
-
+	
 	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	      args[_key] = arguments[_key];
 	    }
-
+	
 	    if (!console.group) {
 	      args.unshift('%credux-undo', 'font-style: italic');
 	    }
@@ -8048,7 +7509,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var args = ['action', action.type];
 	    if (console.group) {
 	      var _console2;
-
+	
 	      args.unshift('%credux-undo', 'font-style: italic');
 	      (_console2 = console).groupCollapsed.apply(_console2, args);
 	      console.log('received', { state: state, action: action });
@@ -8063,7 +7524,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 	// /debug output
-
+	
 	// action types
 	var ActionTypes = exports.ActionTypes = {
 	  UNDO: '@@redux-undo/UNDO',
@@ -8072,7 +7533,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  JUMP_TO_PAST: '@@redux-undo/JUMP_TO_PAST'
 	};
 	// /action types
-
+	
 	// action creators to change the state
 	var ActionCreators = exports.ActionCreators = {
 	  undo: function undo() {
@@ -8089,27 +7550,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 	// /action creators
-
+	
 	// length: get length of history
 	function length(history) {
 	  var past = history.past;
 	  var future = history.future;
-
+	
 	  return past.length + 1 + future.length;
 	}
 	// /length
-
+	
 	// insert: insert `state` into history, which means adding the current state
 	//         into `past`, setting the new `state` as `present` and erasing
 	//         the `future`.
 	function insert(history, state, limit) {
 	  debug('insert', { state: state, history: history, free: limit - length(history) });
-
+	
 	  var past = history.past;
 	  var present = history.present;
-
+	
 	  var historyOverflow = limit && length(history) >= limit;
-
+	
 	  if (present === undefined) {
 	    // init history
 	    return {
@@ -8118,7 +7579,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      future: []
 	    };
 	  }
-
+	
 	  return {
 	    past: [].concat(_toConsumableArray(past.slice(historyOverflow ? 1 : 0)), [present]),
 	    present: state,
@@ -8126,18 +7587,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	// /insert
-
+	
 	// undo: go back to the previous point in history
 	function undo(history) {
 	  debug('undo', { history: history });
-
+	
 	  var past = history.past;
 	  var present = history.present;
 	  var future = history.future;
-
-
+	
+	
 	  if (past.length <= 0) return history;
-
+	
 	  return {
 	    past: past.slice(0, past.length - 1), // remove last element from past
 	    present: past[past.length - 1], // set element as new present
@@ -8145,18 +7606,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	// /undo
-
+	
 	// redo: go to the next point in history
 	function redo(history) {
 	  debug('redo', { history: history });
-
+	
 	  var past = history.past;
 	  var present = history.present;
 	  var future = history.future;
-
-
+	
+	
 	  if (future.length <= 0) return history;
-
+	
 	  return {
 	    future: future.slice(1, future.length), // remove element from future
 	    present: future[0], // set element as new present
@@ -8165,16 +7626,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	// /redo
-
+	
 	// jumpToFuture: jump to requested index in future history
 	function jumpToFuture(history, index) {
 	  if (index === 0) return redo(history);
-
+	
 	  var past = history.past;
 	  var present = history.present;
 	  var future = history.future;
-
-
+	
+	
 	  return {
 	    future: future.slice(index + 1),
 	    present: future[index],
@@ -8182,16 +7643,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	// /jumpToFuture
-
+	
 	// jumpToPast: jump to requested index in past history
 	function jumpToPast(history, index) {
 	  if (index === history.past.length - 1) return undo(history);
-
+	
 	  var past = history.past;
 	  var present = history.present;
 	  var future = history.future;
-
-
+	
+	
 	  return {
 	    future: past.slice(index + 1).concat([present]).concat(future),
 	    present: past[index],
@@ -8199,7 +7660,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	// /jumpToPast
-
+	
 	// wrapState: for backwards compatibility to 0.4
 	function wrapState(state) {
 	  return _extends({}, state, {
@@ -8207,13 +7668,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}
 	// /wrapState
-
+	
 	// updateState
 	function updateState(state, history) {
 	  return wrapState(_extends({}, state, history));
 	}
 	// /updateState
-
+	
 	// createHistory
 	function createHistory(state) {
 	  return {
@@ -8223,11 +7684,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	// /createHistory
-
+	
 	// parseActions
 	function parseActions(rawActions) {
 	  var defaultValue = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
-
+	
 	  if (Array.isArray(rawActions)) {
 	    return rawActions;
 	  } else if (typeof rawActions === 'string') {
@@ -8236,13 +7697,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return defaultValue;
 	}
 	// /parseActions
-
+	
 	// redux-undo higher order reducer
 	function undoable(reducer) {
 	  var rawConfig = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
+	
 	  __DEBUG__ = rawConfig.debug;
-
+	
 	  var config = {
 	    initialState: rawConfig.initialState,
 	    initTypes: parseActions(rawConfig.initTypes, ['@@redux/INIT', '@@INIT']),
@@ -8256,11 +7717,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    jumpToFutureType: rawConfig.jumpToFutureType || ActionTypes.JUMP_TO_FUTURE
 	  };
 	  config.history = rawConfig.initialHistory || createHistory(config.initialState);
-
+	
 	  if (config.initTypes.length === 0) {
 	    console.warn('redux-undo: supply at least one action type in initTypes to ensure initial state');
 	  }
-
+	
 	  return function (state, action) {
 	    debugStart(action, state);
 	    var res = undefined;
@@ -8270,28 +7731,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	        debug('after undo', res);
 	        debugEnd();
 	        return res ? updateState(state, res) : state;
-
+	
 	      case config.redoType:
 	        res = redo(state);
 	        debug('after redo', res);
 	        debugEnd();
 	        return res ? updateState(state, res) : state;
-
+	
 	      case config.jumpToPastType:
 	        res = jumpToPast(state, action.index);
 	        debug('after jumpToPast', res);
 	        debugEnd();
 	        return res ? updateState(state, res) : state;
-
+	
 	      case config.jumpToFutureType:
 	        res = jumpToFuture(state, action.index);
 	        debug('after jumpToFuture', res);
 	        debugEnd();
 	        return res ? updateState(state, res) : state;
-
+	
 	      default:
 	        res = reducer(state && state.present, action);
-
+	
 	        if (config.initTypes.some(function (actionType) {
 	          return actionType === action.type;
 	        })) {
@@ -8299,7 +7760,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          debugEnd();
 	          return wrapState(_extends({}, state, createHistory(res)));
 	        }
-
+	
 	        if (config.filter && typeof config.filter === 'function') {
 	          if (!config.filter(action, res, state && state.present)) {
 	            debug('filter prevented action, not storing it');
@@ -8309,18 +7770,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }));
 	          }
 	        }
-
+	
 	        var history = state && state.present !== undefined ? state : config.history;
 	        var updatedHistory = insert(history, res, config.limit);
 	        debug('after insert', { history: updatedHistory, free: config.limit - length(updatedHistory) });
 	        debugEnd();
-
+	
 	        return wrapState(_extends({}, state, updatedHistory));
 	    }
 	  };
 	}
 	// /redux-undo
-
+	
 	// distinctState helper
 	function distinctState() {
 	  return function (action, currentState, previousState) {
@@ -8328,7 +7789,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	// /distinctState
-
+	
 	// includeAction helper
 	function includeAction(rawActions) {
 	  var actions = parseActions(rawActions);
@@ -8337,18 +7798,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	// /includeAction
-
+	
 	// deprecated ifAction helper
 	function ifAction(rawActions) {
 	  console.error('Deprecation Warning: Please change `ifAction` to `includeAction`');
 	  return includeAction(rawActions);
 	}
 	// /ifAction
-
+	
 	// excludeAction helper
 	function excludeAction() {
 	  var rawActions = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-
+	
 	  var actions = parseActions(rawActions);
 	  return function (action) {
 	    return actions.indexOf(action.type) < 0;
@@ -8361,29 +7822,29 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	          value: true
 	});
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _curve = __webpack_require__(119);
-
+	
 	var _curve2 = _interopRequireDefault(_curve);
-
+	
 	var _resizeHandle = __webpack_require__(143);
-
+	
 	var _resizeHandle2 = _interopRequireDefault(_resizeHandle);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var CLASSES = __webpack_require__(152);
-
+	
 	var CurveEditorRight = function CurveEditorRight(_ref) {
 	          var state = _ref.state;
 	          var progressLines = _ref.progressLines;
-
+	
 	          return (0, _preact.h)(
 	                    'div',
 	                    { className: CLASSES['curve-editor__right'] },
@@ -8392,7 +7853,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    (0, _preact.h)(_resizeHandle2.default, { state: state, type: 'bottom', className: CLASSES['curve-editor__resize-handle'] })
 	          );
 	};
-
+	
 	exports.default = CurveEditorRight;
 
 /***/ },
@@ -8400,75 +7861,75 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _getPrototypeOf = __webpack_require__(66);
-
+	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
+	
 	var _classCallCheck2 = __webpack_require__(42);
-
+	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
+	
 	var _createClass2 = __webpack_require__(43);
-
+	
 	var _createClass3 = _interopRequireDefault(_createClass2);
-
+	
 	var _possibleConstructorReturn2 = __webpack_require__(71);
-
+	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
+	
 	var _inherits2 = __webpack_require__(106);
-
+	
 	var _inherits3 = _interopRequireDefault(_inherits2);
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _angleToPoint = __webpack_require__(120);
-
+	
 	var _angleToPoint2 = _interopRequireDefault(_angleToPoint);
-
+	
 	var _progressLine = __webpack_require__(121);
-
+	
 	var _progressLine2 = _interopRequireDefault(_progressLine);
-
+	
 	var _point = __webpack_require__(127);
-
+	
 	var _point2 = _interopRequireDefault(_point);
-
+	
 	var _resizeMod = __webpack_require__(136);
-
+	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
-
+	
 	var _constants = __webpack_require__(114);
-
+	
 	var _constants2 = _interopRequireDefault(_constants);
-
+	
 	var _hammerjs = __webpack_require__(115);
-
+	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
-
+	
 	var _propagatingHammerjs = __webpack_require__(116);
-
+	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	__webpack_require__(140);
-
+	
 	var CLASSES = __webpack_require__(142);
-
+	
 	var Curve = function (_Component) {
 	  (0, _inherits3.default)(Curve, _Component);
-
+	
 	  function Curve() {
 	    (0, _classCallCheck3.default)(this, Curve);
 	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Curve).apply(this, arguments));
 	  }
-
+	
 	  (0, _createClass3.default)(Curve, [{
 	    key: 'render',
 	    value: function render() {
@@ -8478,7 +7939,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var points = this._renderPoints(state);
 	      var segments = this._renderSegments(state);
 	      var progressLines = this._renderProgressLines(state);
-
+	
 	      return (0, _preact.h)(
 	        'div',
 	        { className: CLASSES['curve'] },
@@ -8522,16 +7983,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var resize = state.resize;
 	      var temp_top = resize.temp_top;
 	      var temp_right = resize.temp_right;
-
-
+	
+	
 	      temp_top += resize.top;
 	      temp_right += resize.right;
-
+	
 	      var scale = 'transform: scaleX(' + (_constants2.default.CURVE_SIZE + Math.max(temp_right, 0)) / _constants2.default.CURVE_SIZE + ')',
 	          bgTransform = '' + mojs.h.prefix.css + scale + '; ' + scale + ';',
 	          background = 'background-position: 0 ' + (-temp_top - 1) + 'px; ' + bgTransform,
 	          transform = 'transform: translate(0px, ' + -temp_top + 'px)';
-
+	
 	      return {
 	        background: background,
 	        transform: '' + mojs.h.prefix.css + transform + '; ' + transform + ';'
@@ -8543,11 +8004,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var pointsData = state.points.present.points,
 	          points = [],
 	          len = pointsData.length;
-
+	
 	      for (var i = 0; i < len; i++) {
 	        points.push((0, _preact.h)(_point2.default, { point: pointsData[i], state: state, index: i, pointsCount: len }));
 	      }
-
+	
 	      return points;
 	    }
 	  }, {
@@ -8555,7 +8016,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _renderSegments(state) {
 	      var segments = state.points.present.segments;
 	      var domSegments = [];
-
+	
 	      for (var i = 0; i < segments.length; i++) {
 	        var segment = segments[i];
 	        domSegments.push((0, _preact.h)('path', { d: segment.segmentString,
@@ -8567,7 +8028,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          'class': CLASSES['curve__svg-segment']
 	        }));
 	      }
-
+	
 	      return domSegments;
 	    }
 	  }, {
@@ -8576,12 +8037,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var progressLines = state.progressLines;
 	      var lines = progressLines.lines;
 	      var renderedLines = [];
-
+	
 	      for (var i = lines.length - 1; i >= 0; i--) {
 	        var line = lines[i];
 	        renderedLines.push((0, _preact.h)(_progressLine2.default, line));
 	      }
-
+	
 	      return renderedLines;
 	    }
 	  }, {
@@ -8589,15 +8050,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _updateDomProgressLines() {
 	      var progressLines = this.props.progressLines;
 	      // DO NOT MUTATE THE ARRAY TO PREVENT LOOSING THE LINK TO IT
-
+	
 	      progressLines.length = 0;
-
+	
 	      var lines = this.base.querySelectorAll('[data-component="progress-line"]');
 	      for (var i = 0; i < lines.length; i++) {
 	        progressLines[i] = lines[i];
 	      }
 	    }
-
+	
 	    // _renderSegment ( index, string) {
 	    //   return <path
 	    //           d={string}
@@ -8609,7 +8070,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    //           class={CLASSES['curve__svg-segment']}
 	    //           />;
 	    // }
-
+	
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
@@ -8619,14 +8080,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this._updateDomProgressLines();
-
+	
 	      var store = this.context.store;
 	      var el = this.base.querySelector('#js-segments');
 	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(el));
-
+	
 	      // mc.add(new Hammer.Pan({ threshold: 0 }));
 	      mc.add(new _hammerjs2.default.Tap());
-
+	
 	      mc.on('tap', function (e) {
 	        var ev = e.srcEvent,
 	            target = ev.target;
@@ -8638,26 +8099,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var x = ev.offsetX,
 	            y = ev.offsetY * _constants2.default.CURVE_PERCENT,
 	            index = parseInt(target.getAttribute('data-index')) + 1;
-
+	
 	        store.dispatch({
 	          type: 'POINT_ADD',
 	          data: { point: { x: x, y: y }, index: index },
 	          isRecord: true
 	        });
-
+	
 	        store.dispatch({
 	          type: 'POINT_SELECT',
 	          data: { index: index, type: 'straight' }
 	        });
-
+	
 	        e.stopPropagation();
 	      });
-
+	
 	      var svg = this.base.querySelector('#js-svg'),
 	          svgMc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(this.base));
-
+	
 	      svgMc.add(new _hammerjs2.default.Tap());
-
+	
 	      svgMc.on('tap', function (e) {
 	        store.dispatch({ type: 'POINT_DESELECT_ALL' });
 	      });
@@ -8665,7 +8126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	  return Curve;
 	}(_preact.Component);
-
+	
 	exports.default = Curve;
 
 /***/ },
@@ -8673,11 +8134,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	exports.default = function (angle, radius) {
 	  return mojs.h.getRadialPoint({ angle: angle, radius: radius, center: { x: 0, y: 0 } });
 	};
@@ -8687,46 +8148,46 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _getPrototypeOf = __webpack_require__(66);
-
+	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
+	
 	var _classCallCheck2 = __webpack_require__(42);
-
+	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
+	
 	var _createClass2 = __webpack_require__(43);
-
+	
 	var _createClass3 = _interopRequireDefault(_createClass2);
-
+	
 	var _possibleConstructorReturn2 = __webpack_require__(71);
-
+	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
+	
 	var _inherits2 = __webpack_require__(106);
-
+	
 	var _inherits3 = _interopRequireDefault(_inherits2);
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	__webpack_require__(122);
 	var CLASSES = __webpack_require__(126);
-
+	
 	var ProgressLine = function (_Component) {
 	  (0, _inherits3.default)(ProgressLine, _Component);
-
+	
 	  function ProgressLine() {
 	    (0, _classCallCheck3.default)(this, ProgressLine);
 	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(ProgressLine).apply(this, arguments));
 	  }
-
+	
 	  (0, _createClass3.default)(ProgressLine, [{
 	    key: 'render',
 	    value: function render() {
@@ -8739,7 +8200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	  return ProgressLine;
 	}(_preact.Component);
-
+	
 	exports.default = ProgressLine;
 
 /***/ },
@@ -8747,7 +8208,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-
+	
 	// load the styles
 	var content = __webpack_require__(123);
 	if(typeof content === 'string') content = [[module.id, content, '']];
@@ -8755,11 +8216,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var update = __webpack_require__(125)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
-	if(true) {
+	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(123, function() {
-				var newContent = __webpack_require__(123);
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./progress-line.postcss.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./progress-line.postcss.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -8774,11 +8235,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports = module.exports = __webpack_require__(124)();
 	// imports
-
-
+	
+	
 	// module
-	exports.push([module.id, "/*$PX:      1/16rem;*/\n\n._progress-line_1j4pp_3 {\n  position:     absolute;\n  top:          0;\n  bottom:       0;\n  width:        1px;\n  margin-left:  -1.5px;\n}\n", ""]);
-
+	exports.push([module.id, "._progress-line_1j4pp_3{position:absolute;top:0;bottom:0;width:1px;margin-left:-1.5px}", ""]);
+	
 	// exports
 
 
@@ -8793,7 +8254,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// css base code, injected by the css-loader
 	module.exports = function() {
 		var list = [];
-
+	
 		// return the list of modules as css string
 		list.toString = function toString() {
 			var result = [];
@@ -8807,7 +8268,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 			return result.join("");
 		};
-
+	
 		// import a list of modules into the list
 		list.i = function(modules, mediaQuery) {
 			if(typeof modules === "string")
@@ -8863,23 +8324,23 @@ return /******/ (function(modules) { // webpackBootstrap
 		singletonElement = null,
 		singletonCounter = 0,
 		styleElementsInsertedAtTop = [];
-
+	
 	module.exports = function(list, options) {
 		if(false) {
 			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 		}
-
+	
 		options = options || {};
 		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
 		// tags it will allow on a page
 		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
+	
 		// By default, add <style> tags to the bottom of <head>.
 		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
+	
 		var styles = listToStyles(list);
 		addStylesToDom(styles, options);
-
+	
 		return function update(newList) {
 			var mayRemove = [];
 			for(var i = 0; i < styles.length; i++) {
@@ -8902,7 +8363,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		};
 	}
-
+	
 	function addStylesToDom(styles, options) {
 		for(var i = 0; i < styles.length; i++) {
 			var item = styles[i];
@@ -8924,7 +8385,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		}
 	}
-
+	
 	function listToStyles(list) {
 		var styles = [];
 		var newStyles = {};
@@ -8942,7 +8403,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 		return styles;
 	}
-
+	
 	function insertStyleElement(options, styleElement) {
 		var head = getHeadElement();
 		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
@@ -8961,7 +8422,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
 		}
 	}
-
+	
 	function removeStyleElement(styleElement) {
 		styleElement.parentNode.removeChild(styleElement);
 		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
@@ -8969,24 +8430,24 @@ return /******/ (function(modules) { // webpackBootstrap
 			styleElementsInsertedAtTop.splice(idx, 1);
 		}
 	}
-
+	
 	function createStyleElement(options) {
 		var styleElement = document.createElement("style");
 		styleElement.type = "text/css";
 		insertStyleElement(options, styleElement);
 		return styleElement;
 	}
-
+	
 	function createLinkElement(options) {
 		var linkElement = document.createElement("link");
 		linkElement.rel = "stylesheet";
 		insertStyleElement(options, linkElement);
 		return linkElement;
 	}
-
+	
 	function addStyle(obj, options) {
 		var styleElement, update, remove;
-
+	
 		if (options.singleton) {
 			var styleIndex = singletonCounter++;
 			styleElement = singletonElement || (singletonElement = createStyleElement(options));
@@ -9012,9 +8473,9 @@ return /******/ (function(modules) { // webpackBootstrap
 				removeStyleElement(styleElement);
 			};
 		}
-
+	
 		update(obj);
-
+	
 		return function updateStyle(newObj) {
 			if(newObj) {
 				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
@@ -9025,19 +8486,19 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		};
 	}
-
+	
 	var replaceText = (function () {
 		var textStore = [];
-
+	
 		return function (index, replacement) {
 			textStore[index] = replacement;
 			return textStore.filter(Boolean).join('\n');
 		};
 	})();
-
+	
 	function applyToSingletonTag(styleElement, index, remove, obj) {
 		var css = remove ? "" : obj.css;
-
+	
 		if (styleElement.styleSheet) {
 			styleElement.styleSheet.cssText = replaceText(index, css);
 		} else {
@@ -9051,15 +8512,15 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 		}
 	}
-
+	
 	function applyToTag(styleElement, obj) {
 		var css = obj.css;
 		var media = obj.media;
-
+	
 		if(media) {
 			styleElement.setAttribute("media", media)
 		}
-
+	
 		if(styleElement.styleSheet) {
 			styleElement.styleSheet.cssText = css;
 		} else {
@@ -9069,22 +8530,22 @@ return /******/ (function(modules) { // webpackBootstrap
 			styleElement.appendChild(document.createTextNode(css));
 		}
 	}
-
+	
 	function updateLink(linkElement, obj) {
 		var css = obj.css;
 		var sourceMap = obj.sourceMap;
-
+	
 		if(sourceMap) {
 			// http://stackoverflow.com/a/26603875
 			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
 		}
-
+	
 		var blob = new Blob([css], { type: "text/css" });
-
+	
 		var oldSrc = linkElement.href;
-
+	
 		linkElement.href = URL.createObjectURL(blob);
-
+	
 		if(oldSrc)
 			URL.revokeObjectURL(oldSrc);
 	}
@@ -9103,78 +8564,78 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _getPrototypeOf = __webpack_require__(66);
-
+	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
+	
 	var _classCallCheck2 = __webpack_require__(42);
-
+	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
+	
 	var _createClass2 = __webpack_require__(43);
-
+	
 	var _createClass3 = _interopRequireDefault(_createClass2);
-
+	
 	var _possibleConstructorReturn2 = __webpack_require__(71);
-
+	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
+	
 	var _inherits2 = __webpack_require__(106);
-
+	
 	var _inherits3 = _interopRequireDefault(_inherits2);
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _addPointerDown = __webpack_require__(128);
-
+	
 	var _addPointerDown2 = _interopRequireDefault(_addPointerDown);
-
+	
 	var _littleHandle = __webpack_require__(129);
-
+	
 	var _littleHandle2 = _interopRequireDefault(_littleHandle);
-
+	
 	var _propagatingHammerjs = __webpack_require__(116);
-
+	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
-
+	
 	var _roundTo = __webpack_require__(134);
-
+	
 	var _roundTo2 = _interopRequireDefault(_roundTo);
-
+	
 	var _hammerjs = __webpack_require__(115);
-
+	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
-
+	
 	var _clamp = __webpack_require__(135);
-
+	
 	var _clamp2 = _interopRequireDefault(_clamp);
-
+	
 	var _resizeMod = __webpack_require__(136);
-
+	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
-
+	
 	var _constants = __webpack_require__(114);
-
+	
 	var _constants2 = _interopRequireDefault(_constants);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	__webpack_require__(137);
 	var CLASSES = __webpack_require__(139);
-
+	
 	var Point = function (_Component) {
 	  (0, _inherits3.default)(Point, _Component);
-
+	
 	  function Point() {
 	    (0, _classCallCheck3.default)(this, Point);
 	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Point).apply(this, arguments));
 	  }
-
+	
 	  (0, _createClass3.default)(Point, [{
 	    key: 'render',
 	    value: function render() {
@@ -9183,9 +8644,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var state = _props.state;
 	      var selected = point.isSelected ? CLASSES['is-selected'] : '';
 	      var handles = point.type === 'straight' ? CLASSES['is-hide-handles'] : '';
-
+	
 	      var littleHandles = this._getLittleHandles();
-
+	
 	      return (0, _preact.h)(
 	        'div',
 	        { className: CLASSES['point'] + ' ' + selected + ' ' + handles,
@@ -9203,7 +8664,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var x = (0, _clamp2.default)(point.x + point.tempX, 0, 100);
 	      var cleanX = x * resize.scalerX;
 	      var y = point.y + point.tempY;
-
+	
 	      var translate = 'transform: translate(' + cleanX + 'px, ' + (y - 1) + 'px)';
 	      return '' + mojs.h.prefix.css + translate + '; ' + translate;
 	    }
@@ -9236,10 +8697,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _this2 = this;
-
+	
 	      var store = this.context.store;
-
-
+	
+	
 	      var getTempX = function getTempX(e) {
 	        var resize = _this2.props.state.resize;
 	        var _props3 = _this2.props;
@@ -9247,11 +8708,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var index = _props3.index;
 	        // if point is not locked to x axes ->
 	        // calculate delta regarding scaler
-
+	
 	        if (point.isLockedX) {
 	          return 0;
 	        };
-
+	
 	        var x = e.deltaX / resize.scalerX;
 	        if (point.x + x < 0) {
 	          return 0 - point.x;
@@ -9260,48 +8721,48 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return (0, _roundTo2.default)(point.x + x, 5, 1.5) - point.x;
 	      };
-
+	
 	      var getY = function getY(e) {
 	        var resize = _this2.props.state.resize;
 	        var _props4 = _this2.props;
 	        var point = _props4.point;
 	        var index = _props4.index;
 	        var y = point.y + e.deltaY;
-
+	
 	        // clamp y to the size of curve
 	        return (0, _clamp2.default)(y, resize.top, _constants2.default.CURVE_SIZE + resize.bottom);
 	      };
-
+	
 	      // get y delta reagarding curve bounds
 	      var getTempY = function getTempY(e) {
 	        var resize = _this2.props.state.resize;
 	        var _props5 = _this2.props;
 	        var point = _props5.point;
 	        var index = _props5.index;
-
-
+	
+	
 	        var y = point.y + e.deltaY,
 	            returnValue = y;
-
+	
 	        if (y < resize.top) {
 	          returnValue = resize.top;
 	        } else if (y > _constants2.default.CURVE_SIZE + resize.bottom) {
 	          returnValue = _constants2.default.CURVE_SIZE + resize.bottom;
 	        }
-
+	
 	        return (0, _roundTo2.default)(returnValue, 5 * _constants2.default.CURVE_PERCENT, 2 * _constants2.default.CURVE_PERCENT) - point.y;
 	      };
-
+	
 	      var el = this.base.querySelector('#js-point-touch'),
 	          mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(el));
-
+	
 	      mc.add(new _hammerjs2.default.Pan({ threshold: 0 }));
-
+	
 	      mc.on('pan', function (e) {
 	        var _props6 = _this2.props;
 	        var point = _props6.point;
 	        var index = _props6.index;
-
+	
 	        store.dispatch({
 	          type: 'POINT_TRANSLATE',
 	          data: { x: getTempX(e), y: getTempY(e), index: index }
@@ -9312,7 +8773,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var point = _props7.point;
 	        var index = _props7.index;
 	        // fire translate end and save it to the store
-
+	
 	        store.dispatch({
 	          type: 'POINT_TRANSLATE_END', data: index, isRecord: true
 	        });
@@ -9320,12 +8781,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }).on('tap', function (e) {
 	        e.stopPropagation();
 	      });
-
+	
 	      (0, _addPointerDown2.default)(el, function (e) {
 	        var _props8 = _this2.props;
 	        var point = _props8.point;
 	        var index = _props8.index;
-
+	
 	        store.dispatch({
 	          type: 'POINT_SELECT',
 	          data: {
@@ -9338,7 +8799,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	  return Point;
 	}(_preact.Component);
-
+	
 	exports.default = Point;
 
 /***/ },
@@ -9346,11 +8807,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	exports.default = function (el, fn) {
 	  if (window.navigator.msPointerEnabled) {
 	    el.addEventListener('MSPointerDown', fn);
@@ -9367,70 +8828,70 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _extends2 = __webpack_require__(5);
-
+	
 	var _extends3 = _interopRequireDefault(_extends2);
-
+	
 	var _getPrototypeOf = __webpack_require__(66);
-
+	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
+	
 	var _classCallCheck2 = __webpack_require__(42);
-
+	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
+	
 	var _createClass2 = __webpack_require__(43);
-
+	
 	var _createClass3 = _interopRequireDefault(_createClass2);
-
+	
 	var _possibleConstructorReturn2 = __webpack_require__(71);
-
+	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
+	
 	var _inherits2 = __webpack_require__(106);
-
+	
 	var _inherits3 = _interopRequireDefault(_inherits2);
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _angleToPoint = __webpack_require__(120);
-
+	
 	var _angleToPoint2 = _interopRequireDefault(_angleToPoint);
-
+	
 	var _pointToAngle = __webpack_require__(130);
-
+	
 	var _pointToAngle2 = _interopRequireDefault(_pointToAngle);
-
+	
 	var _constants = __webpack_require__(114);
-
+	
 	var _constants2 = _interopRequireDefault(_constants);
-
+	
 	var _hammerjs = __webpack_require__(115);
-
+	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
-
+	
 	var _propagatingHammerjs = __webpack_require__(116);
-
+	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	__webpack_require__(131);
 	var CLASSES = __webpack_require__(133);
-
+	
 	var LittleHandle = function (_Component) {
 	  (0, _inherits3.default)(LittleHandle, _Component);
-
+	
 	  function LittleHandle() {
 	    (0, _classCallCheck3.default)(this, LittleHandle);
 	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(LittleHandle).apply(this, arguments));
 	  }
-
+	
 	  (0, _createClass3.default)(LittleHandle, [{
 	    key: 'render',
 	    value: function render() {
@@ -9455,10 +8916,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _this2 = this;
-
+	
 	      var store = this.context.store;
 	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(this.base));var handle = this.props.handle;
-
+	
 	      mc.add(new _hammerjs2.default.Pan({ threshold: 0 }));
 	      mc.on('panstart', function (e) {
 	        handle = _this2.props.handle;
@@ -9474,12 +8935,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // absolute x regarding horizontal size
 	        var absX = point.x + e.deltaX / resize.absScalerX;
 	        var angle = (0, _pointToAngle2.default)(absX, newY);
-
+	
 	        store.dispatch({
 	          type: 'HANDLE_TRANSLATE',
 	          data: (0, _extends3.default)({ index: index, parentIndex: parentIndex }, angle)
 	        });
-
+	
 	        if (_this2.props.type === 'mirrored') {
 	          var i = index === 1 ? 2 : 1;
 	          store.dispatch({
@@ -9491,7 +8952,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	          });
 	        }
-
+	
 	        if (_this2.props.type === 'asymmetric') {
 	          var _i = index === 1 ? 2 : 1;
 	          store.dispatch({
@@ -9518,7 +8979,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var resize = state.resize;
 	      var point = (0, _angleToPoint2.default)(handle.angle, handle.radius);
 	      var translate = 'transform: translate(' + point.x * resize.absScalerX + 'px, ' + point.y + 'px) rotate(' + handle.angle + 'deg)';
-
+	
 	      return '' + mojs.h.prefix.css + translate + '; ' + translate;
 	    }
 	  }, {
@@ -9534,13 +8995,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var point = (0, _angleToPoint2.default)(handle.angle, handle.radius);
 	      var newVector = (0, _pointToAngle2.default)(point.x * resize.absScalerX, point.y);
 	      var translate = 'transform: rotate(' + newVector.angle + 'deg) scaleY(' + newVector.radius + ')';
-
+	
 	      return '' + mojs.h.prefix.css + translate + '; ' + translate;
 	    }
 	  }]);
 	  return LittleHandle;
 	}(_preact.Component);
-
+	
 	exports.default = LittleHandle;
 
 /***/ },
@@ -9548,18 +9009,18 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	exports.default = function (x, y) {
 	  var radius = Math.sqrt(x * x + y * y),
 	      angle = Math.atan(y / x) * (180 / Math.PI) - 90;
 	  if (x > 0) {
 	    angle = angle - 180;
 	  };
-
+	
 	  return { radius: radius, angle: angle };
 	};
 
@@ -9568,7 +9029,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-
+	
 	// load the styles
 	var content = __webpack_require__(132);
 	if(typeof content === 'string') content = [[module.id, content, '']];
@@ -9576,11 +9037,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var update = __webpack_require__(125)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
-	if(true) {
+	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(132, function() {
-				var newContent = __webpack_require__(132);
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./little-handle.postcss.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./little-handle.postcss.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9595,11 +9056,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports = module.exports = __webpack_require__(124)();
 	// imports
-
-
+	
+	
 	// module
-	exports.push([module.id, "/*$PX:      1/16rem;*/\n\n._little-handle_x1mg1_3 {\n  position: absolute;\n  left:     50%;\n  top:      50%;\n  width:    0;\n  height:   0\n\n}\n\n._little-handle__point_x1mg1_1 {\n  position: absolute;\n  z-index: 1;\n  width: 6px;\n  height: 6px;\n  left: 50%;\n  top: 50%;\n  margin-left: -3px;\n  margin-top: -3px;\n  background: #FF512F;\n  box-shadow: 1px 1px 0 rgba(0,0,0,.5)\n\n}\n\n._little-handle__easy-touch_x1mg1_1 {\n  position: absolute;\n  z-index: 1;\n  width: 200%;\n  height: 200%;\n  left: 50%;\n  top: 50%;\n  margin-left: -100%;\n  margin-top: -100%\n\n}\n\n._little-handle__line_x1mg1_1 {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin-left: -1px;\n  margin-top: -1px;\n  left: 50%;\n  top: 50%;\n  background: #FF512F;\n  -webkit-transform-origin: 50% 100%;\n          transform-origin: 50% 100%\n  /*box-shadow:   calc( 1*$PX ) 0 0 rgba(0,0,0,.5);*/\n\n}\n", ""]);
-
+	exports.push([module.id, "._little-handle_x1mg1_3{position:absolute;left:50%;top:50%;width:0;height:0}._little-handle__point_x1mg1_1{position:absolute;z-index:1;width:6px;height:6px;left:50%;top:50%;margin-left:-3px;margin-top:-3px;background:#ff512f;box-shadow:1px 1px 0 rgba(0,0,0,.5)}._little-handle__easy-touch_x1mg1_1{position:absolute;z-index:1;width:200%;height:200%;left:50%;top:50%;margin-left:-100%;margin-top:-100%}._little-handle__line_x1mg1_1{position:absolute;width:1px;height:1px;margin-left:-1px;margin-top:-1px;left:50%;top:50%;background:#ff512f;-webkit-transform-origin:50% 100%;transform-origin:50% 100%}", ""]);
+	
 	// exports
 
 
@@ -9619,14 +9080,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	exports.default = function (value, base, snap) {
 	  var modified = Math.round(value / base) * base;
-
+	
 	  return Math.abs(value - modified) < snap ? modified : value;
 	};
 
@@ -9635,11 +9096,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	exports.default = function (value, min, max) {
 	  return value < min ? min : value > max ? max : value;
 	};
@@ -9649,34 +9110,34 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	      value: true
 	});
-
+	
 	var _constants = __webpack_require__(114);
-
+	
 	var _constants2 = _interopRequireDefault(_constants);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var Y_SIZE = _constants2.default.CURVE_SIZE;
 	var mod = function mod(tempResize_top) {
 	      var coef = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
-
+	
 	      var MOD = Math.abs(tempResize_top % Y_SIZE),
 	          DIV = parseInt(tempResize_top / Y_SIZE),
 	          GAP = 15;
-
+	
 	      if (MOD < GAP) {
 	            tempResize_top = DIV * Y_SIZE;
 	      } else if (MOD > Y_SIZE - GAP) {
 	            tempResize_top = (DIV + 1 * coef) * Y_SIZE;
 	      }
-
+	
 	      return tempResize_top;
 	};
-
+	
 	exports.default = mod;
 
 /***/ },
@@ -9684,7 +9145,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-
+	
 	// load the styles
 	var content = __webpack_require__(138);
 	if(typeof content === 'string') content = [[module.id, content, '']];
@@ -9692,11 +9153,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var update = __webpack_require__(125)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
-	if(true) {
+	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(138, function() {
-				var newContent = __webpack_require__(138);
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./point.postcss.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./point.postcss.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9711,11 +9172,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports = module.exports = __webpack_require__(124)();
 	// imports
-
-
+	
+	
 	// module
-	exports.push([module.id, "/*$PX:      1/16rem;*/\n._point_14jnp_5 {\n  position:       absolute;\n  width:          10px;\n  height:         10px;\n  margin-left:    -5px;\n  margin-top:     -5px;\n  cursor:         move;\n  background:     #FFFFFF;\n  border-radius:  50%;\n  z-index:        3;\n  box-shadow:     3px 3px 0 rgba(0,0,0,.5);\n}\n/*border:         calc( 2*$PX ) solid $c-white;*/\n._point_14jnp_5 [data-component=\"little-handle\"] {\n  display: none;\n}\n._point__touch_14jnp_1 {\n  position:       absolute;\n  left:       50%;\n  top:       50%;\n  width:       20px;\n  height:       20px;\n  margin-left:       -10px;\n  margin-top:       -10px;\n}\n._point_14jnp_5:hover, ._point_14jnp_5._is-selected_14jnp_31 {\n  /*border-color: #8C6D8B;*/\n  /*border-color: $c-orange;*/\n  background:       #FF512F;\n}\n._point_14jnp_5._is-selected_14jnp_31 {}\n._point_14jnp_5._is-selected_14jnp_31 [data-component=\"little-handle\"] {\n  display:       block;\n}\n._point_14jnp_5._is-hide-handles_14jnp_43 {}\n._point_14jnp_5._is-hide-handles_14jnp_43 [data-component=\"little-handle\"] {\n  display:       none;\n}\n\n", ""]);
-
+	exports.push([module.id, "._point_14jnp_5{position:absolute;width:10px;height:10px;margin-left:-5px;margin-top:-5px;cursor:move;background:#fff;border-radius:50%;z-index:3;box-shadow:3px 3px 0 rgba(0,0,0,.5)}._point_14jnp_5 [data-component=little-handle]{display:none}._point__touch_14jnp_1{position:absolute;left:50%;top:50%;width:20px;height:20px;margin-left:-10px;margin-top:-10px}._point_14jnp_5._is-selected_14jnp_31,._point_14jnp_5:hover{background:#ff512f}._point_14jnp_5._is-selected_14jnp_31 [data-component=little-handle]{display:block}._point_14jnp_5._is-hide-handles_14jnp_43 [data-component=little-handle]{display:none}", ""]);
+	
 	// exports
 
 
@@ -9735,7 +9196,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-
+	
 	// load the styles
 	var content = __webpack_require__(141);
 	if(typeof content === 'string') content = [[module.id, content, '']];
@@ -9743,11 +9204,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var update = __webpack_require__(125)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
-	if(true) {
+	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(141, function() {
-				var newContent = __webpack_require__(141);
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./curve.postcss.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./curve.postcss.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9762,11 +9223,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports = module.exports = __webpack_require__(124)();
 	// imports
-
-
+	
+	
 	// module
-	exports.push([module.id, "/*$PX:      1/16rem;*/\n._curve_k9lsx_5 {\n  position:       absolute;\n  left:           0;\n  top:            10px;\n  right:          10px;\n  bottom:         10px;\n  border-radius:  2px;\n  background:     rgba( 58, 8, 58, .75 );\n  border:         1px solid #9C829A;\n  box-shadow:     inset 4px 4px 0 rgba(0,0,0,0.5);\n  z-index:        2\n}\n._curve__background_k9lsx_1 {\n  position:       absolute;\n  z-index:       0;\n  top:       0;\n  bottom:       0;\n  width:       350px;\n  /*height:     calc( $size * $PX );*/\n  left:       50%;\n  margin-left:       -175px;\n  opacity:       0.5;\n  border-radius:       inherit;\n  background-image:       url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMzUwcHgiIGhlaWdodD0iMzUwcHgiIHZpZXdCb3g9IjAgMCAzNTAgMzUwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICAgICAgPHRpdGxlPlNsaWNlIDE8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEuMDAwMDAwLCAwLjAwMDAwMCkiIHN0cm9rZT0iI0ZGRkZGRiI+ICAgICAgICAgICAgPHBhdGggZD0iTTMzMy40OTc4MjEsMzUwLjUwMTA4OCBMMzMzLjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTMxNS45OTc4MjEsMzUwLjUwMTA4OCBMMzE1Ljk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI5OC40OTc4MjEsMzUwLjUwMTA4OCBMMjk4LjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI4MC45OTc4MjEsMzUwLjUwMTA4OCBMMjgwLjk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI0NS45OTc4MjEsMzUwLjUwMTA4OCBMMjQ1Ljk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTIyOC40OTc4MjEsMzUwLjUwMTA4OCBMMjI4LjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTIxMC45OTc4MjEsMzUwLjUwMTA4OCBMMjEwLjk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE5My40OTc4MjEsMzUwLjUwMTA4OCBMMTkzLjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE1OS4zNzI4MjEsMzUwLjUwMTA4OCBMMTU5LjM3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE0MS44NzI4MjEsMzUwLjUwMTA4OCBMMTQxLjg3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTEyNC4zNzI4MjEsMzUwLjUwMTA4OCBMMTI0LjM3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTEwNi44NzI4MjEsMzUwLjUwMTA4OCBMMTA2Ljg3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTcxLjg3MjgyMDcsMzUwLjUwMTA4OCBMNzEuODcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTU0LjM3MjgyMDcsMzUwLjUwMTA4OCBMNTQuMzcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM2Ljg3MjgyMDcsMzUwLjUwMTA4OCBMMzYuODcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE5LjM3MjgyMDcsMzUwLjUwMTA4OCBMMTkuMzcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMTkuMDAyMTc5MyBMMS4wMDEwODgzLDE5LjAwMjE3OTMiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDM2LjUwMjE3OTMgTDEuMDAxMDg4MywzNi41MDIxNzkzIiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCw1NC4wMDIxNzkzIEwxLjAwMTA4ODMsNTQuMDAyMTc5MyIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsNzEuNTAyMTc5MyBMMS4wMDEwODgzLDcxLjUwMjE3OTMiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDEwNi41MDIxNzkgTDEuMDAxMDg4MywxMDYuNTAyMTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwxMjQuMDAyMTc5IEwxLjAwMTA4ODMsMTI0LjAwMjE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMTQxLjUwMjE3OSBMMS4wMDEwODgzLDE0MS41MDIxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDE1OS4wMDIxNzkgTDEuMDAxMDg4MywxNTkuMDAyMTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwxOTMuMTI3MTc5IEwxLjAwMTA4ODMsMTkzLjEyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMjEwLjYyNzE3OSBMMS4wMDEwODgzLDIxMC42MjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDIyOC4xMjcxNzkgTDEuMDAxMDg4MywyMjguMTI3MTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwyNDUuNjI3MTc5IEwxLjAwMTA4ODMsMjQ1LjYyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMjgwLjYyNzE3OSBMMS4wMDEwODgzLDI4MC42MjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDI5OC4xMjcxNzkgTDEuMDAxMDg4MywyOTguMTI3MTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwzMTUuNjI3MTc5IEwxLjAwMTA4ODMsMzE1LjYyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMzMzLjEyNzE3OSBMMS4wMDEwODgzLDMzMy4xMjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik04OC4wNjQxMzUyLDEgTDg4LjA2NDEzNTIsMzUxIiBpZD0icGF0aDgyMTUiIG9wYWNpdHk9IjAuNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNzUuMTI4MjcsMSBMMTc1LjEyODI3LDM1MSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMjYyLjE5MjQwNiwxIEwyNjIuMTkyNDA2LDM1MSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUwLjU2MzU5MSw4OC4wNjQ2NzkzIEwwLjU2MzU5MTAyMiw4OC4wNjQ2NzkzIiBpZD0icGF0aDgyMTUiIG9wYWNpdHk9IjAuNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTAuNTYzNTkxLDE3NS41NjQ2NzkgTDAuNTYzNTkxMDIyLDE3NS41NjQ2NzkiIGlkPSJwYXRoODIxNSIgb3BhY2l0eT0iMC41Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MC41NjM1OTEsMjYzLjA2NDY3OSBMMC41NjM1OTEwMjIsMjYzLjA2NDY3OSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cmVjdCBpZD0icmVjdDEwMDc4IiBvcGFjaXR5PSIwLjc1IiB4PSIwLjg3MjgxNzk1NSIgeT0iMSIgd2lkdGg9IjM1MCIgaGVpZ2h0PSIzNTAiPjwvcmVjdD4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==)\n}\n._curve__svg-wrapper_k9lsx_1 {\n  position:       absolute;\n  z-index:       1;\n  left:       -1px;\n  right:       -1px\n}\n._curve__svg_k9lsx_1 {\n  display:       block;\n  overflow:       visible;\n  width:       100%\n}\n._curve__svg-segment_k9lsx_1 {\n  stroke:       white;\n  stroke-width:       2px;\n  cursor:       crosshair\n}\n._curve__svg-segment_k9lsx_1:hover {\n  stroke:       #FF512F\n}\n", ""]);
-
+	exports.push([module.id, "._curve_k9lsx_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #9c829a;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2}._curve__background_k9lsx_1{position:absolute;z-index:0;top:0;bottom:0;width:350px;left:50%;margin-left:-175px;opacity:.5;border-radius:inherit;background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMzUwcHgiIGhlaWdodD0iMzUwcHgiIHZpZXdCb3g9IjAgMCAzNTAgMzUwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPiAgICAgICAgPHRpdGxlPlNsaWNlIDE8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEuMDAwMDAwLCAwLjAwMDAwMCkiIHN0cm9rZT0iI0ZGRkZGRiI+ICAgICAgICAgICAgPHBhdGggZD0iTTMzMy40OTc4MjEsMzUwLjUwMTA4OCBMMzMzLjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTMxNS45OTc4MjEsMzUwLjUwMTA4OCBMMzE1Ljk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI5OC40OTc4MjEsMzUwLjUwMTA4OCBMMjk4LjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI4MC45OTc4MjEsMzUwLjUwMTA4OCBMMjgwLjk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTI0NS45OTc4MjEsMzUwLjUwMTA4OCBMMjQ1Ljk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTIyOC40OTc4MjEsMzUwLjUwMTA4OCBMMjI4LjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTIxMC45OTc4MjEsMzUwLjUwMTA4OCBMMjEwLjk5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE5My40OTc4MjEsMzUwLjUwMTA4OCBMMTkzLjQ5NzgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE1OS4zNzI4MjEsMzUwLjUwMTA4OCBMMTU5LjM3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE0MS44NzI4MjEsMzUwLjUwMTA4OCBMMTQxLjg3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTEyNC4zNzI4MjEsMzUwLjUwMTA4OCBMMTI0LjM3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTEwNi44NzI4MjEsMzUwLjUwMTA4OCBMMTA2Ljg3MjgyMSwwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTcxLjg3MjgyMDcsMzUwLjUwMTA4OCBMNzEuODcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTU0LjM3MjgyMDcsMzUwLjUwMTA4OCBMNTQuMzcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM2Ljg3MjgyMDcsMzUwLjUwMTA4OCBMMzYuODcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTE5LjM3MjgyMDcsMzUwLjUwMTA4OCBMMTkuMzcyODIwNywwLjUwMTA4ODMwMiIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMTkuMDAyMTc5MyBMMS4wMDEwODgzLDE5LjAwMjE3OTMiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDM2LjUwMjE3OTMgTDEuMDAxMDg4MywzNi41MDIxNzkzIiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCw1NC4wMDIxNzkzIEwxLjAwMTA4ODMsNTQuMDAyMTc5MyIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsNzEuNTAyMTc5MyBMMS4wMDEwODgzLDcxLjUwMjE3OTMiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDEwNi41MDIxNzkgTDEuMDAxMDg4MywxMDYuNTAyMTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwxMjQuMDAyMTc5IEwxLjAwMTA4ODMsMTI0LjAwMjE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMTQxLjUwMjE3OSBMMS4wMDEwODgzLDE0MS41MDIxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDE1OS4wMDIxNzkgTDEuMDAxMDg4MywxNTkuMDAyMTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwxOTMuMTI3MTc5IEwxLjAwMTA4ODMsMTkzLjEyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMjEwLjYyNzE3OSBMMS4wMDEwODgzLDIxMC42MjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDIyOC4xMjcxNzkgTDEuMDAxMDg4MywyMjguMTI3MTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwyNDUuNjI3MTc5IEwxLjAwMTA4ODMsMjQ1LjYyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMjgwLjYyNzE3OSBMMS4wMDEwODgzLDI4MC42MjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTEuMDAxMDg4LDI5OC4xMjcxNzkgTDEuMDAxMDg4MywyOTguMTI3MTc5IiBpZD0icGF0aDE4NzIiIG9wYWNpdHk9IjAuMjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUxLjAwMTA4OCwzMTUuNjI3MTc5IEwxLjAwMTA4ODMsMzE1LjYyNzE3OSIgaWQ9InBhdGgxODcyIiBvcGFjaXR5PSIwLjI1Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MS4wMDEwODgsMzMzLjEyNzE3OSBMMS4wMDEwODgzLDMzMy4xMjcxNzkiIGlkPSJwYXRoMTg3MiIgb3BhY2l0eT0iMC4yNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik04OC4wNjQxMzUyLDEgTDg4LjA2NDEzNTIsMzUxIiBpZD0icGF0aDgyMTUiIG9wYWNpdHk9IjAuNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNzUuMTI4MjcsMSBMMTc1LjEyODI3LDM1MSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMjYyLjE5MjQwNiwxIEwyNjIuMTkyNDA2LDM1MSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cGF0aCBkPSJNMzUwLjU2MzU5MSw4OC4wNjQ2NzkzIEwwLjU2MzU5MTAyMiw4OC4wNjQ2NzkzIiBpZD0icGF0aDgyMTUiIG9wYWNpdHk9IjAuNSI+PC9wYXRoPiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zNTAuNTYzNTkxLDE3NS41NjQ2NzkgTDAuNTYzNTkxMDIyLDE3NS41NjQ2NzkiIGlkPSJwYXRoODIxNSIgb3BhY2l0eT0iMC41Ij48L3BhdGg+ICAgICAgICAgICAgPHBhdGggZD0iTTM1MC41NjM1OTEsMjYzLjA2NDY3OSBMMC41NjM1OTEwMjIsMjYzLjA2NDY3OSIgaWQ9InBhdGg4MjE1IiBvcGFjaXR5PSIwLjUiPjwvcGF0aD4gICAgICAgICAgICA8cmVjdCBpZD0icmVjdDEwMDc4IiBvcGFjaXR5PSIwLjc1IiB4PSIwLjg3MjgxNzk1NSIgeT0iMSIgd2lkdGg9IjM1MCIgaGVpZ2h0PSIzNTAiPjwvcmVjdD4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==)}._curve__svg-wrapper_k9lsx_1{position:absolute;z-index:1;left:-1px;right:-1px}._curve__svg_k9lsx_1{display:block;overflow:visible;width:100%}._curve__svg-segment_k9lsx_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_k9lsx_1:hover{stroke:#ff512f}", ""]);
+	
 	// exports
 
 
@@ -9787,67 +9248,67 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _extends2 = __webpack_require__(5);
-
+	
 	var _extends3 = _interopRequireDefault(_extends2);
-
+	
 	var _getPrototypeOf = __webpack_require__(66);
-
+	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
+	
 	var _classCallCheck2 = __webpack_require__(42);
-
+	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
+	
 	var _createClass2 = __webpack_require__(43);
-
+	
 	var _createClass3 = _interopRequireDefault(_createClass2);
-
+	
 	var _possibleConstructorReturn2 = __webpack_require__(71);
-
+	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
+	
 	var _inherits2 = __webpack_require__(106);
-
+	
 	var _inherits3 = _interopRequireDefault(_inherits2);
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _icon = __webpack_require__(144);
-
+	
 	var _icon2 = _interopRequireDefault(_icon);
-
+	
 	var _hammerjs = __webpack_require__(115);
-
+	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
-
+	
 	var _propagatingHammerjs = __webpack_require__(116);
-
+	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
-
+	
 	var _modDeltas = __webpack_require__(148);
-
+	
 	var _modDeltas2 = _interopRequireDefault(_modDeltas);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var CLASSES = __webpack_require__(149);
-
+	
 	__webpack_require__(150);
-
+	
 	var ResizeHandle = function (_Component) {
 	  (0, _inherits3.default)(ResizeHandle, _Component);
-
+	
 	  function ResizeHandle() {
 	    (0, _classCallCheck3.default)(this, ResizeHandle);
 	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(ResizeHandle).apply(this, arguments));
 	  }
-
+	
 	  (0, _createClass3.default)(ResizeHandle, [{
 	    key: 'render',
 	    value: function render() {
@@ -9867,11 +9328,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _this2 = this;
-
+	
 	      var type = this.props.type;
 	      var store = this.context.store;
 	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(this.base));
-
+	
 	      mc.add(new _hammerjs2.default.Pan({ threshold: 0 }));
 	      mc.on('pan', function (e) {
 	        store.dispatch({ type: 'EDITOR_RESIZE', data: (0, _extends3.default)({}, (0, _modDeltas2.default)(e.deltaX, e.deltaY, type, _this2.props.state))
@@ -9886,7 +9347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	  return ResizeHandle;
 	}(_preact.Component);
-
+	
 	exports.default = ResizeHandle;
 
 /***/ },
@@ -9894,46 +9355,46 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _getPrototypeOf = __webpack_require__(66);
-
+	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
+	
 	var _classCallCheck2 = __webpack_require__(42);
-
+	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
+	
 	var _createClass2 = __webpack_require__(43);
-
+	
 	var _createClass3 = _interopRequireDefault(_createClass2);
-
+	
 	var _possibleConstructorReturn2 = __webpack_require__(71);
-
+	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
+	
 	var _inherits2 = __webpack_require__(106);
-
+	
 	var _inherits3 = _interopRequireDefault(_inherits2);
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var CLASSES = __webpack_require__(145);
 	__webpack_require__(146);
-
+	
 	var Icon = function (_Component) {
 	  (0, _inherits3.default)(Icon, _Component);
-
+	
 	  function Icon() {
 	    (0, _classCallCheck3.default)(this, Icon);
 	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Icon).apply(this, arguments));
 	  }
-
+	
 	  (0, _createClass3.default)(Icon, [{
 	    key: 'render',
 	    value: function render() {
@@ -9947,7 +9408,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	  return Icon;
 	}(_preact.Component);
-
+	
 	exports.default = Icon;
 
 /***/ },
@@ -9963,7 +9424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-
+	
 	// load the styles
 	var content = __webpack_require__(147);
 	if(typeof content === 'string') content = [[module.id, content, '']];
@@ -9971,11 +9432,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var update = __webpack_require__(125)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
-	if(true) {
+	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(147, function() {
-				var newContent = __webpack_require__(147);
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./icon.postcss.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./icon.postcss.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -9990,11 +9451,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports = module.exports = __webpack_require__(124)();
 	// imports
-
-
+	
+	
 	// module
-	exports.push([module.id, "/*$PX:      1/16rem;*/\n._icon_4a8lf_5 {\n  position:     relative;\n  width:        32px;\n  height:       32px;\n  cursor:       pointer;\n  fill:         white;\n  display:      block\n\n}\n._icon_4a8lf_5 > svg {\n  position:     absolute;\n  left:     0;\n  top:     0;\n  width:     100%;\n  height:     100%;\n  fill:     inherit\n\n}\n._icon_4a8lf_5 > svg > use {\n  fill:     inherit\n\n}\n._icon_4a8lf_5:after {\n  content:     '';\n  position:     absolute;\n  left:     0;\n  top:     0;\n  right:     0;\n  bottom:     0;\n  z-index:     1\n\n}\n", ""]);
-
+	exports.push([module.id, "._icon_4a8lf_5{position:relative;width:32px;height:32px;cursor:pointer;fill:#fff;display:block}._icon_4a8lf_5>svg{position:absolute;left:0;top:0;width:100%;height:100%;fill:inherit}._icon_4a8lf_5>svg>use{fill:inherit}._icon_4a8lf_5:after{content:'';position:absolute;left:0;top:0;right:0;bottom:0;z-index:1}", ""]);
+	
 	// exports
 
 
@@ -10003,21 +9464,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _resizeMod = __webpack_require__(136);
-
+	
 	var _resizeMod2 = _interopRequireDefault(_resizeMod);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = function (x, y, type, state) {
 	  var resize = state.resize;
 	  // get modulus size for `top` and `bottom` types
-
+	
 	  if (type !== 'right') {
 	    var size = resize[type] + y,
 	        coef = type === 'top' ? -1 : 1;
@@ -10032,7 +9493,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  } else if (resize[type] + x < 0) {
 	    x = -resize[type];
 	  }
-
+	
 	  return { x: x, y: y, type: type, resize: resize };
 	};
 
@@ -10051,7 +9512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-
+	
 	// load the styles
 	var content = __webpack_require__(151);
 	if(typeof content === 'string') content = [[module.id, content, '']];
@@ -10059,11 +9520,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var update = __webpack_require__(125)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
-	if(true) {
+	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(151, function() {
-				var newContent = __webpack_require__(151);
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./resize-handle.postcss.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./resize-handle.postcss.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -10078,11 +9539,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports = module.exports = __webpack_require__(124)();
 	// imports
-
-
+	
+	
 	// module
-	exports.push([module.id, "/*$PX:      1/16rem;*/\n._resize-handle_k81kc_4 {\n  background:     #3D1B3C;\n  width:          32px;\n  height:         16px;\n  display:        block;\n  cursor:         n-resize;\n  overflow:       hidden;\n  position:       relative;\n  border-top-left-radius:  3px;\n  border-top-right-radius: 3px;\n  -webkit-transform-origin: 50% 100%;\n          transform-origin: 50% 100%\n  \n  /*position: absolute;\n  top: calc(-16*$PX);\n  left: 50%;\n  margin-left: calc( -16*$PX );*/\n}\n._resize-handle_k81kc_4:after {\n  content:     '';\n  position:     absolute;\n  left:     0;\n  top:     0;\n  right:     0;\n  bottom:     0;\n  z-index:     2\n}\n._resize-handle_k81kc_4 [data-component=\"icon\"] {\n  position:     absolute;\n  left:     0;\n  top:     -7px\n}\n._resize-handle_k81kc_4:hover {\n  opacity:     .85\n}\n._resize-handle--right_k81kc_1 {\n  -webkit-transform:     rotate(90deg);\n          transform:     rotate(90deg);\n  cursor:     e-resize\n}\n._resize-handle--bottom_k81kc_1 {\n  -webkit-transform:     rotate(180deg);\n          transform:     rotate(180deg);\n  cursor:     s-resize\n}\n\n", ""]);
-
+	exports.push([module.id, "._resize-handle_k81kc_4{background:#3d1b3c;width:32px;height:16px;display:block;cursor:n-resize;overflow:hidden;position:relative;border-top-left-radius:3px;border-top-right-radius:3px;-webkit-transform-origin:50% 100%;transform-origin:50% 100%}._resize-handle_k81kc_4:after{content:'';position:absolute;left:0;top:0;right:0;bottom:0;z-index:2}._resize-handle_k81kc_4 [data-component=icon]{position:absolute;left:0;top:-7px}._resize-handle_k81kc_4:hover{opacity:.85}._resize-handle--right_k81kc_1{-webkit-transform:rotate(90deg);transform:rotate(90deg);cursor:e-resize}._resize-handle--bottom_k81kc_1{-webkit-transform:rotate(180deg);transform:rotate(180deg);cursor:s-resize}", ""]);
+	
 	// exports
 
 
@@ -10104,36 +9565,36 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _icon = __webpack_require__(144);
-
+	
 	var _icon2 = _interopRequireDefault(_icon);
-
+	
 	var _codeButton = __webpack_require__(154);
-
+	
 	var _codeButton2 = _interopRequireDefault(_codeButton);
-
+	
 	var _iconDivider = __webpack_require__(159);
-
+	
 	var _iconDivider2 = _interopRequireDefault(_iconDivider);
-
+	
 	var _pointControls = __webpack_require__(163);
-
+	
 	var _pointControls2 = _interopRequireDefault(_pointControls);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var CLASSES = __webpack_require__(152);
-
+	
 	var CurveEditorLeft = function CurveEditorLeft(_ref) {
 	  var state = _ref.state;
-
+	
 	  return (0, _preact.h)(
 	    'div',
 	    { className: CLASSES['curve-editor__left'], id: 'js-left-panel' },
@@ -10149,7 +9610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    )
 	  );
 	};
-
+	
 	exports.default = CurveEditorLeft;
 
 /***/ },
@@ -10157,70 +9618,70 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _getPrototypeOf = __webpack_require__(66);
-
+	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
+	
 	var _classCallCheck2 = __webpack_require__(42);
-
+	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
+	
 	var _createClass2 = __webpack_require__(43);
-
+	
 	var _createClass3 = _interopRequireDefault(_createClass2);
-
+	
 	var _possibleConstructorReturn2 = __webpack_require__(71);
-
+	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
+	
 	var _inherits2 = __webpack_require__(106);
-
+	
 	var _inherits3 = _interopRequireDefault(_inherits2);
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _iconButton = __webpack_require__(155);
-
+	
 	var _iconButton2 = _interopRequireDefault(_iconButton);
-
+	
 	var _propagatingHammerjs = __webpack_require__(116);
-
+	
 	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
-
+	
 	var _hammerjs = __webpack_require__(115);
-
+	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var CodeButton = function (_Component) {
 	  (0, _inherits3.default)(CodeButton, _Component);
-
+	
 	  function CodeButton() {
 	    (0, _classCallCheck3.default)(this, CodeButton);
 	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(CodeButton).apply(this, arguments));
 	  }
-
+	
 	  (0, _createClass3.default)(CodeButton, [{
 	    key: 'render',
 	    value: function render() {
 	      var state = this.props.state;
-
+	
 	      return (0, _preact.h)(_iconButton2.default, { shape: 'code', isCheck: state.controls.isCode });
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var store = this.context.store;
-
+	
 	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(this.base));
 	      mc.add(new _hammerjs2.default.Tap());
-
+	
 	      mc.on('tap', function (e) {
 	        store.dispatch({ type: 'CODE_TAP' });
 	      });
@@ -10228,7 +9689,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	  return CodeButton;
 	}(_preact.Component);
-
+	
 	exports.default = CodeButton;
 
 /***/ },
@@ -10236,55 +9697,55 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _getPrototypeOf = __webpack_require__(66);
-
+	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
+	
 	var _classCallCheck2 = __webpack_require__(42);
-
+	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
+	
 	var _createClass2 = __webpack_require__(43);
-
+	
 	var _createClass3 = _interopRequireDefault(_createClass2);
-
+	
 	var _possibleConstructorReturn2 = __webpack_require__(71);
-
+	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
+	
 	var _inherits2 = __webpack_require__(106);
-
+	
 	var _inherits3 = _interopRequireDefault(_inherits2);
-
+	
 	var _hammerjs = __webpack_require__(115);
-
+	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _icon = __webpack_require__(144);
-
+	
 	var _icon2 = _interopRequireDefault(_icon);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	// import propagating from 'propagating-hammerjs';
 	__webpack_require__(156);
 	var CLASSES = __webpack_require__(158);
-
+	
 	var IconButton = function (_Component) {
 	  (0, _inherits3.default)(IconButton, _Component);
-
+	
 	  function IconButton() {
 	    (0, _classCallCheck3.default)(this, IconButton);
 	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(IconButton).apply(this, arguments));
 	  }
-
+	
 	  (0, _createClass3.default)(IconButton, [{
 	    key: 'render',
 	    value: function render() {
@@ -10300,7 +9761,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _this2 = this;
-
+	
 	      if (typeof this.props.onTap === 'function') {
 	        var hammertime = new _hammerjs2.default(this.base).on('tap', function (e) {
 	          _this2.props.onTap(e, _this2.props);
@@ -10310,7 +9771,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	  return IconButton;
 	}(_preact.Component);
-
+	
 	exports.default = IconButton;
 
 /***/ },
@@ -10318,7 +9779,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-
+	
 	// load the styles
 	var content = __webpack_require__(157);
 	if(typeof content === 'string') content = [[module.id, content, '']];
@@ -10326,11 +9787,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var update = __webpack_require__(125)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
-	if(true) {
+	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(157, function() {
-				var newContent = __webpack_require__(157);
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./icon-button.postcss.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./icon-button.postcss.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -10345,11 +9806,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports = module.exports = __webpack_require__(124)();
 	// imports
-
-
+	
+	
 	// module
-	exports.push([module.id, "/*$PX:      1/16rem;*/\n\n._icon-button_6ysdi_4 {\n  position:         relative;\n  width:            24px;\n  height:           24px;\n  display:          block;\n  background:       #3A0839;\n  border-radius:    3px;\n  box-shadow:       1px 1px 0 rgba(0,0,0,.15)\n}\n\n._icon-button_6ysdi_4 [data-component=\"icon\"] {\n  position:         absolute;\n  left:         50%;\n  top:         50%;\n  width:         100%;\n  height:         100%;\n  -webkit-transform:         translate( -50%, -50% );\n          transform:         translate( -50%, -50% )\n}\n\n._icon-button_6ysdi_4:hover {\n  box-shadow:         none\n}\n\n._icon-button_6ysdi_4:hover [data-component=\"icon\"] {\n  -webkit-transform:         translate( -52%, -52% );\n          transform:         translate( -52%, -52% )\n}\n\n._icon-button_6ysdi_4:active, ._icon-button_6ysdi_4._is-checked_6ysdi_31 {\n  border-radius:         3px;\n  box-shadow:         inset -1px -1px 0 rgba( 255, 255, 255, .25 ),\n                    inset 1px 1px 1px rgba( 0, 0, 0, .4 )\n}\n\n._icon-button_6ysdi_4:active [data-component=\"icon\"], ._icon-button_6ysdi_4._is-checked_6ysdi_31 [data-component=\"icon\"] {\n  -webkit-transform:         translate( -54%, -54% ) scale(.95);\n          transform:         translate( -54%, -54% ) scale(.95)\n}\n", ""]);
-
+	exports.push([module.id, "._icon-button_6ysdi_4{position:relative;width:24px;height:24px;display:block;background:#3a0839;border-radius:3px;box-shadow:1px 1px 0 rgba(0,0,0,.15)}._icon-button_6ysdi_4 [data-component=icon]{position:absolute;left:50%;top:50%;width:100%;height:100%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}._icon-button_6ysdi_4:hover{box-shadow:none}._icon-button_6ysdi_4:hover [data-component=icon]{-webkit-transform:translate(-52%,-52%);transform:translate(-52%,-52%)}._icon-button_6ysdi_4._is-checked_6ysdi_31,._icon-button_6ysdi_4:active{border-radius:3px;box-shadow:inset -1px -1px 0 hsla(0,0%,100%,.25),inset 1px 1px 1px rgba(0,0,0,.4)}._icon-button_6ysdi_4._is-checked_6ysdi_31 [data-component=icon],._icon-button_6ysdi_4:active [data-component=icon]{-webkit-transform:translate(-54%,-54%) scale(.95);transform:translate(-54%,-54%) scale(.95)}", ""]);
+	
 	// exports
 
 
@@ -10367,16 +9828,16 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var CLASSES = __webpack_require__(160);
 	__webpack_require__(161);
-
+	
 	exports.default = function () {
 	  return (0, _preact.h)('div', { className: CLASSES['icon-divider'],
 	    'data-component': 'icon-divider' });
@@ -10395,7 +9856,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-
+	
 	// load the styles
 	var content = __webpack_require__(162);
 	if(typeof content === 'string') content = [[module.id, content, '']];
@@ -10403,11 +9864,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var update = __webpack_require__(125)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
-	if(true) {
+	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(162, function() {
-				var newContent = __webpack_require__(162);
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./icon-divider.postcss.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./icon-divider.postcss.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -10422,11 +9883,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports = module.exports = __webpack_require__(124)();
 	// imports
-
-
+	
+	
 	// module
-	exports.push([module.id, "/*$PX:      1/16rem;*/\n\n._icon-divider_ftask_3 {\n  position:         relative;\n  margin:           0 auto;\n  width:            16px;\n  height:           1px;\n  display:          block;\n  background:       rgba(255,255,255,.3);\n  box-shadow:       0px 1px 0 rgba(0,0,0,.3);\n}\n", ""]);
-
+	exports.push([module.id, "._icon-divider_ftask_3{position:relative;margin:0 auto;width:16px;height:1px;display:block;background:hsla(0,0%,100%,.3);box-shadow:0 1px 0 rgba(0,0,0,.3)}", ""]);
+	
 	// exports
 
 
@@ -10435,50 +9896,50 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _getPrototypeOf = __webpack_require__(66);
-
+	
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
+	
 	var _classCallCheck2 = __webpack_require__(42);
-
+	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
+	
 	var _createClass2 = __webpack_require__(43);
-
+	
 	var _createClass3 = _interopRequireDefault(_createClass2);
-
+	
 	var _possibleConstructorReturn2 = __webpack_require__(71);
-
+	
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
+	
 	var _inherits2 = __webpack_require__(106);
-
+	
 	var _inherits3 = _interopRequireDefault(_inherits2);
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _iconButton = __webpack_require__(155);
-
+	
 	var _iconButton2 = _interopRequireDefault(_iconButton);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	__webpack_require__(164);
 	var CLASSES = __webpack_require__(166);
-
+	
 	var PointControls = function (_Component) {
 	  (0, _inherits3.default)(PointControls, _Component);
-
+	
 	  function PointControls() {
 	    (0, _classCallCheck3.default)(this, PointControls);
 	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(PointControls).apply(this, arguments));
 	  }
-
+	
 	  (0, _createClass3.default)(PointControls, [{
 	    key: 'render',
 	    value: function render() {
@@ -10488,7 +9949,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var show = controls.isShow ? CLASSES['is-show'] : '';
 	      var className = p.className + ' ' + CLASSES['point-controls'] + ' ' + show;
 	      var buttons = this._addButtons(controls);
-
+	
 	      return (0, _preact.h)(
 	        'div',
 	        { className: className },
@@ -10501,11 +9962,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_onButtonTap',
 	    value: function _onButtonTap(type) {
 	      var _this2 = this;
-
+	
 	      return function (e) {
 	        var store = _this2.context.store;
-
-
+	
+	
 	        store.dispatch({ type: 'POINT_CHANGE_TYPE', data: type, isRecord: true });
 	      };
 	    }
@@ -10514,7 +9975,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _addButtons(controls) {
 	      var buttonsMap = ['straight', 'disconnected', 'mirrored', 'asymmetric'],
 	          buttons = [];
-
+	
 	      for (var i = 0; i < buttonsMap.length; i++) {
 	        var type = buttonsMap[i];
 	        buttons.push((0, _preact.h)(_iconButton2.default, { shape: 'point-' + type,
@@ -10526,7 +9987,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	  return PointControls;
 	}(_preact.Component);
-
+	
 	exports.default = PointControls;
 
 /***/ },
@@ -10534,7 +9995,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-
+	
 	// load the styles
 	var content = __webpack_require__(165);
 	if(typeof content === 'string') content = [[module.id, content, '']];
@@ -10542,11 +10003,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var update = __webpack_require__(125)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
-	if(true) {
+	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(165, function() {
-				var newContent = __webpack_require__(165);
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./point-controls.postcss.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./point-controls.postcss.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -10561,11 +10022,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports = module.exports = __webpack_require__(124)();
 	// imports
-
-
+	
+	
 	// module
-	exports.push([module.id, "/*$PX:      1/16rem;*/\n\n._point-controls_1xcu7_4 {\n  display:      none;\n}\n\n._point-controls_1xcu7_4 [data-component=\"icon-button\"] {}\n\n._point-controls_1xcu7_4 [data-component=\"icon-button\"]:after {\n  content:      '';\n  position:      absolute;\n  width:      3px;\n  height:      7.5px;\n  background:      #FF512F;\n  border-top-right-radius:      2px;\n  border-bottom-right-radius:      2px;\n  /*border-radius:  50%;*/\n  left:      -10px;\n  top:      50%;\n  margin-top:      -3.75px;\n  display:      none;\n}\n\n._point-controls_1xcu7_4 [data-component=\"icon-button\"][class*=\"is-checked\"] {}\n\n._point-controls_1xcu7_4 [data-component=\"icon-button\"][class*=\"is-checked\"]:after {\n  display:      block;\n}\n\n._point-controls_1xcu7_4._is-show_1xcu7_7 {\n  display:      block;\n}\n", ""]);
-
+	exports.push([module.id, "._point-controls_1xcu7_4{display:none}._point-controls_1xcu7_4 [data-component=icon-button]:after{content:'';position:absolute;width:3px;height:7.5px;background:#ff512f;border-top-right-radius:2px;border-bottom-right-radius:2px;left:-10px;top:50%;margin-top:-3.75px;display:none}._point-controls_1xcu7_4 [data-component=icon-button][class*=is-checked]:after,._point-controls_1xcu7_4._is-show_1xcu7_7{display:block}", ""]);
+	
 	// exports
 
 
@@ -10583,31 +10044,31 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var _resizeHandle = __webpack_require__(143);
-
+	
 	var _resizeHandle2 = _interopRequireDefault(_resizeHandle);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	// const CLASSES = require('../../css/blocks/curve-editor.postcss.css.json');
-
+	
 	__webpack_require__(168);
 	var CLASSES = __webpack_require__(170);
-
+	
 	exports.default = function (_ref) {
 	  var state = _ref.state;
 	  var points = state.points;
 	  var controls = state.controls;
 	  var open = controls.isCode ? CLASSES['is-open'] : '';
 	  var mainClass = CLASSES['code-panel'] + ' ' + open;
-
+	
 	  return (0, _preact.h)(
 	    'div',
 	    { className: mainClass },
@@ -10631,7 +10092,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-
+	
 	// load the styles
 	var content = __webpack_require__(169);
 	if(typeof content === 'string') content = [[module.id, content, '']];
@@ -10639,11 +10100,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var update = __webpack_require__(125)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
-	if(true) {
+	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(169, function() {
-				var newContent = __webpack_require__(169);
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./code-panel.postcss.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./code-panel.postcss.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -10658,11 +10119,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports = module.exports = __webpack_require__(124)();
 	// imports
-
-
+	
+	
 	// module
-	exports.push([module.id, "/*$PX:      1/16rem;*/\n\n._code-panel_nnb9p_3 {\n  position:       absolute;\n  left:           10px;\n  right:          10px;\n  bottom:         100%;\n  /*margin-top:     calc( -32 * $PX );*/\n  z-index:        1;\n  overflow:       hidden;\n  /*border:         1px solid red;*/\n  padding-top:    16px;\n  box-sizing:     content-box;\n  /*height:         0;*/\n  /*transition:     height .2s ease-out;*/\n\n  /*&.is-open {\n    transform:      none;\n    height:         calc( 40*$PX );\n  }*/\n}\n\n/*transform:      scale(0); */\n\n._code-panel_nnb9p_3 [data-component=\"resize-handle\"] {\n  position:     absolute;\n  left:         50%;\n  bottom:       100%;\n}\n\n._code-panel__inner_nnb9p_1 {\n  border-radius:       6px 6px 0 0;\n  background:       rgba( 61, 27, 60, 1 );\n  padding:       4px 5px 5px;\n  /*width:          100%;\n    height:         100%;\n    position:       absolute;*/\n  -webkit-transform:       translateY(100%);\n          transform:       translateY(100%);\n  -webkit-transition:       all .2s ease-out;\n  transition:       all .2s ease-out;\n}\n\n._code-panel__input-wrap_nnb9p_1 {\n  border-radius:       2px;\n  background:       #42103F;\n  border:       1px solid #9C829A;\n  box-shadow:       inset 2px 2px 0 rgba(0,0,0,0.5);\n}\n\n._code-panel__input-field_nnb9p_1 {\n  display:       block;\n  background:       transparent;\n  color:       #FFFFFF;\n  font-size:       9px;\n  font-family:       Arial, Helvetica, sans-serif;\n  letter-spacing:       0.45px;\n  font-weight:       100;\n  padding:       0 0.3em 0 0.8em;\n  border:       none;\n  width:       100%;\n  height:       21px;\n  white-space:       nowrap;\n  text-overflow:       ellipsis;\n}\n\n._code-panel_nnb9p_3 ::-moz-selection {\n  background:       #FF512F;\n}\n\n.code-panel ::-moz-selection {\n  background:       #FF512F;\n}\n\n._code-panel_nnb9p_3 ::selection {\n  background:       #FF512F;\n}\n\n._code-panel_nnb9p_3._is-open_nnb9p_61 ._code-panel__inner_nnb9p_1 {\n  -webkit-transform:       translateY(0);\n          transform:       translateY(0);\n}\n", ""]);
-
+	exports.push([module.id, "._code-panel_nnb9p_3{position:absolute;left:10px;right:10px;bottom:100%;z-index:1;overflow:hidden;padding-top:16px;box-sizing:content-box}._code-panel_nnb9p_3 [data-component=resize-handle]{position:absolute;left:50%;bottom:100%}._code-panel__inner_nnb9p_1{border-radius:6px 6px 0 0;background:#3d1b3c;padding:4px 5px 5px;-webkit-transform:translateY(100%);transform:translateY(100%);-webkit-transition:all .2s ease-out;transition:all .2s ease-out}._code-panel__input-wrap_nnb9p_1{border-radius:2px;background:#42103f;border:1px solid #9c829a;box-shadow:inset 2px 2px 0 rgba(0,0,0,.5)}._code-panel__input-field_nnb9p_1{display:block;background:transparent;color:#fff;font-size:9px;font-family:Arial,Helvetica,sans-serif;letter-spacing:.45px;font-weight:100;padding:0 .3em 0 .8em;border:none;width:100%;height:21px;white-space:nowrap;text-overflow:ellipsis}._code-panel_nnb9p_3 ::-moz-selection,.code-panel ::-moz-selection{background:#ff512f}._code-panel_nnb9p_3 ::selection{background:#ff512f}._code-panel_nnb9p_3._is-open_nnb9p_61 ._code-panel__inner_nnb9p_1{-webkit-transform:translateY(0);transform:translateY(0)}", ""]);
+	
 	// exports
 
 
@@ -10683,17 +10144,17 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _preact = __webpack_require__(48);
-
+	
 	var Icons = function Icons() {
 	  return (0, _preact.h)('div', { dangerouslySetInnerHTML: { __html: '<svg height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" style="position:absolute; margin-left: -100%; width:0; height:0;" xmlns:xlink="http://www.w3.org/1999/xlink">\n      <g id="ellipsis-shape">\n        <circle cx="11" cy="16" r="1"></circle>\n        <circle cx="16" cy="16" r="1"></circle>\n        <circle cx="21" cy="16" r="1"></circle>\n      </g>\n      <path id="code-shape" d="M8,16.0849648 C8,15.8210793 8.11149069,15.6129393 8.33483405,15.4609065 L12.3390874,12.8419612 C12.3897649,12.8014192 12.4657813,12.7811481 12.5674985,12.7811481 C12.7398023,12.7811481 12.9048664,12.8571645 13.0623289,13.0095592 C13.2194294,13.161954 13.2983417,13.3393255 13.2983417,13.5423979 C13.2983417,13.7353347 13.2219633,13.8826617 13.0692066,13.9840168 L9.85769553,16.0849648 L13.0692066,18.1862747 C13.2219633,18.2677208 13.2983417,18.4146858 13.2983417,18.6278937 C13.2983417,18.830966 13.2197914,19.0061657 13.0623289,19.1531307 C12.9048664,19.3004576 12.7398023,19.3739401 12.5674985,19.3739401 C12.4657813,19.3739401 12.3897649,19.3536691 12.3390874,19.313127 L8.33483405,16.6938198 C8.11149069,16.541425 8,16.3387147 8,16.0849648 L8,16.0849648 Z M14.1399516,20.6875756 C14.1265582,20.6075774 14.1287301,20.5301131 14.1468293,20.4548207 L16.9395263,11.356022 C16.9891179,11.1623612 17.1237755,11.0468887 17.344223,11.0096045 C17.5042194,10.9824558 17.658786,11.0128623 17.8075609,11.1008242 C17.9563358,11.1891479 18.0442976,11.313308 18.0710844,11.4733044 C18.0862876,11.5634381 18.079772,11.6470561 18.0518993,11.7237965 L15.2664419,20.7748134 C15.2085247,20.9800577 15.0593878,21.1031318 14.8193932,21.1440358 C14.6488993,21.1729945 14.4994005,21.1389681 14.3698106,21.0426807 C14.2402208,20.9460313 14.1638424,20.8276629 14.1399516,20.6875756 L14.1399516,20.6875756 Z M18.9528744,19.1527687 C18.7954119,19.0058037 18.7168616,18.830604 18.7168616,18.6275317 C18.7168616,18.4244594 18.7878102,18.2774944 18.9300695,18.1859127 L22.1426665,16.0846028 L18.9300695,13.9836549 C18.7878102,13.8718022 18.7168616,13.7248372 18.7168616,13.5420359 C18.7168616,13.3389636 18.7954119,13.161592 18.9528744,13.0091973 C19.1103369,12.8568025 19.275039,12.7807861 19.4477048,12.7807861 C19.5389245,12.7807861 19.6098731,12.8014192 19.6609126,12.8415992 L23.6651659,15.4605445 C23.8881473,15.6129393 24,15.8210793 24,16.0846028 C24,16.3488502 23.8881473,16.5515606 23.6651659,16.6938198 L19.6609126,19.3127651 C19.6098731,19.3533071 19.5389245,19.3735782 19.4477048,19.3735782 C19.275039,19.3735782 19.1103369,19.3000957 18.9528744,19.1527687 L18.9528744,19.1527687 Z"></path>\n      <g id="point-straight-shape" fill="none">\n        <polyline fill="#8B6E8A" stroke="#FFFFFF" points="7.881 20.568 15.451 12.241 23.892 20.568"/>\n        <ellipse stroke="none" cx="16.8" cy="13.9" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5" />\n        <circle cx="15.333" cy="12" r="2.667" fill="#FFFFFF"/>\n      </g>\n      <g id="point-mirrored-shape" fill="none" fill-rule="evenodd">\n        <path fill="#8B6E8A" stroke="#FFFFFF" d="M7.88144841,21.9012632 C7.88144841,21.9012632 7.59287172,13.5740537 15.4514423,13.5740537 C23.3100129,13.5740537 23.8921228,21.9012632 23.8921228,21.9012632"/>\n        <path stroke="#FF512F" d="M7.13883527,13.3333333 L25.8055013,13.3333333"/>\n        <ellipse stroke="none" cx="16.8" cy="14.9" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5" />\n        <ellipse cx="15.333" cy="13.333" fill="#FFFFFF" rx="2.667" ry="2.667"/>\n        <rect width="2.667" height="2.667" x="24" y="12" fill="#FF512F"/>\n        <rect width="2.667" height="2.667" x="5.333" y="12" fill="#FF512F"/>\n      </g>\n      <g id="point-disconnected-shape" fill="none" fill-rule="evenodd">\n        <path fill="#8B6E8A" stroke="#FFFFFF" d="M7.88144841,20.5679298 C7.88144841,20.5679298 7.59287172,12.2407204 15.4514423,12.2407204 C21.2005207,17.88737 23.8921228,20.5679298 23.8921228,20.5679298"/>\n        <polyline stroke="#FF512F" points="6.133 12 15.228 12 23.933 20.602"/>\n        <ellipse stroke="none" cx="16.8" cy="13.4" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5" />\n        <circle cx="15.333" cy="12" r="2.667" fill="#FFFFFF"/>\n        <rect width="2.667" height="2.667" x="21.886" y="18.552" fill="#FF512F" transform="rotate(45 23.219 19.886)"/>\n        <rect width="2.667" height="2.667" x="5.333" y="10.667" fill="#FF512F"/>\n      </g>\n      <g id="point-asymmetric-shape" fill="none" fill-rule="evenodd" transform="translate(7.667 9.333)">\n        <path fill="#8B6E8A" stroke="#FFFFFF" d="M0.214781742,11.2345965 C0.214781742,11.2345965 -0.373511869,2.90709613 7.78477564,2.90738704 C10.7500003,2.90749277 16.2254562,11.2345965 16.2254562,11.2345965"/>\n        <ellipse stroke="none" cx="9" cy="4.4" rx="2.667" ry="2.667" fill="black" fill-opacity="0.5" />\n        <path stroke="#FF512F" d="M2.52788503,2.66666667 L18.1388346,2.66666667"/>\n        <ellipse cx="7.667" cy="2.667" fill="#FFFFFF" rx="2.667" ry="2.667"/>\n        <rect width="2.667" height="2.667" x="16.333" y="1.333" fill="#FF512F"/>\n        <rect width="2.667" height="2.667" x=".333" y="1.333" fill="#FF512F"/>\n      </g>\n      <path id="mojs-logo-shape" d="M18.4678907,2.67700048 C19.488586,3.25758625 20.2789227,4.18421651 20.87823,5.1973579 C24.0807788,10.501451 27.2777091,15.8113116 30.480258,21.1154047 C31.1320047,22.1612281 31.7706417,23.2647256 31.9354512,24.5162532 C32.188284,26.0619186 31.6919826,27.7363895 30.5589171,28.80336 C29.4501984,29.8857103 27.8807622,30.3182659 26.3806209,30.3048086 C19.4511293,30.3086535 12.5235106,30.3086535 5.59401901,30.3048086 C3.71556494,30.343258 1.69852104,29.5723478 0.683444165,27.8709623 C-0.406546132,26.1099803 -0.0975282643,23.7914822 0.940022637,22.0843293 C4.34296485,16.4130445 7.76650826,10.7532945 11.1825603,5.08969961 C11.9747698,3.74781595 13.1846215,2.60202418 14.6847628,2.18292584 C15.9451812,1.81573418 17.3348251,2.01182606 18.4678907,2.67700048 Z M15.3334668,9.51526849 C15.6146238,9.03779476 16.0791597,9.02250655 16.3785679,9.4929547 L25.2763555,23.4736913 C25.5723919,23.9388414 25.3568433,24.3159201 24.8074398,24.3159202 L7.62314647,24.3159205 C7.06813505,24.3159206 6.84622798,23.9286889 7.12728913,23.4513779 L15.3334668,9.51526849 Z" fill-rule="evenodd"></path>\n    </svg>' } });
 	};
-
+	
 	exports.default = Icons;
 
 /***/ },
@@ -10701,7 +10162,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-
+	
 	// load the styles
 	var content = __webpack_require__(173);
 	if(typeof content === 'string') content = [[module.id, content, '']];
@@ -10709,11 +10170,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var update = __webpack_require__(125)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
-	if(true) {
+	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(173, function() {
-				var newContent = __webpack_require__(173);
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./curve-editor.postcss.css", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/postcss-loader/index.js!./../../../node_modules/source-map-loader/index.js!./curve-editor.postcss.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -10728,11 +10189,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports = module.exports = __webpack_require__(124)();
 	// imports
-
-
+	
+	
 	// module
-	exports.push([module.id, "/*$PX:      1/16rem;*/\n\n._curve-editor_llwjd_3 {\n  position:       fixed;\n  left:           0;\n  top:            0;\n  width:          403px;\n  height:         378px;\n  border-radius:  12px;\n  background:     #572B51;\n  z-index:        100;\n  box-shadow:     2px 2px 2px rgba(0,0,0,.38)\n}\n\n._curve-editor_llwjd_3 * {\n  box-sizing:       border-box\n}\n\n._curve-editor__left_llwjd_1 {\n  position:       absolute;\n  width:       42px;\n  left:       0;\n  top:       0;\n  bottom:       0;\n  padding:       10px;\n  cursor:       move\n}\n\n._curve-editor__left_llwjd_1 [data-component=\"icon-divider\"] {\n  margin:       10px auto\n}\n\n._curve-editor__right_llwjd_1 {\n  position:       absolute;\n  left:       43px;\n  top:       0;\n  right:       0;\n  bottom:       0\n}\n\n._curve-editor__resize-handle_llwjd_1 {\n  position:       absolute\n}\n\n._curve-editor__resize-handle_llwjd_1[data-type=\"top\"] {\n  top:       -16px\n}\n\n._curve-editor__resize-handle_llwjd_1[data-type=\"bottom\"] {\n  bottom:       0\n}\n\n._curve-editor__resize-handle_llwjd_1[data-type=\"top\"], ._curve-editor__resize-handle_llwjd_1[data-type=\"bottom\"] {\n  left:       50%;\n  margin-left:       -21px\n}\n\n._curve-editor__resize-handle_llwjd_1[data-type=\"right\"] {\n  right:       -16px;\n  top:       50%;\n  margin-top:       -16px\n}\n\n._curve-editor__anchor-buttons_llwjd_1 {\n  margin-top:       10px\n  /*display:      none;*/\n  /*&.is-show {\n      display:    block;\n    }*/\n}\n\n._curve-editor__anchor-buttons_llwjd_1 [data-component=\"icon-button\"] {\n  margin-bottom:       5px\n}\n\n._curve-editor__mojs-logo_llwjd_1 {\n  position:       absolute;\n  bottom:       17px;\n  left:       50%;\n  margin-left:       1px;\n  -webkit-transform:       translateX(-50%);\n          transform:       translateX(-50%)\n}\n\n._curve-editor__mojs-logo_llwjd_1 [data-component=\"icon\"] {\n  fill:       #FF512F;\n  width:       12px;\n  height:       12px\n}\n", ""]);
-
+	exports.push([module.id, "._curve-editor_llwjd_3{position:fixed;left:0;top:0;width:403px;height:378px;border-radius:12px;background:#572b51;z-index:100;box-shadow:2px 2px 2px rgba(0,0,0,.38)}._curve-editor_llwjd_3 *{box-sizing:border-box}._curve-editor__left_llwjd_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px;cursor:move}._curve-editor__left_llwjd_1 [data-component=icon-divider]{margin:10px auto}._curve-editor__right_llwjd_1{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__resize-handle_llwjd_1{position:absolute}._curve-editor__resize-handle_llwjd_1[data-type=top]{top:-16px}._curve-editor__resize-handle_llwjd_1[data-type=bottom]{bottom:0}._curve-editor__resize-handle_llwjd_1[data-type=bottom],._curve-editor__resize-handle_llwjd_1[data-type=top]{left:50%;margin-left:-21px}._curve-editor__resize-handle_llwjd_1[data-type=right]{right:-16px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_llwjd_1{margin-top:10px}._curve-editor__anchor-buttons_llwjd_1 [data-component=icon-button]{margin-bottom:5px}._curve-editor__mojs-logo_llwjd_1{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_llwjd_1 [data-component=icon]{fill:#ff512f;width:12px;height:12px}", ""]);
+	
 	// exports
 
 
@@ -10741,19 +10202,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _redux = __webpack_require__(51);
-
+	
 	var _indexReducer = __webpack_require__(175);
-
+	
 	var _indexReducer2 = _interopRequireDefault(_indexReducer);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var initStore = function initStore() {
 	  return (0, _redux.createStore)(_indexReducer2.default);
 	};
@@ -10765,47 +10226,47 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _extends2 = __webpack_require__(5);
-
+	
 	var _extends3 = _interopRequireDefault(_extends2);
-
+	
 	var _redux = __webpack_require__(51);
-
+	
 	var _reduxUndo = __webpack_require__(117);
-
+	
 	var _reduxUndo2 = _interopRequireDefault(_reduxUndo);
-
+	
 	var _resizeReducer = __webpack_require__(176);
-
+	
 	var _resizeReducer2 = _interopRequireDefault(_resizeReducer);
-
+	
 	var _pointsReducer = __webpack_require__(178);
-
+	
 	var _pointsReducer2 = _interopRequireDefault(_pointsReducer);
-
+	
 	var _controlsReducer = __webpack_require__(195);
-
+	
 	var _controlsReducer2 = _interopRequireDefault(_controlsReducer);
-
+	
 	var _pointControlsReducer = __webpack_require__(197);
-
+	
 	var _pointControlsReducer2 = _interopRequireDefault(_pointControlsReducer);
-
+	
 	var _progressesReducer = __webpack_require__(198);
-
+	
 	var _progressesReducer2 = _interopRequireDefault(_progressesReducer);
-
+	
 	var _reduxRecycle = __webpack_require__(199);
-
+	
 	var _reduxRecycle2 = _interopRequireDefault(_reduxRecycle);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	// redux-undo higher-order reducer
 	var UNDOABLE_OPTS = {
 	  limit: 10,
@@ -10814,8 +10275,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  debug: false
 	}; // Redux utility functions
-
-
+	
+	
 	var reducer = (0, _reduxRecycle2.default)((0, _redux.combineReducers)({
 	  resize: _resizeReducer2.default,
 	  points: (0, _reduxUndo2.default)(_pointsReducer2.default, (0, _extends3.default)({}, UNDOABLE_OPTS)),
@@ -10825,7 +10286,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}), ['SET_STATE'], function (state, action) {
 	  return action.data;
 	});
-
+	
 	exports.default = reducer;
 
 /***/ },
@@ -10833,58 +10294,58 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _defineProperty2 = __webpack_require__(177);
-
+	
 	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
+	
 	var _extends4 = __webpack_require__(5);
-
+	
 	var _extends5 = _interopRequireDefault(_extends4);
-
+	
 	var _constants = __webpack_require__(114);
-
+	
 	var _constants2 = _interopRequireDefault(_constants);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var INITIAL_STATE = {
 	  x: 20,
 	  tempX: 0,
-
+	
 	  y: 20,
 	  tempY: 0,
-
+	
 	  top: 0,
 	  temp_top: 0,
-
+	
 	  right: 0,
 	  temp_right: 0,
-
+	
 	  bottom: 0,
 	  temp_bottom: 0,
-
+	
 	  scalerX: _constants2.default.CURVE_PERCENT,
 	  absScalerX: 1
 	};
-
+	
 	var resizeReducer = function resizeReducer() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
 	  var action = arguments[1];
-
+	
 	  switch (action.type) {
 	    case 'EDITOR_RESIZE':
 	      {
 	        var data = action.data;
 	        var type = data.type;
 	        var delta = type === 'top' || type === 'bottom' ? data.y : data.x;
-
+	
 	        var newState = (0, _extends5.default)({}, state, (0, _defineProperty3.default)({}, 'temp_' + type, delta));
-
+	
 	        // if `right`size changed - calculate the scaler for x axis
 	        if (type === 'right') {
 	          newState['scalerX'] = (_constants2.default.CURVE_SIZE + Math.max(state.right + delta, 0)) / 100;
@@ -10892,11 +10353,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        return newState;
 	      }
-
+	
 	    case 'EDITOR_RESIZE_END':
 	      {
 	        var _extends3;
-
+	
 	        var _data = action.data;
 	        var _type = _data.type;
 	        var _delta = _type === 'top' || _type === 'bottom' ? _data.y : _data.x;
@@ -10905,34 +10366,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // if the type if to - it has the `-` as base so we need to swap methods
 	        var mathMethod = _type === 'top' ? 'min' : 'max';
 	        var _newState = (0, _extends5.default)({}, state, (_extends3 = {}, (0, _defineProperty3.default)(_extends3, '' + action.data.type, Math[mathMethod](0, resize)), (0, _defineProperty3.default)(_extends3, 'temp_' + action.data.type, 0), _extends3));
-
+	
 	        return _newState;
 	      }
-
+	
 	    case 'EDITOR_TRANSLATE':
 	      {
 	        var _action$data = action.data;
 	        var x = _action$data.x;
 	        var y = _action$data.y;
-
+	
 	        return (0, _extends5.default)({}, state, { tempX: x, tempY: y });
 	      }
-
+	
 	    case 'EDITOR_TRANSLATE_END':
 	      {
 	        var _action$data2 = action.data;
 	        var _x2 = _action$data2.x;
 	        var _y = _action$data2.y;
-
+	
 	        _x2 += state.x;
 	        _y += state.y;
 	        return (0, _extends5.default)({}, state, { x: _x2, y: _y, tempX: 0, tempY: 0 });
 	      }
-
+	
 	  }
 	  return state;
 	};
-
+	
 	exports.default = resizeReducer;
 
 /***/ },
@@ -10940,15 +10401,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-
+	
 	exports.__esModule = true;
-
+	
 	var _defineProperty = __webpack_require__(44);
-
+	
 	var _defineProperty2 = _interopRequireDefault(_defineProperty);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = function (obj, key, value) {
 	  if (key in obj) {
 	    (0, _defineProperty2.default)(obj, key, {
@@ -10960,7 +10421,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  } else {
 	    obj[key] = value;
 	  }
-
+	
 	  return obj;
 	};
 
@@ -10969,37 +10430,37 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _toConsumableArray2 = __webpack_require__(179);
-
+	
 	var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
-
+	
 	var _extends2 = __webpack_require__(5);
-
+	
 	var _extends3 = _interopRequireDefault(_extends2);
-
+	
 	var _makePoint = __webpack_require__(189);
-
+	
 	var _makePoint2 = _interopRequireDefault(_makePoint);
-
+	
 	var _constants = __webpack_require__(114);
-
+	
 	var _constants2 = _interopRequireDefault(_constants);
-
+	
 	var _initPoints = __webpack_require__(190);
-
+	
 	var _initPoints2 = _interopRequireDefault(_initPoints);
-
+	
 	var _calculatePath = __webpack_require__(192);
-
+	
 	var _calculatePath2 = _interopRequireDefault(_calculatePath);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var INITIAL_STATE = {
 	  path: '',
 	  name: 'mojs-curve-editor',
@@ -11011,36 +10472,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	  //   makePoint({ x: 100, y: 0, isLockedX: true })
 	  // ])
 	};
-
+	
 	var deselectAll = function deselectAll(state) {
 	  var newState = (0, _extends3.default)({}, state, { points: [] }),
 	      points = state.points;
-
+	
 	  for (var i = 0; i < points.length; i++) {
 	    newState.points.push((0, _extends3.default)({}, points[i], { isSelected: false }));
 	  }
 	  return newState;
 	};
-
+	
 	var findSelectedIndecies = function findSelectedIndecies(points) {
 	  var indecies = [];
-
+	
 	  for (var i = 0; i < points.length; i++) {
 	    points[i].isSelected && indecies.push(i);
 	  }
 	  return indecies;
 	};
-
+	
 	var pointsReducer = function pointsReducer() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
 	  var action = arguments[1];
-
+	
 	  switch (action.type) {
 	    case 'SET_EDITOR_NAME':
 	      {
 	        return (0, _extends3.default)({}, state, { name: action.data });
 	      }
-
+	
 	    case 'POINT_TRANSLATE':
 	      {
 	        var data = action.data;
@@ -11048,27 +10509,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var points = state.points;
 	        var oldPoint = points[index];
 	        var newPoints = [].concat((0, _toConsumableArray3.default)(points));
-
+	
 	        newPoints[data.index] = (0, _extends3.default)({}, oldPoint, { tempX: data.x, tempY: data.y });
 	        return (0, _extends3.default)({}, state, { points: newPoints }, (0, _calculatePath2.default)(newPoints));
 	      }
-
+	
 	    case 'POINT_TRANSLATE_END':
 	      {
 	        var _index = action.data;
 	        var _points = state.points;
 	        var _oldPoint = _points[_index];
 	        var _newPoints = [].concat((0, _toConsumableArray3.default)(_points));
-
+	
 	        _newPoints[_index] = (0, _extends3.default)({}, _oldPoint, {
 	          x: _oldPoint.x + _oldPoint.tempX,
 	          y: _oldPoint.y + _oldPoint.tempY,
 	          tempX: 0, tempY: 0
 	        });
-
+	
 	        return (0, _extends3.default)({}, state, { points: _newPoints }, (0, _calculatePath2.default)(_newPoints));
 	      }
-
+	
 	    case 'POINT_SELECT':
 	      {
 	        var _data = action.data;
@@ -11076,48 +10537,48 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var isDeselect = _data.isDeselect;
 	        var newState = isDeselect ? deselectAll(state) : (0, _extends3.default)({}, state);
 	        var _points2 = newState.points;
-
-
+	
+	
 	        var point = _points2[_index2];
 	        point.isSelected = true;
 	        return (0, _extends3.default)({}, state, { points: _points2 });
 	      }
-
+	
 	    case 'POINT_ADD':
 	      {
 	        var _data2 = action.data;
 	        var _index3 = _data2.index;
 	        var _point = _data2.point;
 	        var deselected = deselectAll(state);
-
+	
 	        var _newPoints2 = [].concat((0, _toConsumableArray3.default)(deselected.points.slice(0, _index3)), [(0, _makePoint2.default)((0, _extends3.default)({}, _point))], (0, _toConsumableArray3.default)(deselected.points.slice(_index3)));
-
+	
 	        var _points3 = _newPoints2.length > 1 ? (0, _initPoints2.default)(_newPoints2) : _newPoints2;
-
+	
 	        var path = _points3.length > 1 ? (0, _calculatePath2.default)(_points3) : {};
-
+	
 	        return (0, _extends3.default)({}, state, { points: _points3 }, path);
 	      }
-
+	
 	    case 'POINT_DELETE':
 	      {
 	        var _points4 = state.points;
 	        var selected = findSelectedIndecies(_points4);
-
+	
 	        var _newPoints3 = [];
 	        for (var i = 0; i < _points4.length; i++) {
 	          var item = _points4[i];
 	          (selected.indexOf(i) === -1 || item.isLockedX) && _newPoints3.push(item);
 	        }
-
+	
 	        return (0, _extends3.default)({}, state, { points: _newPoints3 }, (0, _calculatePath2.default)(_newPoints3));
 	      }
-
+	
 	    case 'POINT_CHANGE_TYPE':
 	      {
 	        var _points5 = state.points;
 	        var _selected = findSelectedIndecies(_points5);
-
+	
 	        var _newPoints4 = [];
 	        for (var i = 0; i < _points5.length; i++) {
 	          var _item = _points5[i],
@@ -11126,21 +10587,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	          _newPoints4.push((0, _extends3.default)({}, _item));
 	          // if item was selected - set the new `type`
 	          _selected.indexOf(i) !== -1 && (_newPoints4[i].type = type);
-
+	
 	          var _index4 = i,
 	              _point2 = _newPoints4[_index4],
 	              sibPoint = _index4 === _newPoints4.length - 1 ? _newPoints4[_index4 - 1] : _newPoints4[_index4 + 1];
-
+	
 	          var handleIndex = _index4 === _newPoints4.length - 1 ? 1 : 2,
 	              sibHandleIndex = handleIndex === 1 ? 2 : 1,
 	              handleName = 'handle' + handleIndex,
 	              sibHandleName = 'handle' + sibHandleIndex,
 	              handle = (0, _extends3.default)({}, _point2[handleName]),
 	              sibHandle = (0, _extends3.default)({}, _point2[sibHandleName]);
-
+	
 	          _point2[handleName] = handle;
 	          _point2[sibHandleName] = sibHandle;
-
+	
 	          if (type === 'mirrored' || type === 'asymmetric') {
 	            sibHandle.angle = handle.angle - 180;
 	            if (type === 'mirrored') {
@@ -11148,56 +10609,56 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	          }
 	        }
-
+	
 	        return (0, _extends3.default)({}, state, { points: _newPoints4 }, (0, _calculatePath2.default)(_newPoints4));
 	      }
-
+	
 	    case 'POINT_DESELECT_ALL':
 	      {
 	        return (0, _extends3.default)({}, deselectAll(state));
 	      }
-
+	
 	    // HANDLES
 	    case 'HANDLE_TRANSLATE':
 	      {
 	        var _points6 = state.points;
 	        var _data3 = action.data;
 	        // create new state and copy the new point into it
-
+	
 	        var _newPoints5 = [].concat((0, _toConsumableArray3.default)(_points6)),
 	            newPoint = (0, _extends3.default)({}, _newPoints5[_data3.parentIndex]);
-
+	
 	        _newPoints5[_data3.parentIndex] = newPoint;
 	        // create handle and copy it into the new point
 	        var _handleName = 'handle' + _data3.index,
 	            newHandle = (0, _extends3.default)({}, newPoint[_handleName]);
-
+	
 	        newPoint[_handleName] = newHandle;
 	        // finally add angle and radius
 	        newHandle.angle = _data3.angle;
 	        newHandle.radius = _data3.radius;
-
+	
 	        return (0, _extends3.default)({}, state, { points: _newPoints5 }, (0, _calculatePath2.default)(_newPoints5));
 	      }
-
+	
 	    case 'HANDLE_TRANSLATE_END':
 	      {
 	        return state;
 	      }
-
+	
 	    case 'EDITOR_RESIZE':
 	      {
 	        var _data4 = action.data;
 	        var _points7 = [].concat((0, _toConsumableArray3.default)(state.points));
 	        var _type = _data4.type;
 	        var resize = _data4.resize;
-
+	
 	        // return state if resize to the `right`
-
+	
 	        if (_type === 'right') {
 	          return state;
 	        }
-
+	
 	        // normalize points' y regarding resize
 	        if (_type === 'top') {
 	          for (var i = 0; i < _points7.length; i++) {
@@ -11211,20 +10672,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	          for (var i = 0; i < _points7.length; i++) {
 	            var borderBottom = Math.max(resize.bottom + _data4.y, 0) + _constants2.default.CURVE_SIZE,
 	                _point4 = _points7[i];
-
+	
 	            if (_point4.y > borderBottom) {
 	              _point4.y = borderBottom;
 	            }
 	          }
 	        }
-
+	
 	        return (0, _extends3.default)({}, state, { points: _points7 }, (0, _calculatePath2.default)(_points7));
 	      }
-
+	
 	  }
 	  return state;
 	};
-
+	
 	exports.default = pointsReducer;
 
 /***/ },
@@ -11232,21 +10693,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-
+	
 	exports.__esModule = true;
-
+	
 	var _from = __webpack_require__(180);
-
+	
 	var _from2 = _interopRequireDefault(_from);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = function (arr) {
 	  if (Array.isArray(arr)) {
 	    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
 	      arr2[i] = arr[i];
 	    }
-
+	
 	    return arr2;
 	  } else {
 	    return (0, _from2.default)(arr);
@@ -11280,7 +10741,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , toLength       = __webpack_require__(32)
 	  , createProperty = __webpack_require__(185)
 	  , getIterFn      = __webpack_require__(186);
-
+	
 	$export($export.S + $export.F * !__webpack_require__(188)(function(iter){ Array.from(iter); }), 'Array', {
 	  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
 	  from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
@@ -11335,7 +10796,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Iterators  = __webpack_require__(80)
 	  , ITERATOR   = __webpack_require__(86)('iterator')
 	  , ArrayProto = Array.prototype;
-
+	
 	module.exports = function(it){
 	  return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
 	};
@@ -11347,7 +10808,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	var $defineProperty = __webpack_require__(14)
 	  , createDesc      = __webpack_require__(22);
-
+	
 	module.exports = function(object, index, value){
 	  if(index in object)$defineProperty.f(object, index, createDesc(0, value));
 	  else object[index] = value;
@@ -11375,14 +10836,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  , TAG = __webpack_require__(86)('toStringTag')
 	  // ES3 wrong here
 	  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
-
+	
 	// fallback for IE11 Script Access Denied error
 	var tryGet = function(it, key){
 	  try {
 	    return it[key];
 	  } catch(e){ /* empty */ }
 	};
-
+	
 	module.exports = function(it){
 	  var O, T, B;
 	  return it === undefined ? 'Undefined' : it === null ? 'Null'
@@ -11400,13 +10861,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var ITERATOR     = __webpack_require__(86)('iterator')
 	  , SAFE_CLOSING = false;
-
+	
 	try {
 	  var riter = [7][ITERATOR]();
 	  riter['return'] = function(){ SAFE_CLOSING = true; };
 	  Array.from(riter, function(){ throw 2; });
 	} catch(e){ /* empty */ }
-
+	
 	module.exports = function(exec, skipClosing){
 	  if(!skipClosing && !SAFE_CLOSING)return false;
 	  var safe = false;
@@ -11425,24 +10886,24 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _extends2 = __webpack_require__(5);
-
+	
 	var _extends3 = _interopRequireDefault(_extends2);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var fallback = function fallback(value, _fallback) {
 	  return value != null ? value : _fallback;
 	};
-
+	
 	var makeHandlePoint = function makeHandlePoint() {
 	  var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
+	
 	  return {
 	    index: fallback(o.index, 0),
 	    // coordinates
@@ -11453,10 +10914,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    isSelected: fallback(o.isSelected, false)
 	  };
 	};
-
+	
 	var makePositionPoint = function makePositionPoint() {
 	  var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
+	
 	  return {
 	    // coordinates
 	    x: fallback(o.x, 0),
@@ -11470,10 +10931,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    isSelected: fallback(o.isSelected, false)
 	  };
 	};
-
+	
 	var makePoint = function makePoint() {
 	  var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
+	
 	  return (0, _extends3.default)({
 	    // state
 	    // isOneHandle: fallback( o.isOneHandle, false ),
@@ -11488,7 +10949,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    handle2: makeHandlePoint(o.handle2 || { index: 2 })
 	  });
 	};
-
+	
 	exports.default = makePoint;
 
 /***/ },
@@ -11496,25 +10957,25 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _initPoint = __webpack_require__(191);
-
+	
 	var _initPoint2 = _interopRequireDefault(_initPoint);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = function (points) {
-
+	
 	  var newPoints = [];
 	  for (var i = 0; i < points.length; i++) {
 	    var point = points[i],
 	        sibPoint = i === points.length - 1 ? points[i - 1] : points[i + 1],
 	        handleIndex = i === points.length - 1 ? 1 : 2;
-
+	
 	    newPoints.push((0, _initPoint2.default)(point, sibPoint, handleIndex));
 	  }
 	  return newPoints;
@@ -11525,51 +10986,51 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	      value: true
 	});
-
+	
 	var _extends2 = __webpack_require__(5);
-
+	
 	var _extends3 = _interopRequireDefault(_extends2);
-
+	
 	var _constants = __webpack_require__(114);
-
+	
 	var _constants2 = _interopRequireDefault(_constants);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = function (point, sibPoint, handleIndex) {
-
+	
 	      point = (0, _extends3.default)({}, point);
-
+	
 	      var handleName = 'handle' + handleIndex,
 	          sibHandleIndex = handleIndex === 1 ? 2 : 1,
 	          sibHandleName = 'handle' + sibHandleIndex,
 	          handle = (0, _extends3.default)({}, point[handleName]),
 	          sibHandle = (0, _extends3.default)({}, point[sibHandleName]),
 	          type = point.type;
-
+	
 	      point[handleName] = handle;
 	      point[sibHandleName] = sibHandle;
-
+	
 	      if (handle.angle == null || handle.radius == null) {
 	            handle.radius = 50;
-
+	
 	            var dy = (sibPoint.y - point.y) / _constants2.default.CURVE_PERCENT,
 	                dx = sibPoint.x - point.x;
-
+	
 	            var angle = Math.atan(dy / dx) * (180 / Math.PI) - 90;
 	            if (dx > 0) {
 	                  angle = angle - 180;
 	            };
-
+	
 	            handle.angle = angle;
 	            sibHandle.radius = handle.radius;
 	            sibHandle.angle = handle.angle - 180;
 	      }
-
+	
 	      return point;
 	};
 
@@ -11578,31 +11039,31 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _calculateSegment = __webpack_require__(193);
-
+	
 	var _calculateSegment2 = _interopRequireDefault(_calculateSegment);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = function (points) {
 	  var path = '',
 	      segments = [];
-
+	
 	  for (var index = 0; index < points.length - 1; index++) {
 	    var point = points[index],
 	        nextPoint = points[index + 1];
-
+	
 	    var segment = (0, _calculateSegment2.default)(point, nextPoint, index);
 	    segments.push(segment);
-
+	
 	    path += segment.string;
 	  }
-
+	
 	  return { path: path, segments: segments };
 	};
 
@@ -11611,52 +11072,52 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
+	
 	var _constants = __webpack_require__(114);
-
+	
 	var _constants2 = _interopRequireDefault(_constants);
-
+	
 	var _calculatePoint = __webpack_require__(194);
-
+	
 	var _calculatePoint2 = _interopRequireDefault(_calculatePoint);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = function (point, nextPoint, index) {
 	    if (!nextPoint) {
 	        return 1;
 	    }
-
+	
 	    var string = '',
 	        segmentString = '';
-
+	
 	    var x = point.x + point.tempX,
 	        y = point.y + point.tempY,
 	        xNext = nextPoint.x + nextPoint.tempX,
 	        yNext = nextPoint.y + nextPoint.tempY;
-
+	
 	    var part1 = 'M' + x + ', ' + y / _constants2.default.CURVE_PERCENT + ' ';
 	    if (index === 0) {
 	        string += part1;
 	    }
 	    segmentString += part1;
-
+	
 	    var part2 = (0, _calculatePoint2.default)(point, 2);
 	    string += part2;
 	    segmentString += part2;
-
+	
 	    var part3 = (0, _calculatePoint2.default)(nextPoint, 1);
 	    string += part3;
 	    segmentString += part3;
-
+	
 	    var part4 = xNext + ', ' + yNext / _constants2.default.CURVE_PERCENT + ' ';
 	    string += part4;
 	    segmentString += part4;
-
+	
 	    return { string: string, segmentString: segmentString, index: index };
 	};
 
@@ -11665,28 +11126,28 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _angleToPoint = __webpack_require__(120);
-
+	
 	var _angleToPoint2 = _interopRequireDefault(_angleToPoint);
-
+	
 	var _constants = __webpack_require__(114);
-
+	
 	var _constants2 = _interopRequireDefault(_constants);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	exports.default = function (point) {
 	  var handleIndex = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
-
+	
 	  var x = point.x + point.tempX,
 	      y = point.y + point.tempY,
 	      handle = point['handle' + handleIndex];
-
+	
 	  var CHAR = handleIndex === 2 ? 'C' : '';
 	  if (point.type !== 'straight') {
 	    var handleCoords = (0, _angleToPoint2.default)(handle.angle, handle.radius);
@@ -11701,31 +11162,31 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _extends2 = __webpack_require__(5);
-
+	
 	var _extends3 = _interopRequireDefault(_extends2);
-
+	
 	var _calculatePath = __webpack_require__(192);
-
+	
 	var _calculatePath2 = _interopRequireDefault(_calculatePath);
-
+	
 	var _pool = __webpack_require__(196);
-
+	
 	var _pool2 = _interopRequireDefault(_pool);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var INITIAL_STATE = { isCode: false };
-
+	
 	var controls = function controls() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
 	  var action = arguments[1];
-
+	
 	  _pool2.default.push(state);
 	  switch (action.type) {
 	    case 'CODE_TAP':
@@ -11735,7 +11196,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  return state;
 	};
-
+	
 	exports.default = controls;
 
 /***/ },
@@ -11743,7 +11204,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
@@ -11754,26 +11215,26 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _extends2 = __webpack_require__(5);
-
+	
 	var _extends3 = _interopRequireDefault(_extends2);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var INITIAL_STATE = {
 	  isShow: false,
 	  type: 'straight'
 	};
-
+	
 	var pointControls = function pointControls() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
 	  var action = arguments[1];
-
+	
 	  switch (action.type) {
 	    // probably redundant
 	    // case 'POINT_ADD': {
@@ -11795,7 +11256,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  return state;
 	};
-
+	
 	exports.default = pointControls;
 
 /***/ },
@@ -11803,81 +11264,81 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _toConsumableArray2 = __webpack_require__(179);
-
+	
 	var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
-
+	
 	var _extends2 = __webpack_require__(5);
-
+	
 	var _extends3 = _interopRequireDefault(_extends2);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	var INITIAL_STATE = {
 	  selected: 0,
 	  lines: []
 	};
-
+	
 	var getColor = function getColor(lines) {
 	  var COLORS = ['#FF512F', '#FF00C5', '#00FF69', 'white', '#1B8FE6', 'CYAN', 'YELLOW'];
-
+	
 	  return COLORS[lines.length % COLORS.length];
 	};
-
+	
 	var makeProgressLine = function makeProgressLine() {
 	  var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	  var state = arguments[1];
 	  var lines = state.lines;
-
+	
 	  return {
 	    // progress:     0,
 	    color: getColor(lines),
 	    name: 'easing' + (lines.length + 1)
 	  };
 	};
-
+	
 	var progresses = function progresses() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
 	  var action = arguments[1];
-
+	
 	  switch (action.type) {
-
+	
 	    case 'ADD_PROGRESS_LINE':
 	      {
 	        var newState = (0, _extends3.default)({}, state);
 	        newState.lines = [].concat((0, _toConsumableArray3.default)(newState.lines), [makeProgressLine(action.data, state)]);
 	        return newState;
 	      }
-
+	
 	    case 'SET_SELECTED_PROGRESS_LINE':
 	      {
 	        var index = action.index;
-
+	
 	        return (0, _extends3.default)({}, state, { selected: index });
 	      }
-
+	
 	    // case 'SET_PROGRESS_LINE_SHIFT': {
 	    //   const {data}    = action,
 	    //         {index}   = data,
 	    //         newState  = { ...state },
 	    //         {lines}   = newState;
-
+	
 	    //   newState.lines  = [ ...lines.slice( 0, index ),
 	    //                       { ...lines[index], progress: data.progress },
 	    //                       ...lines.slice( index+1 )
 	    //                     ];
-
+	
 	    //   return newState;
 	    // }
 	  }
 	  return state;
 	};
-
+	
 	exports.default = progresses;
 
 /***/ },
@@ -11885,7 +11346,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
@@ -11894,11 +11355,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	function recycleState(reducer) {
 	  var actions = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
 	  var initialState = arguments[2];
-
+	
 	  var getInitialState = typeof initialState === 'function' ? initialState : function () {
 	    return initialState;
 	  };
-
+	
 	  return function (state, action) {
 	    if (actions.indexOf(action.type) >= 0) {
 	      return reducer(getInitialState(state, action), { type: '@@redux-recycle/INIT' });
@@ -11913,17 +11374,17 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	/*
 	  Function to generate hash code.
 	  @private
 	  @return {String} Hash code.
 	*/
-
+	
 	exports.default = function (str) {
 	  var hash = 0,
 	      i,
@@ -11943,11 +11404,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	/*
 	  Function that returns the second argument if the first one isn't set.
 	  @private
@@ -11964,11 +11425,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	exports.default = function (fn) {
 	  setTimeout(fn, 1);
 	};

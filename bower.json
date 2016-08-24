@@ -1,0 +1,29 @@
+{
+  "name": "mojs-curve-editor",
+  "description": "mojs GUI for editing easing/property curves",
+  "main": "app/build/mojs-curve-editor.js",
+  "authors": [
+    "Oleg Solomka @legomushroom"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "mojs",
+    "motion",
+    "effects",
+    "animation",
+    "motion",
+    "motion",
+    "graphics",
+    "curve",
+    "editor",
+    "svg"
+  ],
+  "homepage": "https://github.com/legomushroom/mojs-curve-editor",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
