@@ -48,7 +48,7 @@ class API {
   }
 
   _vars () {
-    this.revision = '1.0.0';
+    this.revision = '1.0.1';
     this.store    = initStore();
 
     this._easings = [];

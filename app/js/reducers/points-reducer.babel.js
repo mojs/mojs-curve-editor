@@ -2,6 +2,8 @@ import makePoint from '../helpers/make-point';
 import C from '../constants';
 import initPoints from '../helpers/init-points';
 import calculatePath from '../helpers/calculate-path';
+import deselectAll from '../helpers/deselect-all';
+import findSelectedIndecies from '../helpers/find-selected-indecies';
 
 const INITIAL_STATE = {
   path:       '',
@@ -13,25 +15,6 @@ const INITIAL_STATE = {
   //   // makePoint({ x: 50,  y: C.CURVE_SIZE/2, type: 'mirrored' }),
   //   makePoint({ x: 100, y: 0, isLockedX: true })
   // ])
-}
-
-const deselectAll = (state) => {
-  const newState = { ...state, points: [] },
-        points   = state.points;
-
-  for (var i = 0; i < points.length; i++) {
-    newState.points.push({ ...points[i], isSelected: false });
-  }
-  return newState;
-}
-
-const findSelectedIndecies = (points) => {
-  const indecies  = [];
-
-  for (var i = 0; i < points.length; i++) {
-    points[i].isSelected && indecies.push( i );
-  }
-  return indecies;
 }
 
 const pointsReducer = (state = INITIAL_STATE, action) => {
@@ -113,38 +96,33 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
 
     case 'POINT_CHANGE_TYPE': {
       const {points} = state,
+            type = action.data,
             selected = findSelectedIndecies(points);
 
-      const newPoints = [];
-      for (var i = 0; i < points.length; i++) {
-        const item = points[i],
-              type = action.data;
-        // copy all items from previous points
-        newPoints.push( { ...item } );
-        // if item was selected - set the new `type`
-        ( selected.indexOf(i) !== -1 ) && (newPoints[i].type = type);
-        
-        const index = i,
-              point = newPoints[index],
-              sibPoint = (index === newPoints.length-1)
-                ? newPoints[index-1] : newPoints[index+1];
-
-        const handleIndex = (index === newPoints.length-1) ? 1 : 2,
+      // change type on all selected items
+      const newPoints = [ ...points ];
+      for (var i = 0; i < selected.length; i++) {
+        const index = selected[i],
+              point = { ...newPoints[index], type },
+              handleIndex = (index === newPoints.length-1) ? 1 : 2,
               sibHandleIndex = (handleIndex === 1) ? 2 : 1,
               handleName = `handle${handleIndex}`,
               sibHandleName = `handle${sibHandleIndex}`,
               handle = { ...point[handleName] },
               sibHandle = { ...point[sibHandleName] };
-
-        point[handleName] = handle;
-        point[sibHandleName] = sibHandle;
-
+        
+        // move the opposite little handle with certain types
         if ( type === 'mirrored' || type === 'asymmetric' ) {
           sibHandle.angle = handle.angle - 180;
           if ( type === 'mirrored' ) {
             sibHandle.radius = handle.radius;
           }
         }
+
+        // save new point and handles
+        newPoints[index]     = point;
+        point[handleName]    = handle;
+        point[sibHandleName] = sibHandle;
 
       }
 

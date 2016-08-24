@@ -99,15 +99,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
-	var _hash = __webpack_require__(200);
+	var _hash = __webpack_require__(202);
 	
 	var _hash2 = _interopRequireDefault(_hash);
 	
-	var _fallbackTo = __webpack_require__(201);
+	var _fallbackTo = __webpack_require__(203);
 	
 	var _fallbackTo2 = _interopRequireDefault(_fallbackTo);
 	
-	var _defer = __webpack_require__(202);
+	var _defer = __webpack_require__(204);
 	
 	var _defer2 = _interopRequireDefault(_defer);
 	
@@ -163,7 +163,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_vars',
 	    value: function _vars() {
-	      this.revision = '1.0.0';
+	      this.revision = '1.0.1';
 	      this.store = (0, _store2.default)();
 	
 	      this._easings = [];
@@ -10249,19 +10249,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _pointsReducer2 = _interopRequireDefault(_pointsReducer);
 	
-	var _controlsReducer = __webpack_require__(195);
+	var _controlsReducer = __webpack_require__(197);
 	
 	var _controlsReducer2 = _interopRequireDefault(_controlsReducer);
 	
-	var _pointControlsReducer = __webpack_require__(197);
+	var _pointControlsReducer = __webpack_require__(199);
 	
 	var _pointControlsReducer2 = _interopRequireDefault(_pointControlsReducer);
 	
-	var _progressesReducer = __webpack_require__(198);
+	var _progressesReducer = __webpack_require__(200);
 	
 	var _progressesReducer2 = _interopRequireDefault(_progressesReducer);
 	
-	var _reduxRecycle = __webpack_require__(199);
+	var _reduxRecycle = __webpack_require__(201);
 	
 	var _reduxRecycle2 = _interopRequireDefault(_reduxRecycle);
 	
@@ -10459,6 +10459,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _calculatePath2 = _interopRequireDefault(_calculatePath);
 	
+	var _deselectAll = __webpack_require__(195);
+	
+	var _deselectAll2 = _interopRequireDefault(_deselectAll);
+	
+	var _findSelectedIndecies = __webpack_require__(196);
+	
+	var _findSelectedIndecies2 = _interopRequireDefault(_findSelectedIndecies);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var INITIAL_STATE = {
@@ -10471,25 +10479,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  //   // makePoint({ x: 50,  y: C.CURVE_SIZE/2, type: 'mirrored' }),
 	  //   makePoint({ x: 100, y: 0, isLockedX: true })
 	  // ])
-	};
-	
-	var deselectAll = function deselectAll(state) {
-	  var newState = (0, _extends3.default)({}, state, { points: [] }),
-	      points = state.points;
-	
-	  for (var i = 0; i < points.length; i++) {
-	    newState.points.push((0, _extends3.default)({}, points[i], { isSelected: false }));
-	  }
-	  return newState;
-	};
-	
-	var findSelectedIndecies = function findSelectedIndecies(points) {
-	  var indecies = [];
-	
-	  for (var i = 0; i < points.length; i++) {
-	    points[i].isSelected && indecies.push(i);
-	  }
-	  return indecies;
 	};
 	
 	var pointsReducer = function pointsReducer() {
@@ -10535,7 +10524,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _data = action.data;
 	        var _index2 = _data.index;
 	        var isDeselect = _data.isDeselect;
-	        var newState = isDeselect ? deselectAll(state) : (0, _extends3.default)({}, state);
+	        var newState = isDeselect ? (0, _deselectAll2.default)(state) : (0, _extends3.default)({}, state);
 	        var _points2 = newState.points;
 	
 	
@@ -10549,7 +10538,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _data2 = action.data;
 	        var _index3 = _data2.index;
 	        var _point = _data2.point;
-	        var deselected = deselectAll(state);
+	        var deselected = (0, _deselectAll2.default)(state);
 	
 	        var _newPoints2 = [].concat((0, _toConsumableArray3.default)(deselected.points.slice(0, _index3)), [(0, _makePoint2.default)((0, _extends3.default)({}, _point))], (0, _toConsumableArray3.default)(deselected.points.slice(_index3)));
 	
@@ -10563,7 +10552,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    case 'POINT_DELETE':
 	      {
 	        var _points4 = state.points;
-	        var selected = findSelectedIndecies(_points4);
+	        var selected = (0, _findSelectedIndecies2.default)(_points4);
 	
 	        var _newPoints3 = [];
 	        for (var i = 0; i < _points4.length; i++) {
@@ -10577,37 +10566,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	    case 'POINT_CHANGE_TYPE':
 	      {
 	        var _points5 = state.points;
-	        var _selected = findSelectedIndecies(_points5);
+	        var type = action.data;
+	        var _selected = (0, _findSelectedIndecies2.default)(_points5);
 	
-	        var _newPoints4 = [];
-	        for (var i = 0; i < _points5.length; i++) {
-	          var _item = _points5[i],
-	              type = action.data;
-	          // copy all items from previous points
-	          _newPoints4.push((0, _extends3.default)({}, _item));
-	          // if item was selected - set the new `type`
-	          _selected.indexOf(i) !== -1 && (_newPoints4[i].type = type);
-	
-	          var _index4 = i,
-	              _point2 = _newPoints4[_index4],
-	              sibPoint = _index4 === _newPoints4.length - 1 ? _newPoints4[_index4 - 1] : _newPoints4[_index4 + 1];
-	
-	          var handleIndex = _index4 === _newPoints4.length - 1 ? 1 : 2,
+	        // change type on all selected items
+	        var _newPoints4 = [].concat((0, _toConsumableArray3.default)(_points5));
+	        for (var i = 0; i < _selected.length; i++) {
+	          var _index4 = _selected[i],
+	              _point2 = (0, _extends3.default)({}, _newPoints4[_index4], { type: type }),
+	              handleIndex = _index4 === _newPoints4.length - 1 ? 1 : 2,
 	              sibHandleIndex = handleIndex === 1 ? 2 : 1,
 	              handleName = 'handle' + handleIndex,
 	              sibHandleName = 'handle' + sibHandleIndex,
 	              handle = (0, _extends3.default)({}, _point2[handleName]),
 	              sibHandle = (0, _extends3.default)({}, _point2[sibHandleName]);
 	
-	          _point2[handleName] = handle;
-	          _point2[sibHandleName] = sibHandle;
-	
+	          // move the opposite little handle with certain types
 	          if (type === 'mirrored' || type === 'asymmetric') {
 	            sibHandle.angle = handle.angle - 180;
 	            if (type === 'mirrored') {
 	              sibHandle.radius = handle.radius;
 	            }
 	          }
+	
+	          // save new point and handles
+	          _newPoints4[_index4] = _point2;
+	          _point2[handleName] = handle;
+	          _point2[sibHandleName] = sibHandle;
 	        }
 	
 	        return (0, _extends3.default)({}, state, { points: _newPoints4 }, (0, _calculatePath2.default)(_newPoints4));
@@ -10615,7 +10600,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    case 'POINT_DESELECT_ALL':
 	      {
-	        return (0, _extends3.default)({}, deselectAll(state));
+	        return (0, _extends3.default)({}, (0, _deselectAll2.default)(state));
 	      }
 	
 	    // HANDLES
@@ -11161,6 +11146,53 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends2 = __webpack_require__(5);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (state) {
+	  var newState = (0, _extends3.default)({}, state, { points: [] }),
+	      points = state.points;
+	
+	  for (var i = 0; i < points.length; i++) {
+	    newState.points.push((0, _extends3.default)({}, points[i], { isSelected: false }));
+	  }
+	
+	  return newState;
+	};
+
+/***/ },
+/* 196 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (points) {
+	  var indecies = [];
+	
+	  for (var i = 0; i < points.length; i++) {
+	    points[i].isSelected && indecies.push(i);
+	  }
+	
+	  return indecies;
+	};
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -11175,7 +11207,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _calculatePath2 = _interopRequireDefault(_calculatePath);
 	
-	var _pool = __webpack_require__(196);
+	var _pool = __webpack_require__(198);
 	
 	var _pool2 = _interopRequireDefault(_pool);
 	
@@ -11200,7 +11232,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = controls;
 
 /***/ },
-/* 196 */
+/* 198 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11211,7 +11243,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = [];
 
 /***/ },
-/* 197 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11260,7 +11292,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = pointControls;
 
 /***/ },
-/* 198 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11342,7 +11374,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = progresses;
 
 /***/ },
-/* 199 */
+/* 201 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11370,7 +11402,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// /redux-recycle
 
 /***/ },
-/* 200 */
+/* 202 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11400,7 +11432,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 201 */
+/* 203 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11421,7 +11453,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 202 */
+/* 204 */
 /***/ function(module, exports) {
 
 	"use strict";

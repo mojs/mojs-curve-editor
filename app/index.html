@@ -14,7 +14,7 @@
       background: #FFF5E4;
       /*background: $c-purple;*/
     }
-    
+
     .el {
       position: absolute;
       left: 10%;
@@ -45,13 +45,13 @@
 
 
     var duration = 500,
-        shift    = 75;
+        shift    = 150;
 
     var html = new mojs.Html({
       el: '#js-el',
-      y:  { [-shift]: shift, easing: 'cubic.in', duration },
-      rotateZ: { 0: 90, easing: 'linear.none', duration }
-      // transformOrigin: '50% 100%',
+      y:  { [-shift]: 0, easing: 'cubic.in', duration },
+      rotateZ: { 0: 90,  easing: 'linear.none', duration },
+      transformOrigin: '50% 50%'
     })
     .then({
       scaleX: {
@@ -64,7 +64,7 @@
         curve: curveEditor.getEasing({ transform: (k) => { return 1 + ( 1-k )/1.5; } }),
         duration: duration
       },
-      // transformOrigin: { '50% 50%': '50% 50%', curve: curveEditor2.getEasing() },
+      transformOrigin: { '50% 50%': '50% 50%', curve: curveEditor2.getEasing(), duration },
       y: { to: -shift, easing: 'cubic.out', delay: .75*duration, duration },
       rotateZ: { 0: 90, delay: .75*duration, easing: 'linear.none', duration }
     })
