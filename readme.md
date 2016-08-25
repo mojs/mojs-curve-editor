@@ -43,7 +43,7 @@ Construct `MojsCurveEditor` with the next options:
 ```javascript
   const mojsCurve = new MojsCurveEditor({
     // Name of the Curve you are working on. The name is used to
-    // idetify record in `localStorage` to resore the state from
+    // identify record in `localStorage` to resore the state from
     // when page gets reloaded, so please specify unique names if 
     // you use more than one editor on the same page.
     name:         'bounce curve',
