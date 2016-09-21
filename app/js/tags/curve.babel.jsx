@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import angleToPoint from '../helpers/angle-to-point';
 import ProgressLine from './progress-line';
+import Ruler from './ruler';
 import Point from './point';
 import mod from '../helpers/resize-mod';
 import C from '../constants';
@@ -21,12 +22,65 @@ class Curve extends Component {
     return <div className={ CLASSES['curve'] }>
               <div  id="js-background"
                     className={ CLASSES['curve__background']}
-                    style={ styles.background } />
+                    style={ styles.background }>
+
+                <svg preserveAspectRatio="none" height="700px" viewBox="0 0 350 700" version="1.1">
+                  <pattern id="rect-paper" x="0" y="0" width="1" height="1">
+                    <g id="Group" transform="translate(-1.000000, 0.000000)" stroke="#FFFFFF" stroke-width="1" fill="none">
+                        <path vector-effect="non-scaling-stroke" d="M333.497821,350.501088 L333.497821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M315.997821,350.501088 L315.997821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M298.497821,350.501088 L298.497821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M280.997821,350.501088 L280.997821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M245.997821,350.501088 L245.997821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M228.497821,350.501088 L228.497821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M210.997821,350.501088 L210.997821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M193.497821,350.501088 L193.497821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M159.372821,350.501088 L159.372821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M141.872821,350.501088 L141.872821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M124.372821,350.501088 L124.372821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M106.872821,350.501088 L106.872821,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M71.8728207,350.501088 L71.8728207,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M54.3728207,350.501088 L54.3728207,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M36.8728207,350.501088 L36.8728207,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M19.3728207,350.501088 L19.3728207,0.501088302" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,19.0021793 L1.0010883,19.0021793" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,36.5021793 L1.0010883,36.5021793" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,54.0021793 L1.0010883,54.0021793" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,71.5021793 L1.0010883,71.5021793" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,106.502179 L1.0010883,106.502179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,124.002179 L1.0010883,124.002179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,141.502179 L1.0010883,141.502179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,159.002179 L1.0010883,159.002179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,193.127179 L1.0010883,193.127179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,210.627179 L1.0010883,210.627179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,228.127179 L1.0010883,228.127179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,245.627179 L1.0010883,245.627179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,280.627179 L1.0010883,280.627179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,298.127179 L1.0010883,298.127179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,315.627179 L1.0010883,315.627179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M351.001088,333.127179 L1.0010883,333.127179" opacity="0.25"></path>
+                        <path vector-effect="non-scaling-stroke" d="M88.0641352,1 L88.0641352,351" id="path8215" opacity="0.5"></path>
+                        <path vector-effect="non-scaling-stroke" d="M175.12827,1 L175.12827,351" id="path8215" opacity="0.5"></path>
+                        <path vector-effect="non-scaling-stroke" d="M262.192406,1 L262.192406,351" id="path8215" opacity="0.5"></path>
+                        <path vector-effect="non-scaling-stroke" d="M350.563591,88.0646793 L0.563591022,88.0646793" id="path8215" opacity="0.5"></path>
+                        <path vector-effect="non-scaling-stroke" d="M350.563591,175.564679 L0.563591022,175.564679" id="path8215" opacity="0.5"></path>
+                        <path vector-effect="non-scaling-stroke" d="M350.563591,263.064679 L0.563591022,263.064679" id="path8215" opacity="0.5"></path>
+                        <rect id="rect10078" opacity="0.75" x="0.872817955" y="1" width="350" height="350"></rect>
+                      </g>
+                    </pattern>
+
+                  <rect width="350" height="700" fill="url(#rect-paper)" />
+                  </svg>
+
+              </div>
 
               { progressLines }
               
               <div  className={ CLASSES['curve__svg-wrapper']}
                     style={ styles.transform }>
+
+                <Ruler />
+                <Ruler type="right" />
 
                 { points }
 
@@ -53,13 +107,21 @@ class Curve extends Component {
 
   _getStyle(state) {
     const {resize} = state;
-    let {temp_top, temp_right} = resize;
+    let {temp_top, temp_right, panTempY} = resize;
 
-    temp_top    += resize.top;
+    panTempY    += resize.panY;
+
+    temp_top    += resize.top - panTempY;
     temp_right  += resize.right;
 
-    const scale = `transform: scaleX(${(C.CURVE_SIZE + Math.max(temp_right,0))/C.CURVE_SIZE})`,
-          bgTransform = `${mojs.h.prefix.css}${scale}; ${scale};`,
+    // const scale = `transform: scaleX(${(C.CURVE_SIZE + Math.max(temp_right,0))/C.CURVE_SIZE})`,
+    //       bgTransform = `${mojs.h.prefix.css}${scale}; ${scale};`,
+    //       background = `background-position: 0 ${-temp_top - 1}px; ${bgTransform}`,
+    //       transform  = `transform: translate(0px, ${-temp_top}px)`;
+
+    const scaleX = (C.CURVE_SIZE + Math.max(temp_right,0))/C.CURVE_SIZE;
+    const scale = `width: ${C.CURVE_SIZE*scaleX}px`,
+          bgTransform = `${scale};`,
           background = `background-position: 0 ${-temp_top - 1}px; ${bgTransform}`,
           transform  = `transform: translate(0px, ${-temp_top}px)`;
 
@@ -128,18 +190,6 @@ class Curve extends Component {
     }
   }
 
-  // _renderSegment ( index, string) {
-  //   return <path
-  //           d={string}
-  //           data-index={index}
-  //           stroke="white"
-  //           fill="none"
-  //           stroke-width=""
-  //           vector-effect="non-scaling-stroke"
-  //           class={CLASSES['curve__svg-segment']}
-  //           />;
-  // }
-
   componentDidUpdate () { this._updateDomProgressLines(); }
 
   componentDidMount () {
@@ -159,8 +209,8 @@ class Curve extends Component {
         // handle paths only
         if ( target.tagName.toLowerCase() !== 'path' ) { return; }
         // coordinates
-        const x  = ev.offsetX,
-              y  = ev.offsetY*C.CURVE_PERCENT,
+        const x  = ev.offsetX/C.CURVE_PERCENT,
+              y  = ev.offsetY,
               index = parseInt(target.getAttribute('data-index')) + 1;
 
         store.dispatch({
@@ -181,10 +231,17 @@ class Curve extends Component {
           svgMc = propagating(new Hammer.Manager(this.base));
 
     svgMc.add(new Hammer.Tap);
+    svgMc.add(new Hammer.Pan);
 
     svgMc
       .on('tap', (e) => {
         store.dispatch({ type: 'POINT_DESELECT_ALL' });
+      })
+      .on('pan', (e) => {
+        store.dispatch({ type: 'EDITOR_PAN', data: e.deltaY });
+      })
+      .on('panend', (e) => {
+        store.dispatch({ type: 'EDITOR_PAN_END', data: e.deltaY });
       });
 
   }

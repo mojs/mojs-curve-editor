@@ -7,9 +7,10 @@
   width:          calc( 403 * $PX );
   height:         calc( 378 * $PX );
   border-radius:  calc( 12 * $PX );
-  background:     #572B51;
+  background:     $c-light-purple;
   z-index:        100;
-  box-shadow:     2px 2px 2px rgba(0,0,0,.38);
+  /*box-shadow:     2px 2px 2px rgba(0,0,0,.38);*/
+  box-shadow:     0 0 calc( 3*$PX ) calc( 1*$PX ) rgba(0,0,0,.38);
   
   & * {
     box-sizing: border-box;
@@ -44,11 +45,11 @@
     position:       absolute;
 
     &[data-type="top"] {
-      top:          calc( -$radius*$PX );
+      top:          calc( (-$radius - 1)*$PX );
     }
 
     &[data-type="bottom"] {
-      bottom:       0;
+      bottom:       calc( 1*$PX );
     }
 
     &[data-type="top"],
@@ -58,7 +59,7 @@
     }
 
     &[data-type="right"] {
-      right:        calc( -$radius*$PX );
+      right:        calc( (-$radius + 1)*$PX );
       top:          50%;
       margin-top:   calc( -$radius*$PX );
     }

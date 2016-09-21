@@ -1,4 +1,5 @@
 import mod from './resize-mod';
+import C from '../constants';
 
 export default (x, y, type, state) => {
   const {resize} = state;
@@ -9,8 +10,10 @@ export default (x, y, type, state) => {
     // normalize the y delta to modulus of CURVE_SIZEs
     y = mod( size, coef );
     y -= resize[type];
+    // const offset = C.RESIZE_NEGATIVE_OFFSET;
+    const offset = 0;
     // ensure size won't be less then CURVE_SIZE
-    if ( size*coef < 0 ) { y = -resize[type]; }
+    if ( size*coef < -offset ) { y = -resize[type] - offset; }
     // ensure size won't be less then CURVE_SIZE
   } else if ( resize[type] + x < 0 ) { x = -resize[type]; }
 

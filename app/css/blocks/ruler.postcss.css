@@ -1,0 +1,52 @@
+@import '../assets/globals.postcss.css';
+
+$size: 350;
+.ruler {
+  position:   absolute;
+  left:       0;
+  top:        calc( -$size*3 * $PX );
+  height:     calc( $size * 7 * $PX );
+  width:      calc( 18*$PX );
+
+  &--right {
+    left:     auto;
+    right:    0;
+  }
+  
+  $itemSize: 14;
+  &__item {
+    position:       absolute;
+    color:          $c-pastel-purple;
+    font-size:      8px;
+    font-family:    sans-serif;
+    border-radius:  50%;
+    left:           50%;
+    width:          calc($itemSize/2*$PX);
+    height:         calc($itemSize*$PX);
+    text-align:     center;
+    line-height:    calc($itemSize*$PX);
+    
+    margin-top:     calc(3*$PX);
+    margin-left:    calc((-$itemSize/4)*$PX);
+    
+    &--0 {
+      top: calc(4*$size*$PX);
+    }
+
+    &--1 {
+      top: calc(3*$size*$PX);
+    }
+
+    &--2 {
+      top: calc(2*$size*$PX);
+    }
+
+    &--n1 {
+      top: calc(5*$size*$PX);
+    }
+
+    &--n2 {
+      top: calc(6*$size*$PX);
+    }
+  }
+}

@@ -33,46 +33,97 @@
   <script src="build/mojs-curve-editor.js" charset="utf-8"></script>
 
   <script>
-    var curveEditor = new window.MojsCurveEditor({ name: 'curve1', isSaveState: true });
-    var curveEditor2 = new window.MojsCurveEditor({ name: 'curve2', isSaveState: true });
+    // scaleX/scaleY : M0, 0 C0.6729540169506724, -28.101525445522107 13.041331697335014, -94.89847455447803 40, -95 C74.3872397312364, -94.81581115980767 71.04133169733501, 0.10152544552201628 100, 0 
+    // originY : M0, 0 C4.324651237095854, -97.09389091882751 -12.269098738159038, -100.52241754574061 40, -100 C69.70027963716932, -99.70315257828365 75, -100 75, -100 C75, -100 77.18670774544789, -105.94552943119928 80, 0 C93.51535255761112, -0.007114543223372127 100, 0 100, 0 
+    // var curveEditor = new window.MojsCurveEditor({ name: 'curve1', isSaveState: true });
+    // var curveEditor2 = new window.MojsCurveEditor({ name: 'curve2', isSaveState: true });
 
-    // var shape = new mojs.Shape({
-    //   fill: 'yellow',
-    //   stroke: 'cyan',
-    //   scaleX: { 0: 1 },
-    //   easing: curveEditor.getEasing()
-    // });
+    // var CUSTOM_PROPS = {
+    //     originY: {
+    //       type: 'unit',
+    //       default: '50%'
+    //     },
+    //     draw (el, props) {
+    //       // console.log(props.y);
+    //       el.style.transformOrigin = `50% ${props.originY}`;
+    //     }
+    //   }
 
+    // var duration = 500,
+    //     shift    = 150;
 
-    var duration = 500,
-        shift    = 150;
-
-    var html = new mojs.Html({
-      el: '#js-el',
-      y:  { [-shift]: 0, easing: 'cubic.in', duration },
-      rotateZ: { 0: 90,  easing: 'linear.none', duration },
-      transformOrigin: '50% 50%'
-    })
-    .then({
-      scaleX: {
-        1: 1,
-        curve: curveEditor.getEasing(),
-        duration: duration
-      },
-      scaleY: {
-        1: 1,
-        curve: curveEditor.getEasing({ transform: (k) => { return 1 + ( 1-k )/1.5; } }),
-        duration: duration
-      },
-      transformOrigin: { '50% 50%': '50% 50%', curve: curveEditor2.getEasing(), duration },
-      y: { to: -shift, easing: 'cubic.out', delay: .75*duration, duration },
-      rotateZ: { 0: 90, delay: .75*duration, easing: 'linear.none', duration }
-    })
+    // var html = new mojs.Html({
+    //   el: '#js-el',
+    //   y:  { [-shift]: 0, easing: 'cubic.in', duration },
+    //   rotateZ: { [-90]: 0,  easing: 'linear.none', duration },
+    //   originY: '50%',
+    //   customProperties: CUSTOM_PROPS
+    //   // transformOrigin: '50% 50%'
+    // })
     // .then({
-    //   y: { to: -shift, easing: 'cubic.out' }
+    //   scaleX: {
+    //     1: 1,
+    //     curve: curveEditor.getEasing(),
+    //     duration: duration
+    //   },
+    //   scaleY: {
+    //     1: 1,
+    //     curve: curveEditor.getEasing({ transform: (k) => { return 1 + ( 1-k )/1.5; } }),
+    //     duration: duration
+    //   },
+    //   originY: { '50%': '50%', curve: curveEditor2.getEasing(), duration },
+    //   y: { to: -shift, easing: 'cubic.out', delay: .75*duration, duration },
+    //   rotateZ: { 0: 90, delay: .75*duration, easing: 'linear.none', duration },
+    // })
+
+    // var player = new MojsPlayer({ add: html });
+
+  </script>
+
+  <script>
+    var curveEditor = new window.MojsCurveEditor({
+      name: 'curve_1', isSaveState: true });
+    // var curveEditor2 = new window.MojsCurveEditor({ name: 'curve_2', isSaveState: true });
+    // var curveEditor3 = new window.MojsCurveEditor({ name: 'curve_3', isSaveState: true });
+    // var curveEditor4 = new window.MojsCurveEditor({ name: 'curve_4', isSaveState: true });
+
+    // var CUSTOM_PROPS = {
+    //     originY: {
+    //       type: 'unit',
+    //       default: '50%'
+    //     },
+    //     draw (el, props) {
+    //       el.style.transformOrigin = `50% ${props.originY}`;
+    //     }
+    //   }
+
+    // var duration = 1300,
+    //     shift    = 200;
+
+    // var scaleXEasing = mojs.easing.path('M0, 0 C0, 0 20.587826704563234, 0.2556510416340589 30, 0 C36.26931615257986, -88.2556510416341 42.626912355168805, -90.00829536701315 50, -90 C67.23156561545866, -87.42027606155817 62.11908815856753, -13.0664841947621 82.61682242990655, 0 C90.11322158776092, 0.49505562333352426 100, 0 100, 0 '),
+    //     scaleYEasing = function (k) { return 1 + ( 1 - scaleXEasing(k) )/1.25 };
+
+    // var html = new mojs.Html({
+    //   el: '#js-el',
+    //   timeline: {
+    //     repeat: 10
+    //   },
+    //   // transformOrigin: '50% 100%',
+    //   y:       { [-shift]: -shift, curve: curveEditor.getEasing(), duration },
+    //   z:      0,
+    //   // y:       { [-shift]: -shift, curve: 'M0, 0 C0, 0 5, 0 5, 0 C5, 0 27.204891108505585, 17.714285714285666 30, 100 C32.57142857142857, 100 68.93670267546892, 100.20610272857023 72.29729729729729, 100 C77.4927981877672, 32.65104012857265 95, 0 95, 0 C95, 0 100, 0 100, 0  ', duration },
+    //   scaleX:  { 1: 1, curve: scaleXEasing, duration },
+    //   scaleY:  { 1: 1, curve: scaleYEasing, duration },
+    //   rotateZ: { [-90]: -90, curve: 'M0, 0 C0, 0 27.900763358778626, 100 27.900763358778626, 100 C27.900763358778626, 100 75, 100 75, 100 C75, 100 100, 200 100, 200  ', duration },
+    //   originY: { '100%': '100%', curve: curveEditor4.getEasing(), duration },
+    //   // originY: { '100%': '100%', curve: 'M0, 50 C0, 50 27, 50 27, 50 C27, 50 28, 0 28, 0 C28, 0 75, 0 75, 0 C75, 0 80, 50 80, 50 C80, 50 100, 50 100, 50 ', duration },
+
+    //   customProperties: CUSTOM_PROPS
     // });
 
-    var player = new MojsPlayer({ add: html });
+    // // html.play();
+    
+    // var player = new MojsPlayer({ add: html });
 
   </script>
 

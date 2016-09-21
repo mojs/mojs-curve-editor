@@ -94,10 +94,10 @@ class Point extends Component {
       let y = point.y + e.deltaY,
           returnValue = y;
 
-      if ( y < resize.top ) {
-        returnValue = resize.top;
-      } else if ( y > C.CURVE_SIZE + resize.bottom ) {
-        returnValue = C.CURVE_SIZE + resize.bottom;
+      if ( y < resize.top - resize.panY ) {
+        returnValue = resize.top - resize.panY;
+      } else if ( y > C.CURVE_SIZE + resize.bottom - resize.panY ) {
+        returnValue = C.CURVE_SIZE + resize.bottom - resize.panY;
       }
 
       return roundTo( returnValue, 5*C.CURVE_PERCENT, 2*C.CURVE_PERCENT ) - point.y;

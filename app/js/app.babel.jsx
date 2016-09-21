@@ -8,11 +8,6 @@ import fallbackTo   from './helpers/fallback-to';
 import defer        from './helpers/defer';
 import addPointerDown from './helpers/add-pointer-down';
 
-// TODO
-//   - import path data
-//   - move bunch of points at once
-//   - add period generator
-
 /*
   API wrapper above the app itself.
 */
@@ -85,8 +80,6 @@ class API {
         localStorage.removeItem( this._localStorage );
       }
     });
-
-
   }
 
   _tryToRestore () {
@@ -196,10 +189,3 @@ class API {
 
 export default API;
 window.MojsCurveEditor = API;
-
-// curve
-//   .getFunction({ isInverseX: false, isInverseY: true, name: 'Some name' })
-//   .getCode()
-
-
-

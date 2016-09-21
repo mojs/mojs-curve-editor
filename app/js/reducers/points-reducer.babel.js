@@ -72,6 +72,8 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
         ...deselected.points.slice( index )
       ];
 
+      console.log( index, point, newPoints );
+
       const points = (newPoints.length > 1)
                         ? initPoints( newPoints ) : newPoints;
 
