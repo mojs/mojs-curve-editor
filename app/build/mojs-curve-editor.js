@@ -8141,8 +8141,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      mc.on('tap', function (e) {
 	        var state = _this2.props.state;
 	
-	        var ev = e.srcEvent,
-	            target = ev.target;
+	        var ev = e.srcEvent;
+	        var target = ev.target;
 	        // handle paths only
 	        if (target.tagName.toLowerCase() !== 'path') {
 	          return;
@@ -10915,41 +10915,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return state;
 	      }
 	
-	    case 'EDITOR_RESIZE':
-	      {
-	        var _data4 = action.data;
-	        var _points7 = [].concat((0, _toConsumableArray3.default)(state.points));
-	        var _type = _data4.type;
-	        var resize = _data4.resize;
+	    // case 'EDITOR_RESIZE': {
+	    //   const {data} = action,
+	    //         points = [...state.points],
+	    //         {type, resize} = data;
 	
-	        // return state if resize to the `right`
+	    //   // return state if resize to the `right`
+	    //   if (type === 'right') { return state; }
 	
-	        if (_type === 'right') {
-	          return state;
-	        }
+	    //   // normalize points' y regarding resize
+	    //   if ( type === 'top' ) {
+	    //     for (var i = 0; i < points.length; i++) {
+	    //       const borderTop = Math.min(resize.top + data.y, 0),
+	    //             point     = points[i];
+	    //       if (point.y < borderTop) { point.y = borderTop; }
+	    //     }
+	    //   } else if ( type === 'bottom' ) {
+	    //     for (var i = 0; i < points.length; i++) {
+	    //       const borderBottom = Math.max(resize.bottom + data.y, 0) + C.CURVE_SIZE,
+	    //             point     = points[i];
 	
-	        // normalize points' y regarding resize
-	        if (_type === 'top') {
-	          for (var i = 0; i < _points7.length; i++) {
-	            var borderTop = Math.min(resize.top + _data4.y, 0),
-	                _point3 = _points7[i];
-	            if (_point3.y < borderTop) {
-	              _point3.y = borderTop;
-	            }
-	          }
-	        } else if (_type === 'bottom') {
-	          for (var i = 0; i < _points7.length; i++) {
-	            var borderBottom = Math.max(resize.bottom + _data4.y, 0) + _constants2.default.CURVE_SIZE,
-	                _point4 = _points7[i];
+	    //       if (point.y > borderBottom) { point.y = borderBottom; }
+	    //     }
+	    //   }
 	
-	            if (_point4.y > borderBottom) {
-	              _point4.y = borderBottom;
-	            }
-	          }
-	        }
-	
-	        return (0, _extends3.default)({}, state, { points: _points7 }, (0, _calculatePath2.default)(_points7));
-	      }
+	    //   return { ...state, points, ...calculatePath( points ) };
+	    // }
 	
 	  }
 	  return state;
