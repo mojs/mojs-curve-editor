@@ -2,6 +2,7 @@ import {h, Component} from 'preact';
 import angleToPoint from '../helpers/angle-to-point';
 import pointToAngle from '../helpers/point-to-angle';
 import C from '../constants';
+import pool from '../pool';
 
 import Hammer from 'hammerjs';
 import propagating from 'propagating-hammerjs';
@@ -76,6 +77,7 @@ class LittleHandle extends Component {
       })
       .on('panend', (e) => {
         store.dispatch({ type: 'HANDLE_TRANSLATE_END', isRecord: true });
+        pool.clear();
         e.stopPropagation();
       });
   }

@@ -4,6 +4,7 @@ import initPoints from '../helpers/init-points';
 import calculatePath from '../helpers/calculate-path';
 import deselectAll from '../helpers/deselect-all';
 import findSelectedIndecies from '../helpers/find-selected-indecies';
+import pool from '../pool';
 
 const INITIAL_STATE = {
   path:       '',
@@ -18,6 +19,7 @@ const INITIAL_STATE = {
 }
 
 const pointsReducer = (state = INITIAL_STATE, action) => {
+  pool.push( state );
   switch( action.type ) {
     case 'SET_EDITOR_NAME': {
       return { ...state, name: action.data };
@@ -71,8 +73,6 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
         makePoint({ ...point }),
         ...deselected.points.slice( index )
       ];
-
-      console.log( index, point, newPoints );
 
       const points = (newPoints.length > 1)
                         ? initPoints( newPoints ) : newPoints;

@@ -1,3 +1,5 @@
+import pool from '../pool';
+
 const INITIAL_STATE = {
   selected:   0,
   lines:      []
@@ -19,6 +21,8 @@ const makeProgressLine = (o ={}, state) => {
 }
 
 const progresses = (state = INITIAL_STATE, action) => {
+  pool.push( state );
+  
   switch (action.type) {
 
     case 'ADD_PROGRESS_LINE': {

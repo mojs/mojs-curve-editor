@@ -23,9 +23,8 @@ class Curve extends Component {
               <div  id="js-background"
                     className={ CLASSES['curve__background']}
                     style={ styles.background }>
-
-                <svg preserveAspectRatio="none" height="700px" viewBox="0 0 350 700" version="1.1">
-                  <pattern id="rect-paper" x="0" y="0" width="1" height="1">
+                <svg preserveAspectRatio="none" height={`${styles.height}px`} viewBox={`0 0 ${350+Math.random()*0.0001} ${styles.height}`}>
+                  <pattern id="rect-paper" x="0" y={`${-styles.svgTop}`} height="350" width="350" patternUnits="userSpaceOnUse">
                     <g id="Group" transform="translate(-1.000000, 0.000000)" stroke="#FFFFFF" stroke-width="1" fill="none">
                         <path vector-effect="non-scaling-stroke" d="M333.497821,350.501088 L333.497821,0.501088302" opacity="0.25"></path>
                         <path vector-effect="non-scaling-stroke" d="M315.997821,350.501088 L315.997821,0.501088302" opacity="0.25"></path>
@@ -69,7 +68,7 @@ class Curve extends Component {
                       </g>
                     </pattern>
 
-                  <rect width="350" height="700" fill="url(#rect-paper)" />
+                  <rect width="350" height={styles.height} fill="url(#rect-paper)" />
                   </svg>
 
               </div>
@@ -107,17 +106,14 @@ class Curve extends Component {
 
   _getStyle(state) {
     const {resize} = state;
-    let {temp_top, temp_right, panTempY} = resize;
+    let {temp_top, temp_bottom, temp_right, panTempY} = resize;
+    let height = C.CURVE_SIZE - (temp_top + resize.top)
+                              + (temp_bottom + resize.bottom);
 
-    panTempY    += resize.panY;
+    panTempY   += resize.panY;
 
-    temp_top    += resize.top - panTempY;
-    temp_right  += resize.right;
-
-    // const scale = `transform: scaleX(${(C.CURVE_SIZE + Math.max(temp_right,0))/C.CURVE_SIZE})`,
-    //       bgTransform = `${mojs.h.prefix.css}${scale}; ${scale};`,
-    //       background = `background-position: 0 ${-temp_top - 1}px; ${bgTransform}`,
-    //       transform  = `transform: translate(0px, ${-temp_top}px)`;
+    temp_top   += resize.top - panTempY;
+    temp_right += resize.right;
 
     const scaleX = (C.CURVE_SIZE + Math.max(temp_right,0))/C.CURVE_SIZE;
     const scale = `width: ${C.CURVE_SIZE*scaleX}px`,
@@ -126,8 +122,10 @@ class Curve extends Component {
           transform  = `transform: translate(0px, ${-temp_top}px)`;
 
     return {
+      transform: `${mojs.h.prefix.css}${transform}; ${transform};`,
       background,
-      transform: `${mojs.h.prefix.css}${transform}; ${transform};`
+      height,
+      svgTop: temp_top
     };
   }
 
@@ -204,12 +202,13 @@ class Curve extends Component {
 
     mc
       .on('tap', (e) => {
-        const ev     = e.srcEvent,
-              target = ev.target;
+        const {state} = this.props;
+        const ev      = e.srcEvent;
+        const target  = ev.target;
         // handle paths only
         if ( target.tagName.toLowerCase() !== 'path' ) { return; }
         // coordinates
-        const x  = ev.offsetX/C.CURVE_PERCENT,
+        const x  = ev.offsetX/state.resize.scalerX,
               y  = ev.offsetY,
               index = parseInt(target.getAttribute('data-index')) + 1;
 
