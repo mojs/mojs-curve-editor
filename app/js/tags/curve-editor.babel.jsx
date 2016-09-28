@@ -21,8 +21,12 @@ class CurveEditor extends Component {
           style   = this._getStyle(state),
           p       = this.props;
 
+    let className = `${CLASSES['curve-editor']}`;
+    className += (state.controls.isMinimize)
+      ? ` ${CLASSES['is-minimized']}` : '';
+
     this._state = state;
-    return  ( <div className={CLASSES['curve-editor']} style={ style }>
+    return  ( <div className={className} style={ style }>
                 <Icons />
                 <CodePanel state={ state }/>
                 <CurveEditorLeft state={ state } />

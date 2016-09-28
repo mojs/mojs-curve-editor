@@ -3,11 +3,11 @@ import IconButton from './icon-button';
 import propagating from 'propagating-hammerjs';
 import Hammer from 'hammerjs';
 
-class CodeButton extends Component {
+class MinimizeButton extends Component {
   render () {
     const {state} = this.props;
-    return  <div data-component="code-button">
-              <IconButton shape="code" isCheck={state.controls.isCode} />
+    return  <div data-component="minimize-button" title="minimize">
+              <IconButton shape="minimize" />
             </div>;
   }
   componentDidMount () {
@@ -15,8 +15,11 @@ class CodeButton extends Component {
     const mc = propagating(new Hammer.Manager(this.base));
     mc.add(new Hammer.Tap);
 
-    mc.on('tap', (e) => { store.dispatch({ type: 'CODE_TAP' }); });
+    mc
+      .on('tap', (e) => {
+        store.dispatch({ type: 'SET_MINIMIZE', data: true });
+      });
   }
 }
 
-export default CodeButton;
+export default MinimizeButton;
