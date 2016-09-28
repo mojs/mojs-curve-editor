@@ -6,7 +6,7 @@ import Hammer from 'hammerjs';
 class MaximizeButton extends Component {
   render () {
     const {state} = this.props;
-    return  <div data-component="maximize-button">
+    return  <div data-component="maximize-button" title="maximize">
               <IconButton shape="maximize" />
             </div>;
   }

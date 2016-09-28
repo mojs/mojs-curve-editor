@@ -12,6 +12,9 @@ const controls = (state = INITIAL_STATE, action) => {
     case 'SET_MINIMIZE': {
       return { ...state, isMinimize: action.data };
     }
+    case 'RESET_MINIMIZE_TRANISTION': {
+      return { ...state, isTransition: false };
+    }
   }
   return state;
 }

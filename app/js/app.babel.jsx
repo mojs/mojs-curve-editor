@@ -33,7 +33,6 @@ class API {
     }
   }
 
-
   _extendDefaults () {
     this._props = {};
 
@@ -43,7 +42,7 @@ class API {
   }
 
   _vars () {
-    this.revision = '1.0.1';
+    this.revision = '1.2.1';
     this.store    = initStore();
 
     this._easings = [];
@@ -137,6 +136,8 @@ class API {
   _updateParent( easing ) {
     const parent = easing._parent;
 
+    // console.log(parent.timeline.callbacksContext);
+
     if ( parent && parent.setProgress ) {
       this._triggerParent( parent );
     } else if ( parent.timeline ) {
@@ -147,11 +148,12 @@ class API {
   }
 
   _triggerParent (parent) {
-    const step = 0.001,
+    const step = 0.01,
           {progress} = parent,
           updateProgress = (progress + step < 1 )
             ? (progress + step) : (progress - step);
 
+    // console.log(updateProgress, progress);
     parent.setProgress( updateProgress );
     parent.setProgress( progress );
   }

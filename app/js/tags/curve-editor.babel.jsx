@@ -22,8 +22,13 @@ class CurveEditor extends Component {
           p       = this.props;
 
     let className = `${CLASSES['curve-editor']}`;
+    
     className += (state.controls.isMinimize)
       ? ` ${CLASSES['is-minimized']}` : '';
+    
+    // className += (state.controls.isTransition)
+    //   ? ` ${CLASSES['is-minimize-transition']}` : '';
+    // this._resetTransition( state.controls.isTransition );
 
     this._state = state;
     return  ( <div className={className} style={ style }>

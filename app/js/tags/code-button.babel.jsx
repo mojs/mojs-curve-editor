@@ -6,7 +6,7 @@ import Hammer from 'hammerjs';
 class CodeButton extends Component {
   render () {
     const {state} = this.props;
-    return  <div data-component="code-button">
+    return  <div data-component="code-button" title="get code">
               <IconButton shape="code" isCheck={state.controls.isCode} />
             </div>;
   }

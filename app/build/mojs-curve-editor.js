@@ -158,7 +158,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_vars',
 	    value: function _vars() {
-	      this.revision = '1.0.1';
+	      this.revision = '1.2.0';
 	      this.store = (0, _store2.default)();
 	
 	      this._easings = [];
@@ -274,6 +274,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _updateParent(easing) {
 	      var parent = easing._parent;
 	
+	      // console.log(parent.timeline.callbacksContext);
+	
 	      if (parent && parent.setProgress) {
 	        this._triggerParent(parent);
 	      } else if (parent.timeline) {
@@ -285,10 +287,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_triggerParent',
 	    value: function _triggerParent(parent) {
-	      var step = 0.001;
+	      var step = 0.01;
 	      var progress = parent.progress;
 	      var updateProgress = progress + step < 1 ? progress + step : progress - step;
 	
+	      // console.log(updateProgress, progress);
 	      parent.setProgress(updateProgress);
 	      parent.setProgress(progress);
 	    }
@@ -3438,7 +3441,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var p = this.props;
 	
 	      var className = '' + CLASSES['curve-editor'];
+	
 	      className += state.controls.isMinimize ? ' ' + CLASSES['is-minimized'] : '';
+	
+	      // className += (state.controls.isTransition)
+	      //   ? ` ${CLASSES['is-minimize-transition']}` : '';
+	      // this._resetTransition( state.controls.isTransition );
 	
 	      this._state = state;
 	      return (0, _preact.h)(
@@ -7950,7 +7958,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        (0, _preact.h)(
 	          'div',
 	          { id: 'js-background',
-	            className: CLASSES['curve__background'] },
+	            className: CLASSES['curve__background'],
+	            style: styles.background },
 	          (0, _preact.h)(_pattern2.default, { styles: styles })
 	        ),
 	        progressLines,
@@ -8015,15 +8024,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var yShift = state.controls.isMinimize ? -(temp_top / _constants2.default.CURVE_SIZE) * (20 / (height / _constants2.default.CURVE_SIZE)) : -temp_top;
 	
 	      var scaleX = (_constants2.default.CURVE_SIZE + Math.max(temp_right, 0)) / _constants2.default.CURVE_SIZE;
-	      var scale = 'width: ' + _constants2.default.CURVE_SIZE * scaleX + 'px',
-	          bgTransform = scale + ';',
-	
-	      // background = `background-position: 0 ${-temp_top - 1}px; ${bgTransform}`,
-	      transform = 'transform: translate(0px, ' + yShift + 'px)';
+	      var background = 'width: ' + _constants2.default.CURVE_SIZE * scaleX + 'px;',
+	          transform = 'transform: translate(0px, ' + yShift + 'px)';
 	
 	      return {
 	        transform: '' + mojs.h.prefix.css + transform + '; ' + transform + ';',
-	        // background,
+	        background: background,
 	        height: height,
 	        svgTop: temp_top
 	      };
@@ -8589,7 +8595,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -8617,6 +8623,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _preact = __webpack_require__(48);
 	
+	var _hash = __webpack_require__(209);
+	
+	var _hash2 = _interopRequireDefault(_hash);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Pattern = function (_Component) {
@@ -8628,70 +8638,76 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	
 	  (0, _createClass3.default)(Pattern, [{
-	    key: "render",
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this._hash = (0, _hash2.default)(Math.random() + '');
+	      this._patternName = 'rect-paper-' + this._hash;
+	    }
+	  }, {
+	    key: 'render',
 	    value: function render() {
 	      var styles = this.props.styles;
 	
 	
 	      return (0, _preact.h)(
-	        "svg",
-	        { preserveAspectRatio: "none", height: styles.height + "px", viewBox: "0 0 " + (350 + Math.random() * 0.0001) + " " + styles.height },
+	        'svg',
+	        { preserveAspectRatio: 'none', height: styles.height + 'px', viewBox: '0 0 ' + (350 + Math.random() * 0.0001) + ' ' + styles.height },
 	        (0, _preact.h)(
-	          "pattern",
-	          { id: "rect-paper", x: "0", y: "" + -styles.svgTop, height: "350", width: "350", patternUnits: "userSpaceOnUse" },
+	          'pattern',
+	          { id: this._patternName, x: '0', y: '' + -styles.svgTop, height: '350', width: '350', patternUnits: 'userSpaceOnUse' },
 	          (0, _preact.h)(
-	            "g",
-	            { id: "Group", transform: "translate(-1.000000, 0.000000)", stroke: "#FFFFFF", "stroke-width": "1", fill: "none", "vector-effect": "non-scaling-stroke" },
+	            'g',
+	            { id: 'Group', transform: 'translate(-1.000000, -1.000000)', stroke: '#FFFFFF', 'stroke-width': '1', fill: 'none', 'vector-effect': 'non-scaling-stroke' },
 	            (0, _preact.h)(
-	              "g",
-	              { opacity: "0.25" },
-	              (0, _preact.h)("path", { d: "M333.497821,350.501088 L333.497821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M315.997821,350.501088 L315.997821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M298.497821,350.501088 L298.497821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M280.997821,350.501088 L280.997821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M245.997821,350.501088 L245.997821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M228.497821,350.501088 L228.497821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M210.997821,350.501088 L210.997821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M193.497821,350.501088 L193.497821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M159.372821,350.501088 L159.372821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M141.872821,350.501088 L141.872821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M124.372821,350.501088 L124.372821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M106.872821,350.501088 L106.872821,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M71.8728207,350.501088 L71.8728207,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M54.3728207,350.501088 L54.3728207,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M36.8728207,350.501088 L36.8728207,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M19.3728207,350.501088 L19.3728207,0.501088302" }),
-	              (0, _preact.h)("path", { d: "M351.001088,19.0021793 L1.0010883,19.0021793" }),
-	              (0, _preact.h)("path", { d: "M351.001088,36.5021793 L1.0010883,36.5021793" }),
-	              (0, _preact.h)("path", { d: "M351.001088,54.0021793 L1.0010883,54.0021793" }),
-	              (0, _preact.h)("path", { d: "M351.001088,71.5021793 L1.0010883,71.5021793" }),
-	              (0, _preact.h)("path", { d: "M351.001088,106.502179 L1.0010883,106.502179" }),
-	              (0, _preact.h)("path", { d: "M351.001088,124.002179 L1.0010883,124.002179" }),
-	              (0, _preact.h)("path", { d: "M351.001088,141.502179 L1.0010883,141.502179" }),
-	              (0, _preact.h)("path", { d: "M351.001088,159.002179 L1.0010883,159.002179" }),
-	              (0, _preact.h)("path", { d: "M351.001088,193.127179 L1.0010883,193.127179" }),
-	              (0, _preact.h)("path", { d: "M351.001088,210.627179 L1.0010883,210.627179" }),
-	              (0, _preact.h)("path", { d: "M351.001088,228.127179 L1.0010883,228.127179" }),
-	              (0, _preact.h)("path", { d: "M351.001088,245.627179 L1.0010883,245.627179" }),
-	              (0, _preact.h)("path", { d: "M351.001088,280.627179 L1.0010883,280.627179" }),
-	              (0, _preact.h)("path", { d: "M351.001088,298.127179 L1.0010883,298.127179" }),
-	              (0, _preact.h)("path", { d: "M351.001088,315.627179 L1.0010883,315.627179" }),
-	              (0, _preact.h)("path", { d: "M351.001088,333.127179 L1.0010883,333.127179" })
+	              'g',
+	              { opacity: '0.25' },
+	              (0, _preact.h)('path', { d: 'M333.497821,350.501088 L333.497821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M315.997821,350.501088 L315.997821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M298.497821,350.501088 L298.497821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M280.997821,350.501088 L280.997821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M245.997821,350.501088 L245.997821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M228.497821,350.501088 L228.497821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M210.997821,350.501088 L210.997821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M193.497821,350.501088 L193.497821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M159.372821,350.501088 L159.372821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M141.872821,350.501088 L141.872821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M124.372821,350.501088 L124.372821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M106.872821,350.501088 L106.872821,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M71.8728207,350.501088 L71.8728207,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M54.3728207,350.501088 L54.3728207,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M36.8728207,350.501088 L36.8728207,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M19.3728207,350.501088 L19.3728207,0.501088302' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,19.0021793 L1.0010883,19.0021793' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,36.5021793 L1.0010883,36.5021793' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,54.0021793 L1.0010883,54.0021793' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,71.5021793 L1.0010883,71.5021793' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,106.502179 L1.0010883,106.502179' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,124.002179 L1.0010883,124.002179' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,141.502179 L1.0010883,141.502179' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,159.002179 L1.0010883,159.002179' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,193.127179 L1.0010883,193.127179' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,210.627179 L1.0010883,210.627179' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,228.127179 L1.0010883,228.127179' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,245.627179 L1.0010883,245.627179' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,280.627179 L1.0010883,280.627179' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,298.127179 L1.0010883,298.127179' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,315.627179 L1.0010883,315.627179' }),
+	              (0, _preact.h)('path', { d: 'M351.001088,333.127179 L1.0010883,333.127179' })
 	            ),
 	            (0, _preact.h)(
-	              "g",
-	              { opacity: "0.5" },
-	              (0, _preact.h)("path", { d: "M88.0641352,1 L88.0641352,351" }),
-	              (0, _preact.h)("path", { d: "M175.12827,1 L175.12827,351" }),
-	              (0, _preact.h)("path", { d: "M262.192406,1 L262.192406,351" }),
-	              (0, _preact.h)("path", { d: "M350.563591,88.0646793 L0.563591022,88.0646793" }),
-	              (0, _preact.h)("path", { d: "M350.563591,175.564679 L0.563591022,175.564679" }),
-	              (0, _preact.h)("path", { d: "M350.563591,263.064679 L0.563591022,263.064679" })
+	              'g',
+	              { opacity: '0.5' },
+	              (0, _preact.h)('path', { d: 'M88.0641352,1 L88.0641352,351' }),
+	              (0, _preact.h)('path', { d: 'M175.12827,1 L175.12827,351' }),
+	              (0, _preact.h)('path', { d: 'M262.192406,1 L262.192406,351' }),
+	              (0, _preact.h)('path', { d: 'M350.563591,88.0646793 L0.563591022,88.0646793' }),
+	              (0, _preact.h)('path', { d: 'M350.563591,175.564679 L0.563591022,175.564679' }),
+	              (0, _preact.h)('path', { d: 'M350.563591,263.064679 L0.563591022,263.064679' })
 	            ),
-	            (0, _preact.h)("rect", { opacity: "0.75", x: "1", y: "1", width: "350", height: "350" })
+	            (0, _preact.h)('rect', { opacity: '0.75', x: '1', y: '1', width: '350', height: '350' })
 	          )
 	        ),
-	        (0, _preact.h)("rect", { width: "350", height: styles.height, fill: "url(#rect-paper)" })
+	        (0, _preact.h)('rect', { width: '350', height: styles.height, fill: 'url(#' + this._patternName + ')' })
 	      );
 	    }
 	  }]);
@@ -9894,14 +9910,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve-editor": "_curve-editor_xcm7a_3",
-		"curve-editor__left": "_curve-editor__left_xcm7a_1",
-		"curve-editor__right": "_curve-editor__right_xcm7a_126",
-		"curve-editor__resize-handle": "_curve-editor__resize-handle_xcm7a_1",
-		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_xcm7a_121",
-		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_xcm7a_122",
-		"is-minimized": "_is-minimized_xcm7a_111",
-		"curve__svg-wrapper": "_curve__svg-wrapper_xcm7a_130"
+		"curve-editor": "_curve-editor_1v48l_3",
+		"curve-editor__left": "_curve-editor__left_1v48l_1",
+		"curve-editor__right": "_curve-editor__right_1v48l_132",
+		"curve-editor__resize-handle": "_curve-editor__resize-handle_1v48l_1",
+		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_1v48l_127",
+		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_1v48l_128",
+		"is-minimized": "_is-minimized_1v48l_117",
+		"curve__svg-wrapper": "_curve__svg-wrapper_1v48l_136"
 	};
 
 /***/ },
@@ -9950,9 +9966,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return (0, _preact.h)(
 	    'div',
 	    { className: CLASSES['curve-editor__left'], id: 'js-left-panel' },
-	    (0, _preact.h)(_codeButton2.default, { state: state }),
 	    (0, _preact.h)(_minimizeButton2.default, { state: state }),
 	    (0, _preact.h)(_maximizeButton2.default, { state: state }),
+	    (0, _preact.h)(_codeButton2.default, { state: state }),
 	    (0, _preact.h)(_iconDivider2.default, null),
 	    (0, _preact.h)(_pointControls2.default, { state: state,
 	      className: CLASSES['curve-editor__anchor-buttons'] }),
@@ -10028,7 +10044,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      return (0, _preact.h)(
 	        'div',
-	        { 'data-component': 'code-button' },
+	        { 'data-component': 'code-button', title: 'get code' },
 	        (0, _preact.h)(_iconButton2.default, { shape: 'code', isCheck: state.controls.isCode })
 	      );
 	    }
@@ -10107,10 +10123,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  (0, _createClass3.default)(IconButton, [{
 	    key: 'render',
 	    value: function render() {
-	      var check = this.props.isCheck ? CLASSES['is-checked'] : '';
+	      var p = this.props;
+	      var check = p.isCheck ? CLASSES['is-checked'] : '';
 	      return (0, _preact.h)(
 	        'div',
 	        { className: CLASSES['icon-button'] + ' ' + check,
+	          title: p.title || '',
 	          'data-component': 'icon-button' },
 	        (0, _preact.h)(_icon2.default, { shape: this.props.shape })
 	      );
@@ -10325,7 +10343,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      return (0, _preact.h)(
 	        'div',
-	        { 'data-component': 'maximize-button' },
+	        { 'data-component': 'maximize-button', title: 'maximize' },
 	        (0, _preact.h)(_iconButton2.default, { shape: 'maximize' })
 	      );
 	    }
@@ -10503,6 +10521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      for (var i = 0; i < buttonsMap.length; i++) {
 	        var type = buttonsMap[i];
 	        buttons.push((0, _preact.h)(_iconButton2.default, { shape: 'point-' + type,
+	          title: type,
 	          isCheck: controls.type === type,
 	          onTap: this._onButtonTap(type) }));
 	      }
@@ -10716,7 +10735,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve-editor_xcm7a_3{position:fixed;left:0;top:0;width:403px;height:378px;border-radius:12px;background:#572b51;z-index:100;box-shadow:0 0 3px 1px rgba(0,0,0,.38)}._curve-editor_xcm7a_3 [data-component=maximize-button]{display:none}._curve-editor_xcm7a_3 *{box-sizing:border-box}._curve-editor__left_xcm7a_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px;cursor:move}._curve-editor__left_xcm7a_1 [data-component=minimize-button]{margin-top:5px}._curve-editor__left_xcm7a_1 [data-component=icon-divider]{margin:10px auto}._curve-editor__right_xcm7a_126{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_xcm7a_126:after{content:'';position:absolute;left:0;top:0;right:0;bottom:0;z-index:2;display:none}._curve-editor__resize-handle_xcm7a_1{position:absolute}._curve-editor__resize-handle_xcm7a_1[data-type=top]{top:-17px}._curve-editor__resize-handle_xcm7a_1[data-type=bottom]{bottom:1px}._curve-editor__resize-handle_xcm7a_1[data-type=bottom],._curve-editor__resize-handle_xcm7a_1[data-type=top]{left:50%;margin-left:-21px}._curve-editor__resize-handle_xcm7a_1[data-type=right]{right:-15px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_xcm7a_121{margin-top:10px}._curve-editor__anchor-buttons_xcm7a_121 [data-component=icon-button]{margin-bottom:5px}._curve-editor__mojs-logo_xcm7a_122{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_xcm7a_122 [data-component=icon]{fill:#ff512f;width:12px;height:12px}._curve-editor_xcm7a_3._is-minimized_xcm7a_111{width:100px!important;height:45px!important;border-radius:7px}._curve-editor_xcm7a_3._is-minimized_xcm7a_111 ._curve-editor__anchor-buttons_xcm7a_121,._curve-editor_xcm7a_3._is-minimized_xcm7a_111 ._curve-editor__mojs-logo_xcm7a_122,._curve-editor_xcm7a_3._is-minimized_xcm7a_111 [data-component=code-button],._curve-editor_xcm7a_3._is-minimized_xcm7a_111 [data-component=icon-divider],._curve-editor_xcm7a_3._is-minimized_xcm7a_111 [data-component=minimize-button],._curve-editor_xcm7a_3._is-minimized_xcm7a_111 [data-component=point],._curve-editor_xcm7a_3._is-minimized_xcm7a_111 [data-component=resize-handle]{display:none}._curve-editor_xcm7a_3._is-minimized_xcm7a_111 ._curve-editor__right_xcm7a_126:after{display:block}._curve-editor_xcm7a_3._is-minimized_xcm7a_111 ._curve__svg-wrapper_xcm7a_130{margin-top:-200px}._curve-editor_xcm7a_3._is-minimized_xcm7a_111 [data-component=maximize-button]{display:block}", ""]);
+	exports.push([module.id, "._curve-editor_1v48l_3{position:fixed;left:0;top:0;width:403px;height:378px;border-radius:12px;background:#572b51;z-index:100;box-shadow:0 0 3px 1px rgba(0,0,0,.38)}._curve-editor_1v48l_3 [data-component=maximize-button]{display:none}._curve-editor_1v48l_3 *{box-sizing:border-box}._curve-editor__left_1v48l_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px;cursor:move}._curve-editor__left_1v48l_1 [data-component=code-button]{margin-top:5px}._curve-editor__left_1v48l_1 [data-component=icon-divider]{margin:10px auto}._curve-editor__right_1v48l_132{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_1v48l_132:after{content:'';position:absolute;left:0;top:0;right:0;bottom:0;z-index:2;display:none}._curve-editor__resize-handle_1v48l_1{position:absolute}._curve-editor__resize-handle_1v48l_1[data-type=top]{top:-17px}._curve-editor__resize-handle_1v48l_1[data-type=bottom]{bottom:1px}._curve-editor__resize-handle_1v48l_1[data-type=bottom],._curve-editor__resize-handle_1v48l_1[data-type=top]{left:50%;margin-left:-21px}._curve-editor__resize-handle_1v48l_1[data-type=right]{right:-15px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_1v48l_127{margin-top:10px}._curve-editor__anchor-buttons_1v48l_127 [data-component=icon-button]{margin-bottom:5px}._curve-editor__mojs-logo_1v48l_128{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_1v48l_128 [data-component=icon]{fill:#ff512f;width:12px;height:12px}._curve-editor_1v48l_3._is-minimized_1v48l_117{width:100px!important;height:45px!important;border-radius:7px}._curve-editor_1v48l_3._is-minimized_1v48l_117 ._curve-editor__anchor-buttons_1v48l_127,._curve-editor_1v48l_3._is-minimized_1v48l_117 ._curve-editor__mojs-logo_1v48l_128,._curve-editor_1v48l_3._is-minimized_1v48l_117 [data-component=code-button],._curve-editor_1v48l_3._is-minimized_1v48l_117 [data-component=icon-divider],._curve-editor_1v48l_3._is-minimized_1v48l_117 [data-component=minimize-button],._curve-editor_1v48l_3._is-minimized_1v48l_117 [data-component=point],._curve-editor_1v48l_3._is-minimized_1v48l_117 [data-component=resize-handle]{display:none}._curve-editor_1v48l_3._is-minimized_1v48l_117 ._curve-editor__right_1v48l_132:after{display:block}._curve-editor_1v48l_3._is-minimized_1v48l_117 ._curve__svg-wrapper_1v48l_136{margin-top:-200px}._curve-editor_1v48l_3._is-minimized_1v48l_117 [data-component=maximize-button]{display:block}", ""]);
 	
 	// exports
 
@@ -11769,6 +11788,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    case 'SET_MINIMIZE':
 	      {
 	        return (0, _extends3.default)({}, state, { isMinimize: action.data });
+	      }
+	    case 'RESET_MINIMIZE_TRANISTION':
+	      {
+	        return (0, _extends3.default)({}, state, { isTransition: false });
 	      }
 	  }
 	  return state;

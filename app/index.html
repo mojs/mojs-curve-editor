@@ -33,6 +33,20 @@
   <script src="build/mojs-curve-editor.js" charset="utf-8"></script>
 
   <script>
+
+    var scaleCurve = new window.MojsCurveEditor({ name: 'curve_scale', isSaveState: true });
+
+    var curveEditor11 = new window.MojsCurveEditor({ name: 'curve111', isSaveState: true });
+
+    var curveEditor = new window.MojsCurveEditor({ name: 'curve1', isSaveState: true });
+
+    // var html = new mojs.Html({
+    //   el: '#js-el',
+    //   y:      { [-200] : -200, curve: curveEditor.getEasing() },
+    //   scaleX: { 2:2, curve: scaleCurve.getEasing() }
+    // });
+
+    // new MojsPlayer({ add: html });
     // scaleX/scaleY : M0, 0 C0.6729540169506724, -28.101525445522107 13.041331697335014, -94.89847455447803 40, -95 C74.3872397312364, -94.81581115980767 71.04133169733501, 0.10152544552201628 100, 0 
     // originY : M0, 0 C4.324651237095854, -97.09389091882751 -12.269098738159038, -100.52241754574061 40, -100 C69.70027963716932, -99.70315257828365 75, -100 75, -100 C75, -100 77.18670774544789, -105.94552943119928 80, 0 C93.51535255761112, -0.007114543223372127 100, 0 100, 0 
     // var curveEditor = new window.MojsCurveEditor({ name: 'curve1', isSaveState: true });
@@ -81,8 +95,8 @@
   </script>
 
   <script>
-    var curveEditor = new window.MojsCurveEditor({
-      name: 'curve_1', isSaveState: true });
+    // var curveEditor = new window.MojsCurveEditor({
+    //   name: 'curve_1', isSaveState: true });
     // var curveEditor2 = new window.MojsCurveEditor({ name: 'curve_2', isSaveState: true });
     // var curveEditor3 = new window.MojsCurveEditor({ name: 'curve_3', isSaveState: true });
     // var curveEditor4 = new window.MojsCurveEditor({ name: 'curve_4', isSaveState: true });

@@ -1,12 +1,17 @@
 import {h, Component} from 'preact';
+import hash from '../helpers/hash';
 
 export default class Pattern extends Component {
+  componentWillMount () {
+    this._hash = hash(Math.random() + '');
+    this._patternName = `rect-paper-${this._hash}`;
+  }
   render () {
     const {styles} = this.props;
 
     return <svg preserveAspectRatio="none" height={`${styles.height}px`} viewBox={`0 0 ${350+Math.random()*0.0001} ${styles.height}`}>
-                  <pattern id="rect-paper" x="0" y={`${-styles.svgTop}`} height="350" width="350" patternUnits="userSpaceOnUse">
-                    <g id="Group" transform="translate(-1.000000, 0.000000)" stroke="#FFFFFF" stroke-width="1" fill="none" vector-effect="non-scaling-stroke">
+                  <pattern id={this._patternName} x="0" y={`${-styles.svgTop}`} height="350" width="350" patternUnits="userSpaceOnUse">
+                    <g id="Group" transform="translate(-1.000000, -1.000000)" stroke="#FFFFFF" stroke-width="1" fill="none" vector-effect="non-scaling-stroke">
                         <g opacity="0.25">
                           <path d="M333.497821,350.501088 L333.497821,0.501088302" />
                           <path d="M315.997821,350.501088 L315.997821,0.501088302" />
@@ -53,7 +58,7 @@ export default class Pattern extends Component {
                       </g>
                     </pattern>
 
-                  <rect width="350" height={styles.height} fill="url(#rect-paper)" />
+                  <rect width="350" height={styles.height} fill={`url(#${this._patternName})`} />
                   </svg>
   }
 }

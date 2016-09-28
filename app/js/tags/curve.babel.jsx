@@ -23,7 +23,8 @@ class Curve extends Component {
     const curveHeight = this._getCurveHeight(state);
     return <div className={ CLASSES['curve'] }>
               <div  id="js-background"
-                    className={ CLASSES['curve__background']}>
+                    className={ CLASSES['curve__background']}
+                    style={styles.background}>
                 
                 <Pattern styles={styles} />
                 
@@ -82,14 +83,12 @@ class Curve extends Component {
       : -temp_top;
 
     const scaleX = (C.CURVE_SIZE + Math.max(temp_right,0))/C.CURVE_SIZE;
-    const scale = `width: ${C.CURVE_SIZE*scaleX}px`,
-          bgTransform = `${scale};`,
-          // background = `background-position: 0 ${-temp_top - 1}px; ${bgTransform}`,
+    const background = `width: ${C.CURVE_SIZE*scaleX}px;`,
           transform  = `transform: translate(0px, ${yShift}px)`;
 
     return {
       transform: `${mojs.h.prefix.css}${transform}; ${transform};`,
-      // background,
+      background,
       height,
       svgTop: temp_top
     };
