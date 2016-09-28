@@ -24,7 +24,7 @@ class API {
     this._listenUnload();
 
     this._subscribe();
-    this._subscribeFocus();
+    // this._subscribeFocus();
   }
 
   _decalareDefaults ( ) {
@@ -43,7 +43,7 @@ class API {
   }
 
   _vars () {
-    this.revision = '1.3.0';
+    this.revision = '1.4.0';
     this.store    = initStore();
 
     this._easings = [];
@@ -60,7 +60,8 @@ class API {
     document.addEventListener('DOMContentLoaded', () => {
       render(
         <Provider store={this.store}>
-          <CurveEditor progressLines={this._progressLines} />
+          <CurveEditor  progressLines = {this._progressLines}
+                        ref={ (el) => { this._el = el; }} />
         </Provider>, document.body);
     });
   }
@@ -93,13 +94,13 @@ class API {
     this.store.subscribe( this._compilePath.bind(this) );
   }
 
-  _subscribeFocus () {
-    addPointerDown( document.body, (e) => {
-      if (this._localStorage !== e._mojsCurveEditorName) {
-        this.store.dispatch({ type: 'POINT_DESELECT_ALL' });
-      }
-    });
-  }
+  // _subscribeFocus () {
+    // addPointerDown( document.body, (e) => {
+    //   if (this._localStorage !== e._mojsCurveEditorName) {
+    //     this.store.dispatch({ type: 'POINT_DESELECT_ALL' });
+    //   }
+    // });
+  // }
 
   _compilePath () {
 
@@ -150,7 +151,6 @@ class API {
           updateProgress = (progress + step < 1 )
             ? (progress + step) : (progress - step);
 
-    // console.log(updateProgress, progress);
     parent.setProgress( updateProgress );
     parent.setProgress( progress );
   }

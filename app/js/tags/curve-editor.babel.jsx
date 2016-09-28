@@ -10,10 +10,10 @@ import Icons from './icons';
 import mod from '../helpers/resize-mod';
 import addPointerDown from '../helpers/add-pointer-down';
 import {reset} from '../actions/points';
+import ActivePool from '../helpers/active-pool';
 require('../../css/blocks/curve-editor');
 
 class CurveEditor extends Component {
-
   render () {
     const CLASSES = require('../../css/blocks/curve-editor.postcss.css.json');
 
@@ -27,9 +27,8 @@ class CurveEditor extends Component {
     className += (state.controls.isMinimize)
       ? ` ${CLASSES['is-minimized']}` : '';
     
-    // className += (state.controls.isTransition)
-    //   ? ` ${CLASSES['is-minimize-transition']}` : '';
-    // this._resetTransition( state.controls.isTransition );
+    className += (!state.controls.isActive)
+      ? ` ${CLASSES['is-inactive']}` : '';
 
     this._state = state;
     return  ( <div className={className} style={ style }>
@@ -83,17 +82,14 @@ class CurveEditor extends Component {
     store.subscribe(this.forceUpdate.bind(this));
   }
 
-  _subscribeFocus () {
-    addPointerDown( this.base, (e) => {
-      e._mojsCurveEditorName = this._state.points.present.name;
-    });
-  }
-
   _addKeyUp () { document.addEventListener('keyup', this._onKeyUp.bind(this)); }
 
   _onKeyUp (e) {
     const {store} = this.context;
-    console.log( e.which );
+    const {controls} = this._state;
+    // don't react on shortcuts if inactive or minimized
+    if (!controls.isActive || controls.isMinimize) { return; }
+    // don't react if `alt` key is not set
     if ( !e.altKey ) { return; }
     switch (e.which) {
       // z
@@ -112,6 +108,39 @@ class CurveEditor extends Component {
     
     clearTimeout(this._tm);
     this._tm = setTimeout(() => { this._resetCounter = 0; }, 300);
+  }
+
+  _subscribeFocus () {
+    this._createActivePool();
+    const {store} = this.context;
+    addPointerDown( this.base, (e) => {
+      const pool = mojs[C['ACTIVE_POOL_NAME']];
+      pool && pool.resetActive(this);
+      if (!this._state.controls.isActive) {
+        store.dispatch({ type: 'SET_ACTIVE', data: true });
+      }
+    });
+  }
+
+  _getPool () {
+    let activePool = null;
+    if (!mojs[C['ACTIVE_POOL_NAME']]) {
+      mojs[C['ACTIVE_POOL_NAME']] = new ActivePool;
+    }
+    return mojs[C['ACTIVE_POOL_NAME']];
+  }
+
+  _createActivePool () {
+    const activePool = this._getPool();
+    activePool.add(this._setInactive.bind(this));
+    mojs[C['ACTIVE_POOL_NAME']] = activePool;
+  }
+
+  _setInactive (module) {
+    const {store} = this.context;
+    if (module !== this) {
+      store.dispatch({ type: 'SET_ACTIVE', data: false });
+    }
   }
 
 }

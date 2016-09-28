@@ -4,7 +4,6 @@ class Pool {
   }
   push (states) {
     // this._states.push(states);
-    // console.log(this._states.length);
     return this;
   }
 

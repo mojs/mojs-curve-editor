@@ -1,6 +1,6 @@
 {
   "name": "mojs-curve-editor",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "mojs GUI for editing easing/property curves",
   "keywords": [
     "mojs",

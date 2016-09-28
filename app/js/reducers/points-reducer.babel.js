@@ -135,6 +135,10 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
       return { ...deselectAll( state ) };
     }
 
+    case 'SET_ACTIVE': {
+      return (!action.data) ? { ...deselectAll( state ) } : state;
+    }
+
     // HANDLES
     case 'HANDLE_TRANSLATE': {
       const {points}  = state,

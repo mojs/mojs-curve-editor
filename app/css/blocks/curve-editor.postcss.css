@@ -113,6 +113,14 @@
                 height .15s ease-out,
                 border-radius .15s ease-out;
   }*/
+  
+  &.is-inactive {
+    .curve-editor__mojs-logo {
+      & [data-component="icon"] {
+        fill: $c-pastel-purple;
+      }
+    }
+  }
 
   &.is-minimized {
     width:    calc(100*$PX) !important;

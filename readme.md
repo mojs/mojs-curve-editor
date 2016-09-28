@@ -110,6 +110,8 @@ After you are happy with the curve you need to change the `sample`(`mojsCurve.ge
 - `alt + d`  - `delete` selected point(s)
 - [3 times] `alt + \`  - `reset` curve
 
+`Please note:` all shortcuts work only for active editor - it should have `orange mojs logo indicator` at bottom left.
+
 ## Development
 
 Install [webpack](https://webpack.github.io/) globally:
