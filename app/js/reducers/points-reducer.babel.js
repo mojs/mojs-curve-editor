@@ -160,6 +160,10 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
       return state;
     }
 
+    case 'POINTS_REMOVE': {
+      return {...state, points: []};
+    }
+
     // case 'EDITOR_RESIZE': {
     //   const {data} = action,
     //         points = [...state.points],

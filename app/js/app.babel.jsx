@@ -6,6 +6,7 @@ import C            from './constants';
 import hash         from './helpers/hash';
 import fallbackTo   from './helpers/fallback-to';
 import defer        from './helpers/defer';
+import {reset}      from './actions/points';
 import addPointerDown from './helpers/add-pointer-down';
 
 /*
@@ -42,7 +43,7 @@ class API {
   }
 
   _vars () {
-    this.revision = '1.2.1';
+    this.revision = '1.3.0';
     this.store    = initStore();
 
     this._easings = [];
@@ -84,11 +85,7 @@ class API {
   _tryToRestore () {
     const stored = localStorage.getItem(this._localStorage);
     if ( stored ) { this.store.dispatch({ type: 'SET_STATE', data: JSON.parse(stored) });}
-    else {
-      this.store.dispatch({ type: 'POINT_ADD', data: { point: {x: 0,   y: C.CURVE_SIZE, isLockedX: true}, index: 0 } });
-      this.store.dispatch({ type: 'POINT_ADD', data: { point: {x: 100, y: 0, isLockedX: true}, index: 1 } });
-      // this.store.dispatch({ type: 'POINT_SELECT', data: { index: 0, type: 'straight' } });
-    }
+    else { reset(this.store); }
   }
 
   _subscribe () {
@@ -136,10 +133,10 @@ class API {
   _updateParent( easing ) {
     const parent = easing._parent;
 
-    // console.log(parent.timeline.callbacksContext);
-
     if ( parent && parent.setProgress ) {
       this._triggerParent( parent );
+    } else if (parent._o.callbacksContext) {
+      this._triggerParent( parent._o.callbacksContext.timeline );
     } else if ( parent.timeline ) {
       this._triggerParent( parent.timeline )
     } else if ( parent.tween ) {

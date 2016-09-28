@@ -108,6 +108,7 @@ After you are happy with the curve you need to change the `sample`(`mojsCurve.ge
 - `alt + z`  - `undo` curve action
 - `alt + x`  - `rendo` curve action
 - `alt + d`  - `delete` selected point(s)
+- [3 times] `alt + \`  - `reset` curve
 
 ## Development
 

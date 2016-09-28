@@ -9,6 +9,7 @@ import CodePanel from './code-panel';
 import Icons from './icons';
 import mod from '../helpers/resize-mod';
 import addPointerDown from '../helpers/add-pointer-down';
+import {reset} from '../actions/points';
 require('../../css/blocks/curve-editor');
 
 class CurveEditor extends Component {
@@ -59,6 +60,8 @@ class CurveEditor extends Component {
   }
 
   componentDidMount () {
+    this._resetCounter = 0;
+
     const {store} = this.context,
           el = this.base.querySelector('#js-left-panel'),
           mc = propagating(new Hammer.Manager(el));
@@ -90,6 +93,7 @@ class CurveEditor extends Component {
 
   _onKeyUp (e) {
     const {store} = this.context;
+    console.log( e.which );
     if ( !e.altKey ) { return; }
     switch (e.which) {
       // z
@@ -98,7 +102,16 @@ class CurveEditor extends Component {
       case 88: { return store.dispatch(ActionCreators.redo()); }
       // d
       case 68: { return store.dispatch({ type: 'POINT_DELETE' }); }
+      // \
+      case 220: { return e.shiftKey && this._tryToReset(store); }
     }
+  }
+
+  _tryToReset (store) {
+    if (++this._resetCounter > 2) { reset(store); }
+    
+    clearTimeout(this._tm);
+    this._tm = setTimeout(() => { this._resetCounter = 0; }, 300);
   }
 
 }
