@@ -10717,7 +10717,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var state = _ref.state;
 	  var points = state.points;
 	  var controls = state.controls;
-	  var open = controls.isCode ? CLASSES['is-open'] : '';
+	
+	  var isShow = controls.isCode && !controls.isMinimize;
+	  var open = isShow ? CLASSES['is-open'] : '';
 	  var mainClass = CLASSES['code-panel'] + ' ' + open;
 	
 	  return (0, _preact.h)(

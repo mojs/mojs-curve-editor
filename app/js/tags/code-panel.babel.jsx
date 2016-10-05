@@ -6,9 +6,10 @@ import ResizeHandle from './resize-handle';
 require('../../css/blocks/code-panel');
 const CLASSES = require('../../css/blocks/code-panel.postcss.css.json');
 export default ({state}) => {
-  const {points, controls} = state,
-        open      = (controls.isCode) ? CLASSES['is-open'] : '',
-        mainClass = `${CLASSES['code-panel']} ${open}`;
+  const {points, controls} = state;
+  const isShow = controls.isCode && !controls.isMinimize
+  const open = (isShow) ? CLASSES['is-open'] : '';
+  const mainClass = `${CLASSES['code-panel']} ${open}`;
 
   return  <div className={mainClass}>
             <div className={ CLASSES['code-panel__inner'] }>
