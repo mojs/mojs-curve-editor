@@ -38,10 +38,8 @@ class LittleHandle extends Component {
       .on('pan', (e) => {
         const {index, parentIndex, state} = this.props,
               point     = angleToPoint( handle.angle, handle.radius ),
-              // newX      = point.x + e.deltaX,
               newY      = point.y + e.deltaY,
               {resize}  = state,
-              // absolute x regarding horizontal size
               absX      = point.x + (e.deltaX)/resize.absScalerX,
               angle     = pointToAngle( absX, newY );
 

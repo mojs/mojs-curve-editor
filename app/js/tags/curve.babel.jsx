@@ -65,7 +65,7 @@ class Curve extends Component {
     const {resize} = state;
     if (!state.controls.isMinimize) { return 100; }
 
-    return C.CURVE_SIZE*8;
+    return C.CURVE_SIZE*4.28;
   }
 
   _getStyle(state) {
@@ -155,12 +155,17 @@ class Curve extends Component {
 
   componentDidUpdate () { this._updateDomProgressLines(); }
 
+  componentWillMount () {
+    this._isFirefox = (navigator.userAgent.indexOf("Firefox") > -1);
+  }
+
   componentDidMount () {
     this._updateDomProgressLines();
     
     const {store} = this.context,
           el = this.base.querySelector('#js-segments'),
           mc = propagating(new Hammer.Manager(el));
+
 
     // mc.add(new Hammer.Pan({ threshold: 0 }));
     mc.add(new Hammer.Tap);
@@ -173,9 +178,20 @@ class Curve extends Component {
         // handle paths only
         if ( target.tagName.toLowerCase() !== 'path' ) { return; }
         // coordinates
-        const x  = ev.offsetX/state.resize.scalerX,
-              y  = ev.offsetY,
-              index = parseInt(target.getAttribute('data-index')) + 1;
+        let x  = ev.offsetX;
+        let y  = ev.offsetY;
+        let index = parseInt(target.getAttribute('data-index')) + 1;
+
+        // normalize for FF issue - it calculates
+        // events regarding `viewBox` of `svg` tag
+        if (!this._isFirefox) { x /= state.resize.scalerX; }
+        else {
+          y *= C.CURVE_PERCENT;
+          x -= 1;
+          y -= 1;
+        }
+
+        this._isFirefox
 
         store.dispatch({
           type:      'POINT_ADD',

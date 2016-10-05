@@ -75,7 +75,6 @@ class CurveEditor extends Component {
         const x = e.deltaX, y = e.deltaY;
         store.dispatch({ type: 'EDITOR_TRANSLATE_END', data: { x, y } })
       })
-      // .on('tap', (e) => { store.dispatch({ type: 'POINT_DESELECT_ALL' }); });
 
     this._addKeyUp();
     this._subscribeFocus();
