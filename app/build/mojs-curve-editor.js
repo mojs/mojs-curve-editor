@@ -160,7 +160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_vars',
 	    value: function _vars() {
-	      this.revision = '1.4.3';
+	      this.revision = '1.4.5';
 	      this.store = (0, _store2.default)();
 	
 	      this._easings = [];
@@ -275,7 +275,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _updateParent(easing) {
 	      var parent = easing._parent;
 	
-	      if (parent && parent.setProgress) {
+	      if (!parent) {
+	        return;
+	      };
+	
+	      if (parent.setProgress) {
 	        this._triggerParent(parent);
 	      } else if (parent._o.callbacksContext) {
 	        this._triggerParent(parent._o.callbacksContext.timeline);

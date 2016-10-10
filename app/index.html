@@ -68,7 +68,35 @@
 
   <script>
 
-    new MojsCurveEditor({ name: 'some name' });
+
+
+    const mojsCurve = new MojsCurveEditor({
+      name:         'b curve'
+    });
+
+    const rect = new mojs.Shape({
+      shape:        'rect',
+
+      left:         {'0%':'100%'},
+      top:          0,
+      fill:         'none',
+      radius:       20,
+      stroke:       { 'rgba(0,255,255, 1)' : 'magenta',  easing: mojsCurve.getEasing() },
+      strokeWidth:  { 10: 0 },
+      angle:        { 0: 180 },
+
+      duration:     1500,
+    });
+
+    const mainTimeline = new mojs.Timeline;
+    mainTimeline.add( rect );
+    const mojsPlayer = new MojsPlayer({ add: mainTimeline });
+
+
+
+
+
+    // new MojsCurveEditor({ name: 'some name' });
 
     // var scaleCurve  = new window.MojsCurveEditor({ name: 'curve_scale' });
     // var rotateCurve = new window.MojsCurveEditor({ name: 'curve_rotate' });

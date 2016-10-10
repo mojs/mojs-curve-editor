@@ -43,7 +43,7 @@ class API {
   }
 
   _vars () {
-    this.revision = '1.4.3';
+    this.revision = '1.4.5';
     this.store    = initStore();
 
     this._easings = [];
@@ -134,7 +134,9 @@ class API {
   _updateParent( easing ) {
     const parent = easing._parent;
 
-    if ( parent && parent.setProgress ) {
+    if (!parent) { return; };
+
+    if (parent.setProgress ) {
       this._triggerParent( parent );
     } else if (parent._o.callbacksContext) {
       this._triggerParent( parent._o.callbacksContext.timeline );
