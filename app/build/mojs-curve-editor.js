@@ -160,7 +160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_vars',
 	    value: function _vars() {
-	      this.revision = '1.4.5';
+	      this.revision = '1.4.6';
 	      this.store = (0, _store2.default)();
 	
 	      this._easings = [];
@@ -177,34 +177,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _render() {
 	      var _this = this;
 	
-	      document.addEventListener('DOMContentLoaded', function () {
-	        (0, _preact.render)((0, _preact.h)(
-	          _preactRedux.Provider,
-	          { store: _this.store },
-	          (0, _preact.h)(_curveEditor2.default, { progressLines: _this._progressLines,
-	            ref: function ref(el) {
-	              _this._el = el;
-	            } })
-	        ), document.body);
+	      var doc = document;
+	      var docState = doc.readyState;
+	      if (docState === "complete" || docState === "loaded" || docState === "interactive") {
+	        return this._renderApp();
+	      }
+	
+	      doc.addEventListener('DOMContentLoaded', function () {
+	        _this._renderApp();
 	      });
+	    }
+	  }, {
+	    key: '_renderApp',
+	    value: function _renderApp() {
+	      var _this2 = this;
+	
+	      (0, _preact.render)((0, _preact.h)(
+	        _preactRedux.Provider,
+	        { store: this.store },
+	        (0, _preact.h)(_curveEditor2.default, { progressLines: this._progressLines,
+	          ref: function ref(el) {
+	            _this2._el = el;
+	          } })
+	      ), document.body);
 	    }
 	  }, {
 	    key: '_listenUnload',
 	    value: function _listenUnload() {
-	      var _this2 = this;
+	      var _this3 = this;
 	
 	      var unloadEvent = 'onpagehide' in window ? 'pagehide' : 'beforeunload';
 	      window.addEventListener(unloadEvent, function () {
-	        if (_this2._props.isSaveState) {
-	          var preState = (0, _extends3.default)({}, _this2.store.getState());
+	        if (_this3._props.isSaveState) {
+	          var preState = (0, _extends3.default)({}, _this3.store.getState());
 	
 	          delete preState.points.history;
 	          delete preState.pointControls.history;
 	          preState.progressLines.lines = [];
 	
-	          localStorage.setItem(_this2._localStorage, (0, _stringify2.default)(preState));
+	          localStorage.setItem(_this3._localStorage, (0, _stringify2.default)(preState));
 	        } else {
-	          localStorage.removeItem(_this2._localStorage);
+	          localStorage.removeItem(_this3._localStorage);
 	        }
 	      });
 	    }
@@ -236,7 +249,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_compilePath',
 	    value: function _compilePath() {
-	      var _this3 = this;
+	      var _this4 = this;
 	
 	      var state = this.store.getState();
 	      var points = state.points.present;
@@ -249,10 +262,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      clearTimeout(this._tm);
 	      this._tm = setTimeout(function () {
-	        if (_this3._prevPath !== path) {
-	          _this3._prevPath = path;
-	          _this3._easing = mojs.easing.path(path);
-	          _this3._fireOnChange(path);
+	        if (_this4._prevPath !== path) {
+	          _this4._prevPath = path;
+	          _this4._easing = mojs.easing.path(path);
+	          _this4._fireOnChange(path);
 	        }
 	      }, 40);
 	    }
@@ -302,17 +315,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getEasing',
 	    value: function getEasing() {
-	      var _this4 = this;
+	      var _this5 = this;
 	
 	      var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
 	      // get the easing function regarding reverse options
 	      var fun = function () {
-	        var i = _this4._easings.length;
+	        var i = _this5._easings.length;
 	        return function (k) {
-	          _this4._updateProgressLine(k, i, _this4._progressLines);
-	          var transform = _this4._easings[i].options.transform;
-	          return transform ? transform(_this4._easing(k)) : _this4._easing(k);
+	          _this5._updateProgressLine(k, i, _this5._progressLines);
+	          var transform = _this5._easings[i].options.transform;
+	          return transform ? transform(_this5._easing(k)) : _this5._easing(k);
 	        };
 	      }();
 	
@@ -320,7 +333,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this._easings.push({ options: o, easing: fun });
 	
 	      (0, _defer2.default)(function () {
-	        _this4._fireOnChange(_this4._prevPath);
+	        _this5._fireOnChange(_this5._prevPath);
 	      });
 	      return fun;
 	    }

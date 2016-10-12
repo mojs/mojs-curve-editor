@@ -43,7 +43,7 @@ class API {
   }
 
   _vars () {
-    this.revision = '1.4.5';
+    this.revision = '1.4.6';
     this.store    = initStore();
 
     this._easings = [];
@@ -57,13 +57,25 @@ class API {
   }
 
   _render () {
-    document.addEventListener('DOMContentLoaded', () => {
-      render(
-        <Provider store={this.store}>
-          <CurveEditor  progressLines = {this._progressLines}
-                        ref={ (el) => { this._el = el; }} />
-        </Provider>, document.body);
-    });
+    const doc = document;
+    const docState = doc.readyState;
+    if (docState === "complete" ||
+        docState === "loaded"  ||
+        docState === "interactive") {
+        return this._renderApp();
+    }
+
+    doc.addEventListener('DOMContentLoaded', () => {this._renderApp()});
+  }
+
+  _renderApp () {
+    render(
+      <Provider store={this.store}>
+        <CurveEditor  progressLines = {this._progressLines}
+                      ref={ (el) => { this._el = el; }} />
+      </Provider>,
+      document.body
+    );
   }
 
   _listenUnload () {
