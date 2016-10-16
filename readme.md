@@ -31,7 +31,7 @@ Import `MojsCurveEditor` constructor to your code (depends on your environment) 
 ```javascript
 const MojsCurveEditor = require('mojs-player').default;
 // or
-import MojsCurveEditor from 'mojs-player';
+import MojsCurveEditor from 'mojs-curve-editor';
 ```
 
 If you installed it with script link - you should have `MojsCurveEditor` global.
