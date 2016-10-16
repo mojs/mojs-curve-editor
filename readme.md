@@ -29,7 +29,7 @@ bower install mojs-curve-editor
 Import `MojsCurveEditor` constructor to your code (depends on your environment) :
 
 ```javascript
-const MojsCurveEditor = require('mojs-player').default;
+const MojsCurveEditor = require('mojs-curve-editor').default;
 // or
 import MojsCurveEditor from 'mojs-curve-editor';
 ```
