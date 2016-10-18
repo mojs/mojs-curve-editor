@@ -1,15 +1,11 @@
-
-
 import webpack from 'webpack';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import UnminifiedWebpackPlugin from 'unminified-webpack-plugin';
 
 const LAUNCH_COMMAND = process.env.npm_lifecycle_event;
-
 const isProduction = LAUNCH_COMMAND === 'production';
 process.env.BABEL_ENV = LAUNCH_COMMAND
-
 
 const base = {
   context: __dirname + '/',
@@ -39,8 +35,8 @@ const base = {
   },
   postcss: function () {
     return {
-        defaults: [ require('precss'), require('postcss-cssnext'), require('postcss-modules') ],
-        cleaner:  [autoprefixer({ browsers: ['last 2 versions'] })]
+      defaults: [ require('precss'), require('postcss-cssnext'), require('postcss-modules') ],
+      cleaner:  [autoprefixer({ browsers: ['last 2 versions'] })]
     };
   },
   output: {
