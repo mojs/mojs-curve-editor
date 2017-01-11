@@ -2,70 +2,76 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>Curve Editor</title>
 </head>
 <body>
 
   <div class="el" id="js-el"></div>
+  <div class="el2" id="js-el2"></div>
+  <div class="shadow" id="js-shadow"></div>
   <style>
+    body, html {
+      margin:  0;
+      padding: 0;
+      background: #FFF5E4;
+      /*background: $c-purple;*/
+    }
+
     .el {
       position: absolute;
       left: 10%;
-      top: 50%;
+      top: 80%;
       width: 100px;
       height: 100px;
       margin-left: -50px;
       margin-top: -50px;
       background: #572B53;
       border-radius: 3px;
+      z-index: 1;
+    }
+
+    .el2 {
+      position: absolute;
+      left: 10%;
+      top: 80%;
+      width: 50px;
+      height: 50px;
+      margin-left: -25px;
+      margin-top: -50px;
+      background: #3A0839;
+      background: #230323;
+      /*background: #FF512F;*/
+      border-radius: 3px;
+      z-index: 1;
+      /*transform-origin: center bottom;*/
+    }
+
+    .shadow {
+      position: absolute;
+      left: 10%;
+      top: 80%;
+      width: 80px;
+      height: 7px;
+      margin-left: -40px;
+      margin-top: 45px;
+      background: #333;
+      opacity: .25;
+      border-radius: 50%;
+      z-index: 0;
+      /*transform-origin: center bottom;*/
     }
   </style>
-  
+
   <script src="../node_modules/mo-js/build/mo.js" charset="utf-8"></script>
   <script src="../node_modules/mojs-player/build/mojs-player.js" charset="utf-8"></script>
   <script src="build/mojs-curve-editor.js" charset="utf-8"></script>
 
   <script>
-    var curveEditor = new window.MojsCurveEditor({ name: 'curve1', isSaveState: true });
-    var curveEditor2 = new window.MojsCurveEditor({ name: 'curve2', isSaveState: true });
-
-    // var shape = new mojs.Shape({
-    //   fill: 'yellow',
-    //   stroke: 'cyan',
-    //   scaleX: { 0: 1 },
-    //   easing: curveEditor.getEasing()
-    // });
-
-
-    var duration = 500,
-        shift    = 75;
-
-    var html = new mojs.Html({
-      el: '#js-el',
-      y:  { [-shift]: shift, easing: 'cubic.in', duration },
-      rotateZ: { 0: 90, easing: 'linear.none', duration }
-      // transformOrigin: '50% 100%',
-    })
-    .then({
-      scaleX: {
-        1: 1,
-        curve: curveEditor.getEasing(),
-        duration: duration
-      },
-      scaleY: {
-        1: 1,
-        curve: curveEditor.getEasing({ transform: (k) => { return 1 + ( 1-k )/1.5; } }),
-        duration: duration
-      },
-      // transformOrigin: { '50% 50%': '50% 50%', curve: curveEditor2.getEasing() },
-      y: { to: -shift, easing: 'cubic.out', delay: .75*duration, duration },
-      rotateZ: { 0: 90, delay: .75*duration, easing: 'linear.none', duration }
-    })
-    // .then({
-    //   y: { to: -shift, easing: 'cubic.out' }
-    // });
-
-    var player = new MojsPlayer({ add: html });
+    var curveEditor = new MojsCurveEditor({
+      name: 'some name',
+      // onChange(path) { console.log(path); },
+      // isHiddenOnMin: true
+    }).toggleSize();
 
   </script>
 

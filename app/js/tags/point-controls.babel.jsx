@@ -31,6 +31,7 @@ class PointControls extends Component {
     for (var i = 0; i < buttonsMap.length; i++) {
       const type = buttonsMap[i];
       buttons.push(<IconButton  shape={`point-${type}`}
+                                title={type}
                                 isCheck={ controls.type === type }
                                 onTap={ this._onButtonTap(type) } />);
     }

@@ -1,9 +1,12 @@
+import pool from '../pool';
+
 const INITIAL_STATE = {
   isShow: false,
   type:   'straight'
 }
 
 const pointControls = (state = INITIAL_STATE, action) => {
+  pool.push( state );
   switch (action.type) {
     // probably redundant
     // case 'POINT_ADD': {

@@ -1,7 +1,9 @@
-
 const CURVE_SIZE = 350;
+
 export default {
   CURVE_SIZE,
+  RESIZE_NEGATIVE_OFFSET: 150,
   CURVE_PERCENT: CURVE_SIZE/100,
-  CURVE_PADDING: 10
+  CURVE_PADDING: 10,
+  ACTIVE_POOL_NAME: '_mojsCurveEditorPool'
 }

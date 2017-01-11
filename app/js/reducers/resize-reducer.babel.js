@@ -1,4 +1,5 @@
 import C from '../constants';
+import pool from '../pool';
 
 const INITIAL_STATE = {
   x:            20,
@@ -16,11 +17,16 @@ const INITIAL_STATE = {
   bottom:       0,
   temp_bottom:  0,
 
+  panY:         0,
+  panTempY:     0,
+
   scalerX:      C.CURVE_PERCENT,
   absScalerX:   1
 }
 
 const resizeReducer = (state = INITIAL_STATE, action) => {
+  pool.push( state );
+  
   switch (action.type) {
     case 'EDITOR_RESIZE': {
       const {data} = action,
@@ -63,6 +69,17 @@ const resizeReducer = (state = INITIAL_STATE, action) => {
       x += state.x;
       y += state.y;
       return { ...state, x, y, tempX: 0, tempY: 0 };
+    }
+
+
+    case 'EDITOR_PAN': {
+      const y = action.data;
+      return { ...state, panTempY: y };
+    }
+
+    case 'EDITOR_PAN_END': {
+      const y = action.data;
+      return { ...state, panTempY: 0, panY: y + state.panY };
     }
 
   }

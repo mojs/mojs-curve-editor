@@ -2,6 +2,9 @@ import makePoint from '../helpers/make-point';
 import C from '../constants';
 import initPoints from '../helpers/init-points';
 import calculatePath from '../helpers/calculate-path';
+import deselectAll from '../helpers/deselect-all';
+import findSelectedIndecies from '../helpers/find-selected-indecies';
+import pool from '../pool';
 
 const INITIAL_STATE = {
   path:       '',
@@ -15,26 +18,8 @@ const INITIAL_STATE = {
   // ])
 }
 
-const deselectAll = (state) => {
-  const newState = { ...state, points: [] },
-        points   = state.points;
-
-  for (var i = 0; i < points.length; i++) {
-    newState.points.push({ ...points[i], isSelected: false });
-  }
-  return newState;
-}
-
-const findSelectedIndecies = (points) => {
-  const indecies  = [];
-
-  for (var i = 0; i < points.length; i++) {
-    points[i].isSelected && indecies.push( i );
-  }
-  return indecies;
-}
-
 const pointsReducer = (state = INITIAL_STATE, action) => {
+  pool.push( state );
   switch( action.type ) {
     case 'SET_EDITOR_NAME': {
       return { ...state, name: action.data };
@@ -113,38 +98,33 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
 
     case 'POINT_CHANGE_TYPE': {
       const {points} = state,
+            type = action.data,
             selected = findSelectedIndecies(points);
 
-      const newPoints = [];
-      for (var i = 0; i < points.length; i++) {
-        const item = points[i],
-              type = action.data;
-        // copy all items from previous points
-        newPoints.push( { ...item } );
-        // if item was selected - set the new `type`
-        ( selected.indexOf(i) !== -1 ) && (newPoints[i].type = type);
-        
-        const index = i,
-              point = newPoints[index],
-              sibPoint = (index === newPoints.length-1)
-                ? newPoints[index-1] : newPoints[index+1];
-
-        const handleIndex = (index === newPoints.length-1) ? 1 : 2,
+      // change type on all selected items
+      const newPoints = [ ...points ];
+      for (var i = 0; i < selected.length; i++) {
+        const index = selected[i],
+              point = { ...newPoints[index], type },
+              handleIndex = (index === newPoints.length-1) ? 1 : 2,
               sibHandleIndex = (handleIndex === 1) ? 2 : 1,
               handleName = `handle${handleIndex}`,
               sibHandleName = `handle${sibHandleIndex}`,
               handle = { ...point[handleName] },
               sibHandle = { ...point[sibHandleName] };
-
-        point[handleName] = handle;
-        point[sibHandleName] = sibHandle;
-
+        
+        // move the opposite little handle with certain types
         if ( type === 'mirrored' || type === 'asymmetric' ) {
           sibHandle.angle = handle.angle - 180;
           if ( type === 'mirrored' ) {
             sibHandle.radius = handle.radius;
           }
         }
+
+        // save new point and handles
+        newPoints[index]     = point;
+        point[handleName]    = handle;
+        point[sibHandleName] = sibHandle;
 
       }
 
@@ -153,6 +133,10 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
     
     case 'POINT_DESELECT_ALL': {
       return { ...deselectAll( state ) };
+    }
+
+    case 'SET_ACTIVE': {
+      return (!action.data) ? { ...deselectAll( state ) } : state;
     }
 
     // HANDLES
@@ -180,32 +164,36 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
       return state;
     }
 
-    case 'EDITOR_RESIZE': {
-      const {data} = action,
-            points = [...state.points],
-            {type, resize} = data;
-
-      // return state if resize to the `right`
-      if (type === 'right') { return state; }
-
-      // normalize points' y regarding resize
-      if ( type === 'top' ) {
-        for (var i = 0; i < points.length; i++) {
-          const borderTop = Math.min(resize.top + data.y, 0),
-                point     = points[i];
-          if (point.y < borderTop) { point.y = borderTop; }
-        }
-      } else if ( type === 'bottom' ) {
-        for (var i = 0; i < points.length; i++) {
-          const borderBottom = Math.max(resize.bottom + data.y, 0) + C.CURVE_SIZE,
-                point     = points[i];
-
-          if (point.y > borderBottom) { point.y = borderBottom; }
-        }
-      }
-
-      return { ...state, points, ...calculatePath( points ) };
+    case 'POINTS_REMOVE': {
+      return {...state, points: []};
     }
+
+    // case 'EDITOR_RESIZE': {
+    //   const {data} = action,
+    //         points = [...state.points],
+    //         {type, resize} = data;
+
+    //   // return state if resize to the `right`
+    //   if (type === 'right') { return state; }
+
+    //   // normalize points' y regarding resize
+    //   if ( type === 'top' ) {
+    //     for (var i = 0; i < points.length; i++) {
+    //       const borderTop = Math.min(resize.top + data.y, 0),
+    //             point     = points[i];
+    //       if (point.y < borderTop) { point.y = borderTop; }
+    //     }
+    //   } else if ( type === 'bottom' ) {
+    //     for (var i = 0; i < points.length; i++) {
+    //       const borderBottom = Math.max(resize.bottom + data.y, 0) + C.CURVE_SIZE,
+    //             point     = points[i];
+
+    //       if (point.y > borderBottom) { point.y = borderBottom; }
+    //     }
+    //   }
+
+    //   return { ...state, points, ...calculatePath( points ) };
+    // }
 
   }
   return state;

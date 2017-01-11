@@ -46,7 +46,7 @@ module.exports = {
   },
   output: {
     path:           __dirname + '/app/build/',
-    filename:       'mojs-curve-editor.js',
+    filename:       'mojs-curve-editor.min.js',
     publicPath:     'build/',
     library:        'mojs-curve-editor',
     libraryTarget:  'umd',
@@ -59,13 +59,11 @@ module.exports = {
     // }),
     // new webpack.NoErrorsPlugin(),
     // new webpack.optimize.DedupePlugin(),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //       warnings: false
-    //   }
-    // }),
-    // new UnminifiedWebpackPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.optimize.UglifyJsPlugin({
+      compress: { warnings: false }
+    }),
+    new UnminifiedWebpackPlugin()
+    // new webpack.HotModuleReplacementPlugin()
   ],
   // devtool: process.env.NODE_ENV==='production' ? 'source-map' : 'inline-source-map',
   resolve: {
@@ -78,4 +76,3 @@ module.exports = {
     ]
   }
 };
-  

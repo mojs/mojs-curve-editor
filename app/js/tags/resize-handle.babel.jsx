@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import Icon from './icon';
 import Hammer from 'hammerjs';
-import propagating from 'propagating-hammerjs';
+import propagating from '../vendor/propagating';
 import modDeltas from '../helpers/mod-deltas';
 
 const CLASSES = require('../../css/blocks/resize-handle.postcss.css.json');
@@ -12,12 +12,10 @@ class ResizeHandle extends Component {
     const {type} = this.props,
           className = `${CLASSES['resize-handle']}`,
           classType = `${CLASSES['resize-handle--' + type ]}`;
-    return <div
-      className={ `${className} ${classType} ${this.props.className}` }
-      data-type={type}
-      data-component="resize-handle">
+    return (<div className={`${className} ${classType} ${this.props.className}`}
+                  data-type={type} data-component="resize-handle">
         <Icon shape="ellipsis" />
-      </div>;
+      </div>);
   }
 
   componentDidMount () {

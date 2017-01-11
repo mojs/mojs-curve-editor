@@ -1,5 +1,4 @@
 import Hammer from 'hammerjs';
-// import propagating from 'propagating-hammerjs';
 import {h, Component} from 'preact';
 import Icon from './icon';
 
@@ -8,8 +7,10 @@ const CLASSES = require('../../css/blocks/icon-button.postcss.css.json');
 
 class IconButton extends Component {
   render () {
-    const check = (this.props.isCheck) ? CLASSES['is-checked'] : '';
+    const p = this.props;
+    const check = (p.isCheck) ? CLASSES['is-checked'] : '';
     return  <div  className={`${CLASSES['icon-button']} ${check}`}
+                  title={ p.title || '' }
                   data-component={'icon-button'}>
               <Icon shape={this.props.shape} />
             </div>;

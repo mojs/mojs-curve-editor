@@ -1,12 +1,16 @@
 import {h, Component} from 'preact';
 import IconButton from './icon-button';
-import propagating from 'propagating-hammerjs';
+import propagating from '../vendor/propagating';
 import Hammer from 'hammerjs';
 
 class CodeButton extends Component {
   render () {
     const {state} = this.props;
-    return <IconButton shape="code" isCheck={state.controls.isCode} />;
+    return (
+      <div data-component="code-button" title="get code">
+        <IconButton shape="code" isCheck={state.controls.isCode} />
+      </div>
+    );
   }
   componentDidMount () {
     const {store} = this.context;
