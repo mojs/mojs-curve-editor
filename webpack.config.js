@@ -70,7 +70,7 @@ module.exports = {
   // devtool: process.env.NODE_ENV==='production' ? 'source-map' : 'inline-source-map',
   resolve: {
     root: [ path.resolve('./') ],
-    moduleDirectories: ['node_modules'],
+    moduleDirectories: ['node_modules', 'vendor'],
     target: 'node',
     extensions: [
       '', '.js', '.babel.js', '.babel.jsx',
@@ -78,4 +78,3 @@ module.exports = {
     ]
   }
 };
-  

@@ -145,7 +145,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _decalareDefaults() {
 	      this._defaults = {
 	        name: 'mojs-curve-editor',
-	        isSaveState: true
+	        isSaveState: true,
+	        isHiddenOnMin: false,
+	        onChange: null
 	      };
 	    }
 	  }, {
@@ -160,13 +162,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_vars',
 	    value: function _vars() {
-	      this.revision = '1.4.6';
+	      this.revision = '1.5.0';
 	      this.store = (0, _store2.default)();
 	
 	      this._easings = [];
 	      this._progressLines = [];
 	
-	      var str = (0, _fallbackTo2.default)(this._o.name, this._defaults.name);
+	      // let str = fallbackTo( this._o.name, this._defaults.name );
+	      var str = this._props.name;
 	      str += str === this._defaults.name ? '' : '__' + this._defaults.name;
 	      this._localStorage = str + '__' + (0, _hash2.default)(str);
 	
@@ -196,6 +199,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _preactRedux.Provider,
 	        { store: this.store },
 	        (0, _preact.h)(_curveEditor2.default, { progressLines: this._progressLines,
+	          options: this._props,
 	          ref: function ref(el) {
 	            _this2._el = el;
 	          } })
@@ -237,15 +241,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this._compilePath();
 	      this.store.subscribe(this._compilePath.bind(this));
 	    }
-	
-	    // _subscribeFocus () {
-	    // addPointerDown( document.body, (e) => {
-	    //   if (this._localStorage !== e._mojsCurveEditorName) {
-	    //     this.store.dispatch({ type: 'POINT_DESELECT_ALL' });
-	    //   }
-	    // });
-	    // }
-	
 	  }, {
 	    key: '_compilePath',
 	    value: function _compilePath() {
@@ -272,14 +267,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_fireOnChange',
 	    value: function _fireOnChange(path) {
+	      var onChange = this._props.onChange;
+	
+	      if (typeof onChange === 'function') {
+	        onChange(path);
+	      }
+	
+	      // update timeline and tweens - parents of the easing functions
 	      for (var i = 0; i < this._easings.length; i++) {
 	        var record = this._easings[i];
 	        var options = record.options;
 	        var easing = record.easing;
-	        var onChange = options.onChange;
+	        var _onChange = options.onChange;
 	
 	
-	        typeof onChange === 'function' && onChange(easing, path);
+	        typeof _onChange === 'function' && _onChange(easing, path);
 	        this._updateParent(easing);
 	      }
 	    }
@@ -287,7 +289,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_updateParent',
 	    value: function _updateParent(easing) {
 	      var parent = easing._parent;
-	
 	      if (!parent) {
 	        return;
 	      };
@@ -307,10 +308,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function _triggerParent(parent) {
 	      var step = 0.01;
 	      var progress = parent.progress;
+	
 	      var updateProgress = progress + step < 1 ? progress + step : progress - step;
 	
 	      parent.setProgress(updateProgress);
 	      parent.setProgress(progress);
+	    }
+	  }, {
+	    key: '_updateProgressLine',
+	    value: function _updateProgressLine(p, i, lines) {
+	      var el = lines[i];
+	      var state = this.store.getState();
+	      var resize = state.resize;
+	
+	
+	      if (!el) {
+	        return;
+	      }
+	
+	      el.style.left = p * 100 + '%';
 	    }
 	  }, {
 	    key: 'getEasing',
@@ -338,19 +354,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return fun;
 	    }
 	  }, {
-	    key: '_updateProgressLine',
-	    value: function _updateProgressLine(p, i, lines) {
-	      var el = lines[i];
-	      var state = this.store.getState();
-	      var resize = state.resize;
-	
-	
-	      if (!el) {
-	        return;
-	      }
-	
-	      el.style.left = p * 100 + '%';
+	    key: 'minimize',
+	    value: function minimize() {
+	      this.store.dispatch({ type: 'SET_MINIMIZE', data: true });
 	    }
+	  }, {
+	    key: 'maximize',
+	    value: function maximize() {
+	      this.store.dispatch({ type: 'SET_MINIMIZE', data: false });
+	    }
+	  }, {
+	    key: 'toggleSize',
+	    value: function toggleSize() {
+	      var state = this.store.getState();
+	      var controls = state.controls;
+	
+	
+	      controls.isMinimize ? this.maximize() : this.minimize();
+	    }
+	
+	    // highlight() { this.store.dispatch({ type: 'SET_HIGHLIGHT', data: true }); }
+	    // dim() { this.store.dispatch({ type: 'SET_HIGHLIGHT', data: false }); }
+	    // toggleHighlight() {
+	    //   const state = this.store.getState();
+	    //   const {controls} = state;
+	    //
+	    //   controls.isHighlight ? this.dim() : this.highlight();
+	    // }
+	
 	  }]);
 	  return API;
 	}();
@@ -3405,9 +3436,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 	
-	var _propagatingHammerjs = __webpack_require__(116);
+	var _propagating = __webpack_require__(116);
 	
-	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	var _propagating2 = _interopRequireDefault(_propagating);
 	
 	var _reduxUndo = __webpack_require__(117);
 	
@@ -3459,15 +3490,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var CLASSES = __webpack_require__(159);
 	
 	      var store = this.context.store;
+	
 	      var state = store.getState();
-	      var style = this._getStyle(state);
+	      this._state = state;
+	
 	      var p = this.props;
+	      var options = p.options;
+	      var _state$controls = state.controls;
+	      var isMinimize = _state$controls.isMinimize;
+	      var isActive = _state$controls.isActive;
+	      var isHighlight = _state$controls.isHighlight;
+	
+	      var style = this._getStyle(state);
 	
 	      var className = '' + CLASSES['curve-editor'];
-	
-	      className += state.controls.isMinimize ? ' ' + CLASSES['is-minimized'] : '';
-	
-	      className += !state.controls.isActive ? ' ' + CLASSES['is-inactive'] : '';
+	      className += isMinimize ? ' ' + CLASSES['is-minimized'] : '';
+	      className += !isActive ? ' ' + CLASSES['is-inactive'] : '';
+	      className += isHighlight ? ' ' + CLASSES['is-highlighted'] : '';
+	      className += options.isHiddenOnMin ? ' ' + CLASSES['is-hidden-on-min'] : '';
 	
 	      this._state = state;
 	      return (0, _preact.h)(
@@ -3476,12 +3516,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        (0, _preact.h)(_icons2.default, null),
 	        (0, _preact.h)(_codePanel2.default, { state: state }),
 	        (0, _preact.h)(_curveEditorLeft2.default, { state: state }),
-	        (0, _preact.h)(_curveEditorRight2.default, { state: state, progressLines: p.progressLines })
+	        (0, _preact.h)(_curveEditorRight2.default, { state: state,
+	          progressLines: p.progressLines,
+	          options: options })
 	      );
 	    }
 	  }, {
 	    key: '_getStyle',
 	    value: function _getStyle(state) {
+	      var _state$controls2 = this._state.controls;
+	      var isMinimize = _state$controls2.isMinimize;
+	      var isActive = _state$controls2.isActive;
 	      var X_SIZE = _constants2.default.CURVE_SIZE + 53;
 	      var Y_SIZE = _constants2.default.CURVE_SIZE + 2 * _constants2.default.CURVE_PADDING;
 	      var resize = state.resize;
@@ -3510,7 +3555,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      var store = this.context.store;
 	      var el = this.base.querySelector('#js-left-panel');
-	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(el));
+	      var mc = (0, _propagating2.default)(new _hammerjs2.default.Manager(el));
 	
 	      mc.add(new _hammerjs2.default.Pan({ threshold: 0 }));
 	      mc.on('pan', function (e) {
@@ -4654,8 +4699,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
 	var CURVE_SIZE = 350;
+	
 	exports.default = {
 	  CURVE_SIZE: CURVE_SIZE,
 	  RESIZE_NEGATIVE_OFFSET: 150,
@@ -7907,7 +7952,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	          value: true
+	              value: true
 	});
 	
 	var _preact = __webpack_require__(48);
@@ -7925,16 +7970,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	var CLASSES = __webpack_require__(159);
 	
 	var CurveEditorRight = function CurveEditorRight(_ref) {
-	          var state = _ref.state;
-	          var progressLines = _ref.progressLines;
+	              var state = _ref.state;
+	              var progressLines = _ref.progressLines;
+	              var options = _ref.options;
 	
-	          return (0, _preact.h)(
-	                    'div',
-	                    { className: CLASSES['curve-editor__right'] },
-	                    (0, _preact.h)(_curve2.default, { state: state, progressLines: progressLines }),
-	                    (0, _preact.h)(_resizeHandle2.default, { state: state, type: 'right', className: CLASSES['curve-editor__resize-handle'] }),
-	                    (0, _preact.h)(_resizeHandle2.default, { state: state, type: 'bottom', className: CLASSES['curve-editor__resize-handle'] })
-	          );
+	              return (0, _preact.h)(
+	                            'div',
+	                            { className: CLASSES['curve-editor__right'] },
+	                            (0, _preact.h)(_curve2.default, { state: state, options: options,
+	                                          progressLines: progressLines }),
+	                            (0, _preact.h)(_resizeHandle2.default, { state: state, type: 'right',
+	                                          className: CLASSES['curve-editor__resize-handle'] }),
+	                            (0, _preact.h)(_resizeHandle2.default, { state: state, type: 'bottom',
+	                                          className: CLASSES['curve-editor__resize-handle'] })
+	              );
 	};
 	
 	exports.default = CurveEditorRight;
@@ -8003,9 +8052,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 	
-	var _propagatingHammerjs = __webpack_require__(116);
+	var _propagating = __webpack_require__(116);
 	
-	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	var _propagating2 = _interopRequireDefault(_propagating);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -8031,10 +8080,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var segments = this._renderSegments(state);
 	      var progressLines = this._renderProgressLines(state);
 	
-	      var curveHeight = this._getCurveHeight(state);
+	      var curveHeight = this._getCurveHeight();
 	      return (0, _preact.h)(
 	        'div',
-	        { className: CLASSES['curve'] },
+	        { className: this._getClassName(), 'data-component': 'curve' },
 	        (0, _preact.h)(
 	          'div',
 	          { id: 'js-background',
@@ -8076,8 +8125,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	      );
 	    }
 	  }, {
+	    key: '_getClassName',
+	    value: function _getClassName() {
+	      var state = this.props.state;
+	      var controls = state.controls;
+	
+	
+	      var minClass = controls.isMinimize ? CLASSES['is-minimized'] : '';
+	      return CLASSES['curve'] + ' ' + minClass;
+	    }
+	  }, {
 	    key: '_getCurveHeight',
-	    value: function _getCurveHeight(state) {
+	    value: function _getCurveHeight() {
+	      var _props = this.props;
+	      var state = _props.state;
+	      var options = _props.options;
 	      var resize = state.resize;
 	
 	      if (!state.controls.isMinimize) {
@@ -8193,7 +8255,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      var store = this.context.store;
 	      var el = this.base.querySelector('#js-segments');
-	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(el));
+	      var mc = (0, _propagating2.default)(new _hammerjs2.default.Manager(el));
 	
 	      // mc.add(new Hammer.Pan({ threshold: 0 }));
 	      mc.add(new _hammerjs2.default.Tap());
@@ -8239,7 +8301,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	
 	      var svg = this.base.querySelector('#js-svg'),
-	          svgMc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(this.base));
+	          svgMc = (0, _propagating2.default)(new _hammerjs2.default.Manager(this.base));
 	
 	      svgMc.add(new _hammerjs2.default.Tap());
 	      svgMc.add(new _hammerjs2.default.Pan());
@@ -8898,7 +8960,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      return (0, _preact.h)(
 	        'div',
-	        { className: className },
+	        { className: className, 'data-component': 'ruler' },
 	        (0, _preact.h)(
 	          'div',
 	          { className: CLASSES['ruler__item'] + ' ' + CLASSES['ruler__item--2'] },
@@ -9027,9 +9089,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _littleHandle2 = _interopRequireDefault(_littleHandle);
 	
-	var _propagatingHammerjs = __webpack_require__(116);
+	var _propagating = __webpack_require__(116);
 	
-	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	var _propagating2 = _interopRequireDefault(_propagating);
 	
 	var _roundTo = __webpack_require__(141);
 	
@@ -9182,7 +9244,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	
 	      var el = this.base.querySelector('#js-point-touch'),
-	          mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(el));
+	          mc = (0, _propagating2.default)(new _hammerjs2.default.Manager(el));
 	
 	      mc.add(new _hammerjs2.default.Pan({ threshold: 0 }));
 	
@@ -9303,13 +9365,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _pool2 = _interopRequireDefault(_pool);
 	
+	var _propagating = __webpack_require__(116);
+	
+	var _propagating2 = _interopRequireDefault(_propagating);
+	
 	var _hammerjs = __webpack_require__(115);
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
-	
-	var _propagatingHammerjs = __webpack_require__(116);
-	
-	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -9327,20 +9389,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  (0, _createClass3.default)(LittleHandle, [{
 	    key: 'render',
 	    value: function render() {
-	      // const {state} = this.props;
 	      return (0, _preact.h)(
 	        'div',
 	        { className: CLASSES['little-handle'],
 	          'data-component': 'little-handle' },
 	        (0, _preact.h)(
 	          'div',
-	          {
-	            'class': CLASSES['little-handle__point'],
+	          { 'class': CLASSES['little-handle__point'],
 	            style: this._getPointStyle() },
 	          (0, _preact.h)('div', { className: CLASSES['little-handle__easy-touch'] })
 	        ),
-	        (0, _preact.h)('div', {
-	          'class': CLASSES['little-handle__line'],
+	        (0, _preact.h)('div', { 'class': CLASSES['little-handle__line'],
 	          style: this._getLineStyle() })
 	      );
 	    }
@@ -9350,7 +9409,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _this2 = this;
 	
 	      var store = this.context.store;
-	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(this.base));var handle = this.props.handle;
+	      var mc = (0, _propagating2.default)(new _hammerjs2.default.Manager(this.base));var handle = this.props.handle;
 	
 	      mc.add(new _hammerjs2.default.Pan({ threshold: 0 }));
 	      mc.on('panstart', function (e) {
@@ -9702,7 +9761,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve_1k7gs_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #9c829a;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2;overflow:hidden}._curve__background_1k7gs_1{position:absolute;z-index:0;top:0;bottom:0;width:350px;left:0;opacity:.5;border-radius:inherit}._curve__background_1k7gs_1 svg{width:100%}._curve__background_1k7gs_1 path{vector-effect:non-scaling-stroke}._curve__svg-wrapper_1k7gs_1{position:absolute;z-index:1;left:-1px;right:-1px}._curve__svg_1k7gs_1{display:block;overflow:visible;width:100%;position:relative;z-index:1}._curve__svg-segment_1k7gs_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_1k7gs_1:hover{stroke:#ff512f}", ""]);
+	exports.push([module.id, "._curve_1w89w_5{position:absolute;left:0;top:10px;right:10px;bottom:10px;border-radius:2px;background:rgba(58,8,58,.75);border:1px solid #9c829a;box-shadow:inset 4px 4px 0 rgba(0,0,0,.5);z-index:2;overflow:hidden}._curve__background_1w89w_1{position:absolute;z-index:0;top:0;bottom:0;width:350px;left:0;opacity:.5;border-radius:inherit}._curve__background_1w89w_1 svg{width:100%}._curve__background_1w89w_1 path{vector-effect:non-scaling-stroke}._curve__svg-wrapper_1w89w_1{position:absolute;z-index:1;left:-1px;right:-1px}._curve__svg_1w89w_1{display:block;overflow:visible;width:100%;position:relative;z-index:1}._curve__svg-segment_1w89w_1{stroke:#fff;stroke-width:2px;cursor:crosshair}._curve__svg-segment_1w89w_1:hover{stroke:#ff512f}", ""]);
 	
 	// exports
 
@@ -9712,11 +9771,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve": "_curve_1k7gs_5",
-		"curve__background": "_curve__background_1k7gs_1",
-		"curve__svg-wrapper": "_curve__svg-wrapper_1k7gs_1",
-		"curve__svg": "_curve__svg_1k7gs_1",
-		"curve__svg-segment": "_curve__svg-segment_1k7gs_1"
+		"curve": "_curve_1w89w_5",
+		"curve__background": "_curve__background_1w89w_1",
+		"curve__svg-wrapper": "_curve__svg-wrapper_1w89w_1",
+		"curve__svg": "_curve__svg_1w89w_1",
+		"curve__svg-segment": "_curve__svg-segment_1w89w_1"
 	};
 
 /***/ },
@@ -9763,9 +9822,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _hammerjs2 = _interopRequireDefault(_hammerjs);
 	
-	var _propagatingHammerjs = __webpack_require__(116);
+	var _propagating = __webpack_require__(116);
 	
-	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	var _propagating2 = _interopRequireDefault(_propagating);
 	
 	var _modDeltas = __webpack_require__(155);
 	
@@ -9793,10 +9852,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var classType = '' + CLASSES['resize-handle--' + type];
 	      return (0, _preact.h)(
 	        'div',
-	        {
-	          className: className + ' ' + classType + ' ' + this.props.className,
-	          'data-type': type,
-	          'data-component': 'resize-handle' },
+	        { className: className + ' ' + classType + ' ' + this.props.className,
+	          'data-type': type, 'data-component': 'resize-handle' },
 	        (0, _preact.h)(_icon2.default, { shape: 'ellipsis' })
 	      );
 	    }
@@ -9807,7 +9864,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      var type = this.props.type;
 	      var store = this.context.store;
-	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(this.base));
+	      var mc = (0, _propagating2.default)(new _hammerjs2.default.Manager(this.base));
 	
 	      mc.add(new _hammerjs2.default.Pan({ threshold: 0 }));
 	      mc.on('pan', function (e) {
@@ -10034,15 +10091,16 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
-		"curve-editor": "_curve-editor_12556_3",
-		"curve-editor__left": "_curve-editor__left_12556_1",
-		"curve-editor__right": "_curve-editor__right_12556_140",
-		"curve-editor__resize-handle": "_curve-editor__resize-handle_12556_1",
-		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_12556_135",
-		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_12556_118",
-		"is-inactive": "_is-inactive_12556_117",
-		"is-minimized": "_is-minimized_12556_125",
-		"curve__svg-wrapper": "_curve__svg-wrapper_12556_144"
+		"curve-editor": "_curve-editor_10g8s_3",
+		"curve-editor__left": "_curve-editor__left_10g8s_1",
+		"curve-editor__right": "_curve-editor__right_10g8s_133",
+		"curve-editor__resize-handle": "_curve-editor__resize-handle_10g8s_1",
+		"curve-editor__anchor-buttons": "_curve-editor__anchor-buttons_10g8s_128",
+		"curve-editor__mojs-logo": "_curve-editor__mojs-logo_10g8s_111",
+		"is-inactive": "_is-inactive_10g8s_110",
+		"is-minimized": "_is-minimized_10g8s_118",
+		"curve__svg-wrapper": "_curve__svg-wrapper_10g8s_137",
+		"is-hidden-on-min": "_is-hidden-on-min_10g8s_147"
 	};
 
 /***/ },
@@ -10144,9 +10202,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _iconButton2 = _interopRequireDefault(_iconButton);
 	
-	var _propagatingHammerjs = __webpack_require__(116);
+	var _propagating = __webpack_require__(116);
 	
-	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	var _propagating2 = _interopRequireDefault(_propagating);
 	
 	var _hammerjs = __webpack_require__(115);
 	
@@ -10178,7 +10236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function componentDidMount() {
 	      var store = this.context.store;
 	
-	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(this.base));
+	      var mc = (0, _propagating2.default)(new _hammerjs2.default.Manager(this.base));
 	      mc.add(new _hammerjs2.default.Tap());
 	
 	      mc.on('tap', function (e) {
@@ -10233,7 +10291,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// import propagating from 'propagating-hammerjs';
 	__webpack_require__(163);
 	var CLASSES = __webpack_require__(165);
 	
@@ -10360,9 +10417,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _iconButton2 = _interopRequireDefault(_iconButton);
 	
-	var _propagatingHammerjs = __webpack_require__(116);
+	var _propagating = __webpack_require__(116);
 	
-	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	var _propagating2 = _interopRequireDefault(_propagating);
 	
 	var _hammerjs = __webpack_require__(115);
 	
@@ -10394,7 +10451,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function componentDidMount() {
 	      var store = this.context.store;
 	
-	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(this.base));
+	      var mc = (0, _propagating2.default)(new _hammerjs2.default.Manager(this.base));
 	      mc.add(new _hammerjs2.default.Tap());
 	
 	      mc.on('tap', function (e) {
@@ -10443,9 +10500,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _iconButton2 = _interopRequireDefault(_iconButton);
 	
-	var _propagatingHammerjs = __webpack_require__(116);
+	var _propagating = __webpack_require__(116);
 	
-	var _propagatingHammerjs2 = _interopRequireDefault(_propagatingHammerjs);
+	var _propagating2 = _interopRequireDefault(_propagating);
 	
 	var _hammerjs = __webpack_require__(115);
 	
@@ -10477,7 +10534,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function componentDidMount() {
 	      var store = this.context.store;
 	
-	      var mc = (0, _propagatingHammerjs2.default)(new _hammerjs2.default.Manager(this.base));
+	      var mc = (0, _propagating2.default)(new _hammerjs2.default.Manager(this.base));
 	      mc.add(new _hammerjs2.default.Tap());
 	
 	      mc.on('tap', function (e) {
@@ -10930,7 +10987,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	// module
-	exports.push([module.id, "._curve-editor_12556_3{position:fixed;left:0;top:0;width:403px;height:378px;border-radius:12px;background:#572b51;z-index:100;box-shadow:0 0 3px 1px rgba(0,0,0,.38)}._curve-editor_12556_3 [data-component=maximize-button]{display:none}._curve-editor_12556_3 *{box-sizing:border-box}._curve-editor__left_12556_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px;cursor:move}._curve-editor__left_12556_1 [data-component=code-button]{margin-top:5px}._curve-editor__left_12556_1 [data-component=icon-divider]{margin:10px auto}._curve-editor__right_12556_140{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_12556_140:after{content:'';position:absolute;left:0;top:0;right:0;bottom:0;z-index:2;display:none}._curve-editor__resize-handle_12556_1{position:absolute}._curve-editor__resize-handle_12556_1[data-type=top]{top:-17px}._curve-editor__resize-handle_12556_1[data-type=bottom]{bottom:1px}._curve-editor__resize-handle_12556_1[data-type=bottom],._curve-editor__resize-handle_12556_1[data-type=top]{left:50%;margin-left:-21px}._curve-editor__resize-handle_12556_1[data-type=right]{right:-15px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_12556_135{margin-top:10px}._curve-editor__anchor-buttons_12556_135 [data-component=icon-button]{margin-bottom:5px}._curve-editor__mojs-logo_12556_118{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_12556_118 [data-component=icon]{fill:#ff512f;width:12px;height:12px}._curve-editor_12556_3._is-inactive_12556_117 ._curve-editor__mojs-logo_12556_118 [data-component=icon]{fill:#9c829a}._curve-editor_12556_3._is-minimized_12556_125{width:100px!important;height:45px!important;border-radius:7px}._curve-editor_12556_3._is-minimized_12556_125 ._curve-editor__anchor-buttons_12556_135,._curve-editor_12556_3._is-minimized_12556_125 ._curve-editor__mojs-logo_12556_118,._curve-editor_12556_3._is-minimized_12556_125 [data-component=code-button],._curve-editor_12556_3._is-minimized_12556_125 [data-component=icon-divider],._curve-editor_12556_3._is-minimized_12556_125 [data-component=minimize-button],._curve-editor_12556_3._is-minimized_12556_125 [data-component=point],._curve-editor_12556_3._is-minimized_12556_125 [data-component=resize-handle]{display:none}._curve-editor_12556_3._is-minimized_12556_125 ._curve-editor__right_12556_140:after{display:block}._curve-editor_12556_3._is-minimized_12556_125 ._curve__svg-wrapper_12556_144{margin-top:-200px}._curve-editor_12556_3._is-minimized_12556_125 [data-component=maximize-button]{display:block}", ""]);
+	exports.push([module.id, "._curve-editor_10g8s_3{position:fixed;left:0;top:0;width:403px;height:378px;border-radius:12px;background:#572b51;z-index:100;box-shadow:0 0 3px 1px rgba(0,0,0,.38)}._curve-editor_10g8s_3 [data-component=maximize-button]{display:none}._curve-editor_10g8s_3 *{box-sizing:border-box}._curve-editor__left_10g8s_1{position:absolute;width:42px;left:0;top:0;bottom:0;padding:10px;cursor:move}._curve-editor__left_10g8s_1 [data-component=code-button]{margin-top:5px}._curve-editor__left_10g8s_1 [data-component=icon-divider]{margin:10px auto}._curve-editor__right_10g8s_133{position:absolute;left:43px;top:0;right:0;bottom:0}._curve-editor__right_10g8s_133:after{content:'';position:absolute;left:0;top:0;right:0;bottom:0;z-index:2;display:none}._curve-editor__resize-handle_10g8s_1{position:absolute}._curve-editor__resize-handle_10g8s_1[data-type=top]{top:-17px}._curve-editor__resize-handle_10g8s_1[data-type=bottom]{bottom:1px}._curve-editor__resize-handle_10g8s_1[data-type=bottom],._curve-editor__resize-handle_10g8s_1[data-type=top]{left:50%;margin-left:-21px}._curve-editor__resize-handle_10g8s_1[data-type=right]{right:-15px;top:50%;margin-top:-16px}._curve-editor__anchor-buttons_10g8s_128{margin-top:10px}._curve-editor__anchor-buttons_10g8s_128 [data-component=icon-button]{margin-bottom:5px}._curve-editor__mojs-logo_10g8s_111{position:absolute;bottom:17px;left:50%;margin-left:1px;-webkit-transform:translateX(-50%);transform:translateX(-50%)}._curve-editor__mojs-logo_10g8s_111 [data-component=icon]{fill:#ff512f;width:12px;height:12px}._curve-editor_10g8s_3._is-inactive_10g8s_110 ._curve-editor__mojs-logo_10g8s_111 [data-component=icon]{fill:#9c829a}._curve-editor_10g8s_3._is-minimized_10g8s_118{width:100px!important;height:45px!important;border-radius:7px}._curve-editor_10g8s_3._is-minimized_10g8s_118 ._curve-editor__anchor-buttons_10g8s_128,._curve-editor_10g8s_3._is-minimized_10g8s_118 ._curve-editor__mojs-logo_10g8s_111,._curve-editor_10g8s_3._is-minimized_10g8s_118 [data-component=code-button],._curve-editor_10g8s_3._is-minimized_10g8s_118 [data-component=icon-divider],._curve-editor_10g8s_3._is-minimized_10g8s_118 [data-component=minimize-button],._curve-editor_10g8s_3._is-minimized_10g8s_118 [data-component=point],._curve-editor_10g8s_3._is-minimized_10g8s_118 [data-component=resize-handle]{display:none}._curve-editor_10g8s_3._is-minimized_10g8s_118 ._curve-editor__right_10g8s_133:after{display:block}._curve-editor_10g8s_3._is-minimized_10g8s_118 ._curve__svg-wrapper_10g8s_137{margin-top:-200px}._curve-editor_10g8s_3._is-minimized_10g8s_118 [data-component=maximize-button]{display:block}._curve-editor_10g8s_3._is-hidden-on-min_10g8s_147._is-minimized_10g8s_118{display:none}", ""]);
 	
 	// exports
 
@@ -11981,7 +12038,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var INITIAL_STATE = {
 	  isCode: false,
 	  isMinimize: false,
-	  isActive: false
+	  isActive: false,
+	  isHighlight: false
 	};
 	
 	var controls = function controls() {
@@ -12005,6 +12063,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      {
 	        return (0, _extends3.default)({}, state, { isActive: action.data });
 	      }
+	    // case 'SET_HIGHLIGHT': {
+	    //   return { ...state, isHighlight: action.data };
+	    // }
 	  }
 	  return state;
 	};

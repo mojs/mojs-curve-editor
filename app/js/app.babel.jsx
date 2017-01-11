@@ -29,8 +29,10 @@ class API {
 
   _decalareDefaults ( ) {
     this._defaults = {
-      name:           'mojs-curve-editor',
-      isSaveState:    true
+      name:             'mojs-curve-editor',
+      isSaveState:      true,
+      isHiddenOnMin:    false,
+      onChange:         null
     }
   }
 
@@ -43,13 +45,14 @@ class API {
   }
 
   _vars () {
-    this.revision = '1.4.6';
+    this.revision = '1.5.0';
     this.store    = initStore();
 
     this._easings = [];
     this._progressLines = [];
 
-    let str = fallbackTo( this._o.name, this._defaults.name );
+    // let str = fallbackTo( this._o.name, this._defaults.name );
+    let str = this._props.name;
     str += ( str === this._defaults.name ) ? '' : `__${this._defaults.name}`;
     this._localStorage = `${str}__${ hash( str ) }`;
 
@@ -71,8 +74,9 @@ class API {
   _renderApp () {
     render(
       <Provider store={this.store}>
-        <CurveEditor  progressLines = {this._progressLines}
-                      ref={ (el) => { this._el = el; }} />
+        <CurveEditor progressLines={this._progressLines}
+                     options={this._props}
+                     ref={(el) => { this._el = el; }} />
       </Provider>,
       document.body
     );
@@ -106,21 +110,12 @@ class API {
     this.store.subscribe( this._compilePath.bind(this) );
   }
 
-  // _subscribeFocus () {
-    // addPointerDown( document.body, (e) => {
-    //   if (this._localStorage !== e._mojsCurveEditorName) {
-    //     this.store.dispatch({ type: 'POINT_DESELECT_ALL' });
-    //   }
-    // });
-  // }
-
   _compilePath () {
+    const state     = this.store.getState();
+    const points    = state.points.present;
+    const {path}    = points;
 
-    const state     = this.store.getState(),
-          points    = state.points.present,
-          {path}    = points;
-
-    if ( !this._easing ) { this._easing = mojs.easing.path( path ); }
+    if (!this._easing) { this._easing = mojs.easing.path(path); }
 
     clearTimeout( this._tm );
     this._tm = setTimeout( () => {
@@ -133,11 +128,15 @@ class API {
   }
 
   _fireOnChange ( path ) {
+    const {onChange} = this._props;
+    if (typeof onChange === 'function') { onChange(path); }
+
+    // update timeline and tweens - parents of the easing functions
     for (var i = 0; i < this._easings.length; i++) {
       const record     = this._easings[i],
             {options, easing}  = record,
             {onChange} = options;
-      
+
       (typeof onChange === 'function' ) && onChange( easing, path );
       this._updateParent( easing );
     }
@@ -145,28 +144,37 @@ class API {
 
   _updateParent( easing ) {
     const parent = easing._parent;
-
     if (!parent) { return; };
 
     if (parent.setProgress ) {
-      this._triggerParent( parent );
+      this._triggerParent(parent);
     } else if (parent._o.callbacksContext) {
-      this._triggerParent( parent._o.callbacksContext.timeline );
-    } else if ( parent.timeline ) {
-      this._triggerParent( parent.timeline )
-    } else if ( parent.tween ) {
-      this._triggerParent( parent.tween )
+      this._triggerParent(parent._o.callbacksContext.timeline);
+    } else if (parent.timeline) {
+      this._triggerParent(parent.timeline);
+    } else if (parent.tween) {
+      this._triggerParent(parent.tween);
     }
   }
 
   _triggerParent (parent) {
-    const step = 0.01,
-          {progress} = parent,
-          updateProgress = (progress + step < 1 )
+    const step = 0.01;
+    const {progress} = parent;
+    const updateProgress = (progress + step < 1 )
             ? (progress + step) : (progress - step);
 
     parent.setProgress( updateProgress );
     parent.setProgress( progress );
+  }
+
+  _updateProgressLine (p, i, lines) {
+    const el = lines[i],
+          state = this.store.getState(),
+          {resize} = state;
+
+    if ( !el ) { return; }
+
+    el.style.left = `${p*100}%`;
   }
 
   getEasing (o={}) {
@@ -184,19 +192,29 @@ class API {
     this.store.dispatch({ type: 'ADD_PROGRESS_LINE', data: {} });
     this._easings.push({ options: o, easing: fun });
 
-    defer( () => { this._fireOnChange( this._prevPath ); });
+    defer(() => { this._fireOnChange( this._prevPath ); });
     return fun;
   }
 
-  _updateProgressLine (p, i, lines) {
-    const el = lines[i],
-          state = this.store.getState(),
-          {resize} = state;
+  minimize() { this.store.dispatch({ type: 'SET_MINIMIZE', data: true }); }
 
-    if ( !el ) { return; }
+  maximize() { this.store.dispatch({ type: 'SET_MINIMIZE', data: false }); }
 
-    el.style.left = `${p*100}%`;
+  toggleSize() {
+    const state = this.store.getState();
+    const {controls} = state;
+
+    controls.isMinimize ? this.maximize() : this.minimize();
   }
+
+  // highlight() { this.store.dispatch({ type: 'SET_HIGHLIGHT', data: true }); }
+  // dim() { this.store.dispatch({ type: 'SET_HIGHLIGHT', data: false }); }
+  // toggleHighlight() {
+  //   const state = this.store.getState();
+  //   const {controls} = state;
+  //
+  //   controls.isHighlight ? this.dim() : this.highlight();
+  // }
 
 }
 

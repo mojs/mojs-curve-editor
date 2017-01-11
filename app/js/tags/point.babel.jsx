@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import addPointerDown from '../helpers/add-pointer-down';
 import LittleHandle from './little-handle';
-import propagating from 'propagating-hammerjs';
+import propagating from '../vendor/propagating';
 import roundTo from '../helpers/round-to';
 import Hammer from 'hammerjs';
 import clamp from '../helpers/clamp';
@@ -60,7 +60,7 @@ class Point extends Component {
         type={point.type}
         />
   }
-  
+
   componentDidMount () {
     const {store}  = this.context;
 
@@ -70,7 +70,7 @@ class Point extends Component {
       // if point is not locked to x axes ->
       // calculate delta regarding scaler
       if ( point.isLockedX ) { return 0 };
-        
+
       const x = e.deltaX/resize.scalerX;
       if ( point.x + x < 0 ) { return 0 - point.x; }
       else if ( point.x + x > 100 ) { return 100 - point.x; }
@@ -83,7 +83,7 @@ class Point extends Component {
             y = point.y + e.deltaY;
 
       // clamp y to the size of curve
-      return clamp( y, resize.top, C.CURVE_SIZE + resize.bottom ); 
+      return clamp( y, resize.top, C.CURVE_SIZE + resize.bottom );
     }
 
     // get y delta reagarding curve bounds

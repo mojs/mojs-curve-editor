@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import C from '../constants';
 import Hammer from 'hammerjs';
-import propagating from 'propagating-hammerjs';
+import propagating from '../vendor/propagating';
 import { ActionCreators } from 'redux-undo';
 import CurveEditorRight from './curve-editor-right';
 import CurveEditorLeft  from './curve-editor-left';
@@ -11,35 +11,43 @@ import mod from '../helpers/resize-mod';
 import addPointerDown from '../helpers/add-pointer-down';
 import {reset} from '../actions/points';
 import ActivePool from '../helpers/active-pool';
+
 require('../../css/blocks/curve-editor');
 
 class CurveEditor extends Component {
   render () {
     const CLASSES = require('../../css/blocks/curve-editor.postcss.css.json');
 
-    const {store} = this.context,
-          state   = store.getState(),
-          style   = this._getStyle(state),
-          p       = this.props;
+    const {store} = this.context;
+    const state   = store.getState();
+    this._state   = state;
+
+    const p         = this.props;
+    const {options} = p;
+    const {isMinimize, isActive, isHighlight} = state.controls;
+    const style     = this._getStyle(state);
 
     let className = `${CLASSES['curve-editor']}`;
-    
-    className += (state.controls.isMinimize)
-      ? ` ${CLASSES['is-minimized']}` : '';
-    
-    className += (!state.controls.isActive)
-      ? ` ${CLASSES['is-inactive']}` : '';
+    className += (isMinimize) ? ` ${CLASSES['is-minimized']}` : '';
+    className += (!isActive) ? ` ${CLASSES['is-inactive']}` : '';
+    className += (isHighlight) ? ` ${CLASSES['is-highlighted']}` : '';
+    className += (options.isHiddenOnMin)
+      ? ` ${CLASSES['is-hidden-on-min']}` : '';
 
     this._state = state;
     return  ( <div className={className} style={ style }>
                 <Icons />
                 <CodePanel state={ state }/>
                 <CurveEditorLeft state={ state } />
-                <CurveEditorRight state={ state } progressLines={p.progressLines} />
+                <CurveEditorRight state={ state }
+                  progressLines={p.progressLines}
+                  options={options} />
               </div>);
   }
 
   _getStyle (state) {
+    const {isMinimize, isActive} = this._state.controls;
+
     const X_SIZE    = C.CURVE_SIZE + 53,
           Y_SIZE    = C.CURVE_SIZE + 2*C.CURVE_PADDING,
           {resize}  = state;
@@ -104,7 +112,7 @@ class CurveEditor extends Component {
 
   _tryToReset (store) {
     if (++this._resetCounter > 2) { reset(store); }
-    
+
     clearTimeout(this._tm);
     this._tm = setTimeout(() => { this._resetCounter = 0; }, 300);
   }

@@ -4,27 +4,26 @@ import pointToAngle from '../helpers/point-to-angle';
 import C from '../constants';
 import pool from '../pool';
 
+import propagating from '../vendor/propagating';
 import Hammer from 'hammerjs';
-import propagating from 'propagating-hammerjs';
 
 require('../../css/blocks/little-handle');
 const CLASSES = require('../../css/blocks/little-handle.postcss.css.json');
 
 class LittleHandle extends Component {
   render () {
-    // const {state} = this.props;
-    return  <div  className={CLASSES['little-handle']}
-                  data-component="little-handle">
-              <div
-                class={ CLASSES['little-handle__point'] }
-                style={this._getPointStyle()}>
-                <div className={CLASSES['little-handle__easy-touch']} />
-              </div>
+    return (
+      <div className={CLASSES['little-handle']}
+            data-component="little-handle">
+        <div class={CLASSES['little-handle__point']}
+          style={this._getPointStyle()}>
+          <div className={CLASSES['little-handle__easy-touch']} />
+        </div>
 
-              <div
-                class={ CLASSES['little-handle__line'] }
-                style={this._getLineStyle()} />
-            </div>;
+        <div class={ CLASSES['little-handle__line'] }
+             style={this._getLineStyle()} />
+      </div>
+    );
   }
 
   componentDidMount () {

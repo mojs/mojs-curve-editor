@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>Curve Editor</title>
 </head>
 <body>
 
@@ -61,157 +61,17 @@
       /*transform-origin: center bottom;*/
     }
   </style>
-  
+
   <script src="../node_modules/mo-js/build/mo.js" charset="utf-8"></script>
   <script src="../node_modules/mojs-player/build/mojs-player.js" charset="utf-8"></script>
   <script src="build/mojs-curve-editor.js" charset="utf-8"></script>
 
-  <script type="text/javascript" src='https://code.jquery.com/jquery-3.1.1.min.js'></script>
-
   <script>
-
-    // jQuery(function ($) { new MojsCurveEditor({ name: 'some name' }); });
-    new MojsCurveEditor({ name: 'some name' });
-
-
-
-    // var scaleCurve  = new window.MojsCurveEditor({ name: 'curve_scale' });
-    // var rotateCurve = new window.MojsCurveEditor({ name: 'curve_rotate' });
-    // var originCurve = new window.MojsCurveEditor({ name: 'curve_origin' });
-    // var curveEditor = new window.MojsCurveEditor({ name: 'curve1' });
-    // var curveEditorSmall = new window.MojsCurveEditor({ name: 'curve1_small' });
-
-    // var CUSTOM_PROPS = {
-    //     originY: 50,
-    //     draw (el, props) {
-    //       el.style.transformOrigin = `50% ${props.originY}%`;
-    //     }
-    //   }
-
-    // var CUSTOM_PROPS_2 = {
-    //     originY: 50,
-    //     draw (el, props) {
-    //       el.style.transformOrigin = `50% ${props.originY}%`;
-    //     }
-    //   }
-
-    // const timeline = new mojs.Timeline();
-
-    // var html = new mojs.Html({
-    //   el: '#js-el',
-    //   customProperties: CUSTOM_PROPS,
-    //   duration: 1000,
-    //   y:      { [-200] : -200, curve: curveEditor.getEasing() },
-    //   scaleX: { 1:1, curve: scaleCurve.getEasing() },
-    //   scaleY: {
-    //     1:1,
-    //     curve: scaleCurve.getEasing({
-    //       transform: (k) => { return 1 + ( 1-k )/1.5; }
-    //     })
-    //   },
-    //   angleZ: { 90: 90, curve: rotateCurve.getEasing() },
-    //   originY: { 100: 100, curve: originCurve.getEasing() }
-    // });
-
-    // var html2 = new mojs.Html({
-    //   el: '#js-el2',
-    //   customProperties: CUSTOM_PROPS_2,
-    //   duration: 1000,
-    //   y:      { [-300] : -300, curve: curveEditorSmall.getEasing() },
-    //   scaleX: { 1:1, curve: scaleCurve.getEasing() },
-    //   scaleY: {
-    //     1:1,
-    //     curve: scaleCurve.getEasing({
-    //       transform: (k) => { return 1 + ( 1-k )/1.5; }
-    //     })
-    //   },
-    //   angleZ: { [-90]: -90, curve: rotateCurve.getEasing() },
-    //   originY: { 100: 100, curve: originCurve.getEasing() }
-    // });
-
-    // const colors = [ '#7b7b7b', '#6b6b6b', '#5b5b5b', '#4A4A4A' ];
-
-    // const burst = new mojs.Burst({
-    //   // parent: '#js-el',
-    //   isShowStart: true,
-    //   degree: 10,
-    //   count: 5,
-    //   angle: {90: 10, easing: 'cubic.inout'},
-    //   left: '10%',
-    //   top: '90%',
-    //   x: { 0: 150, easing: 'cubic.in' },
-    //   // scale: { 0: 1, easing: 'expo.out' },
-    //   y: -5,
-    //   radius: {0:150},
-    //   timeline: { speed: .75 },
-    //   opacity: .65,
-    //   children: {
-    //     // fill: '#222',
-    //     fill: colors,
-    //     radius: 'rand(12,18)',
-    //     isSwirl: true,
-    //     direction: 1,
-    //     pathScale: 'rand(.5, .75)',
-    //     swirlFrequency: 'rand(2, 4)',
-    //     swirlSize: 'rand(10, 17)',
-    //     scale: { 1: 0, easing: 'cubic.inout' },
-    //     // delay: 'rand(300, 350)',
-    //     delay: 235,
-    //     // duration: 'rand(300, 500)'
-    //     duration: 'stagger(300, 35)'
-    //   }
-    // });
-
-    // const burst2 = new mojs.Burst({
-    //   // parent: '#js-el',
-    //   isShowStart: true,
-    //   degree: 10,
-    //   count: 5,
-    //   angle: {[-90]: -10, easing: 'cubic.inout'},
-    //   left: '10%',
-    //   top: '90%',
-    //   x: { 0: -150, easing: 'cubic.in' },
-    //   // scale: { 0: 1, easing: 'expo.out' },
-    //   y: -5,
-    //   radius: {0:150},
-    //   timeline: { speed: .75 },
-    //   opacity: .65,
-    //   children: {
-    //     // fill: '#222',
-    //     fill: colors,
-    //     radius: 'rand(12,18)',
-    //     isSwirl: true,
-    //     direction: 1,
-    //     pathScale: 'rand(.5, .75)',
-    //     swirlFrequency: 'rand(2, 4)',
-    //     swirlSize: 'rand(10, 17)',
-    //     scale: { 1: 0, easing: 'cubic.inout' },
-    //     // delay: 'rand(300, 350)',
-    //     delay: 235,
-    //     // duration: 'rand(300, 500)'
-    //     duration: 'stagger(300, 35)'
-    //   }
-    // });
-
-    // burst.el.style.zIndex = 3;
-    // burst2.el.style.zIndex = 3;
-
-    // var shadow = new mojs.Html({
-    //   el: '#js-shadow',
-    //   duration: 1000,
-    //   opacity: { 1: 1, curve: scaleCurve.getEasing({
-    //     transform: (k) => {
-    //       return Math.max((k - 1)/4, .05);
-    //     }
-    //   }) },
-    //   scale: { 1:1, curve: scaleCurve.getEasing({
-    //     transform: (k) => { return 1.35*k; }
-    //   })}
-    // });
-
-    // timeline.add(html, html2, burst, burst2, shadow);
-
-    // new MojsPlayer({ add: timeline });
+    var curveEditor = new MojsCurveEditor({
+      name: 'some name',
+      // onChange(path) { console.log(path); },
+      // isHiddenOnMin: true
+    }).toggleSize();
 
   </script>
 

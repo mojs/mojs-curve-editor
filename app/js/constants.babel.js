@@ -1,5 +1,5 @@
-
 const CURVE_SIZE = 350;
+
 export default {
   CURVE_SIZE,
   RESIZE_NEGATIVE_OFFSET: 150,

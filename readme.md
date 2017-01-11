@@ -43,12 +43,10 @@ Construct `MojsCurveEditor` with the next options:
 ```javascript
   const mojsCurve = new MojsCurveEditor({
     // Name of the Curve you are working on. The name is used to
-    // identify record in `localStorage` to resore the state from
-    // when page gets reloaded, so please specify unique names if 
+    // identify record in `localStorage` to restore the state from
+    // when page gets reloaded, so please specify unique names if
     // you use more than one editor on the same page.
-    name:         'bounce curve',
-    // if should preserve state on page reloads
-    isSaveState:  true
+    name:         'bounce curve'
   });
 ```
 
@@ -73,14 +71,14 @@ After that you can "connect" the curve with your `mojs` modules by passing a "sa
     el:     '#js-el',
     x:      { 100: 100, curve: mojsCurve.getEasing() }
   });
-    
+
 ```
 
 Each `tween`/`module` should have it's out sample of the curve, this means you need to call `mojsCurve.getEasing()` send the `sample` of the curve to the `easing` property of modules.  
 
 If you use `mojs>0.276.5` the state of the modules with the curve `sample` will be updated automatically.
 
-The `getEasing` function recieves options hash:
+The `getEasing` function receives options hash:
 
 ```javascript
   // ...
@@ -93,7 +91,7 @@ The `getEasing` function recieves options hash:
 
 ```
 
-After you are happy with the curve you need to change the `sample`(`mojsCurve.getEasing()` calls) with actual path data which you can get by clicking on the `code` button (<img width="32" style="margin-bottom: -10px" src="https://github.com/legomushroom/mojs-curve-editor/blob/master/mockups/code-button.png?raw=true" alt="code button" />):
+After you are happy with the curve you made, you need to change the `sample`(`mojsCurve.getEasing()` calls) with actual path data which you can get by clicking on the `code` button (<img width="32" style="margin-bottom: -10px" src="https://github.com/legomushroom/mojs-curve-editor/blob/master/mockups/code-button.png?raw=true" alt="code button" />):
 
 ```javascript
   const html = new mojs.Html({
@@ -101,6 +99,37 @@ After you are happy with the curve you need to change the `sample`(`mojsCurve.ge
     // after the change
     x:      { 0: 100, easing: 'M0, 100 C0, 100 19.8984745544779, 40.10152544552211 30, 30 C40.1015254455221, 19.89847455447789 80, 45 80, 45 C80, 45 100, 0 100, 0 ' }
   });
+```
+
+## Options
+
+Constructor accepts the next options:
+
+```javascript
+const curveEditor = new MojsCurveEditor({
+  // name of the curve editor
+  name:         'bounce curve'
+  // if should preserve state on page reloads
+  isSaveState:  true,
+  // callback on path change, accepts path string
+  onChange:     function (path) {}
+  // if should hide when minimized - useful when you try to embed the
+  isHiddenOnMin: false
+});
+```
+
+## Public Methods
+
+```javascript
+curveEditor
+  // gets `easing function` of the curve
+  .getEasing()
+  // maximizes the curve editor
+  .maximize()
+  // minimizes the curve editor
+  .minimize()
+  // toggles `maximize/minimize` methods regarding editor's state
+  .toggleSize();
 ```
 
 ## Shortcuts

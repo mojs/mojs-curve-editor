@@ -7,7 +7,7 @@ import Point from './point';
 import mod from '../helpers/resize-mod';
 import C from '../constants';
 import Hammer from 'hammerjs';
-import propagating from 'propagating-hammerjs';
+import propagating from '../vendor/propagating';
 require('../../css/blocks/curve');
 
 const CLASSES = require('../../css/blocks/curve.postcss.css.json');
@@ -20,18 +20,18 @@ class Curve extends Component {
           segments  = this._renderSegments( state ),
           progressLines = this._renderProgressLines( state );
 
-    const curveHeight = this._getCurveHeight(state);
-    return <div className={ CLASSES['curve'] }>
+    const curveHeight = this._getCurveHeight();
+    return <div className={this._getClassName()} data-component="curve">
               <div  id="js-background"
                     className={ CLASSES['curve__background']}
                     style={styles.background}>
-                
+
                 <Pattern styles={styles} />
-                
+
               </div>
 
               { progressLines }
-              
+
               <div  className={ CLASSES['curve__svg-wrapper']}
                     style={ styles.transform }>
 
@@ -61,7 +61,16 @@ class Curve extends Component {
             </div>;
   }
 
-  _getCurveHeight (state) {
+  _getClassName() {
+    const {state}    = this.props;
+    const {controls} = state;
+
+    const minClass = controls.isMinimize ? CLASSES['is-minimized'] : '' ;
+    return `${CLASSES['curve']} ${minClass}`;
+  }
+
+  _getCurveHeight () {
+    const {state, options} = this.props;
     const {resize} = state;
     if (!state.controls.isMinimize) { return 100; }
 
@@ -133,7 +142,7 @@ class Curve extends Component {
     const {progressLines} = state,
           {lines}         = progressLines,
           renderedLines   = [];
-    
+
     for (var i = lines.length-1; i >= 0; i--) {
       const line = lines[i];
       renderedLines.push(<ProgressLine {...line} />);
@@ -161,7 +170,7 @@ class Curve extends Component {
 
   componentDidMount () {
     this._updateDomProgressLines();
-    
+
     const {store} = this.context,
           el = this.base.querySelector('#js-segments'),
           mc = propagating(new Hammer.Manager(el));

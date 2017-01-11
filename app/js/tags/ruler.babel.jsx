@@ -6,7 +6,7 @@ export class Ruler extends Component {
   render () {
     let className = `${CLASSES['ruler']}`;
     if (this.props.type === 'right') { className += ` ${CLASSES['ruler--right']}` }
-    return  <div className={className}>
+    return  <div className={className} data-component="ruler">
               <div className={`${CLASSES['ruler__item']} ${CLASSES['ruler__item--2']}`}> 2  </div>
               <div className={`${CLASSES['ruler__item']} ${CLASSES['ruler__item--1']}`}> 1  </div>
 

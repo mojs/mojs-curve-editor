@@ -1,14 +1,16 @@
 import {h, Component} from 'preact';
 import IconButton from './icon-button';
-import propagating from 'propagating-hammerjs';
+import propagating from '../vendor/propagating';
 import Hammer from 'hammerjs';
 
 class MaximizeButton extends Component {
   render () {
     const {state} = this.props;
-    return  <div data-component="maximize-button" title="maximize">
-              <IconButton shape="maximize" />
-            </div>;
+    return (
+      <div data-component="maximize-button" title="maximize">
+        <IconButton shape="maximize" />
+      </div>
+    );
   }
   componentDidMount () {
     const {store} = this.context;

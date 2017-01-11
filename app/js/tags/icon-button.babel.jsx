@@ -1,5 +1,4 @@
 import Hammer from 'hammerjs';
-// import propagating from 'propagating-hammerjs';
 import {h, Component} from 'preact';
 import Icon from './icon';
 

@@ -1,6 +1,7 @@
 @import '../assets/globals.postcss.css';
 
 .curve-editor {
+  /*border: calc( 2*$PX ) dotted transparent;*/
   position:       fixed;
   left:           0;
   top:            0;
@@ -9,10 +10,8 @@
   border-radius:  calc( 12 * $PX );
   background:     $c-light-purple;
   z-index:        100;
-  /*box-shadow:     2px 2px 2px rgba(0,0,0,.38);*/
   box-shadow:     0 0 calc( 3*$PX ) calc( 1*$PX ) rgba(0,0,0,.38);
-  /*transition:     border-radius .2s ease-out;*/
-  
+
   & * {
     box-sizing: border-box;
   }
@@ -26,7 +25,7 @@
     bottom:       0;
     padding:      calc($gap*$PX);
     cursor:       move;
-    
+
     [data-component="code-button"] {
       margin-top: calc(5*$PX);
     }
@@ -108,12 +107,6 @@
     display:      none;
   }
 
-  /*&.is-minimize-transition {
-    transition: width .15s ease-out,
-                height .15s ease-out,
-                border-radius .15s ease-out;
-  }*/
-  
   &.is-inactive {
     .curve-editor__mojs-logo {
       & [data-component="icon"] {
@@ -124,9 +117,9 @@
 
   &.is-minimized {
     width:    calc(100*$PX) !important;
-    height:   calc(45*$PX) !important;
+    height:   calc(45*$PX)  !important;
     border-radius:  calc(7 * $PX);
-    
+
     [data-component="resize-handle"],
     [data-component="point"],
     [data-component="icon-divider"],
@@ -149,4 +142,15 @@
       display:      block;
     }
   }
+
+  /* all static on minimize classes */
+  &.is-hidden-on-min.is-minimized {
+    display: none;
+  }
+
+
+  /*&.is-highlighted {
+    border-color: $c-orange;
+  }*/
+
 }
