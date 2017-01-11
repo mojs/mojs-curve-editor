@@ -60,9 +60,7 @@ module.exports = {
     // new webpack.NoErrorsPlugin(),
     // new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
+      compress: { warnings: false }
     }),
     new UnminifiedWebpackPlugin()
     // new webpack.HotModuleReplacementPlugin()
@@ -70,7 +68,7 @@ module.exports = {
   // devtool: process.env.NODE_ENV==='production' ? 'source-map' : 'inline-source-map',
   resolve: {
     root: [ path.resolve('./') ],
-    moduleDirectories: ['node_modules', 'vendor'],
+    moduleDirectories: ['node_modules'],
     target: 'node',
     extensions: [
       '', '.js', '.babel.js', '.babel.jsx',
