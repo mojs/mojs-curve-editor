@@ -69,12 +69,12 @@ class CurveEditor extends Component {
   componentDidMount () {
     this._resetCounter = 0;
 
-    const {store} = this.context,
-          el = this.base.querySelector('#js-left-panel'),
-          mc = propagating(new Hammer.Manager(el));
+    const {store} = this.context;
+    const el = this.base.querySelector('#js-left-panel');
+    this._mc = propagating(new Hammer.Manager(el));
 
-    mc.add(new Hammer.Pan({ threshold: 0 }));
-    mc
+    this._mc.add(new Hammer.Pan({ threshold: 0 }));
+    this._mc
       .on('pan', (e) => {
         const x = e.deltaX, y = e.deltaY;
         store.dispatch({ type: 'EDITOR_TRANSLATE', data: { x, y } });
@@ -87,6 +87,11 @@ class CurveEditor extends Component {
     this._addKeyUp();
     this._subscribeFocus();
     store.subscribe(this.forceUpdate.bind(this));
+  }
+
+  componentWillUnmount() {
+    this._mc.off('pan');
+    this._mc.off('panend');
   }
 
   _addKeyUp () { document.addEventListener('keyup', this._onKeyUp.bind(this)); }
@@ -149,7 +154,6 @@ class CurveEditor extends Component {
       store.dispatch({ type: 'SET_ACTIVE', data: false });
     }
   }
-
 }
 
 

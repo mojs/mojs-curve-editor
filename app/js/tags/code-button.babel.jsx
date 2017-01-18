@@ -14,11 +14,13 @@ class CodeButton extends Component {
   }
   componentDidMount () {
     const {store} = this.context;
-    const mc = propagating(new Hammer.Manager(this.base));
-    mc.add(new Hammer.Tap);
+    this._mc = propagating(new Hammer.Manager(this.base));
+    this._mc.add(new Hammer.Tap);
 
-    mc.on('tap', (e) => { store.dispatch({ type: 'CODE_TAP' }); });
+    this._mc.on('tap', (e) => { store.dispatch({ type: 'CODE_TAP' }); });
   }
+
+  componentWillUnmount() { this._mc.off('tap'); }
 }
 
 export default CodeButton;

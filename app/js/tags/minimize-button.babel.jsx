@@ -6,19 +6,23 @@ import Hammer from 'hammerjs';
 class MinimizeButton extends Component {
   render () {
     const {state} = this.props;
-    return  <div data-component="minimize-button" title="minimize">
-              <IconButton shape="minimize" />
-            </div>;
+    return (
+      <div data-component="minimize-button" title="minimize">
+        <IconButton shape="minimize" />
+      </div>
+    );
   }
   componentDidMount () {
     const {store} = this.context;
-    const mc = propagating(new Hammer.Manager(this.base));
-    mc.add(new Hammer.Tap);
+    this._mc = propagating(new Hammer.Manager(this.base));
+    this._mc.add(new Hammer.Tap);
 
-    mc.on('tap', (e) => {
+    this._mc.on('tap', (e) => {
       store.dispatch({ type: 'SET_MINIMIZE', data: true });
     });
   }
+
+  componentWillUnmount() { this._mc.off('tap'); }
 }
 
 export default MinimizeButton;

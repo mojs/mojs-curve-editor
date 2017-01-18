@@ -171,15 +171,14 @@ class Curve extends Component {
   componentDidMount () {
     this._updateDomProgressLines();
 
-    const {store} = this.context,
-          el = this.base.querySelector('#js-segments'),
-          mc = propagating(new Hammer.Manager(el));
-
+    const {store} = this.context;
+    const el = this.base.querySelector('#js-segments');
+    this._mc = propagating(new Hammer.Manager(el));
 
     // mc.add(new Hammer.Pan({ threshold: 0 }));
-    mc.add(new Hammer.Tap);
+    this._mc.add(new Hammer.Tap);
 
-    mc
+    this._mc
       .on('tap', (e) => {
         const {state} = this.props;
         const ev      = e.srcEvent;
@@ -216,13 +215,13 @@ class Curve extends Component {
         e.stopPropagation();
     });
 
-    const svg   = this.base.querySelector('#js-svg'),
-          svgMc = propagating(new Hammer.Manager(this.base));
+    const svg   = this.base.querySelector('#js-svg');
+    this._svgMc = propagating(new Hammer.Manager(this.base));
 
-    svgMc.add(new Hammer.Tap);
-    svgMc.add(new Hammer.Pan);
+    this._svgMc.add(new Hammer.Tap);
+    this._svgMc.add(new Hammer.Pan);
 
-    svgMc
+    this._svgMc
       .on('tap', (e) => {
         store.dispatch({ type: 'POINT_DESELECT_ALL' });
       })
@@ -232,7 +231,13 @@ class Curve extends Component {
       .on('panend', (e) => {
         store.dispatch({ type: 'EDITOR_PAN_END', data: e.deltaY });
       });
+  }
 
+  componentWillUnmount() {
+    this._mc.off('tap');
+    this._svgMc.off('tap');
+    this._svgMc.off('pan');
+    this._svgMc.off('panend');
   }
 }
 

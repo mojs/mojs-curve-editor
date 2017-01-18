@@ -19,15 +19,17 @@ class Point extends Component {
 
     const littleHandles = this._getLittleHandles( );
 
-    return  <div  className={`${CLASSES['point']} ${selected} ${handles}`}
-                  style={ this._getStyle(state) }
-                  data-component="point">
+    return (
+      <div  className={`${CLASSES['point']} ${selected} ${handles}`}
+            style={ this._getStyle(state) }
+            data-component="point">
 
-              <div className={ CLASSES['point__touch'] } id="js-point-touch" />
+        <div className={ CLASSES['point__touch'] } id="js-point-touch" />
 
-              { littleHandles }
+        { littleHandles }
 
-            </div>
+      </div>
+    );
   }
 
   _getStyle (state) {
@@ -52,13 +54,12 @@ class Point extends Component {
   }
 
   _createHandle (index, point)  {
-    return <LittleHandle
-        index={index}
-        state={this.props.state}
-        parentIndex={this.props.index}
-        handle={point[`handle${index}`]}
-        type={point.type}
-        />
+    return (
+      <LittleHandle index={index} state={this.props.state}
+          parentIndex={this.props.index}
+          handle={point[`handle${index}`]}
+          type={point.type} />
+    );
   }
 
   componentDidMount () {
@@ -103,12 +104,12 @@ class Point extends Component {
       return roundTo( returnValue, 5*C.CURVE_PERCENT, 2*C.CURVE_PERCENT ) - point.y;
     }
 
-    const el = this.base.querySelector('#js-point-touch'),
-          mc = propagating(new Hammer.Manager(el));
+    const el = this.base.querySelector('#js-point-touch');
+    this._mc = propagating(new Hammer.Manager(el));
 
-    mc.add(new Hammer.Pan({ threshold: 0 }));
+    this._mc.add(new Hammer.Pan({ threshold: 0 }));
 
-    mc
+    this._mc
       .on('pan', (e) => {
         const {point, index} = this.props;
         store.dispatch({
@@ -137,6 +138,11 @@ class Point extends Component {
           }
         });
       } );
+  }
+  componentWillUnmount() {
+    this._mc.off('tap');
+    this._mc.off('pan');
+    this._mc.off('panend');
   }
 }
 

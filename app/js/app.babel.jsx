@@ -45,7 +45,7 @@ class API {
   }
 
   _vars () {
-    this.revision = '1.5.0';
+    this.revision = '1.6.0';
     this.store    = initStore();
 
     this._easings = [];
@@ -72,7 +72,7 @@ class API {
   }
 
   _renderApp () {
-    render(
+    this._rootEl = render(
       <Provider store={this.store}>
         <CurveEditor progressLines={this._progressLines}
                      options={this._props}
@@ -177,6 +177,11 @@ class API {
     el.style.left = `${p*100}%`;
   }
 
+  /****** Public API ******/
+
+  /*  Function to get the easing function compiled from the curve.
+      @param {Object} Options.
+  */
   getEasing (o={}) {
     // get the easing function regarding reverse options
     const fun = (() => {
@@ -196,16 +201,37 @@ class API {
     return fun;
   }
 
+  /*  Minimize the curve editor - save as clicking the `minimize` button.
+  */
   minimize() { this.store.dispatch({ type: 'SET_MINIMIZE', data: true }); }
 
+  /*  Maximize the curve editor - save as clicking the `maximize` button.
+  */
   maximize() { this.store.dispatch({ type: 'SET_MINIMIZE', data: false }); }
 
+  /*  Toggles between `maximize` and `minimize` states.
+  */
   toggleSize() {
     const state = this.store.getState();
     const {controls} = state;
 
     controls.isMinimize ? this.maximize() : this.minimize();
   }
+
+  /*  Destroys the app and ensures the `componentWillUnmount` is called
+      on the each component in the Components Tree.
+  */
+  destroy() {
+    // console.log(this._rootEl);
+    const NullComponent = () => { return null };
+    render(
+      <NullComponent />,
+      document.body,
+      this._rootEl
+    );
+  }
+
+
 
   // highlight() { this.store.dispatch({ type: 'SET_HIGHLIGHT', data: true }); }
   // dim() { this.store.dispatch({ type: 'SET_HIGHLIGHT', data: false }); }

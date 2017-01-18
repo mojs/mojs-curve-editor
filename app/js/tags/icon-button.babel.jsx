@@ -9,19 +9,24 @@ class IconButton extends Component {
   render () {
     const p = this.props;
     const check = (p.isCheck) ? CLASSES['is-checked'] : '';
-    return  <div  className={`${CLASSES['icon-button']} ${check}`}
-                  title={ p.title || '' }
-                  data-component={'icon-button'}>
-              <Icon shape={this.props.shape} />
-            </div>;
+    return (
+      <div  className={`${CLASSES['icon-button']} ${check}`}
+            title={ p.title || '' }
+            data-component={'icon-button'}>
+        <Icon shape={this.props.shape} />
+      </div>
+    );
   }
 
   componentDidMount () {
     if ( typeof this.props.onTap === 'function' ) {
-      var hammertime = new Hammer(this.base)
+      this._mc = new Hammer(this.base)
         .on('tap', (e) => { this.props.onTap( e, this.props ) });
     }
   }
+
+  componentWillUnmount() {
+    if ( typeof this.props.onTap === 'function' ) { this._mc.off('tap'); } }
 }
 
 export default IconButton;

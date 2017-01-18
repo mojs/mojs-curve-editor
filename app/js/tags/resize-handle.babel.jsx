@@ -19,12 +19,12 @@ class ResizeHandle extends Component {
   }
 
   componentDidMount () {
-    const {type}  = this.props,
-          {store} = this.context,
-          mc      = propagating(new Hammer.Manager(this.base));
+    const {type}  = this.props;
+    const {store} = this.context;
+    this._mc      = propagating(new Hammer.Manager(this.base));
 
-    mc.add(new Hammer.Pan({ threshold: 0 }));
-    mc
+    this._mc.add(new Hammer.Pan({ threshold: 0 }));
+    this._mc
       .on('pan', (e) => {
         store.dispatch({ type: 'EDITOR_RESIZE', data: {
             ...modDeltas(e.deltaX, e.deltaY, type, this.props.state)
@@ -39,6 +39,11 @@ class ResizeHandle extends Component {
         });
         e.stopPropagation();
       });
+  }
+
+  componentWillUnmount() {
+    this._mc.off('pan');
+    this._mc.off('panend');
   }
 }
 
