@@ -24,7 +24,6 @@ class API {
     this._tryToRestore();
     this._listenUnload();
 
-    this._drawStartPath();
     this._subscribe();
     // this._subscribeFocus();
   }
@@ -104,8 +103,12 @@ class API {
 
   _tryToRestore () {
     const stored = localStorage.getItem(this._localStorage);
-    if ( stored ) { this.store.dispatch({ type: 'SET_STATE', data: JSON.parse(stored) });}
-    else { reset(this.store); }
+    const startPathIsSet = this._props.startPath.length > 0;
+    if ( stored ) {
+      this.store.dispatch({ type: 'SET_STATE', data: JSON.parse(stored) });
+    } else if (startPathIsSet) {
+      this._drawStartPath();
+    } else { reset(this.store); }
   }
 
   _subscribe () {
@@ -213,14 +216,12 @@ class API {
   _getStartPathPoints() {
     const { startPath } = this._props;
     let newPoints = [];
-    if (startPath.length) {
-      try {
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', startPath);
-        newPoints = transformPathSegments(path);
-      } catch (e) {
-        console.log('Something went wrong while creating path element');
-      }
+    try {
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', startPath);
+      newPoints = transformPathSegments(path);
+    } catch (e) {
+      console.log('Something went wrong while creating path element');
     }
 
     return newPoints;

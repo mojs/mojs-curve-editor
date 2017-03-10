@@ -140,7 +140,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._tryToRestore();
 	    this._listenUnload();
 	
-	    this._drawStartPath();
 	    this._subscribe();
 	    // this._subscribeFocus();
 	  }
@@ -235,8 +234,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_tryToRestore',
 	    value: function _tryToRestore() {
 	      var stored = localStorage.getItem(this._localStorage);
+	      var startPathIsSet = this._props.startPath.length > 0;
 	      if (stored) {
 	        this.store.dispatch({ type: 'SET_STATE', data: JSON.parse(stored) });
+	      } else if (startPathIsSet) {
+	        this._drawStartPath();
 	      } else {
 	        (0, _points.reset)(this.store);
 	      }
@@ -384,14 +386,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var startPath = this._props.startPath;
 	
 	      var newPoints = [];
-	      if (startPath.length) {
-	        try {
-	          var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-	          path.setAttribute('d', startPath);
-	          newPoints = (0, _getPointsFromPath2.default)(path);
-	        } catch (e) {
-	          console.log('Something went wrong while creating path element');
-	        }
+	      try {
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	        path.setAttribute('d', startPath);
+	        newPoints = (0, _getPointsFromPath2.default)(path);
+	      } catch (e) {
+	        console.log('Something went wrong while creating path element');
 	      }
 	
 	      return newPoints;
@@ -12460,12 +12460,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  for (var i = 0; i < pathData.length; i++) {
 	    var dataSegment = pathData[i];
-	    var isPointFirstOrLast = i === 0 || i === pathData.length - 1;
+	    var isFirstOrLastPoint = i === 0 || i === pathData.length - 1;
 	    var type = dataSegment.type,
 	        values = dataSegment.values;
 	
 	
-	    if (type === 'M') {
+	    if (type === 'M' || type === 'L') {
 	      var _values = (0, _slicedToArray3.default)(values, 2),
 	          x = _values[0],
 	          y = _values[1];
@@ -12473,7 +12473,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      points.push({
 	        x: x,
 	        y: y * CURVE_PERCENT,
-	        isLockedX: isPointFirstOrLast
+	        isLockedX: isFirstOrLastPoint
 	      });
 	    } else if (type === 'C') {
 	      var _values2 = (0, _slicedToArray3.default)(values, 6),
@@ -12493,7 +12493,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        y: yNext * CURVE_PERCENT,
 	        type: 'disconnected',
 	        handle1: (0, _pointToAngle2.default)((x2 - xNext) * CURVE_PERCENT, (y2 - yNext) * CURVE_PERCENT),
-	        isLockedX: isPointFirstOrLast
+	        isLockedX: isFirstOrLastPoint
 	      };
 	
 	      points.push(point);

@@ -9,15 +9,15 @@ export default (path) => {
 
   for (let i = 0; i < pathData.length; i++) {
     const dataSegment = pathData[i];
-    const isPointFirstOrLast = (i === 0 || i === pathData.length - 1);
+    const isFirstOrLastPoint = (i === 0 || i === pathData.length - 1);
     const {type, values} = dataSegment;
 
-    if (type === 'M') {
-      let [x, y] = values;
+    if (type === 'M' || type === 'L') {
+      const [x, y] = values;
       points.push({
         x,
         y: y * CURVE_PERCENT,
-        isLockedX: isPointFirstOrLast
+        isLockedX: isFirstOrLastPoint
       });
     } else if (type === 'C') {
       const [x1, y1, x2, y2, xNext, yNext] = values;
@@ -33,7 +33,7 @@ export default (path) => {
         y: yNext * CURVE_PERCENT,
         type: 'disconnected',
         handle1: pointToAngle((x2 - xNext) * CURVE_PERCENT, (y2 - yNext) * CURVE_PERCENT),
-        isLockedX: isPointFirstOrLast
+        isLockedX: isFirstOrLastPoint
       }
 
       points.push(point);

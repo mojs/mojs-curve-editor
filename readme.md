@@ -111,8 +111,9 @@ const curveEditor = new MojsCurveEditor({
   name:         'bounce curve'
   // if should preserve state on page reloads
   isSaveState:  true,
-  // if should draw some predefined start path, e.g.
-  startPath:  'M0, 100 C0, 100 4.930113045746978, 71.79835171700789 22.72727272727273, 50 C40.5244324087985, 28.20164828299213 106.34550121203085, 39.38723973123639 100, 15',
+  // start path - will be loaded on initialization of the curve,
+  // e.g. before any user modifications were made. Path of 'M0, 100 L100, 0' is set by default.
+  startPath:  'M0, 100 L100, 0',
   // callback on path change, accepts path string
   onChange:     function (path) {}
   // if should hide when minimized - useful when you try to embed the
