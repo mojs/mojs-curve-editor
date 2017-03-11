@@ -124,8 +124,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	/*
 	  API wrapper above the app itself.
 	*/
-	
-	// import {reset}      from './actions/points';
 	var API = function () {
 	  function API() {
 	    var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];

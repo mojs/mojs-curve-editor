@@ -6,7 +6,6 @@ import C            from './constants';
 import hash         from './helpers/hash';
 import fallbackTo   from './helpers/fallback-to';
 import defer        from './helpers/defer';
-// import {reset}      from './actions/points';
 import addPointerDown from './helpers/add-pointer-down';
 import transformPathSegments from './helpers/get-points-from-path';
 
