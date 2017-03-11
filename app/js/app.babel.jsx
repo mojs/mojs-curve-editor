@@ -8,6 +8,7 @@ import fallbackTo   from './helpers/fallback-to';
 import defer        from './helpers/defer';
 import {reset}      from './actions/points';
 import addPointerDown from './helpers/add-pointer-down';
+import transformPathSegments from './helpers/get-points-from-path';
 
 /*
   API wrapper above the app itself.
@@ -32,6 +33,7 @@ class API {
       name:             'mojs-curve-editor',
       isSaveState:      true,
       isHiddenOnMin:    false,
+      startPath:        '',
       onChange:         null
     }
   }
@@ -101,8 +103,12 @@ class API {
 
   _tryToRestore () {
     const stored = localStorage.getItem(this._localStorage);
-    if ( stored ) { this.store.dispatch({ type: 'SET_STATE', data: JSON.parse(stored) });}
-    else { reset(this.store); }
+    const startPathIsSet = this._props.startPath.length > 0;
+    if ( stored ) {
+      this.store.dispatch({ type: 'SET_STATE', data: JSON.parse(stored) });
+    } else if (startPathIsSet) {
+      this._drawStartPath();
+    } else { reset(this.store); }
   }
 
   _subscribe () {
@@ -232,7 +238,33 @@ class API {
     );
   }
 
+  _getStartPathPoints() {
+    const { startPath } = this._props;
+    let newPoints = [];
+    try {
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', startPath);
+      newPoints = transformPathSegments(path);
+    } catch (e) {
+      console.log('Something went wrong while creating path element');
+    }
 
+    return newPoints;
+  }
+
+  _drawStartPath() {
+    const newPoints = this._getStartPathPoints();
+    if (newPoints.length) {
+      this.store.dispatch({ type: 'POINTS_REMOVE' });
+
+      newPoints.forEach((point, index) => {
+        this.store.dispatch({
+          type: 'POINT_ADD',
+          data: { point, index }
+        });
+      });
+    }
+  }
 
   // highlight() { this.store.dispatch({ type: 'SET_HIGHLIGHT', data: true }); }
   // dim() { this.store.dispatch({ type: 'SET_HIGHLIGHT', data: false }); }
