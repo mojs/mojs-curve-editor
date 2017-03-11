@@ -162,7 +162,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_vars',
 	    value: function _vars() {
-	      this.revision = '1.5.0';
+	      this.revision = '1.6.1';
 	      this.store = (0, _store2.default)();
 	
 	      this._easings = [];
@@ -390,6 +390,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	      controls.isMinimize ? this.maximize() : this.minimize();
+	      return controls.isMinimize;
 	    }
 	
 	    /*  Destroys the app and ensures the `componentWillUnmount` is called

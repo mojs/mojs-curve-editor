@@ -45,7 +45,7 @@ class API {
   }
 
   _vars () {
-    this.revision = '1.6.0';
+    this.revision = '1.6.1';
     this.store    = initStore();
 
     this._easings = [];
@@ -216,6 +216,7 @@ class API {
     const {controls} = state;
 
     controls.isMinimize ? this.maximize() : this.minimize();
+    return controls.isMinimize;
   }
 
   /*  Destroys the app and ensures the `componentWillUnmount` is called
