@@ -111,17 +111,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _defer2 = _interopRequireDefault(_defer);
 	
-	var _points = __webpack_require__(180);
-	
 	var _addPointerDown = __webpack_require__(133);
 	
 	var _addPointerDown2 = _interopRequireDefault(_addPointerDown);
+	
+	var _getPointsFromPath = __webpack_require__(213);
+	
+	var _getPointsFromPath2 = _interopRequireDefault(_getPointsFromPath);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	/*
 	  API wrapper above the app itself.
 	*/
+	
+	// import {reset}      from './actions/points';
 	var API = function () {
 	  function API() {
 	    var o = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -147,6 +151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        name: 'mojs-curve-editor',
 	        isSaveState: true,
 	        isHiddenOnMin: false,
+	        startPath: 'M0,100 L100,0',
 	        onChange: null
 	      };
 	    }
@@ -162,7 +167,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_vars',
 	    value: function _vars() {
-	      this.revision = '1.6.1';
+	      this.revision = '1.7.0';
 	      this.store = (0, _store2.default)();
 	
 	      this._easings = [];
@@ -229,10 +234,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_tryToRestore',
 	    value: function _tryToRestore() {
 	      var stored = localStorage.getItem(this._localStorage);
+	
 	      if (stored) {
 	        this.store.dispatch({ type: 'SET_STATE', data: JSON.parse(stored) });
 	      } else {
-	        (0, _points.reset)(this.store);
+	        this._drawStartPath();
 	      }
 	    }
 	  }, {
@@ -400,11 +406,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'destroy',
 	    value: function destroy() {
-	      // console.log(this._rootEl);
 	      var NullComponent = function NullComponent() {
 	        return null;
 	      };
 	      (0, _preact.render)((0, _preact.h)(NullComponent, null), document.body, this._rootEl);
+	    }
+	  }, {
+	    key: '_getStartPathPoints',
+	    value: function _getStartPathPoints() {
+	      var startPath = this._props.startPath;
+	
+	      var newPoints = [];
+	      try {
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	        path.setAttribute('d', startPath);
+	        newPoints = (0, _getPointsFromPath2.default)(path);
+	      } catch (e) {
+	        console.error('Something went wrong while parsing `startPath`', e);
+	      }
+	
+	      return newPoints;
+	    }
+	  }, {
+	    key: '_drawStartPath',
+	    value: function _drawStartPath() {
+	      var _this6 = this;
+	
+	      var newPoints = this._getStartPathPoints();
+	      if (newPoints.length) {
+	        this.store.dispatch({ type: 'POINTS_REMOVE' });
+	
+	        newPoints.forEach(function (point, index) {
+	          _this6.store.dispatch({ type: 'POINT_ADD', data: { point: point, index: index } });
+	        });
+	      }
 	    }
 	
 	    // highlight() { this.store.dispatch({ type: 'SET_HIGHLIGHT', data: true }); }
@@ -9438,8 +9473,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	
 	exports.default = function (x, y) {
-	  var radius = Math.sqrt(x * x + y * y),
-	      angle = Math.atan(y / x) * (180 / Math.PI) - 90;
+	  var radius = Math.sqrt(x * x + y * y);
+	  // if `x === 0` set x to 1 because we will divide by `x`
+	  // and division by 0 is forbidden. (x || 1) part
+	  var angle = Math.atan(y / (x || 1)) * (180 / Math.PI) - 90;
 	  if (x > 0) {
 	    angle = angle - 180;
 	  };
@@ -10848,26 +10885,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 180 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.reset = reset;
-	
-	var _constants = __webpack_require__(113);
-	
-	var _constants2 = _interopRequireDefault(_constants);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function reset(store) {
-	  store.dispatch({ type: 'POINTS_REMOVE' });
-	  store.dispatch({ type: 'POINT_ADD', data: { point: { x: 0, y: _constants2.default.CURVE_SIZE, isLockedX: true }, index: 0 } });
-	  store.dispatch({ type: 'POINT_ADD', data: { point: { x: 100, y: 0, isLockedX: true }, index: 1 } });
-	}
+	// import C from '../constants';
+	//
+	// export function reset (store) {
+	//   store.dispatch({ type: 'POINTS_REMOVE' });
+	//   store.dispatch({ type: 'POINT_ADD', data: { point: {x: 0,   y: C.CURVE_SIZE, isLockedX: true}, index: 0 } });
+	//   store.dispatch({ type: 'POINT_ADD', data: { point: {x: 100, y: 0, isLockedX: true}, index: 1 } });
+	// }
+	"use strict";
 
 /***/ },
 /* 181 */
@@ -12237,6 +12264,1274 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	exports.default = function (fn) {
 	  setTimeout(fn, 1);
+	};
+
+/***/ },
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	__webpack_require__(214);
+	
+	var _c = __webpack_require__(215);
+	
+	var _c2 = _interopRequireDefault(_c);
+	
+	var _m = __webpack_require__(223);
+	
+	var _m2 = _interopRequireDefault(_m);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (path) {
+	  var points = [];
+	  var pathData = path.getPathData();
+	
+	  for (var i = 0; i < pathData.length; i++) {
+	    var isFirstOrLastPoint = i === 0 || i === pathData.length - 1;
+	    var _pathData$i = pathData[i];
+	    var type = _pathData$i.type;
+	    var values = _pathData$i.values;
+	
+	
+	    switch (type) {
+	      case 'M':
+	      case 'L':
+	        points = (0, _m2.default)(values, points, isFirstOrLastPoint);
+	        break;
+	
+	      case 'C':
+	        points = (0, _c2.default)(values, points, isFirstOrLastPoint);
+	        break;
+	    }
+	  }
+	
+	  return points;
+	};
+
+/***/ },
+/* 214 */
+/***/ function(module, exports) {
+
+	
+	// @info
+	//   Polyfill for SVG 2 getPathData() and setPathData() methods. Based on:
+	//   - SVGPathSeg polyfill by Philip Rogers (MIT License)
+	//     https://github.com/progers/pathseg
+	//   - SVGPathNormalizer by Tadahisa Motooka (MIT License)
+	//     https://github.com/motooka/SVGPathNormalizer/tree/master/src
+	//   - arcToCubicCurves() by Dmitry Baranovskiy (MIT License)
+	//     https://github.com/DmitryBaranovskiy/raphael/blob/v2.1.1/raphael.core.js#L1837
+	// @author
+	//   Jarosław Foksa
+	// @license
+	//   MIT License
+	if (!SVGPathElement.prototype.getPathData || !SVGPathElement.prototype.setPathData) {
+	  (function() {
+	    var commandsMap = {
+	      "Z":"Z", "M":"M", "L":"L", "C":"C", "Q":"Q", "A":"A", "H":"H", "V":"V", "S":"S", "T":"T",
+	      "z":"Z", "m":"m", "l":"l", "c":"c", "q":"q", "a":"a", "h":"h", "v":"v", "s":"s", "t":"t"
+	    };
+	
+	    var Source = function(string) {
+	      this._string = string;
+	      this._currentIndex = 0;
+	      this._endIndex = this._string.length;
+	      this._prevCommand = null;
+	      this._skipOptionalSpaces();
+	    };
+	
+	    var isIE = window.navigator.userAgent.indexOf("MSIE ") !== -1;
+	
+	    Source.prototype = {
+	      parseSegment: function() {
+	        var char = this._string[this._currentIndex];
+	        var command = commandsMap[char] ? commandsMap[char] : null;
+	
+	        if (command === null) {
+	          // Possibly an implicit command. Not allowed if this is the first command.
+	          if (this._prevCommand === null) {
+	            return null;
+	          }
+	
+	          // Check for remaining coordinates in the current command.
+	          if (
+	            (char === "+" || char === "-" || char === "." || (char >= "0" && char <= "9")) && this._prevCommand !== "Z"
+	          ) {
+	            if (this._prevCommand === "M") {
+	              command = "L";
+	            }
+	            else if (this._prevCommand === "m") {
+	              command = "l";
+	            }
+	            else {
+	              command = this._prevCommand;
+	            }
+	          }
+	          else {
+	            command = null;
+	          }
+	
+	          if (command === null) {
+	            return null;
+	          }
+	        }
+	        else {
+	          this._currentIndex += 1;
+	        }
+	
+	        this._prevCommand = command;
+	
+	        var values = null;
+	        var cmd = command.toUpperCase();
+	
+	        if (cmd === "H" || cmd === "V") {
+	          values = [this._parseNumber()];
+	        }
+	        else if (cmd === "M" || cmd === "L" || cmd === "T") {
+	          values = [this._parseNumber(), this._parseNumber()];
+	        }
+	        else if (cmd === "S" || cmd === "Q") {
+	          values = [this._parseNumber(), this._parseNumber(), this._parseNumber(), this._parseNumber()];
+	        }
+	        else if (cmd === "C") {
+	          values = [
+	            this._parseNumber(),
+	            this._parseNumber(),
+	            this._parseNumber(),
+	            this._parseNumber(),
+	            this._parseNumber(),
+	            this._parseNumber()
+	          ];
+	        }
+	        else if (cmd === "A") {
+	          values = [
+	            this._parseNumber(),
+	            this._parseNumber(),
+	            this._parseNumber(),
+	            this._parseArcFlag(),
+	            this._parseArcFlag(),
+	            this._parseNumber(),
+	            this._parseNumber()
+	          ];
+	        }
+	        else if (cmd === "Z") {
+	          this._skipOptionalSpaces();
+	          values = [];
+	        }
+	
+	        if (values === null || values.indexOf(null) >= 0) {
+	          // Unknown command or known command with invalid values
+	          return null;
+	        }
+	        else {
+	          return {type: command, values: values};
+	        }
+	      },
+	
+	      hasMoreData: function() {
+	        return this._currentIndex < this._endIndex;
+	      },
+	
+	      peekSegmentType: function() {
+	        var char = this._string[this._currentIndex];
+	        return commandsMap[char] ? commandsMap[char] : null;
+	      },
+	
+	      initialCommandIsMoveTo: function() {
+	        // If the path is empty it is still valid, so return true.
+	        if (!this.hasMoreData()) {
+	          return true;
+	        }
+	
+	        var command = this.peekSegmentType();
+	        // Path must start with moveTo.
+	        return command === "M" || command === "m";
+	      },
+	
+	      _isCurrentSpace: function() {
+	        var char = this._string[this._currentIndex];
+	        return char <= " " && (char === " " || char === "\n" || char === "\t" || char === "\r" || char === "\f");
+	      },
+	
+	      _skipOptionalSpaces: function() {
+	        while (this._currentIndex < this._endIndex && this._isCurrentSpace()) {
+	          this._currentIndex += 1;
+	        }
+	
+	        return this._currentIndex < this._endIndex;
+	      },
+	
+	      _skipOptionalSpacesOrDelimiter: function() {
+	        if (
+	          this._currentIndex < this._endIndex &&
+	          !this._isCurrentSpace() &&
+	          this._string[this._currentIndex] !== ","
+	        ) {
+	          return false;
+	        }
+	
+	        if (this._skipOptionalSpaces()) {
+	          if (this._currentIndex < this._endIndex && this._string[this._currentIndex] === ",") {
+	            this._currentIndex += 1;
+	            this._skipOptionalSpaces();
+	          }
+	        }
+	        return this._currentIndex < this._endIndex;
+	      },
+	
+	      // Parse a number from an SVG path. This very closely follows genericParseNumber(...) from
+	      // Source/core/svg/SVGParserUtilities.cpp.
+	      // Spec: http://www.w3.org/TR/SVG11/single-page.html#paths-PathDataBNF
+	      _parseNumber: function() {
+	        var exponent = 0;
+	        var integer = 0;
+	        var frac = 1;
+	        var decimal = 0;
+	        var sign = 1;
+	        var expsign = 1;
+	        var startIndex = this._currentIndex;
+	
+	        this._skipOptionalSpaces();
+	
+	        // Read the sign.
+	        if (this._currentIndex < this._endIndex && this._string[this._currentIndex] === "+") {
+	          this._currentIndex += 1;
+	        }
+	        else if (this._currentIndex < this._endIndex && this._string[this._currentIndex] === "-") {
+	          this._currentIndex += 1;
+	          sign = -1;
+	        }
+	
+	        if (
+	          this._currentIndex === this._endIndex ||
+	          (
+	            (this._string[this._currentIndex] < "0" || this._string[this._currentIndex] > "9") &&
+	            this._string[this._currentIndex] !== "."
+	          )
+	        ) {
+	          // The first character of a number must be one of [0-9+-.].
+	          return null;
+	        }
+	
+	        // Read the integer part, build right-to-left.
+	        var startIntPartIndex = this._currentIndex;
+	
+	        while (
+	          this._currentIndex < this._endIndex &&
+	          this._string[this._currentIndex] >= "0" &&
+	          this._string[this._currentIndex] <= "9"
+	        ) {
+	          this._currentIndex += 1; // Advance to first non-digit.
+	        }
+	
+	        if (this._currentIndex !== startIntPartIndex) {
+	          var scanIntPartIndex = this._currentIndex - 1;
+	          var multiplier = 1;
+	
+	          while (scanIntPartIndex >= startIntPartIndex) {
+	            integer += multiplier * (this._string[scanIntPartIndex] - "0");
+	            scanIntPartIndex -= 1;
+	            multiplier *= 10;
+	          }
+	        }
+	
+	        // Read the decimals.
+	        if (this._currentIndex < this._endIndex && this._string[this._currentIndex] === ".") {
+	          this._currentIndex += 1;
+	
+	          // There must be a least one digit following the .
+	          if (
+	            this._currentIndex >= this._endIndex ||
+	            this._string[this._currentIndex] < "0" ||
+	            this._string[this._currentIndex] > "9"
+	          ) {
+	            return null;
+	          }
+	
+	          while (
+	            this._currentIndex < this._endIndex &&
+	            this._string[this._currentIndex] >= "0" &&
+	            this._string[this._currentIndex] <= "9"
+	          ) {
+	            frac *= 10;
+	            decimal += (this._string.charAt(this._currentIndex) - "0") / frac;
+	            this._currentIndex += 1;
+	          }
+	        }
+	
+	        // Read the exponent part.
+	        if (
+	          this._currentIndex !== startIndex &&
+	          this._currentIndex + 1 < this._endIndex &&
+	          (this._string[this._currentIndex] === "e" || this._string[this._currentIndex] === "E") &&
+	          (this._string[this._currentIndex + 1] !== "x" && this._string[this._currentIndex + 1] !== "m")
+	        ) {
+	          this._currentIndex += 1;
+	
+	          // Read the sign of the exponent.
+	          if (this._string[this._currentIndex] === "+") {
+	            this._currentIndex += 1;
+	          }
+	          else if (this._string[this._currentIndex] === "-") {
+	            this._currentIndex += 1;
+	            expsign = -1;
+	          }
+	
+	          // There must be an exponent.
+	          if (
+	            this._currentIndex >= this._endIndex ||
+	            this._string[this._currentIndex] < "0" ||
+	            this._string[this._currentIndex] > "9"
+	          ) {
+	            return null;
+	          }
+	
+	          while (
+	            this._currentIndex < this._endIndex &&
+	            this._string[this._currentIndex] >= "0" &&
+	            this._string[this._currentIndex] <= "9"
+	          ) {
+	            exponent *= 10;
+	            exponent += (this._string[this._currentIndex] - "0");
+	            this._currentIndex += 1;
+	          }
+	        }
+	
+	        var number = integer + decimal;
+	        number *= sign;
+	
+	        if (exponent) {
+	          number *= Math.pow(10, expsign * exponent);
+	        }
+	
+	        if (startIndex === this._currentIndex) {
+	          return null;
+	        }
+	
+	        this._skipOptionalSpacesOrDelimiter();
+	
+	        return number;
+	      },
+	
+	      _parseArcFlag: function() {
+	        if (this._currentIndex >= this._endIndex) {
+	          return null;
+	        }
+	
+	        var flag = null;
+	        var flagChar = this._string[this._currentIndex];
+	
+	        this._currentIndex += 1;
+	
+	        if (flagChar === "0") {
+	          flag = 0;
+	        }
+	        else if (flagChar === "1") {
+	          flag = 1;
+	        }
+	        else {
+	          return null;
+	        }
+	
+	        this._skipOptionalSpacesOrDelimiter();
+	        return flag;
+	      }
+	    };
+	
+	    var parsePathDataString = function(string) {
+	      if (!string || string.length === 0) return [];
+	
+	      var source = new Source(string);
+	      var pathData = [];
+	
+	      if (source.initialCommandIsMoveTo()) {
+	        while (source.hasMoreData()) {
+	          var pathSeg = source.parseSegment();
+	
+	          if (pathSeg === null) {
+	            break;
+	          }
+	          else {
+	            pathData.push(pathSeg);
+	          }
+	        }
+	      }
+	
+	      return pathData;
+	    }
+	
+	    var setAttribute = SVGPathElement.prototype.setAttribute;
+	    var removeAttribute = SVGPathElement.prototype.removeAttribute;
+	
+	    var $cachedPathData = window.Symbol ? Symbol() : "__cachedPathData";
+	    var $cachedNormalizedPathData = window.Symbol ? Symbol() : "__cachedNormalizedPathData";
+	
+	    // @info
+	    //   Get an array of corresponding cubic bezier curve parameters for given arc curve paramters.
+	    var arcToCubicCurves = function(x1, y1, x2, y2, r1, r2, angle, largeArcFlag, sweepFlag, _recursive) {
+	      var degToRad = function(degrees) {
+	        return (Math.PI * degrees) / 180;
+	      };
+	
+	      var rotate = function(x, y, angleRad) {
+	        var X = x * Math.cos(angleRad) - y * Math.sin(angleRad);
+	        var Y = x * Math.sin(angleRad) + y * Math.cos(angleRad);
+	        return {x: X, y: Y};
+	      };
+	
+	      var angleRad = degToRad(angle);
+	      var params = [];
+	      var f1, f2, cx, cy;
+	
+	      if (_recursive) {
+	        f1 = _recursive[0];
+	        f2 = _recursive[1];
+	        cx = _recursive[2];
+	        cy = _recursive[3];
+	      }
+	      else {
+	        var p1 = rotate(x1, y1, -angleRad);
+	        x1 = p1.x;
+	        y1 = p1.y;
+	
+	        var p2 = rotate(x2, y2, -angleRad);
+	        x2 = p2.x;
+	        y2 = p2.y;
+	
+	        var x = (x1 - x2) / 2;
+	        var y = (y1 - y2) / 2;
+	        var h = (x * x) / (r1 * r1) + (y * y) / (r2 * r2);
+	
+	        if (h > 1) {
+	          h = Math.sqrt(h);
+	          r1 = h * r1;
+	          r2 = h * r2;
+	        }
+	
+	        var sign;
+	
+	        if (largeArcFlag === sweepFlag) {
+	          sign = -1;
+	        }
+	        else {
+	          sign = 1;
+	        }
+	
+	        var r1Pow = r1 * r1;
+	        var r2Pow = r2 * r2;
+	
+	        var left = r1Pow * r2Pow - r1Pow * y * y - r2Pow * x * x;
+	        var right = r1Pow * y * y + r2Pow * x * x;
+	
+	        var k = sign * Math.sqrt(Math.abs(left/right));
+	
+	        cx = k * r1 * y / r2 + (x1 + x2) / 2;
+	        cy = k * -r2 * x / r1 + (y1 + y2) / 2;
+	
+	        f1 = Math.asin(((y1 - cy) / r2).toFixed(9));
+	        f2 = Math.asin(((y2 - cy) / r2).toFixed(9));
+	
+	        if (x1 < cx) {
+	          f1 = Math.PI - f1;
+	        }
+	        if (x2 < cx) {
+	          f2 = Math.PI - f2;
+	        }
+	
+	        if (f1 < 0) {
+	          f1 = Math.PI * 2 + f1;
+	        }
+	        if (f2 < 0) {
+	          f2 = Math.PI * 2 + f2;
+	        }
+	
+	        if (sweepFlag && f1 > f2) {
+	          f1 = f1 - Math.PI * 2;
+	        }
+	        if (!sweepFlag && f2 > f1) {
+	          f2 = f2 - Math.PI * 2;
+	        }
+	      }
+	
+	      var df = f2 - f1;
+	
+	      if (Math.abs(df) > (Math.PI * 120 / 180)) {
+	        var f2old = f2;
+	        var x2old = x2;
+	        var y2old = y2;
+	
+	        if (sweepFlag && f2 > f1) {
+	          f2 = f1 + (Math.PI * 120 / 180) * (1);
+	        }
+	        else {
+	          f2 = f1 + (Math.PI * 120 / 180) * (-1);
+	        }
+	
+	        x2 = cx + r1 * Math.cos(f2);
+	        y2 = cy + r2 * Math.sin(f2);
+	        params = arcToCubicCurves(x2, y2, x2old, y2old, r1, r2, angle, 0, sweepFlag, [f2, f2old, cx, cy]);
+	      }
+	
+	      df = f2 - f1;
+	
+	      var c1 = Math.cos(f1);
+	      var s1 = Math.sin(f1);
+	      var c2 = Math.cos(f2);
+	      var s2 = Math.sin(f2);
+	      var t = Math.tan(df / 4);
+	      var hx = 4 / 3 * r1 * t;
+	      var hy = 4 / 3 * r2 * t;
+	
+	      var m1 = [x1, y1];
+	      var m2 = [x1 + hx * s1, y1 - hy * c1];
+	      var m3 = [x2 + hx * s2, y2 - hy * c2];
+	      var m4 = [x2, y2];
+	
+	      m2[0] = 2 * m1[0] - m2[0];
+	      m2[1] = 2 * m1[1] - m2[1];
+	
+	      if (_recursive) {
+	        return [m2, m3, m4].concat(params);
+	      }
+	      else {
+	        params = [m2, m3, m4].concat(params).join().split(",");
+	
+	        var curves = [];
+	        var curveParams = [];
+	
+	        params.forEach( function(param, i) {
+	          if (i % 2) {
+	            curveParams.push(rotate(params[i - 1], params[i], angleRad).y);
+	          }
+	          else {
+	            curveParams.push(rotate(params[i], params[i + 1], angleRad).x);
+	          }
+	
+	          if (curveParams.length === 6) {
+	            curves.push(curveParams);
+	            curveParams = [];
+	          }
+	        });
+	
+	        return curves;
+	      }
+	    };
+	
+	    var clonePathData = function(pathData) {
+	      return pathData.map( function(seg) {
+	        return {type: seg.type, values: Array.prototype.slice.call(seg.values)}
+	      });
+	    };
+	
+	    // @info
+	    //   Takes any path data, returns path data that consists only from absolute commands.
+	    var absolutizePathData = function(pathData) {
+	      var absolutizedPathData = [];
+	
+	      var currentX = null;
+	      var currentY = null;
+	
+	      var subpathX = null;
+	      var subpathY = null;
+	
+	      pathData.forEach( function(seg) {
+	        var type = seg.type;
+	
+	        if (type === "M") {
+	          var x = seg.values[0];
+	          var y = seg.values[1];
+	
+	          absolutizedPathData.push({type: "M", values: [x, y]});
+	
+	          subpathX = x;
+	          subpathY = y;
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "m") {
+	          var x = currentX + seg.values[0];
+	          var y = currentY + seg.values[1];
+	
+	          absolutizedPathData.push({type: "M", values: [x, y]});
+	
+	          subpathX = x;
+	          subpathY = y;
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "L") {
+	          var x = seg.values[0];
+	          var y = seg.values[1];
+	
+	          absolutizedPathData.push({type: "L", values: [x, y]});
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "l") {
+	          var x = currentX + seg.values[0];
+	          var y = currentY + seg.values[1];
+	
+	          absolutizedPathData.push({type: "L", values: [x, y]});
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "C") {
+	          var x1 = seg.values[0];
+	          var y1 = seg.values[1];
+	          var x2 = seg.values[2];
+	          var y2 = seg.values[3];
+	          var x = seg.values[4];
+	          var y = seg.values[5];
+	
+	          absolutizedPathData.push({type: "C", values: [x1, y1, x2, y2, x, y]});
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "c") {
+	          var x1 = currentX + seg.values[0];
+	          var y1 = currentY + seg.values[1];
+	          var x2 = currentX + seg.values[2];
+	          var y2 = currentY + seg.values[3];
+	          var x = currentX + seg.values[4];
+	          var y = currentY + seg.values[5];
+	
+	          absolutizedPathData.push({type: "C", values: [x1, y1, x2, y2, x, y]});
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "Q") {
+	          var x1 = seg.values[0];
+	          var y1 = seg.values[1];
+	          var x = seg.values[2];
+	          var y = seg.values[3];
+	
+	          absolutizedPathData.push({type: "Q", values: [x1, y1, x, y]});
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "q") {
+	          var x1 = currentX + seg.values[0];
+	          var y1 = currentY + seg.values[1];
+	          var x = currentX + seg.values[2];
+	          var y = currentY + seg.values[3];
+	
+	          absolutizedPathData.push({type: "Q", values: [x1, y1, x, y]});
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "A") {
+	          var x = seg.values[5];
+	          var y = seg.values[6];
+	
+	          absolutizedPathData.push({
+	            type: "A",
+	            values: [seg.values[0], seg.values[1], seg.values[2], seg.values[3], seg.values[4], x, y]
+	          });
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "a") {
+	          var x = currentX + seg.values[5];
+	          var y = currentY + seg.values[6];
+	
+	          absolutizedPathData.push({
+	            type: "A",
+	            values: [seg.values[0], seg.values[1], seg.values[2], seg.values[3], seg.values[4], x, y]
+	          });
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "H") {
+	          var x = seg.values[0];
+	          absolutizedPathData.push({type: "H", values: [x]});
+	          currentX = x;
+	        }
+	
+	        else if (type === "h") {
+	          var x = currentX + seg.values[0];
+	          absolutizedPathData.push({type: "H", values: [x]});
+	          currentX = x;
+	        }
+	
+	        else if (type === "V") {
+	          var y = seg.values[0];
+	          absolutizedPathData.push({type: "V", values: [y]});
+	          currentY = y;
+	        }
+	
+	        else if (type === "v") {
+	          var y = currentY + seg.values[0];
+	          absolutizedPathData.push({type: "V", values: [y]});
+	          currentY = y;
+	        }
+	
+	        else if (type === "S") {
+	          var x2 = seg.values[0];
+	          var y2 = seg.values[1];
+	          var x = seg.values[2];
+	          var y = seg.values[3];
+	
+	          absolutizedPathData.push({type: "S", values: [x2, y2, x, y]});
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "s") {
+	          var x2 = currentX + seg.values[0];
+	          var y2 = currentY + seg.values[1];
+	          var x = currentX + seg.values[2];
+	          var y = currentY + seg.values[3];
+	
+	          absolutizedPathData.push({type: "S", values: [x2, y2, x, y]});
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "T") {
+	          var x = seg.values[0];
+	          var y = seg.values[1]
+	
+	          absolutizedPathData.push({type: "T", values: [x, y]});
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "t") {
+	          var x = currentX + seg.values[0];
+	          var y = currentY + seg.values[1]
+	
+	          absolutizedPathData.push({type: "T", values: [x, y]});
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (type === "Z" || type === "z") {
+	          absolutizedPathData.push({type: "Z", values: []});
+	
+	          currentX = subpathX;
+	          currentY = subpathY;
+	        }
+	      });
+	
+	      return absolutizedPathData;
+	    };
+	
+	    // @info
+	    //   Takes path data that consists only from absolute commands, returns path data that consists only from
+	    //   "M", "L", "C" and "Z" commands.
+	    var reducePathData = function(pathData) {
+	      var reducedPathData = [];
+	      var lastType = null;
+	
+	      var lastControlX = null;
+	      var lastControlY = null;
+	
+	      var currentX = null;
+	      var currentY = null;
+	
+	      var subpathX = null;
+	      var subpathY = null;
+	
+	      pathData.forEach( function(seg) {
+	        if (seg.type === "M") {
+	          var x = seg.values[0];
+	          var y = seg.values[1];
+	
+	          reducedPathData.push({type: "M", values: [x, y]});
+	
+	          subpathX = x;
+	          subpathY = y;
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (seg.type === "C") {
+	          var x1 = seg.values[0];
+	          var y1 = seg.values[1];
+	          var x2 = seg.values[2];
+	          var y2 = seg.values[3];
+	          var x = seg.values[4];
+	          var y = seg.values[5];
+	
+	          reducedPathData.push({type: "C", values: [x1, y1, x2, y2, x, y]});
+	
+	          lastControlX = x2;
+	          lastControlY = y2;
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (seg.type === "L") {
+	          var x = seg.values[0];
+	          var y = seg.values[1];
+	
+	          reducedPathData.push({type: "L", values: [x, y]});
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (seg.type === "H") {
+	          var x = seg.values[0];
+	
+	          reducedPathData.push({type: "L", values: [x, currentY]});
+	
+	          currentX = x;
+	        }
+	
+	        else if (seg.type === "V") {
+	          var y = seg.values[0];
+	
+	          reducedPathData.push({type: "L", values: [currentX, y]});
+	
+	          currentY = y;
+	        }
+	
+	        else if (seg.type === "S") {
+	          var x2 = seg.values[0];
+	          var y2 = seg.values[1];
+	          var x = seg.values[2];
+	          var y = seg.values[3];
+	
+	          var cx1, cy1;
+	
+	          if (lastType === "C" || lastType === "S") {
+	            cx1 = currentX + (currentX - lastControlX);
+	            cy1 = currentY + (currentY - lastControlY);
+	          }
+	          else {
+	            cx1 = currentX;
+	            cy1 = currentY;
+	          }
+	
+	          reducedPathData.push({type: "C", values: [cx1, cy1, x2, y2, x, y]});
+	
+	          lastControlX = x2;
+	          lastControlY = y2;
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (seg.type === "T") {
+	          var x = seg.values[0];
+	          var y = seg.values[1];
+	
+	          var x1, y1;
+	
+	          if (lastType === "Q" || lastType === "T") {
+	            x1 = currentX + (currentX - lastControlX);
+	            y1 = currentY + (currentY - lastControlY);
+	          }
+	          else {
+	            x1 = currentX;
+	            y1 = currentY;
+	          }
+	
+	          var cx1 = currentX + 2 * (x1 - currentX) / 3;
+	          var cy1 = currentY + 2 * (y1 - currentY) / 3;
+	          var cx2 = x + 2 * (x1 - x) / 3;
+	          var cy2 = y + 2 * (y1 - y) / 3;
+	
+	          reducedPathData.push({type: "C", values: [cx1, cy1, cx2, cy2, x, y]});
+	
+	          lastControlX = x1;
+	          lastControlY = y1;
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (seg.type === "Q") {
+	          var x1 = seg.values[0];
+	          var y1 = seg.values[1];
+	          var x = seg.values[2];
+	          var y = seg.values[3];
+	
+	          var cx1 = currentX + 2 * (x1 - currentX) / 3;
+	          var cy1 = currentY + 2 * (y1 - currentY) / 3;
+	          var cx2 = x + 2 * (x1 - x) / 3;
+	          var cy2 = y + 2 * (y1 - y) / 3;
+	
+	          reducedPathData.push({type: "C", values: [cx1, cy1, cx2, cy2, x, y]});
+	
+	          lastControlX = x1;
+	          lastControlY = y1;
+	
+	          currentX = x;
+	          currentY = y;
+	        }
+	
+	        else if (seg.type === "A") {
+	          var r1 = seg.values[0];
+	          var r2 = seg.values[1];
+	          var angle = seg.values[2];
+	          var largeArcFlag = seg.values[3];
+	          var sweepFlag = seg.values[4];
+	          var x = seg.values[5];
+	          var y = seg.values[6];
+	
+	          if (r1 === 0 || r2 === 0) {
+	            reducedPathData.push({type: "C", values: [currentX, currentY, x, y, x, y]});
+	
+	            currentX = x;
+	            currentY = y;
+	          }
+	          else {
+	            if (currentX !== x || currentY !== y) {
+	              var curves = arcToCubicCurves(currentX, currentY, x, y, r1, r2, angle, largeArcFlag, sweepFlag);
+	
+	              curves.forEach( function(curve) {
+	                reducedPathData.push({type: "C", values: curve});
+	
+	                currentX = x;
+	                currentY = y;
+	              });
+	            }
+	          }
+	        }
+	
+	        else if (seg.type === "Z") {
+	          reducedPathData.push(seg);
+	
+	          currentX = subpathX;
+	          currentY = subpathY;
+	        }
+	
+	        lastType = seg.type;
+	      });
+	
+	      return reducedPathData;
+	    };
+	
+	    SVGPathElement.prototype.setAttribute = function(name, value) {
+	      if (name === "d") {
+	        this[$cachedPathData] = null;
+	        this[$cachedNormalizedPathData] = null;
+	      }
+	
+	      setAttribute.call(this, name, value);
+	    };
+	
+	    SVGPathElement.prototype.removeAttribute = function(name, value) {
+	      if (name === "d") {
+	        this[$cachedPathData] = null;
+	        this[$cachedNormalizedPathData] = null;
+	      }
+	
+	      removeAttribute.call(this, name);
+	    };
+	
+	    SVGPathElement.prototype.getPathData = function(options) {
+	      if (options && options.normalize) {
+	        if (this[$cachedNormalizedPathData]) {
+	          return clonePathData(this[$cachedNormalizedPathData]);
+	        }
+	        else {
+	          var pathData;
+	
+	          if (this[$cachedPathData]) {
+	            pathData = clonePathData(this[$cachedPathData]);
+	          }
+	          else {
+	            pathData = parsePathDataString(this.getAttribute("d") || "");
+	            this[$cachedPathData] = clonePathData(pathData);
+	          }
+	
+	          var normalizedPathData = reducePathData(absolutizePathData(pathData));
+	          this[$cachedNormalizedPathData] = clonePathData(normalizedPathData);
+	          return normalizedPathData;
+	        }
+	      }
+	      else {
+	        if (this[$cachedPathData]) {
+	          return clonePathData(this[$cachedPathData]);
+	        }
+	        else {
+	          var pathData = parsePathDataString(this.getAttribute("d") || "");
+	          this[$cachedPathData] = clonePathData(pathData);
+	          return pathData;
+	        }
+	      }
+	    };
+	
+	    SVGPathElement.prototype.setPathData = function(pathData) {
+	      if (pathData.length === 0) {
+	        if (isIE) {
+	          // @bugfix https://github.com/mbostock/d3/issues/1737
+	          this.setAttribute("d", "");
+	        }
+	        else {
+	          this.removeAttribute("d");
+	        }
+	      }
+	      else {
+	        var d = "";
+	
+	        for (var i = 0, l = pathData.length; i < l; i += 1) {
+	          var seg = pathData[i];
+	
+	          if (i > 0) {
+	            d += " ";
+	          }
+	
+	          d += seg.type;
+	
+	          if (seg.values && seg.values.length > 0) {
+	            d += " " + seg.values.join(" ");
+	          }
+	        }
+	
+	        this.setAttribute("d", d);
+	      }
+	    };
+	  })();
+	}
+
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _toConsumableArray2 = __webpack_require__(189);
+	
+	var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+	
+	var _slicedToArray2 = __webpack_require__(216);
+	
+	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+	
+	var _pointToAngle = __webpack_require__(135);
+	
+	var _pointToAngle2 = _interopRequireDefault(_pointToAngle);
+	
+	var _constants = __webpack_require__(113);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var CURVE_PERCENT = _constants2.default.CURVE_PERCENT;
+	/**
+	 * Function to parse *C* `SVG` path command.
+	 * @param {Array} parsed `C` values.
+	 * @param {Array} result array of points parsed so far.
+	 * @returns {Array} array with new parsed points.
+	 */
+	
+	exports.default = function (values, points, isLockedX) {
+	  var _values = (0, _slicedToArray3.default)(values, 6);
+	
+	  var x1 = _values[0];
+	  var y1 = _values[1];
+	  var x2 = _values[2];
+	  var y2 = _values[3];
+	  var xNext = _values[4];
+	  var yNext = _values[5];
+	
+	  var prevPoint = points[points.length - 1];
+	
+	  var prevHandle = (0, _pointToAngle2.default)((x1 - prevPoint.x) * CURVE_PERCENT, y1 * CURVE_PERCENT - prevPoint.y);
+	  prevPoint.handle2 = prevHandle;
+	
+	  var point = {
+	    x: xNext,
+	    y: yNext * CURVE_PERCENT,
+	    type: 'disconnected',
+	    handle1: (0, _pointToAngle2.default)((x2 - xNext) * CURVE_PERCENT, (y2 - yNext) * CURVE_PERCENT),
+	    isLockedX: isLockedX
+	  };
+	
+	  return [].concat((0, _toConsumableArray3.default)(points), [point]);
+	};
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	exports.__esModule = true;
+	
+	var _isIterable2 = __webpack_require__(217);
+	
+	var _isIterable3 = _interopRequireDefault(_isIterable2);
+	
+	var _getIterator2 = __webpack_require__(220);
+	
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	  function sliceIterator(arr, i) {
+	    var _arr = [];
+	    var _n = true;
+	    var _d = false;
+	    var _e = undefined;
+	
+	    try {
+	      for (var _i = (0, _getIterator3.default)(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
+	        _arr.push(_s.value);
+	
+	        if (i && _arr.length === i) break;
+	      }
+	    } catch (err) {
+	      _d = true;
+	      _e = err;
+	    } finally {
+	      try {
+	        if (!_n && _i["return"]) _i["return"]();
+	      } finally {
+	        if (_d) throw _e;
+	      }
+	    }
+	
+	    return _arr;
+	  }
+	
+	  return function (arr, i) {
+	    if (Array.isArray(arr)) {
+	      return arr;
+	    } else if ((0, _isIterable3.default)(Object(arr))) {
+	      return sliceIterator(arr, i);
+	    } else {
+	      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+	    }
+	  };
+	}();
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(218), __esModule: true };
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(86);
+	__webpack_require__(74);
+	module.exports = __webpack_require__(219);
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var classof   = __webpack_require__(197)
+	  , ITERATOR  = __webpack_require__(85)('iterator')
+	  , Iterators = __webpack_require__(79);
+	module.exports = __webpack_require__(4).isIterable = function(it){
+	  var O = Object(it);
+	  return O[ITERATOR] !== undefined
+	    || '@@iterator' in O
+	    || Iterators.hasOwnProperty(classof(O));
+	};
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(221), __esModule: true };
+
+/***/ },
+/* 221 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(86);
+	__webpack_require__(74);
+	module.exports = __webpack_require__(222);
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var anObject = __webpack_require__(15)
+	  , get      = __webpack_require__(196);
+	module.exports = __webpack_require__(4).getIterator = function(it){
+	  var iterFn = get(it);
+	  if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
+	  return anObject(iterFn.call(it));
+	};
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _toConsumableArray2 = __webpack_require__(189);
+	
+	var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+	
+	var _slicedToArray2 = __webpack_require__(216);
+	
+	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+	
+	var _constants = __webpack_require__(113);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/**
+	 * Function to parse *M* or *L* `SVG` path command.
+	 * @param {Array} parsed `M` or `L` values.
+	 * @param {Array} result array of points parsed so far.
+	 * @returns {Array} array with new parsed points.
+	 */
+	exports.default = function (values, points, isLockedX) {
+	  var _values = (0, _slicedToArray3.default)(values, 2);
+	
+	  var x = _values[0];
+	  var y = _values[1];
+	
+	  var newPoint = { x: x, y: y * _constants2.default.CURVE_PERCENT, isLockedX: isLockedX };
+	
+	  return [].concat((0, _toConsumableArray3.default)(points), [newPoint]);
 	};
 
 /***/ }

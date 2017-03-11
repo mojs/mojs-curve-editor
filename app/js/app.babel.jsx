@@ -6,7 +6,7 @@ import C            from './constants';
 import hash         from './helpers/hash';
 import fallbackTo   from './helpers/fallback-to';
 import defer        from './helpers/defer';
-import {reset}      from './actions/points';
+// import {reset}      from './actions/points';
 import addPointerDown from './helpers/add-pointer-down';
 import transformPathSegments from './helpers/get-points-from-path';
 
@@ -33,7 +33,7 @@ class API {
       name:             'mojs-curve-editor',
       isSaveState:      true,
       isHiddenOnMin:    false,
-      startPath:        '',
+      startPath:        'M0,100 L100,0',
       onChange:         null
     }
   }
@@ -47,7 +47,7 @@ class API {
   }
 
   _vars () {
-    this.revision = '1.6.1';
+    this.revision = '1.7.0';
     this.store    = initStore();
 
     this._easings = [];
@@ -103,12 +103,11 @@ class API {
 
   _tryToRestore () {
     const stored = localStorage.getItem(this._localStorage);
-    const startPathIsSet = this._props.startPath.length > 0;
+
     if ( stored ) {
       this.store.dispatch({ type: 'SET_STATE', data: JSON.parse(stored) });
-    } else if (startPathIsSet) {
-      this._drawStartPath();
-    } else { reset(this.store); }
+    } else { this._drawStartPath(); }
+
   }
 
   _subscribe () {
@@ -229,7 +228,6 @@ class API {
       on the each component in the Components Tree.
   */
   destroy() {
-    // console.log(this._rootEl);
     const NullComponent = () => { return null };
     render(
       <NullComponent />,
@@ -246,7 +244,7 @@ class API {
       path.setAttribute('d', startPath);
       newPoints = transformPathSegments(path);
     } catch (e) {
-      console.log('Something went wrong while creating path element');
+      console.error('Something went wrong while parsing `startPath`', e);
     }
 
     return newPoints;
@@ -258,10 +256,7 @@ class API {
       this.store.dispatch({ type: 'POINTS_REMOVE' });
 
       newPoints.forEach((point, index) => {
-        this.store.dispatch({
-          type: 'POINT_ADD',
-          data: { point, index }
-        });
+        this.store.dispatch({ type: 'POINT_ADD', data: { point, index } });
       });
     }
   }
