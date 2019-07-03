@@ -39,7 +39,7 @@
     "redux-undo": "^0.6.1"
   },
   "devDependencies": {
-    "@mojs/core": "^0.265.7",
+    "@mojs/core": "^0.288.2",
     "@mojs/player": "^0.43.15",
     "autoprefixer": "^6.3.7",
     "babel": "^6.5.2",
