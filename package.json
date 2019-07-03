@@ -39,6 +39,7 @@
     "redux-undo": "^0.6.1"
   },
   "devDependencies": {
+    "@mojs/core": "^0.265.7",
     "autoprefixer": "^6.3.7",
     "babel": "^6.5.2",
     "babel-core": "^6.11.4",
@@ -70,7 +71,6 @@
     "gulp-uglifyjs": "^0.6.2",
     "imagemin-pngquant": "^5.0.0",
     "json-loader": "^0.5.4",
-    "mo-js": "^0.265.7",
     "mojs-player": "^0.43.15",
     "postcss-cssnext": "^2.7.0",
     "postcss-loader": "^0.9.1",
