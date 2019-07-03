@@ -3,12 +3,13 @@
   "version": "1.5.0",
   "description": "GUI for live easing/property curves editing",
   "keywords": [
-    "mojs",
     "motion",
+    "graphics",
+    "toolbelt",
     "effects",
     "animation",
-    "motion",
-    "motion graphics",
+    "mojs",
+    "tool",
     "curve editor",
     "svg"
   ],
