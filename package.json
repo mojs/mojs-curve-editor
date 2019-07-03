@@ -17,7 +17,7 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/legomushroom/mojs-curve-editor.git"
+    "url": "git+https://github.com/mojs/mojs-curve-editor.git"
   },
   "author": {
     "name": "Oleg Solomka",
@@ -27,9 +27,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/legomushroom/mojs-curve-editor/issues"
+    "url": "https://github.com/mojs/mojs-curve-editor/issues"
   },
-  "homepage": "https://github.com/legomushroom/mojs-curve-editor#readme",
+  "homepage": "https://github.com/mojs/mojs-curve-editor#readme",
   "dependencies": {
     "hammerjs": "^2.0.8",
     "path-data-polyfill": "^1.0.0",
