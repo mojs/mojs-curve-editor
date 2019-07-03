@@ -12,7 +12,7 @@ The `MojsCurveEditor` depends on `mojs >= 0.225.2`, tween autoupdates available 
 
 ```console
 # cdn
-<script src="//cdn.jsdelivr.net/@mojs/curve-editor/latest/mojs-curve-editor.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mojs/curve-editor"></script>
 
 # npm
 [sudo] npm install @mojs/curve-editor
