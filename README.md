@@ -1,4 +1,4 @@
-# @mojs/curve-editor
+# @mojs/curve-editor – [![npm](https://img.shields.io/npm/v/@mojs/curve-editor.svg)](https://www.npmjs.com/package/@mojs/curve-editor)
 
 GUI for live easing/property curves editing.
 
