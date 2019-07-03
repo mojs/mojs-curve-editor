@@ -11,7 +11,7 @@ export default (points) => {
 
     const segment = calculateSegment( point, nextPoint, index );
     segments.push(segment);
-    
+
     path += segment.string;
   }
 

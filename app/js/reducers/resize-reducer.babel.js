@@ -26,7 +26,7 @@ const INITIAL_STATE = {
 
 const resizeReducer = (state = INITIAL_STATE, action) => {
   pool.push( state );
-  
+
   switch (action.type) {
     case 'EDITOR_RESIZE': {
       const {data} = action,

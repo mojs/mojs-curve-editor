@@ -14,7 +14,7 @@
   /*height:         0;*/
   /*transition:     height .2s ease-out;*/
   /*transform:      scale(0); */
-  
+
   &__inner {
     border-radius:  calc( 6 * $PX ) calc( 6 * $PX ) 0 0;
     background:     rgba( 61, 27, 60, 1 );

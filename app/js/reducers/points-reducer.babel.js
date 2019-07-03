@@ -51,13 +51,13 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
 
       return { ...state, points: newPoints, ...calculatePath( newPoints ) };
     }
-    
+
     case 'POINT_SELECT': {
       const {data}              = action,
             {index, isDeselect} = data,
             newState            = (isDeselect) ? deselectAll( state ) : { ...state },
             {points}            = newState;
-      
+
       const point = points[index];
       point.isSelected = true;
       return { ...state, points };
@@ -82,7 +82,7 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
 
       return { ...state, points, ...path };
     }
-    
+
     case 'POINT_DELETE': {
       const {points} = state,
             selected = findSelectedIndecies(points);
@@ -112,7 +112,7 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
               sibHandleName = `handle${sibHandleIndex}`,
               handle = { ...point[handleName] },
               sibHandle = { ...point[sibHandleName] };
-        
+
         // move the opposite little handle with certain types
         if ( type === 'mirrored' || type === 'asymmetric' ) {
           sibHandle.angle = handle.angle - 180;
@@ -130,7 +130,7 @@ const pointsReducer = (state = INITIAL_STATE, action) => {
 
       return { ...state, points: newPoints, ...calculatePath( newPoints ) };
     }
-    
+
     case 'POINT_DESELECT_ALL': {
       return { ...deselectAll( state ) };
     }

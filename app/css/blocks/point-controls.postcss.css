@@ -3,15 +3,15 @@
 
 .point-controls {
   display:      none;
-  
+
   &.is-show {
     display:    block;
   }
-  
+
   [data-component="icon-button"] {
     $width: 3;
     $height: 2.5*$width;
-    
+
     &:after {
       content:        '';
       position:       absolute;
@@ -26,10 +26,10 @@
       margin-top:     calc( -($height/2)*$PX );
       display:        none;
     }
-    
+
     &[class*="is-checked"] {
       &:after {
-        display:      block; 
+        display:      block;
       }
     }
   }
