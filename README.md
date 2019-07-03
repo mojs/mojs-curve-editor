@@ -1,4 +1,4 @@
-# mojs curve editor
+# @mojs/curve-editor
 
 GUI for live easing/property curves editing.
 
@@ -12,10 +12,10 @@ The `MojsCurveEditor` depends on `mojs >= 0.225.2`, tween autoupdates available 
 
 ```console
 # cdn
-<script src="//cdn.jsdelivr.net/mojs-curve-editor/latest/mojs-curve-editor.min.js"></script>
+<script src="//cdn.jsdelivr.net/@mojs/curve-editor/latest/mojs-curve-editor.min.js"></script>
 
 # npm
-[sudo] npm install mojs-curve-editor
+[sudo] npm install @mojs/curve-editor
 ```
 
 Import `MojsCurveEditor` constructor to your code, depending on your environment:
@@ -24,7 +24,7 @@ Import `MojsCurveEditor` constructor to your code, depending on your environment
 const MojsCurveEditor = require('mojs-curve-editor').default;
 
 // or
-import MojsCurveEditor from 'mojs-curve-editor';
+import MojsCurveEditor from '@mojs/curve-editor';
 ```
 
 > If you installed it with script link - you should have `MojsCurveEditor` global

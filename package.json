@@ -1,5 +1,5 @@
 {
-  "name": "mojs-curve-editor",
+  "name": "@mojs/curve-editor",
   "version": "1.5.0",
   "description": "GUI for live easing/property curves editing",
   "keywords": [
