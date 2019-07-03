@@ -5,7 +5,7 @@ app/index.html
 .--eslintrc
 .babelrc
 .editorconfig
-.gitattribute
+.gitattributes
 bower.json
 webpack.config.babel.js
 webpack.config.js
