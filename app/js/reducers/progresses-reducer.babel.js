@@ -22,7 +22,7 @@ const makeProgressLine = (o ={}, state) => {
 
 const progresses = (state = INITIAL_STATE, action) => {
   pool.push( state );
-  
+
   switch (action.type) {
 
     case 'ADD_PROGRESS_LINE': {
@@ -35,7 +35,7 @@ const progresses = (state = INITIAL_STATE, action) => {
       const {index}    = action;
       return { ...state, selected: index };
     }
-    
+
     // case 'SET_PROGRESS_LINE_SHIFT': {
     //   const {data}    = action,
     //         {index}   = data,

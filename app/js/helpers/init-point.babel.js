@@ -19,7 +19,7 @@ export default (point, sibPoint, handleIndex) => {
 
     const dy = (sibPoint.y - point.y) / C.CURVE_PERCENT,
           dx = sibPoint.x - point.x;
-    
+
     let angle = Math.atan( dy/dx ) * (180/Math.PI) - 90;
     if ( dx > 0 ) { angle = angle - 180 };
 

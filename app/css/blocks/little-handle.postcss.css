@@ -6,8 +6,8 @@
   top:      50%;
   width:    0;
   height:   0;
-  
-  $size: 6;  
+
+  $size: 6;
   &__point {
     position:     absolute;
     z-index:      1;

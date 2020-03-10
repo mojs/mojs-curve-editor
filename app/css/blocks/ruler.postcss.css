@@ -12,7 +12,7 @@ $size: 350;
     left:     auto;
     right:    0;
   }
-  
+
   $itemSize: 14;
   &__item {
     position:       absolute;
@@ -25,10 +25,10 @@ $size: 350;
     height:         calc($itemSize*$PX);
     text-align:     center;
     line-height:    calc($itemSize*$PX);
-    
+
     margin-top:     calc(3*$PX);
     margin-left:    calc((-$itemSize/4)*$PX);
-    
+
     &--0 {
       top: calc(4*$size*$PX);
     }

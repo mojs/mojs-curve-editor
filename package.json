@@ -1,14 +1,15 @@
 {
-  "name": "mojs-curve-editor",
+  "name": "@mojs/curve-editor",
   "version": "1.7.0",
-  "description": "mojs GUI for editing easing/property curves",
+  "description": "GUI for live easing/property curves editing",
   "keywords": [
-    "mojs",
     "motion",
+    "graphics",
+    "toolbelt",
     "effects",
     "animation",
-    "motion",
-    "motion graphics",
+    "mojs",
+    "tool",
     "curve editor",
     "svg"
   ],
@@ -19,19 +20,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/legomushroom/mojs-curve-editor.git"
+    "url": "git+https://github.com/mojs/mojs-curve-editor.git"
   },
   "author": {
     "name": "Oleg Solomka",
     "email": "legomushroom@gmail.com",
-    "twitter": "@legomushroom",
-    "url": "https://github.com/legomushroom/"
+    "url": "https://twitter.com/legomushroom",
+    "github": "@legomushroom"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/legomushroom/mojs-curve-editor/issues"
+    "url": "https://github.com/mojs/mojs-curve-editor/issues"
   },
-  "homepage": "https://github.com/legomushroom/mojs-curve-editor#readme",
+  "homepage": "https://github.com/mojs/mojs-curve-editor#readme",
   "dependencies": {
     "hammerjs": "^2.0.8",
     "preact": "^7.1.0",
@@ -41,6 +42,8 @@
     "redux-undo": "^0.6.1"
   },
   "devDependencies": {
+    "@mojs/core": "^0.288.2",
+    "@mojs/player": "^0.43.15",
     "autoprefixer": "^6.3.7",
     "babel": "^6.5.2",
     "babel-core": "^6.11.4",
@@ -72,8 +75,6 @@
     "gulp-uglifyjs": "^0.6.2",
     "imagemin-pngquant": "^5.0.0",
     "json-loader": "^0.5.4",
-    "mo-js": "^0.265.7",
-    "mojs-player": "^0.43.15",
     "postcss-cssnext": "^2.7.0",
     "postcss-loader": "^0.9.1",
     "postcss-modules": "^0.5.0",

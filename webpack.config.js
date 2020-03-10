@@ -39,10 +39,10 @@ module.exports = {
     ]
   },
   postcss: function () {
-      return {
-          defaults: [ require('precss'), require('postcss-cssnext'), require('postcss-modules') ],
-          cleaner:  [autoprefixer({ browsers: ['last 2 versions'] })]
-      };
+    return {
+      defaults: [ require('precss'), require('postcss-cssnext'), require('postcss-modules') ],
+      cleaner:  [autoprefixer({ browsers: ['last 2 versions'] })]
+    };
   },
   output: {
     path:           __dirname + '/app/build/',
