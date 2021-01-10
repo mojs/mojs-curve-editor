@@ -55,7 +55,7 @@
     "babel-preset-es2015-riot": "^1.1.0",
     "babel-preset-stage-0": "^6.5.0",
     "babel-preset-stage-2": "^6.11.0",
-    "browser-sync": "^2.13.0",
+    "browser-sync": "^2.26.13",
     "css-loader": "^0.23.1",
     "csswring": "^5.1.0",
     "del": "^2.2.1",
