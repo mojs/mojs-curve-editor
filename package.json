@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@mojs/core": "^0.288.2",
-    "@mojs/player": "^0.43.15",
+    "@mojs/player": "^0.44.0",
     "autoprefixer": "^6.3.7",
     "babel": "^6.5.2",
     "babel-core": "^6.11.4",
