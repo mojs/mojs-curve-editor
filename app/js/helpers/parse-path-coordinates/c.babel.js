@@ -1,4 +1,4 @@
-import pointToAngle from '../point-to-angle';
+import pointToRotate from '../point-to-rotate';
 import C from '../../constants';
 
 const { CURVE_PERCENT } = C;
@@ -12,7 +12,7 @@ export default (values, points, isLockedX) => {
   const [x1, y1, x2, y2, xNext, yNext] = values;
   const prevPoint = points[points.length - 1];
 
-  const prevHandle = pointToAngle(
+  const prevHandle = pointToRotate(
     (x1 - prevPoint.x) * CURVE_PERCENT,
     (y1 * CURVE_PERCENT) - prevPoint.y
   );
@@ -22,7 +22,7 @@ export default (values, points, isLockedX) => {
     x: xNext,
     y: yNext * CURVE_PERCENT,
     type: 'disconnected',
-    handle1: pointToAngle((x2 - xNext) * CURVE_PERCENT, (y2 - yNext) * CURVE_PERCENT),
+    handle1: pointToRotate((x2 - xNext) * CURVE_PERCENT, (y2 - yNext) * CURVE_PERCENT),
     isLockedX
   }
 

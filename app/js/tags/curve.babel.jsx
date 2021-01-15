@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import angleToPoint from '../helpers/angle-to-point';
+import rotateToPoint from '../helpers/rotate-to-point';
 import ProgressLine from './progress-line';
 import Pattern from './pattern';
 import Ruler from './ruler';
