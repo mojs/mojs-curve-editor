@@ -1,6 +1,6 @@
 import {h, Component} from 'preact';
-import angleToPoint from '../helpers/angle-to-point';
-import pointToAngle from '../helpers/point-to-angle';
+import rotateToPoint from '../helpers/rotate-to-point';
+import pointToRotate from '../helpers/point-to-rotate';
 import C from '../constants';
 import pool from '../pool';
 
@@ -36,15 +36,15 @@ class LittleHandle extends Component {
       .on('panstart', (e) => { handle = this.props.handle; })
       .on('pan', (e) => {
         const {index, parentIndex, state} = this.props,
-              point     = angleToPoint( handle.angle, handle.radius ),
+              point     = rotateToPoint( handle.rotate, handle.radius ),
               newY      = point.y + e.deltaY,
               {resize}  = state,
               absX      = point.x + (e.deltaX)/resize.absScalerX,
-              angle     = pointToAngle( absX, newY );
+              rotate     = pointToRotate( absX, newY );
 
         store.dispatch({
           type: 'HANDLE_TRANSLATE',
-          data: { index, parentIndex, ...angle }
+          data: { index, parentIndex, ...rotate }
         });
 
         if ( this.props.type === 'mirrored' ) {
@@ -53,8 +53,8 @@ class LittleHandle extends Component {
             type: 'HANDLE_TRANSLATE',
             data: {
               index:      i, parentIndex,
-              radius:     angle.radius,
-              angle:      angle.angle - 180
+              radius:     rotate.radius,
+              rotate:      rotate.rotate - 180
             }
           });
         }
@@ -66,7 +66,7 @@ class LittleHandle extends Component {
             data: {
               index:      i, parentIndex,
               radius:     handle.radius,
-              angle:      angle.angle - 180
+              rotate:      rotate.rotate - 180
             }
           });
         }
@@ -82,8 +82,8 @@ class LittleHandle extends Component {
   _getPointStyle () {
     const {handle, state}  = this.props,
           {resize}  = state,
-          point     = angleToPoint( handle.angle, handle.radius ),
-          translate = `transform: translate(${point.x*resize.absScalerX}px, ${point.y}px) rotate(${handle.angle}deg)`;
+          point     = rotateToPoint( handle.rotate, handle.radius ),
+          translate = `transform: translate(${point.x*resize.absScalerX}px, ${point.y}px) rotate(${handle.rotate}deg)`;
 
     return `${mojs.h.prefix.css}${translate}; ${translate}`;
   }
@@ -91,12 +91,12 @@ class LittleHandle extends Component {
   _getLineStyle () {
     const {handle, state}  = this.props,
           {resize}  = state,
-          // since the angle and radius were stored as absolute,
+          // since the rotate and radius were stored as absolute,
           // e.g. regardless the editor's horizontal resize,
           // we need to recalc the x position for the line
-          point     = angleToPoint( handle.angle, handle.radius ),
-          newVector = pointToAngle( point.x*resize.absScalerX, point.y ),
-          translate = `transform: rotate(${newVector.angle}deg) scaleY(${newVector.radius})`;
+          point     = rotateToPoint( handle.rotate, handle.radius ),
+          newVector = pointToRotate( point.x*resize.absScalerX, point.y ),
+          translate = `transform: rotate(${newVector.rotate}deg) scaleY(${newVector.radius})`;
 
     return `${mojs.h.prefix.css}${translate}; ${translate}`;
   }
