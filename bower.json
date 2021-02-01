@@ -18,7 +18,7 @@
     "editor",
     "svg"
   ],
-  "homepage": "https://github.com/legomushroom/mojs-curve-editor",
+  "homepage": "https://github.com/mojs/mojs-curve-editor",
   "ignore": [
     "**/.*",
     "node_modules",

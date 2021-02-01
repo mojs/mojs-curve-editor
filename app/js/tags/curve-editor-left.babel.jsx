@@ -18,7 +18,7 @@ const CurveEditorLeft = ({state}) => {
             <PointControls state={state}
                             className={CLASSES['curve-editor__anchor-buttons']} />
             <a  className={CLASSES['curve-editor__mojs-logo']}
-                href="https://github.com/legomushroom/mojs-curve-editor" target="_blank">
+                href="https://github.com/mojs/mojs-curve-editor" target="_blank">
               <Icon shape="mojs-logo" />
             </a>
           </div>;
