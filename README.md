@@ -137,7 +137,7 @@ curveEditor
 ## Shortcuts
 
 - `alt + z`  - `undo` curve action
-- `alt + x`  - `rendo` curve action
+- `alt + x`  - `redo` curve action
 - `alt + d`  - `delete` selected point(s)
 - [3 times] `alt + \`  - `reset` curve
 
