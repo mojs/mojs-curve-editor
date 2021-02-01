@@ -2,7 +2,10 @@
   "name": "@mojs/curve-editor",
   "version": "1.7.0",
   "description": "GUI for live easing/property curves editing",
-  "main": "app/build/mojs-curve-editor.js",
+  "source": "app/js/app.babel.jsx",
+  "main": "app/build/mojs-curve-editor.min.js",
+  "browser": "app/build/mojs-curve-editor.min.js",
+  "unpkg": "app/build/mojs-curve-editor.min.js",
   "scripts": {
     "start": "webpack",
     "dev": "webpack-dev-server"
