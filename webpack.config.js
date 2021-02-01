@@ -4,7 +4,6 @@ var autoprefixer = require('autoprefixer');
 var UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
 
 module.exports = {
-  watch:   true,
   context: __dirname + "/",
   entry: [
     __dirname + '/app/js/app.babel.jsx'

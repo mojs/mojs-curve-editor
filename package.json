@@ -7,8 +7,9 @@
   "browser": "app/build/mojs-curve-editor.min.js",
   "unpkg": "app/build/mojs-curve-editor.min.js",
   "scripts": {
-    "start": "webpack",
-    "dev": "webpack-dev-server"
+    "start": "webpack --watch",
+    "dev": "webpack-dev-server",
+    "build": "webpack --progress"
   },
   "repository": {
     "type": "git",
