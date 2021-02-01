@@ -4,21 +4,21 @@ GUI for live easing/property curves editing.
 
 ![mojs-curve-editor](logo.png "mojs-curve-editor")
 
-`MojsCurveEditor` is a GUI plugin for interactive `custom easings`/`property curves` editing while crafting your animations. Part of `mojs` tools.
+`MojsCurveEditor` is a GUI plugin for interactive custom easings and property curves editing while crafting your animations. It is part of [`mojs` tools](https://mojs.github.io/tools/).
 
 ## Installation
 
 The `MojsCurveEditor` depends on `mojs >= 0.225.2`, tween autoupdates available for `mojs >= 0.276.2`. Please make sure you've linked [mojs](https://github.com/mojs/mojs) library first.
 
 ```console
+# npm
+npm install @mojs/curve-editor
+
 # cdn
 <script src="https://cdn.jsdelivr.net/npm/@mojs/curve-editor"></script>
-
-# npm
-[sudo] npm install @mojs/curve-editor
 ```
 
-Import `MojsCurveEditor` constructor to your code, depending on your environment:
+Import `MojsCurveEditor` constructor inside your code, depending on your environment:
 
 ```javascript
 const MojsCurveEditor = require('mojs-curve-editor').default;
@@ -63,7 +63,10 @@ After that you can "connect" the curve with your `mojs` modules by passing a "sa
 
   const html = new mojs.Html({
     el: '#js-el',
-    x: { 0: 100, curve: mojsCurve.getEasing() }
+    x: {
+      0: 100,
+      curve: mojsCurve.getEasing()
+    }
   });
 
 ```
@@ -76,6 +79,7 @@ The `getEasing` function receives options hash:
 
 ```javascript
   easing: mojsCurve.getEasing({
+
     // `transform` function that pipes through the current value
     // of the curve so you can transform it
     transform: (k) => { return k; }
@@ -83,12 +87,15 @@ The `getEasing` function receives options hash:
 
 ```
 
-After you are happy with the curve you made, you need to change the `sample`(`mojsCurve.getEasing()` calls) with actual path data which you can get by clicking on the `code` button (<img width="32" style="margin-bottom: -10px" src="https://github.com/legomushroom/mojs-curve-editor/blob/master/mockups/code-button.png?raw=true" alt="code button" />):
+After you are happy with the curve you made, you need to change the `sample`, `mojsCurve.getEasing()` calls, with the actual path data that you can get by clicking on the `code` button <img width="32" style="margin-bottom: -10px" src="https://github.com/mojs/mojs-curve-editor/blob/master/mockups/code-button.png?raw=true" alt="code button" />:
 
 ```javascript
   const html = new mojs.Html({
     el: '#js-el',
-    x: { 0: 100, easing: 'M0, 100 C0, 100 19.8984745544779, 40.10152544552211 30, 30 C40.1015254455221, 19.89847455447789 80, 45 80, 45 C80, 45 100, 0 100, 0 ' }
+    x: {
+      0: 100,
+      easing: 'M0, 100 L100, 0'
+    }
   });
 ```
 
@@ -98,6 +105,7 @@ Constructor accepts the next options:
 
 ```javascript
 const curveEditor = new MojsCurveEditor({
+
   // name of the curve editor
   name: 'bounce curve'
 
