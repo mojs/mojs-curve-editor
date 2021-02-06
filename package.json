@@ -1,6 +1,6 @@
 {
   "name": "@mojs/curve-editor",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "GUI for live easing/property curves editing",
   "source": "app/js/app.babel.jsx",
   "main": "app/build/mojs-curve-editor.min.js",

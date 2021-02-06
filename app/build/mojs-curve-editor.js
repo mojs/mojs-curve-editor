@@ -165,7 +165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_vars',
 	    value: function _vars() {
-	      this.revision = '1.7.0';
+	      this.revision = '1.7.1';
 	      this.store = (0, _store2.default)();
 
 	      this._easings = [];
