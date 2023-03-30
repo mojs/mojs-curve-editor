@@ -87,7 +87,7 @@ The `getEasing` function receives options hash:
 
 ```
 
-After you are happy with the curve you made, you need to change the `sample`, `mojsCurve.getEasing()` calls, with the actual path data that you can get by clicking on the `code` button <img width="32" style="margin-bottom: -10px" src="https://github.com/mojs/mojs-curve-editor/blob/master/mockups/code-button.png?raw=true" alt="code button" />:
+After you are happy with the curve you made, you need to change the `sample`, `mojsCurve.getEasing()` calls, with the actual path data that you can get by clicking on the `code` button <img width="32" style="margin-bottom: -10px" src="https://github.com/mojs/mojs-curve-editor/blob/main/mockups/code-button.png?raw=true" alt="code button" />:
 
 ```javascript
   const html = new mojs.Html({
